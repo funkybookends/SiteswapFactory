@@ -26,7 +26,7 @@ If you would like to contribute please clone the repository and either pick some
   * Add difficulty estimators (in a similar fashion to sorters).
   * Improve documentation.
   * Add logging?
-  * Add categorization, e.g. Four
+  * Add categorization, e.g. 3 Count, PPS
 * More effort:
   * Find a good way to deal with transitions between patterns, and entries into excited patterns.
   * Generation of joepass files.
