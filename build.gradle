@@ -2,9 +2,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
-    }
 }
 
 allprojects {
@@ -19,12 +16,15 @@ allprojects {
     }
 
     dependencies {
-//        compile 'org.slf4j:slf4j-api:1.7.21'
         testCompile 'junit:junit:4.12'
+        dependencies {
+            compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+            compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.5'
+        }
     }
 }
 
 jar {
-    baseName = 'ignoretheextraclub'
+    baseName = 'siteswap-factory'
     version =  '0.1.0'
 }

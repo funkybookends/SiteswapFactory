@@ -1,15 +1,12 @@
 package com.ignoretheextraclub.vanillasiteswap.sorters;
 
 import com.ignoretheextraclub.vanillasiteswap.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.vanillasiteswap.exceptions.PeriodException;
-import com.ignoretheextraclub.vanillasiteswap.siteswap.AbstractSiteswap;
 import com.ignoretheextraclub.vanillasiteswap.state.AbstractState;
 import com.ignoretheextraclub.vanillasiteswap.thros.AbstractThro;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
