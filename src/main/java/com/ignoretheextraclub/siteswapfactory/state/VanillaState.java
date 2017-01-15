@@ -127,16 +127,16 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
         return result;
     }
 
-//    public static VanillaState getGroundState(final int maxThrow, final int numObjects) throws StateSizeException, NumObjectsException
-//    {
-//        final boolean[] occupied = new boolean[validateSize(maxThrow)];
-//        validateNumObjects(numObjects);
-//        for (int i = 0; i < maxThrow; i++)
-//        {
-//            occupied[i] = (i < numObjects);
-//        }
-//        return new VanillaState(occupied);
-//    }
+    public static <Throw extends VanillaThrow> VanillaState getGroundState(final int maxThrow, final int numObjects, final ThrowConstructor<Throw> throwConstructor) throws StateSizeException, NumObjectsException
+    {
+        final boolean[] occupied = new boolean[validateSize(maxThrow)];
+        validateNumObjects(numObjects);
+        for (int i = 0; i < maxThrow; i++)
+        {
+            occupied[i] = (i < numObjects);
+        }
+        return new VanillaState(occupied, throwConstructor);
+    }
 
     @JsonProperty("occupancy")
     public String toString()

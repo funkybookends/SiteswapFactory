@@ -35,36 +35,40 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     public static final int MAX_PERIOD = 15;
     public static final int MIN_PERIOD = 1;
 
-    private static final StateSorter DEFAULT_SORTER = HighestThrowFirstStrategy.get();
-
     // Properties that define the state graph
-    @JsonProperty("num_objects") protected final int numObjects;
+    @JsonProperty("num_objects")
+    protected final int numObjects;
 
     // Route through the state graph
     protected final State[] states;
-    @JsonProperty("global_throws") protected final Thro[] thros;
+    @JsonProperty("global_throws")
+    protected final Thro[] thros;
 
     // Properties of the route
     protected final int period;
     protected final boolean prime;
-    @JsonProperty("highest_throw") protected final Thro highestThrow;
+    @JsonProperty("highest_throw")
+    protected final Thro highestThrow;
     protected final boolean grounded;
-    @JsonIgnore protected final StateSorter<Thro, State> sorter;
+    @JsonIgnore
+    protected final StateSorter<Thro, State> sorter;
 
 
     /**
-     *
      * @param states
      * @param thros
      * @param sorter
+     *
      * @throws InvalidSiteswapException
      */
     protected AbstractSiteswap(State[] states,
                                Thro[] thros,
                                final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
-        try {
-            if (states.length != thros.length) throw new InvalidSiteswapException("States and Throws are unequal in length");
+        try
+        {
+            if (states.length != thros.length)
+                throw new InvalidSiteswapException("States and Throws are unequal in length");
             states = SortingUtils.reduce(states);
             thros = SortingUtils.reduce(thros);
 
@@ -101,10 +105,10 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     }
 
     /**
-     *
      * @param startingState
      * @param thros
      * @param sorter
+     *
      * @throws InvalidSiteswapException
      */
     protected AbstractSiteswap(final State startingState,
@@ -114,23 +118,25 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         this(getAllStates(startingState, thros), thros, sorter);
     }
 
-    protected AbstractSiteswap(final State startingState,
-                               final Thro[] thros) throws InvalidSiteswapException
+    protected AbstractSiteswap(final State[] states,
+                               final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
-        this(startingState, thros, DEFAULT_SORTER);
+        this(states, getAllThrows(states), sorter);
     }
+
+
 
     /*
                 Static Utility Methods
      */
 
     @SuppressWarnings("unchecked")
-    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro[] getAllThrows(State[] states, Class<Thro> clazz) throws InvalidSiteswapException
+    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro[] getAllThrows(final State[] states) throws InvalidSiteswapException
     {
         try
         {
             final Thro first = states[0].getThrow(states[1 % states.length]);
-            final Thro[] thros = (Thro[]) Array.newInstance(clazz, states.length);
+            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length);
             thros[0] = first;
             for (int i = 1; i < states.length; i++)
             {
@@ -183,7 +189,7 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     {
         Thro highest = thros[0];
         for (int i = 1; i < thros.length; i++)
-            if (highest.compareTo(thros[i]) > 0)
+            if (highest.compareTo(thros[i]) < 0)
                 highest = thros[i];
         return highest;
     }

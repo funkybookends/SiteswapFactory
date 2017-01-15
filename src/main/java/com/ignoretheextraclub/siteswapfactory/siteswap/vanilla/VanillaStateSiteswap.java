@@ -35,10 +35,12 @@ public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State exte
         super(startingState, thros, sorter);
     }
 
-    public VanillaStateSiteswap(State startingState, Thro[] thros) throws InvalidSiteswapException
+    public VanillaStateSiteswap(State[] states,
+                                StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
-        super(startingState, thros);
+        super(states, sorter);
     }
+
 
     @JsonProperty("global_string_siteswap")
     public String getStringSiteswap()
