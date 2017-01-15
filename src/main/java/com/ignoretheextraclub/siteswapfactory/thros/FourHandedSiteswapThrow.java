@@ -94,6 +94,32 @@ public class FourHandedSiteswapThrow extends VanillaThrow
         return get(charToInt(thro));
     }
 
+    public static FourHandedSiteswapThrow getOrNull(final int thro)
+    {
+        try
+        {
+            return get(thro);
+        }
+        catch (BadThrowException e)
+        {
+            return null;
+        }
+    }
+
+    public static FourHandedSiteswapThrow getOrNull(final char thro)
+    {
+        try
+        {
+            return get(thro);
+        }
+        catch (BadThrowException e)
+        {
+            return null;
+        }
+    }
+
+
+
     @JsonProperty("hefflish")
     public String toHefflish()
     {
