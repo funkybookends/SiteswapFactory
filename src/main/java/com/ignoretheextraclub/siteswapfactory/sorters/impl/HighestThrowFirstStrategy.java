@@ -35,8 +35,8 @@ public class HighestThrowFirstStrategy implements StateSorter
             {
                 AbstractThro ftran = first [i].getThrow(first [(i + 1) % first .length]);
                 AbstractThro stran = second[i].getThrow(second[(i + 1) % second.length]);
-                if      (ftran.compareTo(stran) > 0) return false;
-                else if (ftran.compareTo(stran) < 0) return true;
+                if      (ftran.compareTo(stran) < 0) return false;
+                else if (ftran.compareTo(stran) > 0) return true;
             }
             return true; //they are equivalent
         }

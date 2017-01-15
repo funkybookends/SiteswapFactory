@@ -19,6 +19,8 @@ import java.util.function.Predicate;
 public class StateSearcher<Throw extends AbstractThro, State extends AbstractState<Throw>> extends Thread
 {
     private static final int MAX_PERIOD = 9;
+    private static final int DEFAULT_RESULT_LIMIT = 1000;
+    private static final long DEFAULT_TIME_LIMIT_DURATION = 20 * 60 * 1000;
 
     private final int resultLimit;
     private final long timeLimitDuration;
@@ -36,13 +38,43 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     private final StateSorter<Throw, State> sorter;
     private final Mode mode;
 
-    private int results;
+    private int numResults = 0;
     private long timeLimitMoment;
+    private boolean completed = false;
+    private boolean suspended = false;
 
     private enum Mode
     {
         FIXED_STARTING_STATES,
         FIND_NEW_STARTING_STATES;
+    }
+
+    private StateSearcher(final int resultLimit,
+                          final long timeLimitDuration,
+                          final int finalPeriod,
+                          final Collection<Predicate<State[]>> predicates,
+                          final Queue<State> startingStates,
+                          final Consumer<State[]> consumer,
+                          final StateSorter<Throw, State> sorter,
+                          final Mode mode)
+    {
+        this.resultLimit = resultLimit;
+        this.timeLimitDuration = timeLimitDuration;
+        this.finalPeriod = validatePeriod(finalPeriod);
+        this.predicates = predicates;
+        this.startingStates = startingStates;
+        this.consumer = consumer;
+        this.sorter = sorter;
+        this.mode = mode;
+    }
+
+    public StateSearcher(final int finalPeriod,
+                     @Nullable final Collection<Predicate<State[]>> predicates,
+                     final Queue<State> startingStates,
+                     final Consumer<State[]> consumer,
+                     @Nullable final StateSorter<Throw, State> sorter)
+    {
+        this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION, finalPeriod, predicates, startingStates, consumer, sorter);
     }
 
     public StateSearcher(final int resultLimit,
@@ -53,24 +85,16 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final Consumer<State[]> consumer,
                          @Nullable final StateSorter<Throw, State> sorter)
     {
-        this.resultLimit = resultLimit;
-        this.timeLimitDuration = timeLimitDuration;
-        this.finalPeriod = validatePeriod(finalPeriod);
-        if (predicates != null)
-        {
-            this.predicates = predicates;
-        }
-        else
-        {
-            this.predicates = Collections.emptySet();
-        }
-        this.startingStates = startingStates;
-        this.consumer = consumer;
-        this.sorter = sorter;
-        results = 0;
-
-        this.mode = Mode.FIXED_STARTING_STATES;
+        this(resultLimit,
+             timeLimitDuration,
+             finalPeriod,
+             predicates != null ? predicates : Collections.emptySet(),
+             startingStates,
+             consumer,
+             sorter,
+             Mode.FIXED_STARTING_STATES);
     }
+
 
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
@@ -81,31 +105,35 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          @Nullable final StateSorter<Throw, State> sorter,
                          final boolean fromAllStates)
     {
-        this.resultLimit = resultLimit;
-        this.timeLimitDuration = timeLimitDuration;
-        this.finalPeriod = validatePeriod(finalPeriod);
-        if (predicates != null)
-        {
-            this.predicates = predicates;
-        }
-        else
-        {
-            this.predicates = Collections.emptySet();
-        }
-        this.consumer = consumer;
-        this.sorter = sorter;
-        this.startingStates = new LinkedBlockingQueue<>();
-        this.startingStates.add(startingState);
+        this(resultLimit,
+             timeLimitDuration,
+             finalPeriod,
+             predicates != null ? predicates : Collections.emptySet(),
+             queueOf(startingState),
+             consumer,
+             sorter,
+             fromAllStates ? Mode.FIXED_STARTING_STATES : Mode.FIND_NEW_STARTING_STATES);
 
-        if (fromAllStates)
-        {
-            this.mode = Mode.FIXED_STARTING_STATES;
-        }
-        else
-        {
-            this.mode = Mode.FIND_NEW_STARTING_STATES;
-        }
+    }
 
+    public StateSearcher(final int finalPeriod,
+                         @Nullable final Collection<Predicate<State[]>> predicates,
+                         final State startingState,
+                         final Consumer<State[]> consumer,
+                         @Nullable final StateSorter<Throw, State> sorter,
+                         final boolean fromAllStates)
+    {
+        this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION , finalPeriod, predicates, startingState, consumer, sorter,
+             fromAllStates);
+    }
+    
+    
+
+    private static <Throw extends AbstractThro, State extends AbstractState<Throw>> Queue<State> queueOf(final State startingState)
+    {
+        final LinkedBlockingQueue<State> queue = new LinkedBlockingQueue<>();
+        queue.add(startingState);
+        return queue;
     }
 
     private static int validatePeriod(final int period)
@@ -141,13 +169,14 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                 {
                     break;
                 }
-                catch (InterruptedException e)
+                catch (final InterruptedException e)
                 {
-                    return;
+                    break;
                 }
 
             }
         }
+        completed = true;
     }
 
     private boolean acceptable(final State[] candidate)
@@ -166,12 +195,20 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     {
         if (isInterrupted())
         {
-            throw new InterruptedException("Interrupted after finding " + results + " results of " + resultLimit);
+            throw new InterruptedException("Interrupted after finding " + numResults + " numResults of " + resultLimit);
         }
 
         if (System.currentTimeMillis() > timeLimitMoment)
         {
             throw new TimeLimitReached();
+        }
+
+        synchronized (this)
+        {
+            while (suspended)
+            {
+                wait();
+            }
         }
 
         if (path.size() < finalPeriod)
@@ -191,7 +228,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
         else if (path.size() == finalPeriod && path.lastElement().canTransition(path.firstElement()))
         {
             handleResult(getPathAsStateArray(path));
-            if (++results >= resultLimit) throw new ResultLimitReached();
+            if (++numResults >= resultLimit) throw new ResultLimitReached();
         }
         else if (path.size() > finalPeriod)
         {
@@ -224,7 +261,27 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
         return path.toArray((State[]) Array.newInstance(path.lastElement().getClass(), path.size()));
     }
 
-    private class ResultLimitReached extends Exception {}
+    public boolean isCompleted()
+    {
+        return completed;
+    }
 
-    private class TimeLimitReached extends Exception {}
+    public void pause()
+    {
+        this.suspended = true;
+    }
+
+    public void play()
+    {
+        this.suspended = false;
+    }
+
+    public int getNumResults()
+    {
+        return numResults;
+    }
+
+    private static class ResultLimitReached extends Exception {}
+
+    private static class TimeLimitReached extends Exception {}
 }

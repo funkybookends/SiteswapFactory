@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.sorters.StateSorter;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
 import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 
@@ -30,6 +31,8 @@ public class TwoHandedSiteswap extends VanillaStateSiteswap<VanillaThrow, Vanill
 {
     private static final int NUMBER_OF_HANDS = 2;
 
+    private static final StateSorter<VanillaThrow, VanillaState<VanillaThrow>> DEFAULT_SORTER = HighestThrowFirstStrategy.get();
+
     public enum Hand
     {
         FIRST(0), SECOND(1);
@@ -52,8 +55,23 @@ public class TwoHandedSiteswap extends VanillaStateSiteswap<VanillaThrow, Vanill
     public TwoHandedSiteswap(VanillaState<VanillaThrow> startingState,
                              VanillaThrow[] thros) throws InvalidSiteswapException
     {
-        super(startingState, thros);
+        super(startingState, thros, DEFAULT_SORTER);
     }
+
+    public TwoHandedSiteswap(VanillaState<VanillaThrow>[] states,
+                             StateSorter<VanillaThrow, VanillaState<VanillaThrow>> sorter) throws
+                                                                                           InvalidSiteswapException
+    {
+        super(states, sorter);
+    }
+
+    public TwoHandedSiteswap(VanillaState<VanillaThrow>[] states) throws
+                                                                                           InvalidSiteswapException
+    {
+        super(states, DEFAULT_SORTER);
+    }
+
+
 
     @JsonProperty("first_hand_objects")
     public int getFirstStartingHandObjects()

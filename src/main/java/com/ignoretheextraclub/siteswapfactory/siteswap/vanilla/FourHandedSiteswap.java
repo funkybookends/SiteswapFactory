@@ -74,7 +74,19 @@ public class FourHandedSiteswap extends VanillaStateSiteswap<FourHandedSiteswapT
     public FourHandedSiteswap(VanillaState<FourHandedSiteswapThrow> startingState,
                                  FourHandedSiteswapThrow[] thros) throws InvalidSiteswapException
     {
-        super(startingState, thros);
+        super(startingState, thros, DEFAULT_SORTER);
+    }
+
+    public FourHandedSiteswap(VanillaState<FourHandedSiteswapThrow>[] states,
+                              StateSorter<FourHandedSiteswapThrow, VanillaState<FourHandedSiteswapThrow>> sorter) throws
+                                                                                                                  InvalidSiteswapException
+    {
+        super(states, sorter);
+    }
+
+    public FourHandedSiteswap(VanillaState<FourHandedSiteswapThrow>[] states) throws InvalidSiteswapException
+    {
+        super(states, DEFAULT_SORTER);
     }
 
     public static FourHandedSiteswap create(final int[] siteswap, StateSorter<FourHandedSiteswapThrow, VanillaState<FourHandedSiteswapThrow>> sorter) throws InvalidSiteswapException
