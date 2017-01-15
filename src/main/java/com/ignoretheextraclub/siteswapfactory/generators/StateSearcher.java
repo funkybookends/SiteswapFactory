@@ -18,6 +18,8 @@ import java.util.function.Predicate;
  */
 public class StateSearcher<Throw extends AbstractThro, State extends AbstractState<Throw>> extends Thread
 {
+    private static final int MAX_PERIOD = 9;
+
     private final int resultLimit;
     private final long timeLimitDuration;
     private final int finalPeriod;
@@ -27,7 +29,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
      * So when receiving a State[] of size n, you can be assured it was accepted with size n-1.
      * You are encouraged to keep these cheap.
      */
-    private final List<Predicate<State[]>> predicates;
+    private final Collection<Predicate<State[]>> predicates;
     private final Queue<State> startingStates;
     private final Set<State> statesStartedFrom = new HashSet<>();
     private final Consumer<State[]> consumer;
@@ -46,15 +48,22 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
                          final int finalPeriod,
-                         final List<Predicate<State[]>> predicates,
+                         @Nullable final Collection<Predicate<State[]>> predicates,
                          final Queue<State> startingStates,
                          final Consumer<State[]> consumer,
                          @Nullable final StateSorter<Throw, State> sorter)
     {
         this.resultLimit = resultLimit;
         this.timeLimitDuration = timeLimitDuration;
-        this.finalPeriod = finalPeriod;
-        this.predicates = predicates;
+        this.finalPeriod = validatePeriod(finalPeriod);
+        if (predicates != null)
+        {
+            this.predicates = predicates;
+        }
+        else
+        {
+            this.predicates = Collections.emptySet();
+        }
         this.startingStates = startingStates;
         this.consumer = consumer;
         this.sorter = sorter;
@@ -66,7 +75,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
                          final int finalPeriod,
-                         final List<Predicate<State[]>> predicates,
+                         @Nullable final Collection<Predicate<State[]>> predicates,
                          final State startingState,
                          final Consumer<State[]> consumer,
                          @Nullable final StateSorter<Throw, State> sorter,
@@ -74,8 +83,15 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     {
         this.resultLimit = resultLimit;
         this.timeLimitDuration = timeLimitDuration;
-        this.finalPeriod = finalPeriod;
-        this.predicates = predicates;
+        this.finalPeriod = validatePeriod(finalPeriod);
+        if (predicates != null)
+        {
+            this.predicates = predicates;
+        }
+        else
+        {
+            this.predicates = Collections.emptySet();
+        }
         this.consumer = consumer;
         this.sorter = sorter;
         this.startingStates = new LinkedBlockingQueue<>();
@@ -90,6 +106,19 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
             this.mode = Mode.FIND_NEW_STARTING_STATES;
         }
 
+    }
+
+    private static int validatePeriod(final int period)
+    {
+        if (period > MAX_PERIOD)
+        {
+            throw new IllegalArgumentException("Period cannot be greater than " + MAX_PERIOD);
+        }
+        if (period < 1)
+        {
+            throw new IllegalArgumentException("Period must be at least 1");
+        }
+        return period;
     }
 
     @Override
