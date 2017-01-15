@@ -16,7 +16,7 @@ public class SortingUtils
 {
     private SortingUtils(){} // To make it package private
 
-    protected static int getFirstMinIndex(int[] values)
+    public static int getFirstMinIndex(int[] values)
     {
         return IntStream.range(0, values.length)
                 .reduce((bestP, candP) -> values[bestP] <= values[candP] ? bestP : candP)
@@ -37,7 +37,7 @@ public class SortingUtils
                 .orElse(0);
     }
 
-    protected static int getFirstMaxIndex(List<Integer> values)
+    public static int getFirstMaxIndex(List<Integer> values)
     {
         return IntStream.range(0, values.size())
                 .reduce((bestP, candP) -> values.get(bestP) >= values.get(candP) ? bestP : candP)
