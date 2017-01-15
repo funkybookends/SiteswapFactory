@@ -55,7 +55,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
     public static final Pattern P_THROW_SET = Pattern.compile(THROW_SET);
     public static final Pattern P_PRECHAC = Pattern.compile(PRECHAC);
 
-    private static FourHandedSiteswapThrow[] instances = new FourHandedSiteswapThrow[MAX_THROW];
+    private static FourHandedSiteswapThrow[] instances = new FourHandedSiteswapThrow[MAX_THROW + 1];
 
     protected FourHandedSiteswapThrow(int thro) throws BadThrowException
     {
@@ -73,7 +73,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
         }
     }
 
-    public static FourHandedSiteswapThrow get(int thro) throws BadThrowException
+    public static FourHandedSiteswapThrow get(final int thro) throws BadThrowException
     {
         try
         {
@@ -85,7 +85,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
         }
         catch (final IndexOutOfBoundsException e)
         {
-            return new FourHandedSiteswapThrow(thro); // Guaranteed to throw an exception, with the correct message.
+            throw new BadThrowException("Throw [" + thro + "] is illegal");
         }
     }
 
@@ -110,7 +110,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
     {
         try
         {
-            return get(thro);
+            return get(charToInt(thro));
         }
         catch (BadThrowException e)
         {
