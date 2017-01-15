@@ -39,7 +39,7 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
         return throwConstructor.constructThrow(val);
     }
 
-    public boolean canThrow()
+    protected boolean canThrow()
     {
         return occupied[0];
     }
@@ -245,7 +245,7 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
             final int numObjects = VanillaThrow.numObjects(thros);
             final int period = thros.length;
             final VanillaThrow highestThro = VanillaThrow.getHighestThro(thros);
-            final VanillaState.VanillaStateBuilder<Thro> builder = new VanillaStateBuilder<Thro>((Thro) highestThro, numObjects);
+            final VanillaState.VanillaStateBuilder<Thro> builder = new VanillaStateBuilder<Thro>(highestThro.getThro(), numObjects);
 
             int index = 0;
             while (builder.getGivenObjects() < numObjects || index % period != 0)
@@ -268,11 +268,11 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
         private int givenObjects;
         private final int expectedObjects;
 
-        public VanillaStateBuilder(final Thro maxThrow, final int expectedObjects) throws StateSizeException, NumObjectsException
+        public VanillaStateBuilder(final int maxThrow, final int expectedObjects) throws StateSizeException, NumObjectsException
         {
-            this.maxThrow = validateSize(maxThrow.getThro());
+            this.maxThrow = validateSize(maxThrow);
             this.expectedObjects = validateNumObjects(expectedObjects);
-            this.occupied = new boolean[maxThrow.getThro()];
+            this.occupied = new boolean[maxThrow];
         }
 
         public VanillaStateBuilder thenThrow(final Thro vThro) throws BadThrowException, NumObjectsException
