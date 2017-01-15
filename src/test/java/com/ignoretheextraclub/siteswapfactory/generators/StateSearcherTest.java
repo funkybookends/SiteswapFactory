@@ -7,6 +7,7 @@ import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStra
 import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by caspar on 15/01/17.
  */
+@Ignore("Need to create actual tests")
 public class StateSearcherTest
 {
     private static final ObjectMapper om = new ObjectMapper();
@@ -101,7 +103,7 @@ public class StateSearcherTest
         Set<TwoHandedSiteswap> secondList = new HashSet<>();
         StateSearcher<VanillaThrow, VanillaState<VanillaThrow>> gen1 = new StateSearcher<VanillaThrow, VanillaState<VanillaThrow>>(
                 50000,
-                200000,
+                2000,
                 9,
                 null,
                 VanillaState.getGroundState(15, 7, VanillaThrow::get),

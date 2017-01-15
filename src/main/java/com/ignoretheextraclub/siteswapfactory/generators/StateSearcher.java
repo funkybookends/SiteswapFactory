@@ -5,7 +5,6 @@ import com.ignoretheextraclub.siteswapfactory.sorters.SortingUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.StateSorter;
 import com.ignoretheextraclub.siteswapfactory.state.AbstractState;
 import com.ignoretheextraclub.siteswapfactory.thros.AbstractThro;
-import com.sun.istack.internal.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -69,21 +68,19 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     }
 
     public StateSearcher(final int finalPeriod,
-                     @Nullable final Collection<Predicate<State[]>> predicates,
                      final Queue<State> startingStates,
-                     final Consumer<State[]> consumer,
-                     @Nullable final StateSorter<Throw, State> sorter)
+                     final Consumer<State[]> consumer)
     {
-        this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION, finalPeriod, predicates, startingStates, consumer, sorter);
+        this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION, finalPeriod, null, startingStates, consumer, null);
     }
 
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
                          final int finalPeriod,
-                         @Nullable final Collection<Predicate<State[]>> predicates,
+                         /*Nullable*/ final Collection<Predicate<State[]>> predicates,
                          final Queue<State> startingStates,
                          final Consumer<State[]> consumer,
-                         @Nullable final StateSorter<Throw, State> sorter)
+                         /*Nullable*/  final StateSorter<Throw, State> sorter)
     {
         this(resultLimit,
              timeLimitDuration,
@@ -99,10 +96,10 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
                          final int finalPeriod,
-                         @Nullable final Collection<Predicate<State[]>> predicates,
+                         /*Nullable*/  final Collection<Predicate<State[]>> predicates,
                          final State startingState,
                          final Consumer<State[]> consumer,
-                         @Nullable final StateSorter<Throw, State> sorter,
+                         /*Nullable*/  final StateSorter<Throw, State> sorter,
                          final boolean fromAllStates)
     {
         this(resultLimit,
@@ -117,10 +114,10 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     }
 
     public StateSearcher(final int finalPeriod,
-                         @Nullable final Collection<Predicate<State[]>> predicates,
+                         /*Nullable*/  final Collection<Predicate<State[]>> predicates,
                          final State startingState,
                          final Consumer<State[]> consumer,
-                         @Nullable final StateSorter<Throw, State> sorter,
+                         /*Nullable*/  final StateSorter<Throw, State> sorter,
                          final boolean fromAllStates)
     {
         this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION , finalPeriod, predicates, startingState, consumer, sorter,
