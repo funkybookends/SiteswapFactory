@@ -5,6 +5,7 @@ import com.ignoretheextraclub.siteswapfactory.sorters.SortingUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.StateSorter;
 import com.ignoretheextraclub.siteswapfactory.state.AbstractState;
 import com.ignoretheextraclub.siteswapfactory.thros.AbstractThro;
+import com.sun.istack.internal.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -48,7 +49,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final List<Predicate<State[]>> predicates,
                          final Queue<State> startingStates,
                          final Consumer<State[]> consumer,
-                         final StateSorter<Throw, State> sorter)
+                         @Nullable final StateSorter<Throw, State> sorter)
     {
         this.resultLimit = resultLimit;
         this.timeLimitDuration = timeLimitDuration;
@@ -68,7 +69,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final List<Predicate<State[]>> predicates,
                          final State startingState,
                          final Consumer<State[]> consumer,
-                         final StateSorter<Throw, State> sorter,
+                         @Nullable final StateSorter<Throw, State> sorter,
                          final boolean fromAllStates)
     {
         this.resultLimit = resultLimit;
@@ -175,7 +176,10 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     {
         try
         {
-            result = SortingUtils.sort(result, sorter);
+            if (sorter != null)
+            {
+                result = SortingUtils.sort(result, sorter);
+            }
             consumer.accept(result);
         }
         catch (final InvalidSiteswapException cause)
