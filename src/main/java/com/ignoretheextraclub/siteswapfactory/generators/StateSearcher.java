@@ -69,7 +69,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final State startingState,
                          final Consumer<State[]> consumer,
                          final StateSorter<Throw, State> sorter,
-                         final boolean grounded)
+                         final boolean fromAllStates)
     {
         this.resultLimit = resultLimit;
         this.timeLimitDuration = timeLimitDuration;
@@ -80,7 +80,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
         this.startingStates = new LinkedBlockingQueue<>();
         this.startingStates.add(startingState);
 
-        if (grounded)
+        if (fromAllStates)
         {
             this.mode = Mode.FIXED_STARTING_STATES;
         }
