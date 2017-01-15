@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.converter;
+package com.ignoretheextraclub.siteswapfactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
