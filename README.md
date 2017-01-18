@@ -31,6 +31,8 @@ If you would like to contribute please clone the repository and either pick some
   * Find a good way to deal with transitions between patterns, and entries into excited patterns.
   * Generation of joepass files.
   * Generic siteswap generator (I've already started this).
+  * Add ability to deserialse json into siteswap.
+  * Add proper support for Prechacs in FourHandedSiteswapThrow
 * Long Long term goals:
   * Add ability to generate diagrams (Ladder diagrams, Causal Diagrams), perhaps multiple formats (svg, png, some latex supported drawing).
   * Add ability to generate gifs of patterns.
