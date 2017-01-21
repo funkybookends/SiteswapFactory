@@ -54,7 +54,7 @@ public class ToJson
             else
             {
                 final String expected = loadFile(file.getPath());
-                Assert.assertEquals(expected, actual);
+                Assert.assertEquals(fhs.toString(), expected, actual);
             }
         }
     }

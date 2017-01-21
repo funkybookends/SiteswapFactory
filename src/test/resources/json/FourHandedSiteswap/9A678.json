@@ -10,7 +10,7 @@
   "follower_siteswap_int" : [ 10, 7, 9, 6, 8 ],
   "num_objects" : 8,
   "period" : 5,
-  "prime" : true,
+  "prime" : false,
   "grounded" : true,
   "mixed_ability" : false,
   "sorting_strategy" : "FourHandedPassing",

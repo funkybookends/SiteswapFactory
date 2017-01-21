@@ -179,7 +179,7 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     {
         for (int i = 0; i < states.length; i++)
             for (int j = i+1; j < states.length; j++)
-                if (states[i] == states[j])
+                if (states[i].equals(states[j]))
                     return true;
         return false;
     }
