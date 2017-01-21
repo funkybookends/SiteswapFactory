@@ -36,23 +36,18 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     public static final int MIN_PERIOD = 1;
 
     // Properties that define the state graph
-    @JsonProperty("num_objects")
-    protected final int numObjects;
+    @JsonProperty("num_objects") protected final int numObjects;
 
     // Route through the state graph
     protected final State[] states;
-    @JsonProperty("global_throws")
-    protected final Thro[] thros;
+    @JsonProperty("global_throws") protected final Thro[] thros;
 
     // Properties of the route
     protected final int period;
     protected final boolean prime;
-    @JsonProperty("highest_throw")
-    protected final Thro highestThrow;
+    @JsonProperty("highest_throw") protected final Thro highestThrow;
     protected final boolean grounded;
-    @JsonIgnore
-    protected final StateSorter<Thro, State> sorter;
-
+    @JsonIgnore protected final StateSorter<Thro, State> sorter;
 
     /**
      * @param states
