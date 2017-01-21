@@ -1,37 +1,84 @@
 package com.ignoretheextraclub.siteswapfactory;
 
+import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.AbstractSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by caspar on 10/12/16.
  */
 public class ToJson
 {
+    private static final String BASE_PATH = "src/test/resources/json/";
+    private static final String JSON = ".json";
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Test
-    public void fhstojson() throws Exception, InvalidSiteswapException
+    private static final String[] fhsTests = new String[]{"6789A", "975", "78686"};
+
+    private enum Type
     {
-        final String[] fhs = {"6789A"};
-        final String[] ths = {"6789A"};
+        FHS
+    }
 
-        for (String fh : fhs)
+    private static final PrettyPrinter pp = new DefaultPrettyPrinter();
+
+    @Test
+    public void fhstojson() throws Exception
+    {
+        final Type type = Type.FHS;
+
+        for (String constructor : fhsTests)
         {
-            FourHandedSiteswap fourHandedSiteswap = FourHandedSiteswap.create(fh);
-            System.out.println(objectMapper.writeValueAsString(fourHandedSiteswap));
-            System.out.println();
+            final FourHandedSiteswap fhs = FourHandedSiteswap.create(constructor);
+            final String fileName = getFileName(fhs);
+            final String actual = objectMapper.writer(pp).writeValueAsString(fhs);
+            final File file = new File(fileName);
+            if (!file.exists())
+            {
+                final File dir = new File(getDirectory(fhs));
+                dir.mkdirs();
+                file.createNewFile();
+                writeToFile(file, actual);
+                System.out.println("CREATED " + fileName + " PLEASE INSPECT FOR ACCURACY");
+            }
+            else
+            {
+                final String expected = loadFile(file.getPath());
+                Assert.assertEquals(expected, actual);
+            }
         }
-        System.out.println();
-        for (String fh : ths)
+    }
+
+    private String getFileName(AbstractSiteswap siteswap)
+    {
+        return getDirectory(siteswap) + "/" + siteswap.toString() + JSON;
+    }
+
+    private String getDirectory(AbstractSiteswap siteswap)
+    {
+        return BASE_PATH + siteswap.getClass().getSimpleName();
+    }
+
+    private void writeToFile(final File file, final String body) throws IOException
+    {
+        try(FileWriter f = new FileWriter(file, false))
         {
-            System.out.println(objectMapper.writeValueAsString(TwoHandedSiteswap.create(fh)));
-            System.out.println();
+            f.append(body);
         }
+    }
 
-
+    private String loadFile(final String path) throws IOException
+    {
+        return new String(Files.readAllBytes(Paths.get(path)));
     }
 }
