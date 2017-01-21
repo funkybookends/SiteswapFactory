@@ -104,21 +104,4 @@ public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State exte
     {
         return getStringSiteswap().hashCode();
     }
-
-//    public VanillaStateSiteswap sort(StateSorter<Thro, State> sorter)
-//    {
-//        try
-//        {
-//            return new VanillaStateSiteswap(this.states, sorter);
-//        }
-//        catch (final InvalidSiteswapException cause)
-//        {
-//            throw new RuntimeException("Could not sort what should be a valid siteswap.", cause);
-//        }
-//    }
-
-//    public VanillaStateSiteswap join(final VanillaStateSiteswap second)
-//    {
-//        throw new NotImplementedException();
-//    }
 }
