@@ -146,6 +146,7 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static <Thro extends AbstractThro, State extends AbstractState<Thro>> State[] getAllStates(State startingState, Thro[] thros) throws InvalidSiteswapException
     {
         try
