@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 /**
  * Created by caspar on 10/12/16.
  */
-public class ToJson
+public class JsonTest
 {
     private static final String BASE_PATH = "src/test/resources/json/";
     private static final String JSON = ".json";
