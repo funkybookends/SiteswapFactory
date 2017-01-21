@@ -63,35 +63,36 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         try
         {
             if (states.length != thros.length)
+            {
                 throw new InvalidSiteswapException("States and Throws are unequal in length");
+            }
+
             states = SortingUtils.reduce(states);
             thros = SortingUtils.reduce(thros);
 
-            SortingUtils.Rotations<Thro, State> rotations = new SortingUtils.Rotations<>(states);
-            states = rotations.sort(sorter);
-            thros = rotations.sortToMatch(thros);
-
             this.period = validatePeriod(states.length);
+
+            SortingUtils.Rotations<Thro, State> rotations = new SortingUtils.Rotations<>(states);
+            this.states = rotations.sort(sorter);
+            this.thros = rotations.sortToMatch(thros);
 
             for (int i = 0; i < states.length; i++)
             {
-                if (states[i].getNumObjects() != states[0].getNumObjects())
+                if (this.states[i].getNumObjects() != this.states[0].getNumObjects())
                 {
                     throw new InvalidSiteswapException("All states in sequence must have the same number of objects");
                 }
-                if (!states[i].thro(thros[i]).equals(states[(i + 1) % period]))
+                if (!this.states[i].thro(thros[i]).equals(this.states[(i + 1) % period]))
                 {
                     throw new InvalidSiteswapException("States and throws do not match"); // TODO improve description
                 }
             }
 
-            this.states = states;
-            this.thros = thros;
             this.sorter = sorter;
-            this.numObjects = states[0].getNumObjects();
-            this.prime = !containsARepeatedState(states);
-            this.highestThrow = getHighestThro(thros);
-            this.grounded = containsGround(states);
+            this.numObjects = this.states[0].getNumObjects();
+            this.prime = !containsARepeatedState(this.states);
+            this.highestThrow = getHighestThro(this.thros);
+            this.grounded = containsGround(this.states);
         }
         catch (final PeriodException | BadThrowException cause)
         {
