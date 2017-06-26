@@ -5,11 +5,13 @@ package com.ignoretheextraclub.siteswapfactory.exceptions;
  */
 public class InvalidSiteswapException extends Exception
 {
-    public InvalidSiteswapException(String message) {
+    public InvalidSiteswapException(String message)
+    {
         super(message);
     }
 
-    public InvalidSiteswapException(String message, Throwable cause) {
+    public InvalidSiteswapException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

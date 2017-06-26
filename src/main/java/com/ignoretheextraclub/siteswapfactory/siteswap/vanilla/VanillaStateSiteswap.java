@@ -12,42 +12,31 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 
 @Immutable
 @JsonPropertyOrder({
-        "global_string_siteswap",
-        "global_int_siteswap",
-        "num_objects",
-        "period",
-        "prime",
-        "grounded",
-        "sorting_strategy",
-        "states",
-        "global_throws",
-        "states",
-        "highest_throw",
-})
+                           "global_string_siteswap",
+                           "global_int_siteswap",
+                           "num_objects",
+                           "period",
+                           "prime",
+                           "grounded",
+                           "sorting_strategy",
+                           "states",
+                           "global_throws",
+                           "states",
+                           "highest_throw",
+                   })
 public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State extends VanillaState<Thro>> extends
-                                                                                                       AbstractSiteswap<Thro, State>
+        AbstractSiteswap<Thro, State>
 {
 
-    public VanillaStateSiteswap(State startingState,
-                                Thro[] thros,
-                                StateSorter<Thro, State> sorter) throws InvalidSiteswapException
+    public VanillaStateSiteswap(State startingState, Thro[] thros, StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
         super(startingState, thros, sorter);
     }
 
-    public VanillaStateSiteswap(State[] states,
-                                StateSorter<Thro, State> sorter) throws InvalidSiteswapException
+    public VanillaStateSiteswap(State[] states, StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
         super(states, sorter);
     }
-
-
-    @JsonProperty("global_string_siteswap")
-    public String getStringSiteswap()
-    {
-        return Thro.vanillaThrowArrayToString(thros);
-    }
-
 
     @JsonProperty("global_int_siteswap")
     public int[] getGlobalIntSiteswap()
@@ -55,25 +44,8 @@ public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State exte
         return Thro.vanillaThrowArrayToIntArray(thros);
     }
 
-    @Override
-    public String toString()
-    {
-        return getStringSiteswap();
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        VanillaStateSiteswap that = (VanillaStateSiteswap) o;
-
-        return getStringSiteswap().equals(that.getStringSiteswap());
-    }
-
     @JsonIgnore
-    public int getStartingNumberOfObjects(final int numberOfHands, final int hand)
+    protected int getStartingNumberOfObjects(final int numberOfHands, final int hand)
     {
         final boolean[] landings = new boolean[period + highestThrow.getThro()];
         for (int i = 0; i < landings.length; i++)
@@ -103,5 +75,28 @@ public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State exte
     public int hashCode()
     {
         return getStringSiteswap().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        VanillaStateSiteswap that = (VanillaStateSiteswap) o;
+
+        return getStringSiteswap().equals(that.getStringSiteswap());
+    }
+
+    @Override
+    public String toString()
+    {
+        return getStringSiteswap();
+    }
+
+    @JsonProperty("global_string_siteswap")
+    public String getStringSiteswap()
+    {
+        return Thro.vanillaThrowArrayToString(thros);
     }
 }

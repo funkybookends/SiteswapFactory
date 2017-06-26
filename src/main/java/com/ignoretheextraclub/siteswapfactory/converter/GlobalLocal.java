@@ -12,7 +12,7 @@ public class GlobalLocal
         final int[] local = new int[global.length];
         for (int i = 0; i < global.length; i++)
         {
-            local[i] = global[(startPos + (i*2)) % global.length];
+            local[i] = global[(startPos + (i * 2)) % global.length];
         }
         return local;
     }
@@ -21,14 +21,17 @@ public class GlobalLocal
     {
         final int[] global = new int[local.length];
         int fromStart = 0;
-        int fromMiddle = local.length/2;
-        if (local.length % 2 == 1) fromMiddle++;
+        int fromMiddle = local.length / 2;
+        if (local.length % 2 == 1) { fromMiddle++; }
         int insertionIndex = 0;
         while (fromStart < (local.length / 2) + 1)
         {
             global[insertionIndex] = local[fromStart];
             insertionIndex++;
-            if (fromMiddle < local.length) global[insertionIndex] = local[fromMiddle]; //incase odd
+            if (fromMiddle < local.length)
+            {
+                global[insertionIndex] = local[fromMiddle]; //incase odd
+            }
             insertionIndex++;
             fromStart++;
             fromMiddle++;
@@ -42,7 +45,7 @@ public class GlobalLocal
         final T[] local = (T[]) Array.newInstance(global.getClass().getComponentType(), global.length);
         for (int i = 0; i < global.length; i++)
         {
-            local[i] = global[(startPos + (i*2)) % global.length];
+            local[i] = global[(startPos + (i * 2)) % global.length];
         }
         return local;
     }
@@ -52,20 +55,21 @@ public class GlobalLocal
     {
         final T[] global = (T[]) Array.newInstance(local.getClass().getComponentType(), local.length);
         int fromStart = 0;
-        int fromMiddle = local.length/2;
-        if (local.length % 2 == 1) fromMiddle++;
+        int fromMiddle = local.length / 2;
+        if (local.length % 2 == 1) { fromMiddle++; }
         int insertionIndex = 0;
         while (fromStart < (local.length / 2) + 1)
         {
             global[insertionIndex] = local[fromStart];
             insertionIndex++;
-            if (fromMiddle < local.length) global[insertionIndex] = local[fromMiddle]; //incase odd
+            if (fromMiddle < local.length)
+            {
+                global[insertionIndex] = local[fromMiddle]; //incase odd
+            }
             insertionIndex++;
             fromStart++;
             fromMiddle++;
         }
         return global;
     }
-
-
 }

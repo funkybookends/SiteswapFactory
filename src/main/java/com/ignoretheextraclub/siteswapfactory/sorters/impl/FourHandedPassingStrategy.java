@@ -2,9 +2,9 @@ package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
-import com.ignoretheextraclub.siteswapfactory.thros.FourHandedSiteswapThrow;
 import com.ignoretheextraclub.siteswapfactory.sorters.StateSorter;
 import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.thros.FourHandedSiteswapThrow;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 
 /**
@@ -18,6 +18,31 @@ public class FourHandedPassingStrategy implements StateSorter<FourHandedSiteswap
 
     private FourHandedPassingStrategy()
     {
+    }
+
+    public static StateSorter get()
+    {
+        if (instance == null)
+        {
+            instance = new FourHandedPassingStrategy();
+        }
+        return instance;
+    }
+
+    @Override
+    public String getName()
+    {
+        return NAME;
+    }
+
+    @Override
+    public boolean takeFirst(final VanillaState[] first, final VanillaState[] second) throws InvalidSiteswapException
+    {
+        final int scoreFirst = scoreRotation(first);
+        final int scoreSecond = scoreRotation(second);
+        if (scoreFirst > scoreSecond) { return true; }
+        if (scoreFirst < scoreSecond) { return false; }
+        return first[0].excitedness() < second[0].excitedness();
     }
 
     private int scoreRotation(final VanillaState[] states) throws InvalidSiteswapException
@@ -36,30 +61,5 @@ public class FourHandedPassingStrategy implements StateSorter<FourHandedSiteswap
         {
             throw new InvalidSiteswapException("Expected to score a valid siteswap, could not transition", cause);
         }
-    }
-
-    @Override
-    public String getName()
-    {
-        return NAME;
-    }
-
-    @Override
-    public boolean takeFirst(final VanillaState[] first, final VanillaState[] second) throws InvalidSiteswapException
-    {
-        final int scoreFirst  = scoreRotation(first );
-        final int scoreSecond = scoreRotation(second);
-        if (scoreFirst > scoreSecond) return true;
-        if (scoreFirst < scoreSecond) return false;
-        return first[0].excitedness() < second[0].excitedness();
-    }
-
-    public static StateSorter get()
-    {
-        if (instance == null)
-        {
-            instance = new FourHandedPassingStrategy();
-        }
-        return instance;
     }
 }

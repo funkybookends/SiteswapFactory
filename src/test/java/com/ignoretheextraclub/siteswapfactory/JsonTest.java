@@ -6,16 +6,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ignoretheextraclub.siteswapfactory.siteswap.AbstractSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Created by caspar on 10/12/16.
  */
+@Ignore("not fully thought through yet")
 public class JsonTest
 {
     private static final String BASE_PATH = "src/test/resources/json/";
@@ -24,12 +27,6 @@ public class JsonTest
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String[] fhsTests = new String[]{"6789A", "975", "78686"};
-
-    private enum Type
-    {
-        FHS
-    }
-
     private static final PrettyPrinter pp = new DefaultPrettyPrinter();
 
     @Test
@@ -71,7 +68,7 @@ public class JsonTest
 
     private void writeToFile(final File file, final String body) throws IOException
     {
-        try(FileWriter f = new FileWriter(file, false))
+        try (FileWriter f = new FileWriter(file, false))
         {
             f.append(body);
         }
@@ -80,5 +77,10 @@ public class JsonTest
     private String loadFile(final String path) throws IOException
     {
         return new String(Files.readAllBytes(Paths.get(path)));
+    }
+
+    private enum Type
+    {
+        FHS
     }
 }

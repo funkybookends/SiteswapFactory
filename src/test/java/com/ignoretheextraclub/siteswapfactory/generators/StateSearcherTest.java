@@ -126,12 +126,12 @@ public class StateSearcherTest
         while (!gen1.isCompleted())
         {
             Thread.sleep(100);
-            System.out.println("waiting " + gen1.getNumResults() + " - " + secondList.size() + " = " + (gen1.getNumResults() - secondList.size()));
+            System.out.println("waiting " + gen1.getNumResults() + " - " + secondList.size() + " = " +
+                    (gen1.getNumResults() - secondList.size()));
         }
         for (TwoHandedSiteswap twoHandedSiteswap : secondList)
         {
             System.out.println(twoHandedSiteswap.toString());
         }
-
     }
 }

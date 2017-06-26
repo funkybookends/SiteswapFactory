@@ -2,10 +2,9 @@ package com.ignoretheextraclub.siteswapfactory.state;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.StateSizeException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.AbstractSiteswap;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -17,7 +16,7 @@ import java.util.Set;
 public class VanillaStateTest
 {
     private static final VanillaState<VanillaThrow> tttff = get(true, true, true, false, false);
-    private static final VanillaState<VanillaThrow> ftttf = get(false,true, true, true , false);
+    private static final VanillaState<VanillaThrow> ftttf = get(false, true, true, true, false);
 
     private static final VanillaThrow ZERO = VanillaThrow.getOrNull(0);
     private static final VanillaThrow ONE = VanillaThrow.getOrNull(1);
@@ -25,18 +24,6 @@ public class VanillaStateTest
     private static final VanillaThrow THREE = VanillaThrow.getOrNull(3);
     private static final VanillaThrow FOUR = VanillaThrow.getOrNull(4);
     private static final VanillaThrow FIVE = VanillaThrow.getOrNull(5);
-
-    private static VanillaState<VanillaThrow> get(final boolean... occupied)
-    {
-        try
-        {
-            return new VanillaState<>(occupied, VanillaThrow::get);
-        }
-        catch (final StateSizeException | NumObjectsException cause)
-        {
-            throw new RuntimeException("Could not construct state", cause);
-        }
-    }
 
     @Test
     public void canThrow() throws Exception
@@ -119,6 +106,18 @@ public class VanillaStateTest
         Assert.assertNotEquals(ftttf, tttff);
     }
 
+    private static VanillaState<VanillaThrow> get(final boolean... occupied)
+    {
+        try
+        {
+            return new VanillaState<>(occupied, VanillaThrow::get);
+        }
+        catch (final StateSizeException | NumObjectsException cause)
+        {
+            throw new RuntimeException("Could not construct state", cause);
+        }
+    }
+
     @Test
     public void thro() throws Exception
     {
@@ -138,6 +137,10 @@ public class VanillaStateTest
         Collection<AbstractState> nextStates1 = ftttf.getNextStates();
         Assert.assertEquals(1, nextStates1.size());
         Assert.assertTrue(nextStates1.contains(tttff));
+
+        Collection<AbstractState> nextStates2 = get(false, true, true, true, false, false).getNextStates();
+        Assert.assertEquals(1, nextStates2.size());
+        Assert.assertTrue(nextStates2.contains(get(true, true, true, false, false, false)));
     }
 
     @Test
@@ -148,15 +151,20 @@ public class VanillaStateTest
     }
 
     @Test
-    public void getFirstState() throws Exception
+    public void getFirstStateTest() throws Exception
     {
         VanillaState<VanillaThrow> firstState = VanillaState.getFirstState(new VanillaThrow[]{THREE},
-                                                                           VanillaThrow::get);
+                VanillaThrow::get);
         Assert.assertEquals(get(true, true, true), firstState);
 
         VanillaState<VanillaThrow> firstState1 = VanillaState.getFirstState(new VanillaThrow[]{FIVE, THREE, ONE},
-                                                                            VanillaThrow::get);
+                VanillaThrow::get);
         Assert.assertEquals(tttff, firstState1);
     }
 
+    @Test
+    public void testEqualsMethod() throws Exception
+    {
+        Assert.assertTrue(get(true, false, false, true).equals(get(true, false, false, true)));
+    }
 }

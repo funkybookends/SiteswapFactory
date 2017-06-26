@@ -3,8 +3,6 @@ package com.ignoretheextraclub.siteswapfactory.thros;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by caspar on 15/01/17.
  */
@@ -65,7 +63,8 @@ public class FourHandedSiteswapThrowTest
     @Test
     public void intArrayToFourHandedSiteswapThrowArray() throws Exception
     {
-        Assert.assertArrayEquals(NINE_SEVEN_FIVE, FourHandedSiteswapThrow.intArrayToFourHandedSiteswapThrowArray(new int[]{9,7,5}));
+        Assert.assertArrayEquals(NINE_SEVEN_FIVE,
+                FourHandedSiteswapThrow.intArrayToFourHandedSiteswapThrowArray(new int[]{9, 7, 5}));
     }
 
     @Test
@@ -92,8 +91,7 @@ public class FourHandedSiteswapThrowTest
     @Test
     public void fourHandedIntsToPrechac() throws Exception
     {
-        Assert.assertEquals("3.5p 3 4", FourHandedSiteswapThrow.fourHandedIntsToPrechac(new int[] {7, 6, 8}));
-        Assert.assertEquals("3.5p 4.5p 1", FourHandedSiteswapThrow.fourHandedIntsToPrechac(new int[] {7,9,2}));
+        Assert.assertEquals("3.5p 3 4", FourHandedSiteswapThrow.fourHandedIntsToPrechac(new int[]{7, 6, 8}));
+        Assert.assertEquals("3.5p 4.5p 1", FourHandedSiteswapThrow.fourHandedIntsToPrechac(new int[]{7, 9, 2}));
     }
-
 }

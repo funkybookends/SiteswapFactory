@@ -20,7 +20,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
     private static final String[] HEFFLISH = new String[] //TODO localise
             {
                     "gap",    //  0
-                    ""   ,    //  1
+                    "",    //  1
                     "zip",    //  2
                     "",       //  3
                     "hold",   //  4
@@ -35,7 +35,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
             };
 
     public static final char PASS = 'p';
-    public static final char DELIMETER = ' ';
+    public static final char PRECHAC_DELIMETER = ' ';
     public static final char DOT = '.';
     public static final char SEPERATOR = '|';
     public static final char OPEN = '<';
@@ -54,6 +54,7 @@ public class FourHandedSiteswapThrow extends VanillaThrow
     public static final Pattern P_THROWS = Pattern.compile(THROWS);
     public static final Pattern P_THROW_SET = Pattern.compile(THROW_SET);
     public static final Pattern P_PRECHAC = Pattern.compile(PRECHAC);
+    private static final String HEFFLISH_DELIMETER = ", ";
 
     private static FourHandedSiteswapThrow[] instances = new FourHandedSiteswapThrow[MAX_THROW + 1];
 
@@ -118,8 +119,6 @@ public class FourHandedSiteswapThrow extends VanillaThrow
         }
     }
 
-
-
     @JsonProperty("hefflish")
     public String toHefflish()
     {
@@ -128,40 +127,45 @@ public class FourHandedSiteswapThrow extends VanillaThrow
 
     /**
      * Converts a throw to hefflish. Guranteed to not throw an exception.
+     *
      * @param thro the throw to translate
+     *
      * @return the hefflish word, or an empty string if invalid.
      */
     public static String intToHefflish(int thro)
     {
         if (thro >= 0 && thro < HEFFLISH.length)
+        {
             return HEFFLISH[thro];
+        }
         return "";
     }
 
     /**
      * Converts a throw to a prechac representation.
-     *
+     * <p>
      * Does no checking as to the validity of the thro.
      *
      * @param thro
+     *
      * @return the prechac representation of thro
      */
     public static String fourHandedIntToPrechac(int thro)
     {
-        if (thro % 2 == 0 ) return String.valueOf(thro / 2);
+        if (thro % 2 == 0) { return String.valueOf(thro / 2); }
         return String.valueOf(thro / 2) + DOT + "5" + PASS;
     }
 
     public static String fourHandedIntsToPrechac(int[] thros)
     {
         return Arrays.stream(thros)
-                .boxed()
-                .map(FourHandedSiteswapThrow::fourHandedIntToPrechac)
-                .collect(Collectors.joining(String.valueOf(DELIMETER)));
+                     .boxed()
+                     .map(FourHandedSiteswapThrow::fourHandedIntToPrechac)
+                     .collect(Collectors.joining(String.valueOf(PRECHAC_DELIMETER)));
     }
 
     public static FourHandedSiteswapThrow[] intArrayToFourHandedSiteswapThrowArray(final int[] siteswap) throws
-                                                                                                        InvalidSiteswapException
+            InvalidSiteswapException
     {
         try
         {
@@ -176,5 +180,12 @@ public class FourHandedSiteswapThrow extends VanillaThrow
         {
             throw new InvalidSiteswapException("Not a valid four handed siteswap", cause);
         }
+    }
+
+    public static String intToHefflish(final FourHandedSiteswapThrow[] thros)
+    {
+        return Arrays.stream(thros)
+                .map(FourHandedSiteswapThrow::toHefflish)
+                .collect(Collectors.joining(HEFFLISH_DELIMETER));
     }
 }

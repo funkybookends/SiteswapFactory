@@ -31,7 +31,7 @@ import java.util.Arrays;
                    })
 public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends AbstractState<Thro>>
 {
-    public static final int MAX_PERIOD = 15;
+    public static final int MAX_PERIOD = 27;
     public static final int MIN_PERIOD = 1;
 
     protected final @JsonProperty("num_objects") int numObjects; // Properties that define the state graph
@@ -42,65 +42,6 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     protected final @JsonProperty("highest_throw") Thro highestThrow;
     protected final boolean grounded;
     protected final @JsonIgnore StateSorter<Thro, State> sorter;
-
-    /**
-     * @param states
-     * @param thros
-     * @param sorter
-     *
-     * @throws InvalidSiteswapException
-     */
-    protected AbstractSiteswap(State[] states,
-                               Thro[] thros,
-                               final StateSorter<Thro, State> sorter)
-            throws
-            InvalidSiteswapException
-    {
-        try
-        {
-            if (states.length != thros.length)
-            {
-                throw new InvalidSiteswapException(
-                        "States and Throws are unequal in length");
-            }
-
-            states = SortingUtils.reduce(states);
-            thros = SortingUtils.reduce(thros);
-
-            this.period = validatePeriod(states.length);
-
-            SortingUtils.Rotations<Thro, State> rotations = new SortingUtils.Rotations<>(
-                    states);
-            this.states = rotations.sort(sorter);
-            this.thros = rotations.sortToMatch(thros);
-
-            for (int i = 0; i < states.length; i++)
-            {
-                if (this.states[i].getNumObjects() != this.states[0].getNumObjects())
-                {
-                    throw new InvalidSiteswapException(
-                            "All states in sequence must have the same number of objects");
-                }
-                if (!this.states[i].thro(thros[i])
-                                   .equals(this.states[(i + 1) % period]))
-                {
-                    throw new InvalidSiteswapException(
-                            "States and throws do not match"); // TODO improve description
-                }
-            }
-
-            this.sorter = sorter;
-            this.numObjects = this.states[0].getNumObjects();
-            this.prime = !containsARepeatedState(this.states);
-            this.highestThrow = getHighestThro(this.thros);
-            this.grounded = containsGround(this.states);
-        }
-        catch (final PeriodException | BadThrowException cause)
-        {
-            throw new InvalidSiteswapException("Cannot construct siteswap",
-                    cause);
-        }
-    }
 
     /**
      * @param startingState
@@ -118,86 +59,85 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         this(getAllStates(startingState, thros), thros, sorter);
     }
 
-    protected AbstractSiteswap(final State[] states,
-                               final StateSorter<Thro, State> sorter)
-            throws
-            InvalidSiteswapException
+    /**
+     * @param states
+     * @param thros
+     * @param sorter
+     *
+     * @throws InvalidSiteswapException
+     */
+    protected AbstractSiteswap(State[] states, Thro[] thros, final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
-        this(states, getAllThrows(states), sorter);
+        try
+        {
+            if (states.length != thros.length)
+            {
+                throw new InvalidSiteswapException("States and Throws are unequal in length");
+            }
+
+            states = SortingUtils.reduce(states);
+            thros = SortingUtils.reduce(thros);
+
+            this.period = validatePeriod(states.length);
+
+            SortingUtils.Rotations<Thro, State> rotations = new SortingUtils.Rotations<>(states);
+            this.states = rotations.sort(sorter);
+            this.thros = rotations.sortToMatch(thros);
+
+            validateAllStatesHaveTheSameNumberOfObjects(states);
+            validateAllStatesConnect(states, thros);
+
+            this.sorter = sorter;
+            this.numObjects = this.states[0].getNumObjects();
+            this.prime = !containsARepeatedState(this.states);
+            this.highestThrow = getHighestThro(this.thros);
+            this.grounded = containsGround(this.states);
+        }
+        catch (final PeriodException | BadThrowException cause)
+        {
+            throw new InvalidSiteswapException("Cannot construct siteswap", cause);
+        }
     }
 
+    public static int validatePeriod(final int period) throws PeriodException
+    {
+        if (period > MAX_PERIOD)
+        {
+            throw new PeriodException("Period too long, cannot be longer than " + MAX_PERIOD);
+        }
+        else if (period < MIN_PERIOD)
+        {
+            throw new PeriodException("Period too short cannot be shorter than " + MIN_PERIOD);
+        }
+        return period;
+    }
 
+    protected static <State extends AbstractState> void validateAllStatesHaveTheSameNumberOfObjects(final State[] states) throws InvalidSiteswapException
+    {
+        for (final State state : states)
+        {
+            if (state.getNumObjects() != states[0].getNumObjects())
+            {
+                throw new InvalidSiteswapException("All states in sequence must have the same number of objects");
+            }
+        }
+    }
+
+    protected static <Throw extends AbstractThro, State extends AbstractState<Throw>> void validateAllStatesConnect(final State[] states, final Throw[] thros)
+            throws InvalidSiteswapException, BadThrowException
+    {
+        for (int i = 0; i < states.length; i++)
+        {
+            if (!states[i].thro(thros[i]).equals(states[(i + 1) % states.length]))
+            {
+                throw new InvalidSiteswapException("States do not all connect via throws."); // TODO improve description
+            }
+        }
+    }
 
     /*
                 Static Utility Methods
      */
-
-    @SuppressWarnings("unchecked")
-    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro[] getAllThrows(
-            final State[] states)
-            throws
-            InvalidSiteswapException
-    {
-        try
-        {
-            final Thro first = states[0].getThrow(states[1 % states.length]);
-            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(),
-                    states.length);
-            thros[0] = first;
-            for (int i = 1; i < states.length; i++)
-            {
-                thros[i] = states[i].getThrow(states[(i + 1) % states.length]);
-            }
-            return thros;
-        }
-        catch (final NoTransitionException cause)
-        {
-            throw new InvalidSiteswapException("Cannot construct all throws",
-                    cause);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> State[] getAllStates(
-            State startingState,
-            Thro[] thros)
-            throws
-            InvalidSiteswapException
-    {
-        try
-        {
-            final State[] states = (State[]) Array.newInstance(
-                    startingState.getClass(), thros.length);
-            states[0] = startingState;
-            for (int i = 0; i < thros.length - 1; i++)
-            {
-                states[i + 1] = states[i].thro(thros[i]);
-            }
-            return states;
-        }
-        catch (final BadThrowException cause)
-        {
-            throw new InvalidSiteswapException("Cannot construct all states",
-                    cause);
-        }
-    }
-
-    public static int validatePeriod(final int period)
-            throws
-            PeriodException
-    {
-        if (period > MAX_PERIOD)
-        {
-            throw new PeriodException(
-                    "Period too long, cannot be longer than " + MAX_PERIOD);
-        }
-        else if (period < MIN_PERIOD)
-        {
-            throw new PeriodException(
-                    "Period too short cannot be shorter than " + MIN_PERIOD);
-        }
-        return period;
-    }
 
     public static <State extends AbstractState> boolean containsARepeatedState(State[] states)
     {
@@ -240,6 +180,52 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         return false;
     }
 
+    @SuppressWarnings("unchecked")
+    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> State[] getAllStates(State startingState, Thro[] thros) throws InvalidSiteswapException
+    {
+        try
+        {
+            final State[] states = (State[]) Array.newInstance(startingState.getClass(), thros.length);
+            states[0] = startingState;
+            for (int i = 0; i < thros.length - 1; i++)
+            {
+                states[i + 1] = states[i].thro(thros[i]);
+            }
+            return states;
+        }
+        catch (final BadThrowException cause)
+        {
+            throw new InvalidSiteswapException("Cannot construct all states", cause);
+        }
+    }
+
+    protected AbstractSiteswap(final State[] states, final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
+    {
+        this(states, getAllThrows(states), sorter);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro[] getAllThrows(final State[] states) throws InvalidSiteswapException
+    {
+        try
+        {
+            final Thro first = states[0].getThrow(states[1 % states.length]);
+            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(),
+                    states.length);
+            thros[0] = first;
+            for (int i = 1; i < states.length; i++)
+            {
+                thros[i] = states[i].getThrow(states[(i + 1) % states.length]);
+            }
+            return thros;
+        }
+        catch (final NoTransitionException cause)
+        {
+            throw new InvalidSiteswapException("Cannot construct all throws",
+                    cause);
+        }
+    }
+
     /*
                 Getters
      */
@@ -260,14 +246,10 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         return this.thros;
     }
 
-    ;
-
     public final State[] getStates()
     {
         return this.states;
     }
-
-    ;
 
     public final Thro getHighestThrow()
     {
@@ -297,6 +279,12 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     }
 
     @Override
+    public int hashCode()
+    {
+        return Arrays.hashCode(states);
+    }
+
+    @Override
     public boolean equals(Object o)
     {
         if (this == o)
@@ -312,12 +300,6 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
 
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(states, that.states);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return Arrays.hashCode(states);
     }
 
     @Override

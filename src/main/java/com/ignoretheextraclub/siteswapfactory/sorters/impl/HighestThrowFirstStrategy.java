@@ -19,6 +19,15 @@ public class HighestThrowFirstStrategy implements StateSorter
     {
     }
 
+    public static <Thro extends AbstractThro, State extends AbstractState<Thro>> StateSorter<Thro, State> get()
+    {
+        if (instance == null)
+        {
+            instance = new HighestThrowFirstStrategy();
+        }
+        return instance;
+    }
+
     @Override
     public String getName()
     {
@@ -33,10 +42,10 @@ public class HighestThrowFirstStrategy implements StateSorter
         {
             for (int i = 0; i < first.length; i++)
             {
-                AbstractThro ftran = first [i].getThrow(first [(i + 1) % first .length]);
+                AbstractThro ftran = first[i].getThrow(first[(i + 1) % first.length]);
                 AbstractThro stran = second[i].getThrow(second[(i + 1) % second.length]);
-                if      (ftran.compareTo(stran) < 0) return false;
-                else if (ftran.compareTo(stran) > 0) return true;
+                if (ftran.compareTo(stran) < 0) { return false; }
+                else if (ftran.compareTo(stran) > 0) { return true; }
             }
             return true; //they are equivalent
         }
@@ -44,14 +53,5 @@ public class HighestThrowFirstStrategy implements StateSorter
         {
             throw new InvalidSiteswapException("Could not determine transition", e);
         }
-    }
-
-    public static <Thro extends AbstractThro, State extends AbstractState<Thro>> StateSorter<Thro, State> get()
-    {
-        if (instance == null)
-        {
-            instance = new HighestThrowFirstStrategy();
-        }
-        return instance;
     }
 }

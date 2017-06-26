@@ -5,7 +5,8 @@ package com.ignoretheextraclub.siteswapfactory.exceptions;
  */
 public class BadThrowException extends Exception
 {
-    public BadThrowException(String message) {
+    public BadThrowException(String message)
+    {
         super(message);
     }
 

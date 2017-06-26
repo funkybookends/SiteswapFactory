@@ -4,7 +4,10 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by caspar on 07/01/17.
@@ -59,13 +62,13 @@ public class VanillaThrowTest
     @Test
     public void vanillaThrowArrayToIntArray() throws Exception
     {
-        assertArrayEquals(new int[]{5,3,4}, VanillaThrow.vanillaThrowArrayToIntArray(FIVE_THREE_FOUR));
+        assertArrayEquals(new int[]{5, 3, 4}, VanillaThrow.vanillaThrowArrayToIntArray(FIVE_THREE_FOUR));
     }
 
     @Test
     public void intArrayToString() throws Exception
     {
-        assertEquals("534", VanillaThrow.intArrayToString(new int[]{5,3,4}));
+        assertEquals("534", VanillaThrow.intArrayToString(new int[]{5, 3, 4}));
     }
 
     @Test
@@ -84,7 +87,7 @@ public class VanillaThrowTest
     @Test
     public void intArrayToVanillaThrowArray() throws Exception
     {
-        assertArrayEquals(FIVE_THREE_FOUR, VanillaThrow.intArrayToVanillaThrowArray(new int[]{5,3,4}));
+        assertArrayEquals(FIVE_THREE_FOUR, VanillaThrow.intArrayToVanillaThrowArray(new int[]{5, 3, 4}));
     }
 
     @Test
@@ -139,18 +142,18 @@ public class VanillaThrowTest
     @Test
     public void intArrayToCharArray() throws Exception
     {
-        Assert.assertArrayEquals(new char[]{'0','A'}, VanillaThrow.intArrayToCharArray(new int[]{0,10}));
+        Assert.assertArrayEquals(new char[]{'0', 'A'}, VanillaThrow.intArrayToCharArray(new int[]{0, 10}));
     }
 
     @Test
     public void charArrayToIntArray() throws Exception
     {
-        Assert.assertArrayEquals(new int[]{0,10}, VanillaThrow.charArrayToIntArray(new char[]{'0','A'}));
+        Assert.assertArrayEquals(new int[]{0, 10}, VanillaThrow.charArrayToIntArray(new char[]{'0', 'A'}));
     }
 
     @Test
     public void stringToIntArray() throws Exception
     {
-        Assert.assertArrayEquals(new int[]{0,10}, VanillaThrow.stringToIntArray("0A"));
+        Assert.assertArrayEquals(new int[]{0, 10}, VanillaThrow.stringToIntArray("0A"));
     }
 }

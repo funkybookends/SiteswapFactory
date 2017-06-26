@@ -1,121 +1,163 @@
 {
-  "global_string_siteswap" : "78686",
-  "global_int_siteswap" : [ 7, 8, 6, 8, 6 ],
-  "global_prechac" : "3.5p 4 3 4 3",
-  "leader_prechac" : "3.5p 3 3 4 4",
-  "follower_prechac" : "4 4 3.5p 3 3",
-  "leader_siteswap_string" : "76688",
-  "leader_siteswap_int" : [ 7, 6, 6, 8, 8 ],
-  "follower_siteswap_string" : "88766",
-  "follower_siteswap_int" : [ 8, 8, 7, 6, 6 ],
-  "num_objects" : 7,
-  "period" : 5,
-  "prime" : false,
-  "grounded" : true,
-  "mixed_ability" : false,
-  "sorting_strategy" : "FourHandedPassing",
-  "states" : [ {
-    "groundState" : true,
-    "occupancy" : "XXXXXXX_"
-  }, {
-    "groundState" : true,
-    "occupancy" : "XXXXXXX_"
-  }, {
-    "groundState" : false,
-    "occupancy" : "XXXXXX_X"
-  }, {
-    "groundState" : true,
-    "occupancy" : "XXXXXXX_"
-  }, {
-    "groundState" : false,
-    "occupancy" : "XXXXXX_X"
-  } ],
-  "global_throws" : [ {
-    "throw_int" : 7,
-    "hefflish" : "pass",
-    "num_objects_thrown" : 1,
-    "throw_string" : "7"
-  }, {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
-  }, {
-    "throw_int" : 6,
-    "hefflish" : "self",
-    "num_objects_thrown" : 1,
-    "throw_string" : "6"
-  }, {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
-  }, {
-    "throw_int" : 6,
-    "hefflish" : "self",
-    "num_objects_thrown" : 1,
-    "throw_string" : "6"
-  } ],
-  "highest_throw" : {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
+  "global_string_siteswap": "78686",
+  "global_int_siteswap": [
+    7,
+    8,
+    6,
+    8,
+    6
+  ],
+  "global_prechac": "3.5p 4 3 4 3",
+  "leader_prechac": "3.5p 3 3 4 4",
+  "follower_prechac": "4 4 3.5p 3 3",
+  "leader_siteswap_string": "76688",
+  "leader_siteswap_int": [
+    7,
+    6,
+    6,
+    8,
+    8
+  ],
+  "follower_siteswap_string": "88766",
+  "follower_siteswap_int": [
+    8,
+    8,
+    7,
+    6,
+    6
+  ],
+  "num_objects": 7,
+  "period": 5,
+  "prime": false,
+  "grounded": true,
+  "mixed_ability": false,
+  "sorting_strategy": "FourHandedPassing",
+  "states": [
+    {
+      "groundState": true,
+      "occupancy": "XXXXXXX_"
+    },
+    {
+      "groundState": true,
+      "occupancy": "XXXXXXX_"
+    },
+    {
+      "groundState": false,
+      "occupancy": "XXXXXX_X"
+    },
+    {
+      "groundState": true,
+      "occupancy": "XXXXXXX_"
+    },
+    {
+      "groundState": false,
+      "occupancy": "XXXXXX_X"
+    }
+  ],
+  "global_throws": [
+    {
+      "throw_int": 7,
+      "hefflish": "pass",
+      "num_objects_thrown": 1,
+      "throw_string": "7"
+    },
+    {
+      "throw_int": 8,
+      "hefflish": "heff",
+      "num_objects_thrown": 1,
+      "throw_string": "8"
+    },
+    {
+      "throw_int": 6,
+      "hefflish": "self",
+      "num_objects_thrown": 1,
+      "throw_string": "6"
+    },
+    {
+      "throw_int": 8,
+      "hefflish": "heff",
+      "num_objects_thrown": 1,
+      "throw_string": "8"
+    },
+    {
+      "throw_int": 6,
+      "hefflish": "self",
+      "num_objects_thrown": 1,
+      "throw_string": "6"
+    }
+  ],
+  "highest_throw": {
+    "throw_int": 8,
+    "hefflish": "heff",
+    "num_objects_thrown": 1,
+    "throw_string": "8"
   },
-  "leader_first_hand_objects" : 2,
-  "leader_second_hand_objects" : 2,
-  "follower_first_hand_objects" : 2,
-  "follower_second_hand_objects" : 1,
-  "leader_throws" : [ {
-    "throw_int" : 7,
-    "hefflish" : "pass",
-    "num_objects_thrown" : 1,
-    "throw_string" : "7"
-  }, {
-    "throw_int" : 6,
-    "hefflish" : "self",
-    "num_objects_thrown" : 1,
-    "throw_string" : "6"
-  }, {
-    "throw_int" : 6,
-    "hefflish" : "self",
-    "num_objects_thrown" : 1,
-    "throw_string" : "6"
-  }, {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
-  }, {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
-  } ],
-  "follower_throws" : [ {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
-  }, {
-    "throw_int" : 8,
-    "hefflish" : "heff",
-    "num_objects_thrown" : 1,
-    "throw_string" : "8"
-  }, {
-    "throw_int" : 7,
-    "hefflish" : "pass",
-    "num_objects_thrown" : 1,
-    "throw_string" : "7"
-  }, {
-    "throw_int" : 6,
-    "hefflish" : "self",
-    "num_objects_thrown" : 1,
-    "throw_string" : "6"
-  }, {
-    "throw_int" : 6,
-    "hefflish" : "self",
-    "num_objects_thrown" : 1,
-    "throw_string" : "6"
-  } ]
+  "leader_first_hand_objects": 2,
+  "leader_second_hand_objects": 2,
+  "follower_first_hand_objects": 2,
+  "follower_second_hand_objects": 1,
+  "leader_throws": [
+    {
+      "throw_int": 7,
+      "hefflish": "pass",
+      "num_objects_thrown": 1,
+      "throw_string": "7"
+    },
+    {
+      "throw_int": 6,
+      "hefflish": "self",
+      "num_objects_thrown": 1,
+      "throw_string": "6"
+    },
+    {
+      "throw_int": 6,
+      "hefflish": "self",
+      "num_objects_thrown": 1,
+      "throw_string": "6"
+    },
+    {
+      "throw_int": 8,
+      "hefflish": "heff",
+      "num_objects_thrown": 1,
+      "throw_string": "8"
+    },
+    {
+      "throw_int": 8,
+      "hefflish": "heff",
+      "num_objects_thrown": 1,
+      "throw_string": "8"
+    }
+  ],
+  "follower_throws": [
+    {
+      "throw_int": 8,
+      "hefflish": "heff",
+      "num_objects_thrown": 1,
+      "throw_string": "8"
+    },
+    {
+      "throw_int": 8,
+      "hefflish": "heff",
+      "num_objects_thrown": 1,
+      "throw_string": "8"
+    },
+    {
+      "throw_int": 7,
+      "hefflish": "pass",
+      "num_objects_thrown": 1,
+      "throw_string": "7"
+    },
+    {
+      "throw_int": 6,
+      "hefflish": "self",
+      "num_objects_thrown": 1,
+      "throw_string": "6"
+    },
+    {
+      "throw_int": 6,
+      "hefflish": "self",
+      "num_objects_thrown": 1,
+      "throw_string": "6"
+    }
+  ]
 }
