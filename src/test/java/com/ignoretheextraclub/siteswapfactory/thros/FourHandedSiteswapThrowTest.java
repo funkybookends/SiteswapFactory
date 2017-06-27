@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by caspar on 15/01/17.
+ Created by caspar on 15/01/17.
  */
 public class FourHandedSiteswapThrowTest
 {
@@ -64,7 +64,7 @@ public class FourHandedSiteswapThrowTest
     public void intArrayToFourHandedSiteswapThrowArray() throws Exception
     {
         Assert.assertArrayEquals(NINE_SEVEN_FIVE,
-                FourHandedSiteswapThrow.intArrayToFourHandedSiteswapThrowArray(new int[]{9, 7, 5}));
+                                 FourHandedSiteswapThrow.intArrayToFourHandedSiteswapThrowArray(new int[]{9, 7, 5}));
     }
 
     @Test

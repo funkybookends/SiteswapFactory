@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.exceptions;
 
 /**
- * Created by caspar on 26/11/16.
+ Created by caspar on 26/11/16.
  */
 public class BadThrowException extends Exception
 {

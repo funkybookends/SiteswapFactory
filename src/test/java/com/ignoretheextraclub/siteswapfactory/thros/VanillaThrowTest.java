@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by caspar on 07/01/17.
+ Created by caspar on 07/01/17.
  */
 public class VanillaThrowTest
 {

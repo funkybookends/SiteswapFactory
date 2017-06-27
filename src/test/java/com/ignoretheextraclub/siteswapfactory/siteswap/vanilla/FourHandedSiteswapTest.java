@@ -17,14 +17,20 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by caspar on 25/06/17.
+ Created by caspar on 25/06/17.
  */
 @RunWith(Parameterized.class)
 public class FourHandedSiteswapTest
 {
-    private static final String VALID_FOUR_HANDED_SITESWAPS_LIST = "validFourHandedSiteswaps.list";
-//    private static final String VALID_FOUR_HANDED_SITESWAPS_LIST = "validFHSDups.list";
+    //    private static final String VALID_FOUR_HANDED_SITESWAPS_LIST = "validFHSDups.list";
     public static final NoSortingStrategy<FourHandedSiteswapThrow, VanillaState<FourHandedSiteswapThrow>> NO_SORTING_STRATEGY = new NoSortingStrategy<>();
+    private static final String VALID_FOUR_HANDED_SITESWAPS_LIST = "validFourHandedSiteswaps.list";
+    private final String stringSiteswap;
+
+    public FourHandedSiteswapTest(final String stringSiteswap)
+    {
+        this.stringSiteswap = stringSiteswap;
+    }
 
     @Parameterized.Parameters
     public static Collection getValidTwoHandedSiteswaps() throws FileNotFoundException
@@ -44,13 +50,6 @@ public class FourHandedSiteswapTest
         return siteswaps;
     }
 
-    private final String stringSiteswap;
-
-    public FourHandedSiteswapTest(final String stringSiteswap)
-    {
-        this.stringSiteswap = stringSiteswap;
-    }
-
     @Test
     public void testCreateWithNoSortingStrategy() throws Exception
     {
@@ -67,7 +66,7 @@ public class FourHandedSiteswapTest
     public void testCreateWithFourHandedPassingStrategy() throws Exception
     {
         final FourHandedSiteswap fourHandedSiteswap = FourHandedSiteswap.create(stringSiteswap,
-                FourHandedPassingStrategy.get());
+                                                                                FourHandedPassingStrategy.get());
 
         System.out.println(this.stringSiteswap + " -> " + fourHandedSiteswap.toString() + " -> " + fourHandedSiteswap.getLeaderHefflish());
     }

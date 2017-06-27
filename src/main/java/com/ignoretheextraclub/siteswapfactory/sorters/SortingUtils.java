@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 /**
- * Created by caspar on 11/12/16.
+ Created by caspar on 11/12/16.
  */
 public class SortingUtils
 {
-    private SortingUtils() {} // To make it package private
+    private SortingUtils()
+    {
+    } // To make it package private
 
     public static int getFirstMinIndex(int[] values)
     {
@@ -55,8 +57,7 @@ public class SortingUtils
 
     @SuppressWarnings("unchecked")
     public static <Thro extends AbstractThro, State extends AbstractState<Thro>> State[] sort(final State[] unsorted,
-                                                                                              final StateSorter sorter)
-            throws InvalidSiteswapException
+                                                                                              final StateSorter sorter) throws InvalidSiteswapException
     {
         return (State[]) (new Rotations<>(unsorted)).sort(sorter);
     }
@@ -69,7 +70,9 @@ public class SortingUtils
             if (len % i == 0)
             {
                 if (checkFactors(i, duplicated))
-                { return Arrays.copyOf(duplicated, i); }
+                {
+                    return Arrays.copyOf(duplicated, i);
+                }
             }
         }
         return duplicated;
@@ -80,7 +83,9 @@ public class SortingUtils
         for (int j = 1; j < arr.length / factor; j++)
         {
             if (!rangeCompare(j * factor, factor, arr))
-            { return false; }
+            {
+                return false;
+            }
         }
         return true;
     }
@@ -90,7 +95,9 @@ public class SortingUtils
         for (int i = 0; i < len; i++)
         {
             if (!arr[i].equals(arr[offset + i]))
-            { return false; }
+            {
+                return false;
+            }
         }
         return true;
     }
@@ -103,7 +110,9 @@ public class SortingUtils
             if (len % i == 0)
             {
                 if (checkFactors(i, duplicated))
-                { return Arrays.copyOf(duplicated, i); }
+                {
+                    return Arrays.copyOf(duplicated, i);
+                }
             }
         }
         return duplicated;
@@ -114,7 +123,9 @@ public class SortingUtils
         for (int j = 1; j < arr.length / factor; j++)
         {
             if (!rangeCompare(j * factor, factor, arr))
-            { return false; }
+            {
+                return false;
+            }
         }
         return true;
     }
@@ -124,7 +135,9 @@ public class SortingUtils
         for (int i = 0; i < len; i++)
         {
             if (!(arr[i] == arr[offset + i]))
-            { return false; }
+            {
+                return false;
+            }
         }
         return true;
     }

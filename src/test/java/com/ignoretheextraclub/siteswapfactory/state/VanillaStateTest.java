@@ -2,7 +2,6 @@ package com.ignoretheextraclub.siteswapfactory.state;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.StateSizeException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.AbstractSiteswap;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
- * Created by caspar on 15/01/17.
+ Created by caspar on 15/01/17.
  */
 public class VanillaStateTest
 {
@@ -154,11 +153,11 @@ public class VanillaStateTest
     public void getFirstStateTest() throws Exception
     {
         VanillaState<VanillaThrow> firstState = VanillaState.getFirstState(new VanillaThrow[]{THREE},
-                VanillaThrow::get);
+                                                                           VanillaThrow::get);
         Assert.assertEquals(get(true, true, true), firstState);
 
         VanillaState<VanillaThrow> firstState1 = VanillaState.getFirstState(new VanillaThrow[]{FIVE, THREE, ONE},
-                VanillaThrow::get);
+                                                                            VanillaThrow::get);
         Assert.assertEquals(tttff, firstState1);
     }
 

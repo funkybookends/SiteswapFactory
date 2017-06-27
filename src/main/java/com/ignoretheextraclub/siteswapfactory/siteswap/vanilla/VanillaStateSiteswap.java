@@ -12,23 +12,14 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 
 @Immutable
 @JsonPropertyOrder({
-                           "global_string_siteswap",
-                           "global_int_siteswap",
-                           "num_objects",
-                           "period",
-                           "prime",
-                           "grounded",
-                           "sorting_strategy",
-                           "states",
-                           "global_throws",
-                           "states",
-                           "highest_throw",
+                           "global_string_siteswap", "global_int_siteswap", "num_objects", "period", "prime", "grounded", "sorting_strategy", "states", "global_throws", "states", "highest_throw",
                    })
-public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State extends VanillaState<Thro>> extends
-        AbstractSiteswap<Thro, State>
+public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State extends VanillaState<Thro>> extends AbstractSiteswap<Thro, State>
 {
 
-    public VanillaStateSiteswap(State startingState, Thro[] thros, StateSorter<Thro, State> sorter) throws InvalidSiteswapException
+    public VanillaStateSiteswap(State startingState,
+                                Thro[] thros,
+                                StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
         super(startingState, thros, sorter);
     }
@@ -80,8 +71,14 @@ public abstract class VanillaStateSiteswap<Thro extends VanillaThrow, State exte
     @Override
     public boolean equals(Object o)
     {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
 
         VanillaStateSiteswap that = (VanillaStateSiteswap) o;
 

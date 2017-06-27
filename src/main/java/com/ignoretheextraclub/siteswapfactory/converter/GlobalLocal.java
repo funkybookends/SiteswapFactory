@@ -3,7 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.converter;
 import java.lang.reflect.Array;
 
 /**
- * Created by caspar on 30/11/16.
+ Created by caspar on 30/11/16.
  */
 public class GlobalLocal
 {
@@ -22,7 +22,10 @@ public class GlobalLocal
         final int[] global = new int[local.length];
         int fromStart = 0;
         int fromMiddle = local.length / 2;
-        if (local.length % 2 == 1) { fromMiddle++; }
+        if (local.length % 2 == 1)
+        {
+            fromMiddle++;
+        }
         int insertionIndex = 0;
         while (fromStart < (local.length / 2) + 1)
         {
@@ -56,7 +59,10 @@ public class GlobalLocal
         final T[] global = (T[]) Array.newInstance(local.getClass().getComponentType(), local.length);
         int fromStart = 0;
         int fromMiddle = local.length / 2;
-        if (local.length % 2 == 1) { fromMiddle++; }
+        if (local.length % 2 == 1)
+        {
+            fromMiddle++;
+        }
         int insertionIndex = 0;
         while (fromStart < (local.length / 2) + 1)
         {

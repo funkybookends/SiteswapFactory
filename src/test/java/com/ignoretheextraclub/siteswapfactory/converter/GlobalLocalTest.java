@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by caspar on 04/12/16.
+ Created by caspar on 04/12/16.
  */
 public class GlobalLocalTest
 {
@@ -33,9 +33,9 @@ public class GlobalLocalTest
         Assert.assertArrayEquals(new Integer[]{7, 9, 5}, GlobalLocal.globalToLocal(new Integer[]{9, 7, 5}, 1));
 
         Assert.assertArrayEquals(new Integer[]{7, 9, 6, 8, 10},
-                GlobalLocal.globalToLocal(new Integer[]{7, 8, 9, 10, 6}, 0));
+                                 GlobalLocal.globalToLocal(new Integer[]{7, 8, 9, 10, 6}, 0));
         Assert.assertArrayEquals(new Integer[]{8, 10, 7, 9, 6},
-                GlobalLocal.globalToLocal(new Integer[]{7, 8, 9, 10, 6}, 1));
+                                 GlobalLocal.globalToLocal(new Integer[]{7, 8, 9, 10, 6}, 1));
     }
 
     @Test
@@ -44,6 +44,6 @@ public class GlobalLocalTest
         Assert.assertArrayEquals(new Integer[]{9, 7, 5}, GlobalLocal.localToGlobal(new Integer[]{9, 5, 7}));
 
         Assert.assertArrayEquals(new Integer[]{7, 8, 9, 10, 6},
-                GlobalLocal.localToGlobal(new Integer[]{7, 9, 6, 8, 10}));
+                                 GlobalLocal.localToGlobal(new Integer[]{7, 9, 6, 8, 10}));
     }
 }

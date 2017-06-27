@@ -16,57 +16,57 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
- * Created by caspar on 10/12/16.
+ Created by caspar on 10/12/16.
  */
 @JsonPropertyOrder({
-                           "num_objects",
-                           "period",
-                           "prime",
-                           "grounded",
-                           "sorting_strategy",
-                           "states",
-                           "global_throws",
-                           "states",
-                           "highest_throw"
-                   })
-public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends AbstractState<Thro>>
+"num_objects",
+"period",
+"prime",
+"grounded",
+"sorting_strategy",
+"states",
+"global_throws",
+"states",
+"highest_throw"
+})
+public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends AbstractState<Thro>> implements Siteswap<Thro, State>
 {
     public static final int MAX_PERIOD = 27;
     public static final int MIN_PERIOD = 1;
 
-    protected final @JsonProperty("num_objects") int numObjects; // Properties that define the state graph
+    protected final
+    @JsonProperty("num_objects") int numObjects; // Properties that define the state graph
     protected final State[] states; // Route through the state graph
-    protected final @JsonProperty("global_throws") Thro[] thros;
+    protected final
+    @JsonProperty("global_throws") Thro[] thros;
     protected final int period; // Properties of the route
     protected final boolean prime;
-    protected final @JsonProperty("highest_throw") Thro highestThrow;
+    protected final
+    @JsonProperty("highest_throw") Thro highestThrow;
     protected final boolean grounded;
-    protected final @JsonIgnore StateSorter<Thro, State> sorter;
+    protected final
+    @JsonIgnore StateSorter<Thro, State> sorter;
 
     /**
-     * @param startingState
-     * @param thros
-     * @param sorter
-     *
-     * @throws InvalidSiteswapException
+     @param startingState
+     @param thros
+     @param sorter
      */
     protected AbstractSiteswap(final State startingState,
                                final Thro[] thros,
-                               final StateSorter<Thro, State> sorter)
-            throws
-            InvalidSiteswapException
+                               final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
         this(getAllStates(startingState, thros), thros, sorter);
     }
 
     /**
-     * @param states
-     * @param thros
-     * @param sorter
-     *
-     * @throws InvalidSiteswapException
+     @param states
+     @param thros
+     @param sorter
      */
-    protected AbstractSiteswap(State[] states, Thro[] thros, final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
+    protected AbstractSiteswap(State[] states,
+                               Thro[] thros,
+                               final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
         try
         {
@@ -123,8 +123,9 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         }
     }
 
-    protected static <Throw extends AbstractThro, State extends AbstractState<Throw>> void validateAllStatesConnect(final State[] states, final Throw[] thros)
-            throws InvalidSiteswapException, BadThrowException
+    protected static <Throw extends AbstractThro, State extends AbstractState<Throw>> void validateAllStatesConnect(
+            final State[] states,
+            final Throw[] thros) throws InvalidSiteswapException, BadThrowException
     {
         for (int i = 0; i < states.length; i++)
         {
@@ -181,7 +182,8 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
     }
 
     @SuppressWarnings("unchecked")
-    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> State[] getAllStates(State startingState, Thro[] thros) throws InvalidSiteswapException
+    private static <Thro extends AbstractThro, State extends AbstractState<Thro>> State[] getAllStates(State startingState,
+                                                                                                       Thro[] thros) throws InvalidSiteswapException
     {
         try
         {
@@ -199,7 +201,8 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         }
     }
 
-    protected AbstractSiteswap(final State[] states, final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
+    protected AbstractSiteswap(final State[] states,
+                               final StateSorter<Thro, State> sorter) throws InvalidSiteswapException
     {
         this(states, getAllThrows(states), sorter);
     }
@@ -210,8 +213,7 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         try
         {
             final Thro first = states[0].getThrow(states[1 % states.length]);
-            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(),
-                    states.length);
+            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length);
             thros[0] = first;
             for (int i = 1; i < states.length; i++)
             {
@@ -221,8 +223,7 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
         }
         catch (final NoTransitionException cause)
         {
-            throw new InvalidSiteswapException("Cannot construct all throws",
-                    cause);
+            throw new InvalidSiteswapException("Cannot construct all throws", cause);
         }
     }
 
@@ -230,52 +231,54 @@ public abstract class AbstractSiteswap<Thro extends AbstractThro, State extends 
                 Getters
      */
 
-    public final int getPeriod()
-    {
-        return period;
-    }
-
+    @Override
     public final int getNumObjects()
     {
         return numObjects;
     }
 
+    @Override
+    public final int getPeriod()
+    {
+        return period;
+    }
+
+    @Override
     @JsonIgnore
     public final Thro[] getThrows()
     {
         return this.thros;
     }
 
+    @Override
     public final State[] getStates()
     {
         return this.states;
     }
 
-    public final Thro getHighestThrow()
-    {
-        return highestThrow;
-    }
-
-    public final boolean isPrime()
-    {
-        return prime;
-    }
-
+    @Override
     public final boolean isGrounded()
     {
         return grounded;
     }
 
+    @Override
+    public final boolean isPrime()
+    {
+        return prime;
+    }
+
+    @Override
+    public final Thro getHighestThro()
+    {
+        return highestThrow;
+    }
+
+    @Override
     @JsonIgnore
     public StateSorter<Thro, State> getSorter()
     {
         return sorter;
-    }
-
-    @JsonProperty("sorting_strategy")
-    public String getSortingStrategyName()
-    {
-        return sorter.getName();
     }
 
     @Override

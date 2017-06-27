@@ -11,14 +11,14 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 import java.util.Collection;
 
 /**
- * Created by caspar on 04/12/16.
+ Created by caspar on 04/12/16.
  */
 @Immutable
 public abstract class AbstractState<Throw extends AbstractThro>
 {
     protected static final String EMPTY = "_";
     protected static final String FILLED = "X";
-    
+
     protected static final int MIN_SIZE = 1;
     protected static final int MAX_SIZE = 15;
 
@@ -60,8 +60,7 @@ public abstract class AbstractState<Throw extends AbstractThro>
     public abstract boolean isGroundState();
 
     @JsonIgnore
-    public abstract <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro getThrow(State state)
-            throws NoTransitionException;
+    public abstract <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro getThrow(State state) throws NoTransitionException;
 
     public abstract int hashCode();
 

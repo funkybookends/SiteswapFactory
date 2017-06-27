@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by caspar on 15/01/17.
+ Created by caspar on 15/01/17.
  */
 @Ignore("Need to create actual tests")
 public class StateSearcherTest
@@ -126,8 +126,8 @@ public class StateSearcherTest
         while (!gen1.isCompleted())
         {
             Thread.sleep(100);
-            System.out.println("waiting " + gen1.getNumResults() + " - " + secondList.size() + " = " +
-                    (gen1.getNumResults() - secondList.size()));
+            System.out.println("waiting " + gen1.getNumResults() + " - " + secondList.size() + " = " + (gen1.getNumResults() - secondList
+                    .size()));
         }
         for (TwoHandedSiteswap twoHandedSiteswap : secondList)
         {

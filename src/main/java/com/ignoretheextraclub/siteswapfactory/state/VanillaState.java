@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Created by caspar on 26/11/16.
+ Created by caspar on 26/11/16.
  */
 @Immutable
 public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Throw>
@@ -29,15 +29,12 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
     @JsonIgnore private final ThrowConstructor<Throw> throwConstructor;
 
     /**
-     * Actually constructs a new object
-     *
-     * @param occupied
-     *
-     * @throws StateSizeException
-     * @throws NumObjectsException
+     Actually constructs a new object
+
+     @param occupied
      */
-    protected VanillaState(final boolean[] occupied, final ThrowConstructor<Throw> throwConstructor)
-            throws StateSizeException, NumObjectsException
+    protected VanillaState(final boolean[] occupied,
+                           final ThrowConstructor<Throw> throwConstructor) throws StateSizeException, NumObjectsException
     {
         this.maxThrow = validateSize(occupied.length);
         this.numObjects = validateNumObjects(getNumObjects(occupied));
@@ -58,9 +55,9 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
         return i;
     }
 
-    public static <Throw extends VanillaThrow> VanillaState getGroundState(final int maxThrow, final int numObjects,
-                                                                           final ThrowConstructor<Throw> throwConstructor)
-            throws StateSizeException, NumObjectsException
+    public static <Throw extends VanillaThrow> VanillaState getGroundState(final int maxThrow,
+                                                                           final int numObjects,
+                                                                           final ThrowConstructor<Throw> throwConstructor) throws StateSizeException, NumObjectsException
     {
         final boolean[] occupied = new boolean[validateSize(maxThrow)];
         validateNumObjects(numObjects);
@@ -72,15 +69,15 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
     }
 
     public static <Thro extends VanillaThrow> VanillaState<Thro> getFirstState(Thro[] thros,
-                                                                               final ThrowConstructor<Thro> throwConstructor)
-            throws InvalidSiteswapException
+                                                                               final ThrowConstructor<Thro> throwConstructor) throws InvalidSiteswapException
     {
         try
         {
             final int numObjects = VanillaThrow.numObjects(thros);
             final int period = thros.length;
             final VanillaThrow highestThro = VanillaThrow.getHighestThro(thros);
-            final VanillaState.VanillaStateBuilder<Thro> builder = new VanillaStateBuilder<Thro>(highestThro.getThro(), numObjects);
+            final VanillaState.VanillaStateBuilder<Thro> builder = new VanillaStateBuilder<Thro>(highestThro.getThro(),
+                                                                                                 numObjects);
 
             int index = 0;
             while (builder.getGivenObjects() < numObjects || index % period != 0)
@@ -102,9 +99,9 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
     }
 
     /**
-     * Lower is better
-     *
-     * @return
+     Lower is better
+
+     @return
      */
     @JsonIgnore
     public int excitedness()
@@ -160,14 +157,18 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
                     {
                         availableThros.add(constructThrow(pos));
                     }
-                    catch (final BadThrowException ignored) {}
+                    catch (final BadThrowException ignored)
+                    {
+                    }
                 }
             }
             try
             {
                 availableThros.add(constructThrow(maxThrow));
             }
-            catch (final BadThrowException ignored) {}
+            catch (final BadThrowException ignored)
+            {
+            }
         }
         else
         {
@@ -175,7 +176,9 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
             {
                 availableThros.add(constructThrow(0));
             }
-            catch (final BadThrowException ignored) {}
+            catch (final BadThrowException ignored)
+            {
+            }
         }
         return availableThros;
     }
@@ -218,7 +221,8 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
                 }
                 catch (StateSizeException | NumObjectsException e)
                 {
-                    throw new RuntimeException("Something went wrong! you tried to throw 0 when you had to, but I erred", e);
+                    throw new RuntimeException("Something went wrong! you tried to throw 0 when you had to, but I erred",
+                                               e);
                 }
             }
             throw new BadThrowException("Cannot throw [" + thro + "], must throw 0");
@@ -237,7 +241,8 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
             {
                 boolean[] nextState = copy(occupied);
                 nextState[thro.getThro()] = true;
-                return (State) new VanillaState<>(drop(nextState, false), this.throwConstructor); // throw non max throw throw
+                return (State) new VanillaState<>(drop(nextState, false),
+                                                  this.throwConstructor); // throw non max throw throw
             }
         }
         catch (StateSizeException | NumObjectsException e)
@@ -264,10 +269,12 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
     }
 
     @Override
-    public <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro getThrow(State state) throws
-            NoTransitionException
+    public <Thro extends AbstractThro, State extends AbstractState<Thro>> Thro getThrow(State state) throws NoTransitionException
     {
-        if (!(state instanceof VanillaState)) { throw new NoTransitionException("States not of compatible types."); }
+        if (!(state instanceof VanillaState))
+        {
+            throw new NoTransitionException("States not of compatible types.");
+        }
         for (Throw thro : this.getAvailableThrows())
         {
             try
@@ -279,36 +286,44 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
             }
             catch (BadThrowException e)
             {
-                throw new RuntimeException(
-                        "I threw a throw I thought was legal: [" + thro + "] into [" + this.toString() + "]", e);
+                throw new RuntimeException("I threw a throw I thought was legal: [" + thro + "] into [" + this.toString() + "]",
+                                           e);
             }
         }
-        throw new NoTransitionException(
-                "Cannot transition between these two states, from [" + this.toString() + "] to [" + state.toString() +
-                        "]");
-    }
-
-    /**
-     * Overridden will match against other VanillaStates and boolean[]
-     *
-     * @param o
-     *
-     * @return
-     */
-    @Override
-    public boolean equals(final Object o)
-    {
-        if (o == null) { return false; }
-        if (this == o) { return true; }
-        if (getClass() != o.getClass()) { return false; }
-        VanillaState state = (VanillaState) o;
-        return Arrays.equals(occupied, state.occupied);
+        throw new NoTransitionException("Cannot transition between these two states, from [" + this.toString() + "] to [" + state
+                .toString() + "]");
     }
 
     @Override
     public int hashCode()
     {
         return this.toString().hashCode();
+    }
+
+    /**
+     Overridden will match against other VanillaStates and boolean[]
+
+     @param o
+
+     @return
+     */
+    @Override
+    public boolean equals(final Object o)
+    {
+        if (o == null)
+        {
+            return false;
+        }
+        if (this == o)
+        {
+            return true;
+        }
+        if (getClass() != o.getClass())
+        {
+            return false;
+        }
+        VanillaState state = (VanillaState) o;
+        return Arrays.equals(occupied, state.occupied);
     }
 
     @JsonProperty("occupancy")
@@ -362,7 +377,8 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
         private boolean[] occupied;
         private int givenObjects;
 
-        public VanillaStateBuilder(final int maxThrow, final int expectedObjects) throws StateSizeException, NumObjectsException
+        public VanillaStateBuilder(final int maxThrow,
+                                   final int expectedObjects) throws StateSizeException, NumObjectsException
         {
             this.maxThrow = validateSize(maxThrow);
             this.expectedObjects = validateNumObjects(expectedObjects);
@@ -384,8 +400,8 @@ public class VanillaState<Throw extends VanillaThrow> extends AbstractState<Thro
 
             if (givenObjects > expectedObjects)
             {
-                throw new NumObjectsException(
-                        "Given an unexpected object. Already have [" + givenObjects + "] in [" + this.toString() + "]");
+                throw new NumObjectsException("Given an unexpected object. Already have [" + givenObjects + "] in [" + this
+                        .toString() + "]");
             }
 
             if (thro == maxThrow)

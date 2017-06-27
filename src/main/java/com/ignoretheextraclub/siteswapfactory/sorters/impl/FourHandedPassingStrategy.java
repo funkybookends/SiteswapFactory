@@ -8,7 +8,7 @@ import com.ignoretheextraclub.siteswapfactory.thros.FourHandedSiteswapThrow;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 
 /**
- * Created by caspar on 10/12/16.
+ Created by caspar on 10/12/16.
  */
 public class FourHandedPassingStrategy implements StateSorter<FourHandedSiteswapThrow, VanillaState<FourHandedSiteswapThrow>>
 {
@@ -36,12 +36,24 @@ public class FourHandedPassingStrategy implements StateSorter<FourHandedSiteswap
     }
 
     @Override
+    public String getDescription()
+    {
+        return "The best starting position for club passing.";
+    }
+
+    @Override
     public boolean takeFirst(final VanillaState[] first, final VanillaState[] second) throws InvalidSiteswapException
     {
         final int scoreFirst = scoreRotation(first);
         final int scoreSecond = scoreRotation(second);
-        if (scoreFirst > scoreSecond) { return true; }
-        if (scoreFirst < scoreSecond) { return false; }
+        if (scoreFirst > scoreSecond)
+        {
+            return true;
+        }
+        if (scoreFirst < scoreSecond)
+        {
+            return false;
+        }
         return first[0].excitedness() < second[0].excitedness();
     }
 

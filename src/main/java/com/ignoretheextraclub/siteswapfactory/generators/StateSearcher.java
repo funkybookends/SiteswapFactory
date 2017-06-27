@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * Created by caspar on 11/12/16.
+ Created by caspar on 11/12/16.
  */
 public class StateSearcher<Throw extends AbstractThro, State extends AbstractState<Throw>> extends Thread
 {
@@ -31,9 +31,9 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     private final int finalPeriod;
 
     /**
-     * The predicates will be examined at every level of the search.
-     * So when receiving a State[] of size n, you can be assured it was accepted with size n-1.
-     * You are encouraged to keep these cheap.
+     The predicates will be examined at every level of the search.
+     So when receiving a State[] of size n, you can be assured it was accepted with size n-1.
+     You are encouraged to keep these cheap.
      */
     private final Collection<Predicate<State[]>> predicates;
     private final Queue<State> startingStates;
@@ -47,9 +47,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     private boolean completed = false;
     private boolean suspended = false;
 
-    public StateSearcher(final int finalPeriod,
-                         final Queue<State> startingStates,
-                         final Consumer<State[]> consumer)
+    public StateSearcher(final int finalPeriod, final Queue<State> startingStates, final Consumer<State[]> consumer)
     {
         this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION, finalPeriod, null, startingStates, consumer, null);
     }
@@ -57,19 +55,21 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
                          final int finalPeriod,
-                         /*Nullable*/ final Collection<Predicate<State[]>> predicates,
+                         /*Nullable*/
+                         final Collection<Predicate<State[]>> predicates,
                          final Queue<State> startingStates,
                          final Consumer<State[]> consumer,
-                         /*Nullable*/  final StateSorter<Throw, State> sorter)
+                         /*Nullable*/
+                         final StateSorter<Throw, State> sorter)
     {
         this(resultLimit,
-                timeLimitDuration,
-                finalPeriod,
-                predicates != null ? predicates : Collections.emptySet(),
-                startingStates,
-                consumer,
-                sorter,
-                Mode.FIXED_STARTING_STATES);
+             timeLimitDuration,
+             finalPeriod,
+             predicates != null ? predicates : Collections.emptySet(),
+             startingStates,
+             consumer,
+             sorter,
+             Mode.FIXED_STARTING_STATES);
     }
 
     private StateSearcher(final int resultLimit,
@@ -105,38 +105,46 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     }
 
     public StateSearcher(final int finalPeriod,
-                         /*Nullable*/  final Collection<Predicate<State[]>> predicates,
+                         /*Nullable*/
+                         final Collection<Predicate<State[]>> predicates,
                          final State startingState,
                          final Consumer<State[]> consumer,
-                         /*Nullable*/  final StateSorter<Throw, State> sorter,
+                         /*Nullable*/
+                         final StateSorter<Throw, State> sorter,
                          final boolean fromAllStates)
     {
-        this(DEFAULT_RESULT_LIMIT, DEFAULT_TIME_LIMIT_DURATION, finalPeriod, predicates, startingState, consumer,
-                sorter,
-                fromAllStates);
+        this(DEFAULT_RESULT_LIMIT,
+             DEFAULT_TIME_LIMIT_DURATION,
+             finalPeriod,
+             predicates,
+             startingState,
+             consumer,
+             sorter,
+             fromAllStates);
     }
 
     public StateSearcher(final int resultLimit,
                          final long timeLimitDuration,
                          final int finalPeriod,
-                         /*Nullable*/  final Collection<Predicate<State[]>> predicates,
+                         /*Nullable*/
+                         final Collection<Predicate<State[]>> predicates,
                          final State startingState,
                          final Consumer<State[]> consumer,
-                         /*Nullable*/  final StateSorter<Throw, State> sorter,
+                         /*Nullable*/
+                         final StateSorter<Throw, State> sorter,
                          final boolean fromAllStates)
     {
         this(resultLimit,
-                timeLimitDuration,
-                finalPeriod,
-                predicates != null ? predicates : Collections.emptySet(),
-                queueOf(startingState),
-                consumer,
-                sorter,
-                fromAllStates ? Mode.FIXED_STARTING_STATES : Mode.FIND_NEW_STARTING_STATES);
+             timeLimitDuration,
+             finalPeriod,
+             predicates != null ? predicates : Collections.emptySet(),
+             queueOf(startingState),
+             consumer,
+             sorter,
+             fromAllStates ? Mode.FIXED_STARTING_STATES : Mode.FIND_NEW_STARTING_STATES);
     }
 
-    private static <Throw extends AbstractThro, State extends AbstractState<Throw>> Queue<State> queueOf(
-            final State startingState)
+    private static <Throw extends AbstractThro, State extends AbstractState<Throw>> Queue<State> queueOf(final State startingState)
     {
         final LinkedBlockingQueue<State> queue = new LinkedBlockingQueue<>();
         queue.add(startingState);
@@ -209,20 +217,26 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
             for (Object abstractChild : path.peek().getNextStates())
             {
                 final State child = (State) abstractChild;
-                if (mode == Mode.FIND_NEW_STARTING_STATES && !statesStartedFrom.contains(child) &&
-                        !startingStates.contains(child))
+                if (mode == Mode.FIND_NEW_STARTING_STATES && !statesStartedFrom.contains(child) && !startingStates.contains(
+                        child))
                 {
                     startingStates.add(child);
                     // If the first state is a ground state then the current path is the transition!
                 }
                 path.push(child);
-                if (acceptable(getPathAsStateArray(path))) { generate(path); }
+                if (acceptable(getPathAsStateArray(path)))
+                {
+                    generate(path);
+                }
             }
         }
         else if (path.size() == finalPeriod && path.lastElement().canTransition(path.firstElement()))
         {
             handleResult(getPathAsStateArray(path));
-            if (++numResults >= resultLimit) { throw new ResultLimitReached(); }
+            if (++numResults >= resultLimit)
+            {
+                throw new ResultLimitReached();
+            }
         }
         else if (path.size() > finalPeriod)
         {
@@ -281,7 +295,11 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
         FIND_NEW_STARTING_STATES;
     }
 
-    private static class ResultLimitReached extends Exception {}
+    private static class ResultLimitReached extends Exception
+    {
+    }
 
-    private static class TimeLimitReached extends Exception {}
+    private static class TimeLimitReached extends Exception
+    {
+    }
 }

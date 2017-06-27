@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoSortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoSortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
 import org.junit.Test;
@@ -16,13 +16,20 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by caspar on 25/06/17.
+ Created by caspar on 25/06/17.
  */
 @RunWith(Parameterized.class)
 public class TwoHandedSiteswapTest
 {
-    private static final String VALID_TWO_HANDED_SITESWAPS_LIST = "validDups.list";
     public static final NoSortingStrategy<VanillaThrow, VanillaState<VanillaThrow>> NO_SORTING_STRATEGY = new NoSortingStrategy<>();
+    private static final String VALID_TWO_HANDED_SITESWAPS_LIST = "validDups.list";
+    private final String stringSiteswap;
+
+    public TwoHandedSiteswapTest(final String stringSiteswap)
+    {
+        this.stringSiteswap = stringSiteswap;
+        System.out.println(stringSiteswap);
+    }
 
     @Parameterized.Parameters
     public static Collection getValidTwoHandedSiteswaps() throws FileNotFoundException
@@ -40,14 +47,6 @@ public class TwoHandedSiteswapTest
         }
 
         return siteswaps;
-    }
-
-    private final String stringSiteswap;
-
-    public TwoHandedSiteswapTest(final String stringSiteswap)
-    {
-        this.stringSiteswap = stringSiteswap;
-        System.out.println(stringSiteswap);
     }
 
     @Test
