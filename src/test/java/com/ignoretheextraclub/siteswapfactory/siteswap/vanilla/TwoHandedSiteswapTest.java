@@ -1,9 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoSortingStrategy;
-import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoSortingStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -21,7 +21,7 @@ import java.util.Scanner;
 @RunWith(Parameterized.class)
 public class TwoHandedSiteswapTest
 {
-    public static final NoSortingStrategy<VanillaThrow, VanillaState<VanillaThrow>> NO_SORTING_STRATEGY = new NoSortingStrategy<>();
+    public static final NoSortingStrategy<Thro, State> NO_SORTING_STRATEGY = new NoSortingStrategy<>();
     private static final String VALID_TWO_HANDED_SITESWAPS_LIST = "validDups.list";
     private final String stringSiteswap;
 

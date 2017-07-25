@@ -2,10 +2,12 @@ package com.ignoretheextraclub.siteswapfactory.generators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
-import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.thros.VanillaThrow;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,12 +32,12 @@ public class StateSearcherTest
     public void name() throws Exception
     {
         Set<TwoHandedSiteswap> firstList = new HashSet<>();
-        StateSearcher<VanillaThrow, VanillaState<VanillaThrow>> gen = new StateSearcher<VanillaThrow, VanillaState<VanillaThrow>>(
+        StateSearcher<Thro, State> gen = new StateSearcher<Thro, State>(
                 50000,
                 200000,
                 FIRST_FINAL_PERIOD,
                 null,
-                VanillaState.getGroundState(5, 3, VanillaThrow::get),
+                VanillaState.getGroundState(5, 3, VanillaThro::get),
                 (result) ->
                 {
                     try
@@ -55,12 +57,12 @@ public class StateSearcherTest
         Thread.sleep(0);
 
         Set<TwoHandedSiteswap> secondList = new HashSet<>();
-        StateSearcher<VanillaThrow, VanillaState<VanillaThrow>> gen1 = new StateSearcher<VanillaThrow, VanillaState<VanillaThrow>>(
+        StateSearcher<Thro, State> gen1 = new StateSearcher<Thro, State>(
                 50000,
                 200000,
                 SECOND_FINAL_PERIOD,
                 null,
-                VanillaState.getGroundState(6, 4, VanillaThrow::get),
+                VanillaState.getGroundState(6, 4, VanillaThro::get),
                 (result) ->
                 {
                     try
@@ -101,12 +103,12 @@ public class StateSearcherTest
     {
 
         Set<TwoHandedSiteswap> secondList = new HashSet<>();
-        StateSearcher<VanillaThrow, VanillaState<VanillaThrow>> gen1 = new StateSearcher<VanillaThrow, VanillaState<VanillaThrow>>(
+        StateSearcher<Thro, State> gen1 = new StateSearcher<Thro, State>(
                 50000,
                 2000,
                 9,
                 null,
-                VanillaState.getGroundState(15, 7, VanillaThrow::get),
+                VanillaState.getGroundState(15, 7, VanillaThro::get),
                 (result) ->
                 {
                     try

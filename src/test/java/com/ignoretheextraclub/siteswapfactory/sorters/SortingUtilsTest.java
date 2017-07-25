@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.sorters;
 
+import com.ignoretheextraclub.siteswapfactory.sorters.utils.SortingUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

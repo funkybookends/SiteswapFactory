@@ -1,10 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.FourHandedPassingStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoSortingStrategy;
-import com.ignoretheextraclub.siteswapfactory.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.thros.FourHandedSiteswapThrow;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.FourHandedPassingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoSortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,7 +23,7 @@ import java.util.Scanner;
 public class FourHandedSiteswapTest
 {
     //    private static final String VALID_FOUR_HANDED_SITESWAPS_LIST = "validFHSDups.list";
-    public static final NoSortingStrategy<FourHandedSiteswapThrow, VanillaState<FourHandedSiteswapThrow>> NO_SORTING_STRATEGY = new NoSortingStrategy<>();
+    public static final NoSortingStrategy<FourHandedSiteswapThro, State> NO_SORTING_STRATEGY = new NoSortingStrategy<>();
     private static final String VALID_FOUR_HANDED_SITESWAPS_LIST = "validFourHandedSiteswaps.list";
     private final String stringSiteswap;
 

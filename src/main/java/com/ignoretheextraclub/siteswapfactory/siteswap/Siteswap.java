@@ -1,13 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
-import com.ignoretheextraclub.siteswapfactory.sorters.StateSorter;
-import com.ignoretheextraclub.siteswapfactory.state.AbstractState;
-import com.ignoretheextraclub.siteswapfactory.thros.AbstractThro;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+
+import java.util.stream.Stream;
 
 /**
  Created by caspar on 26/06/17.
  */
-public interface Siteswap<Thro extends AbstractThro, State extends AbstractState<Thro>>
+public interface Siteswap<State, Thro>
 {
     /**
      The number of people needed for the siteswap to be juggled
@@ -61,14 +61,14 @@ public interface Siteswap<Thro extends AbstractThro, State extends AbstractState
     Thro[] getThrowsForJuggler(int forJuggler) throws IndexOutOfBoundsException;
 
     /**
-     The states this siteswap moves through
+     The vanillaStates this siteswap moves through
 
      @return an array of the {@link State} type.
      */
     State[] getStates();
 
     /**
-     True if the any state in the list of states is a ground state.
+     True if the any state in the list of vanillaStates is a ground state.
      <p>
      A ground state is the lowest "energy" state, and usually indicates, that a there is a
      throw from the ground state that results in the ground state.
@@ -78,7 +78,7 @@ public interface Siteswap<Thro extends AbstractThro, State extends AbstractState
     boolean isGrounded();
 
     /**
-     True if the the list of states is unique.
+     True if the the list of vanillaStates is unique.
 
      @return if there is no state repeated.
 
@@ -96,7 +96,7 @@ public interface Siteswap<Thro extends AbstractThro, State extends AbstractState
     /**
      @return
      */
-    StateSorter<Thro, State> getSorter();
+    SortingStrategy<State> getSorter();
 
     /**
      Get the number of objects required for a hand when starting the siteswap
@@ -134,7 +134,7 @@ public interface Siteswap<Thro extends AbstractThro, State extends AbstractState
 
      @see #same(Siteswap)
      */
-    boolean equals(Siteswap other);
+    boolean equals(Siteswap<State, Thro> other);
 
     /**
      Less stringent than {@link #equals(Object)}. Two siteswaps may be the same, but not equal. For example a rotation.
@@ -145,5 +145,40 @@ public interface Siteswap<Thro extends AbstractThro, State extends AbstractState
 
      @see #equals(Siteswap)
      */
-    boolean same(Siteswap other);
+    boolean same(Siteswap<State, Thro> other);
+
+    /**
+     Appends the provided siteswap to this siteswap. The implementer may insert transition throws if required.
+
+     @param other other siteswap to append.
+
+     @return A siteswap with other appended to this.
+
+     @throws UnsupportedOperationException If the types are not compatible or they could not be joined.
+     */
+    Siteswap<State, Thro> append(Siteswap<State, Thro> other) throws UnsupportedOperationException;
+
+    /**
+     Returns a stream where the each {@link Siteswap} in the stream is an anagram of this.
+     <p>
+     Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
+     a collection, and clients are advised to set appropriate limits.
+
+     @return a stream of anagrams
+
+     @throws UnsupportedOperationException if this siteswap type does not have anagrams.
+     */
+    Stream<Siteswap> getAnagrams() throws UnsupportedOperationException;
+
+    /**
+     Returns a stream of related Siteswaps.
+     <p>
+     Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
+     a collection, and clients are advised to set appropriate limits.
+     <p>
+     It is up to the implementation to define "related", and they are encouraged to document this in their API.
+
+     @return A list of related siteswaps
+     */
+    Stream<Siteswap> getRelated() throws UnsupportedOperationException;
 }

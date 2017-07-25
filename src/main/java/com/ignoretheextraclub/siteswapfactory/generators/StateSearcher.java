@@ -1,10 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.generators;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.sorters.SortingUtils;
-import com.ignoretheextraclub.siteswapfactory.sorters.StateSorter;
-import com.ignoretheextraclub.siteswapfactory.state.AbstractState;
-import com.ignoretheextraclub.siteswapfactory.thros.AbstractThro;
+import com.ignoretheextraclub.siteswapfactory.sorters.utils.SortingUtils;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.AbstractState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.AbstractThro;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
     private final Queue<State> startingStates;
     private final Set<State> statesStartedFrom = new HashSet<>();
     private final Consumer<State[]> consumer;
-    private final StateSorter<Throw, State> sorter;
+    private final SortingStrategy<Throw, State> sorter;
     private final Mode mode;
 
     private int numResults = 0;
@@ -60,7 +60,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final Queue<State> startingStates,
                          final Consumer<State[]> consumer,
                          /*Nullable*/
-                         final StateSorter<Throw, State> sorter)
+                         final SortingStrategy<Throw, State> sorter)
     {
         this(resultLimit,
              timeLimitDuration,
@@ -78,7 +78,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                           final Collection<Predicate<State[]>> predicates,
                           final Queue<State> startingStates,
                           final Consumer<State[]> consumer,
-                          final StateSorter<Throw, State> sorter,
+                          final SortingStrategy<Throw, State> sorter,
                           final Mode mode)
     {
         this.resultLimit = resultLimit;
@@ -110,7 +110,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final State startingState,
                          final Consumer<State[]> consumer,
                          /*Nullable*/
-                         final StateSorter<Throw, State> sorter,
+                         final SortingStrategy<Throw, State> sorter,
                          final boolean fromAllStates)
     {
         this(DEFAULT_RESULT_LIMIT,
@@ -131,7 +131,7 @@ public class StateSearcher<Throw extends AbstractThro, State extends AbstractSta
                          final State startingState,
                          final Consumer<State[]> consumer,
                          /*Nullable*/
-                         final StateSorter<Throw, State> sorter,
+                         final SortingStrategy<Throw, State> sorter,
                          final boolean fromAllStates)
     {
         this(resultLimit,
