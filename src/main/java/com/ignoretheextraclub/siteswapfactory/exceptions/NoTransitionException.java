@@ -3,7 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.exceptions;
 /**
  Created by caspar on 26/11/16.
  */
-public class NoTransitionException extends Exception
+public class NoTransitionException extends InvalidSiteswapException
 {
     public NoTransitionException(String message, Throwable cause)
     {

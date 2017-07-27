@@ -3,7 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.StateSizeException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -35,13 +35,13 @@ public final class VanillaStateUtils
 
             return new VanillaState(builder.getOccupied());
         }
-        catch (final StateSizeException | NumObjectsException | BadThrowException cause)
+        catch (final PeriodException | NumObjectsException | BadThrowException cause)
         {
             throw new InvalidSiteswapException("Could not determine first state", cause);
         }
     }
 
-    public static State getGroundState(final int maxThrow, final int numObjects) throws StateSizeException, NumObjectsException
+    public static State getGroundState(final int maxThrow, final int numObjects) throws PeriodException, NumObjectsException
     {
         final boolean[] occupied = new boolean[maxThrow];
         for (int i = 0; i < maxThrow; i++)

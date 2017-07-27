@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.StateSizeException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import org.junit.Assert;
@@ -112,7 +112,7 @@ public class VanillaStateTest
         {
             return new VanillaState<>(occupied, VanillaThro::get);
         }
-        catch (final StateSizeException | NumObjectsException cause)
+        catch (final PeriodException | NumObjectsException cause)
         {
             throw new RuntimeException("Could not construct state", cause);
         }

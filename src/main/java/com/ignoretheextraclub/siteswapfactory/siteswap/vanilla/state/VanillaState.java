@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.StateSizeException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateUtils;
@@ -42,7 +42,7 @@ public class VanillaState implements State
 
      @param occupied
      */
-    protected VanillaState(final boolean[] occupied) throws StateSizeException, NumObjectsException
+    protected VanillaState(final boolean[] occupied) throws NumObjectsException, PeriodException
     {
         validateSize(occupied.length);
         validateNumObjects(StateUtils.getNumObjects(occupied));
@@ -99,7 +99,7 @@ public class VanillaState implements State
         }
         catch (final BadThrowException e)
         {
-            throw new RuntimeException("Vanilla State could not throw an available throw", e);
+            throw new IllegalStateException("Vanilla State could not throw an available throw", e);
         }
     }
 
@@ -170,10 +170,9 @@ public class VanillaState implements State
                 {
                     return new VanillaState(drop(occupied, false)); // throw 0
                 }
-                catch (StateSizeException | NumObjectsException e)
+                catch (final PeriodException | NumObjectsException cause)
                 {
-                    throw new RuntimeException("Something went wrong! you tried to throw 0 when you had to, but I erred",
-                                               e);
+                    throw new IllegalStateException("Was forced to throw a 0, but could not", cause);
                 }
             }
             throw new BadThrowException("Cannot throw [" + thro + "], must throw 0");
@@ -195,9 +194,9 @@ public class VanillaState implements State
                 return new VanillaState(drop(nextState, false)); // throw non max throw throw
             }
         }
-        catch (StateSizeException | NumObjectsException e)
+        catch (final PeriodException | NumObjectsException cause)
         {
-            throw new RuntimeException("Something went wrong! the throw should've been fine.", e);
+            throw new IllegalStateException("Could not throw legal throw.", cause);
         }
     }
 
@@ -238,11 +237,10 @@ public class VanillaState implements State
             }
             catch (final BadThrowException badThrowException)
             {
-                throw new RuntimeException("I threw a throw I thought was legal: [" + thro + "] into [" + this.toString() + "]", badThrowException);
+                throw new IllegalStateException("Could not throw legal throw from [" + thro + "] into [" + this.toString() + "]", badThrowException);
             }
         }
-        throw new NoTransitionException("Cannot transition between these two vanillaStates, from [" + this.toString() + "] to [" + toNextState
-                .toString() + "]");
+        throw new NoTransitionException("Cannot transition between these two vanillaStates, from [" + this.toString() + "] to [" + toNextState.toString() + "]");
     }
 
     @Override
@@ -284,11 +282,11 @@ public class VanillaState implements State
         }
     }
 
-    protected static void validateSize(final int size) throws StateSizeException
+    protected static void validateSize(final int size) throws PeriodException
     {
         if (size < MIN_SIZE || size > MAX_SIZE)
         {
-            throw new StateSizeException("State has [" + size + "] positions, must be between [" + MIN_SIZE + "] and [" + MAX_SIZE + "]");
+            throw new PeriodException("State has [" + size + "] positions, must be between [" + MIN_SIZE + "] and [" + MAX_SIZE + "]");
         }
     }
 

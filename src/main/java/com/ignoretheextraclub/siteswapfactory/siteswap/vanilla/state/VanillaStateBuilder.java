@@ -2,7 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.StateSizeException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.EMPTY;
@@ -19,8 +19,7 @@ class VanillaStateBuilder
     private boolean[] occupied;
     private int givenObjects;
 
-    public VanillaStateBuilder(final int maxThrow,
-                               final int expectedObjects) throws StateSizeException, NumObjectsException
+    public VanillaStateBuilder(final int maxThrow, final int expectedObjects) throws PeriodException, NumObjectsException
     {
         VanillaState.validateSize(maxThrow);
         VanillaState.validateNumObjects(expectedObjects);
@@ -45,8 +44,7 @@ class VanillaStateBuilder
 
         if (givenObjects > expectedObjects)
         {
-            throw new NumObjectsException("Given an unexpected object. Already have [" + givenObjects + "] in [" + this
-                    .toString() + "]");
+            throw new NumObjectsException("Given an unexpected object. Already have [" + givenObjects + "] in [" + this.toString() + "]");
         }
 
         if (thro == maxThrow)
@@ -66,7 +64,7 @@ class VanillaStateBuilder
         return this;
     }
 
-    public boolean[] getOccupied() throws StateSizeException, NumObjectsException
+    public boolean[] getOccupied() throws PeriodException, NumObjectsException
     {
         return occupied;
     }

@@ -100,7 +100,7 @@ public class VanillaSiteswap implements Siteswap<VanillaState, VanillaThro>
     }
 
     @Override
-    public SortingStrategy<VanillaState> getSorter()
+    public SortingStrategy<VanillaState> getSortingStrategy()
     {
         return sortingStrategy;
     }

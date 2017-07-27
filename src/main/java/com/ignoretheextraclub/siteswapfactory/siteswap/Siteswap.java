@@ -96,7 +96,7 @@ public interface Siteswap<State, Thro>
     /**
      @return
      */
-    SortingStrategy<State> getSorter();
+    SortingStrategy<State> getSortingStrategy();
 
     /**
      Get the number of objects required for a hand when starting the siteswap
