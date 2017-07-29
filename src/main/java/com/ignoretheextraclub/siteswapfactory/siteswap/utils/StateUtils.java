@@ -5,7 +5,6 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapExceptio
 import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 import java.lang.reflect.Array;
 
@@ -45,15 +44,16 @@ public final class StateUtils
         return false;
     }
 
-    public static State[] getAllStates(State startingState, VanillaThro[] thros) throws InvalidSiteswapException
+    @SuppressWarnings("unchecked")
+    public static <S extends State, T extends Thro> S[] getAllStates(S startingState, T[] thros) throws InvalidSiteswapException
     {
         try
         {
-            final State[] states = (State[]) Array.newInstance(startingState.getClass(), thros.length);
+            final S[] states = (S[]) Array.newInstance(startingState.getClass(), thros.length);
             states[0] = startingState;
             for (int i = 0; i < thros.length - 1; i++)
             {
-                states[i + 1] = states[i].thro(thros[i]);
+                states[i + 1] = (S) states[i].thro(thros[i]);
             }
             return states;
         }

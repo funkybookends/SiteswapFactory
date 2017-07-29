@@ -16,7 +16,7 @@ public final class VanillaStateUtils
 {
     private VanillaStateUtils(){}
 
-    public static State getFirstState(VanillaThro[] thros) throws InvalidSiteswapException
+    public static VanillaState getFirstState(VanillaThro[] thros) throws InvalidSiteswapException
     {
         try
         {

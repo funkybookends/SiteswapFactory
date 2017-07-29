@@ -9,7 +9,6 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.RotationsSiteswapSorter;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.utils.SortingUtils;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -29,13 +28,11 @@ public class VanillaSiteswap implements Siteswap
                            final VanillaThro[] thros,
                            final SortingStrategy<VanillaState> sortingStrategy) throws InvalidSiteswapException
     {
-        final VanillaState[] reducedStates = SortingUtils.reduce(states);
-        final VanillaThro[] reducedThros = SortingUtils.reduce(thros);
-        StateValidationUtils.validateAllStatesConnect(reducedStates, reducedThros);
-        StateValidationUtils.validateAllStatesHaveTheSameNumberOfObjects(reducedStates);
-        final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(reducedStates, sortingStrategy);
+        StateValidationUtils.validateAllStatesConnect(states, thros);
+        StateValidationUtils.validateAllStatesHaveTheSameNumberOfObjects(states);
+        final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(states, sortingStrategy);
         this.states = sorter.getWinningSort();
-        this.thros = sorter.sortToMatch(reducedThros);
+        this.thros = sorter.sortToMatch(thros);
         this.sortingStrategy = sortingStrategy;
     }
 

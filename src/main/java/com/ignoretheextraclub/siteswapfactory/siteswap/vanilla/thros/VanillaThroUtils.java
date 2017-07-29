@@ -252,9 +252,9 @@ public final class VanillaThroUtils
 
      @return a VanillaThro array of equivalent throws.
      */
-    public static Thro[] intArrayToVanillaThrowArray(final int[] siteswap) throws BadThrowException
+    public static VanillaThro[] intArrayToVanillaThrowArray(final int[] siteswap) throws BadThrowException
     {
-        final Thro[] thros = new Thro[siteswap.length];
+        final VanillaThro[] thros = new VanillaThro[siteswap.length];
         for (int i = 0; i < siteswap.length; i++)
         {
             thros[i] = VanillaThro.get(siteswap[i]);
