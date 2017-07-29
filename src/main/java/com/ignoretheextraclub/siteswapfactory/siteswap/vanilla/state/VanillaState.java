@@ -52,7 +52,7 @@ public class VanillaState implements State
     @Override
     public Thro getMaxThrow()
     {
-        return VanillaThro.getOrNull(occupied.length);
+        return VanillaThro.getUnchecked(occupied.length);
     }
 
     /**

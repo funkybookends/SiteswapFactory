@@ -33,7 +33,7 @@ public class VanillaThro implements Thro
      The maximum throw. Whilst you can throw higher throws technically, there is little use in reality. If you need this
      functionality, then reimplement this class without this constraint.
      */
-    private static final int MAX_THROW = 35;
+    public static final int MAX_THROW = 35;
 
     /**
      Given the small number of throws, we keep them all in an array so we can reuse them.
@@ -49,7 +49,7 @@ public class VanillaThro implements Thro
         try
         {
             final VanillaThro[] vanillaThros = new VanillaThro[MAX_THROW + 1];
-            for (int thro = 0; thro <= vanillaThros.length; thro++)
+            for (int thro = 0; thro < vanillaThros.length; thro++)
             {
                 vanillaThros[thro] = new VanillaThro(thro);
             }
@@ -83,7 +83,7 @@ public class VanillaThro implements Thro
     /**
      A static method to obtain a {@link VanillaThro} object.
      <p>
-     Use {@link #getOrNull(int)} if you prefer a null value returned instead of an exception for illegal throws.
+     Use {@link #getUnchecked(int)} if you prefer a null value returned instead of an exception for illegal throws.
 
      @param thro
 
@@ -138,7 +138,7 @@ public class VanillaThro implements Thro
      @param thro
      @return The thro
      */
-    public static VanillaThro getOrNull(final int thro)
+    public static VanillaThro getUnchecked(final int thro)
     {
         try
         {

@@ -16,9 +16,9 @@ public final class ThroUtils
 
      @return the highest.
      */
-    public static Thro getHighestThro(Thro[] thros)
+    public static <T extends Thro> T getHighestThro(T[] thros)
     {
-        Thro highest = thros[0];
+        T highest = thros[0];
         for (int i = 1; i < thros.length; i++)
         {
             if (highest.compareTo(thros[i]) < 0)

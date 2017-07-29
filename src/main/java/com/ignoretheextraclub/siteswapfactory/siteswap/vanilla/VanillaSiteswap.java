@@ -3,9 +3,9 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateValidationUtils;
+import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.RotationsSiteswapSorter;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
@@ -93,7 +93,7 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public VanillaThro getHighestThro()
     {
-        return VanillaThroUtils.getHighestThro(thros);
+        return ThroUtils.getHighestThro(thros);
     }
 
     @Override

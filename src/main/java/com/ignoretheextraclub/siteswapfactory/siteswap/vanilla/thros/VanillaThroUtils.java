@@ -32,19 +32,6 @@ public final class VanillaThroUtils
         return (int) Arrays.stream(thros).mapToInt(VanillaThro::getNumBeats).average().getAsDouble();
     }
 
-    @SuppressWarnings("unchecked")
-    public static VanillaThro getHighestThro(VanillaThro[] thros)
-    {
-        VanillaThro highest = thros[0];
-        for (int i = 1; i < thros.length; i++)
-        {
-            if (highest.compareTo(thros[i]) < 0)
-            {
-                highest = thros[i];
-            }
-        }
-        return highest;
-    }
     public static int[] globalToLocal(final int[] global, final int startPos)
     {
         final int[] local = new int[global.length];
@@ -55,6 +42,11 @@ public final class VanillaThroUtils
         return local;
     }
 
+    /**
+     Returns an array of ints in global as if they were given in local. This only makes sense for 4 hands.
+     @param local
+     @return global
+     */
     public static int[] localToGlobal(final int[] local)
     {
         final int[] global = new int[local.length];
