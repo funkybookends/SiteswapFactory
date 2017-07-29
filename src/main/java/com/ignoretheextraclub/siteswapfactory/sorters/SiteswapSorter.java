@@ -7,9 +7,9 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapExceptio
  */
 public interface SiteswapSorter<State>
 {
-    State[] sort() throws InvalidSiteswapException;
+    int getWinningIndex() throws InvalidSiteswapException;
 
-    int getWinningIndex();
+    State[] getWinningSort() throws InvalidSiteswapException;
 
-    <T> T[] sortToMatch(T[] unsorted);
+    <T> T[] sortToMatch(T[] unsorted) throws InvalidSiteswapException;
 }

@@ -17,13 +17,13 @@ import java.util.stream.Stream;
 /**
  Created by caspar on 26/07/17.
  */
-public class VanillaSiteswap implements Siteswap<VanillaState, VanillaThro>
+public class VanillaSiteswap implements Siteswap
 {
     private static final String UNDEFINED_NUMBER_OF_JUGGLERS_ERROR_MESSAGE = "The number of jugglers is undefined for this type of siteswap.";
     private static final String TYPE = "Vanilla Siteswap";
-    private final VanillaState[] states;
-    private final VanillaThro[] thros;
-    private final SortingStrategy<VanillaState> sortingStrategy;
+    protected final VanillaState[] states;
+    protected final VanillaThro[] thros;
+    protected final SortingStrategy<VanillaState> sortingStrategy;
 
     public VanillaSiteswap(final VanillaState[] states,
                            final VanillaThro[] thros,
@@ -100,7 +100,7 @@ public class VanillaSiteswap implements Siteswap<VanillaState, VanillaThro>
     }
 
     @Override
-    public SortingStrategy<VanillaState> getSortingStrategy()
+    public SortingStrategy getSortingStrategy()
     {
         return sortingStrategy;
     }
@@ -118,13 +118,13 @@ public class VanillaSiteswap implements Siteswap<VanillaState, VanillaThro>
     }
 
     @Override
-    public boolean equals(final Siteswap<VanillaState, VanillaThro> other)
+    public boolean equals(final Siteswap other)
     {
         return other == this || Arrays.deepEquals(states, other.getStates());
     }
 
     @Override
-    public boolean same(final Siteswap<VanillaState, VanillaThro> other)
+    public boolean same(final Siteswap other)
     {
         if (this.equals(other))
         {
@@ -143,7 +143,7 @@ public class VanillaSiteswap implements Siteswap<VanillaState, VanillaThro>
     }
 
     @Override
-    public Siteswap<VanillaState, VanillaThro> append(final Siteswap<VanillaState, VanillaThro> other) throws UnsupportedOperationException
+    public Siteswap append(final Siteswap other) throws UnsupportedOperationException
     {
         throw new UnsupportedOperationException("This method has not been implemented yet"); // TODO implement
     }

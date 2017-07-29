@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 /**
  Created by caspar on 26/06/17.
  */
-public interface Siteswap<State, Thro>
+public interface Siteswap
 {
     /**
      The number of people needed for the siteswap to be juggled
@@ -134,7 +134,7 @@ public interface Siteswap<State, Thro>
 
      @see #same(Siteswap)
      */
-    boolean equals(Siteswap<State, Thro> other);
+    boolean equals(Siteswap other);
 
     /**
      Less stringent than {@link #equals(Object)}. Two siteswaps may be the same, but not equal. For example a rotation.
@@ -145,7 +145,7 @@ public interface Siteswap<State, Thro>
 
      @see #equals(Siteswap)
      */
-    boolean same(Siteswap<State, Thro> other);
+    boolean same(Siteswap other);
 
     /**
      Appends the provided siteswap to this siteswap. The implementer may insert transition throws if required.
@@ -156,7 +156,7 @@ public interface Siteswap<State, Thro>
 
      @throws UnsupportedOperationException If the types are not compatible or they could not be joined.
      */
-    Siteswap<State, Thro> append(Siteswap<State, Thro> other) throws UnsupportedOperationException;
+    Siteswap append(Siteswap other) throws UnsupportedOperationException;
 
     /**
      Returns a stream where the each {@link Siteswap} in the stream is an anagram of this.

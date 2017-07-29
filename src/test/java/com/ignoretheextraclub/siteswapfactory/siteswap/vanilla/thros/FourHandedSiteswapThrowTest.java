@@ -1,6 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -24,40 +26,43 @@ public class FourHandedSiteswapThrowTest
 
     private static final FourHandedSiteswapThro[] NINE_SEVEN_FIVE = new FourHandedSiteswapThro[]{NINE, SEVEN, FIVE};
 
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
+
     @Test
     public void get() throws Exception
     {
-        Assert.assertSame(ZERO, FourHandedSiteswapThro.get(0));
-        Assert.assertSame(TWO, FourHandedSiteswapThro.get(2));
-        Assert.assertSame(FOUR, FourHandedSiteswapThro.get(4));
-        Assert.assertSame(EIGHT, FourHandedSiteswapThro.get(8));
-        Assert.assertSame(TEN, FourHandedSiteswapThro.get(10));
+        softly.assertThat(ZERO).isSameAs(FourHandedSiteswapThro.get(0));
+        softly.assertThat(TWO).isSameAs(FourHandedSiteswapThro.get(2));
+        softly.assertThat(FOUR).isSameAs(FourHandedSiteswapThro.get(4));
+        softly.assertThat(EIGHT).isSameAs(FourHandedSiteswapThro.get(8));
+        softly.assertThat(TEN).isSameAs(FourHandedSiteswapThro.get(10));
 
-        Assert.assertSame(ZERO, FourHandedSiteswapThro.get('0'));
-        Assert.assertSame(TWO, FourHandedSiteswapThro.get('2'));
-        Assert.assertSame(FOUR, FourHandedSiteswapThro.get('4'));
-        Assert.assertSame(EIGHT, FourHandedSiteswapThro.get('8'));
-        Assert.assertSame(ELEVEN, FourHandedSiteswapThro.get('B'));
-        Assert.assertSame(TWELVE, FourHandedSiteswapThro.get('C'));
+        softly.assertThat(ZERO).isSameAs(FourHandedSiteswapThro.get('0'));
+        softly.assertThat(TWO).isSameAs(FourHandedSiteswapThro.get('2'));
+        softly.assertThat(FOUR).isSameAs(FourHandedSiteswapThro.get('4'));
+        softly.assertThat(EIGHT).isSameAs(FourHandedSiteswapThro.get('8'));
+        softly.assertThat(ELEVEN).isSameAs(FourHandedSiteswapThro.get('B'));
+        softly.assertThat(TWELVE).isSameAs(FourHandedSiteswapThro.get('C'));
 
-        Assert.assertNull(ONE);
-        Assert.assertNull(THREE);
-        Assert.assertNull(FourHandedSiteswapThro.getOrNull('D'));
-        Assert.assertNull(FourHandedSiteswapThro.getOrNull(-1));
-        Assert.assertNull(FourHandedSiteswapThro.getOrNull(-50));
-        Assert.assertNull(FourHandedSiteswapThro.getOrNull('?'));
+        softly.assertThat(ONE).isNull();
+        softly.assertThat(THREE).isNull();
+        softly.assertThat(FourHandedSiteswapThro.getOrNull('D')).isNull();
+        softly.assertThat(FourHandedSiteswapThro.getOrNull(-1)).isNull();
+        softly.assertThat(FourHandedSiteswapThro.getOrNull(-50)).isNull();
+        softly.assertThat(FourHandedSiteswapThro.getOrNull('?')).isNull();
     }
 
     @Test
     public void toHefflish() throws Exception
     {
-        Assert.assertEquals("gap", ZERO.toHefflish());
-        Assert.assertEquals("zip", TWO.toHefflish());
-        Assert.assertEquals("hold", FOUR.toHefflish());
-        Assert.assertEquals("self", SIX.toHefflish());
-        Assert.assertEquals("heff", EIGHT.toHefflish());
-        Assert.assertEquals("trelf", TEN.toHefflish());
-        Assert.assertEquals("triple", ELEVEN.toHefflish());
+        softly.assertThat(ZERO.toHefflish()).isEqualTo("gap");
+        softly.assertThat(TWO.toHefflish()).isEqualTo("zip");
+        softly.assertThat(FOUR.toHefflish()).isEqualTo("hold");
+        softly.assertThat(SIX.toHefflish()).isEqualTo("self");
+        softly.assertThat(EIGHT.toHefflish()).isEqualTo("heff");
+        softly.assertThat(TEN.toHefflish()).isEqualTo("trelf");
+        softly.assertThat(ELEVEN.toHefflish()).isEqualTo("triple");
     }
 
     @Test
@@ -70,14 +75,14 @@ public class FourHandedSiteswapThrowTest
     @Test
     public void intToHefflish() throws Exception
     {
-        Assert.assertEquals("", FourHandedSiteswapThro.intToHefflish(-1));
-        Assert.assertEquals("gap", FourHandedSiteswapThro.intToHefflish(0));
-        Assert.assertEquals("", FourHandedSiteswapThro.intToHefflish(1));
-        Assert.assertEquals("zip", FourHandedSiteswapThro.intToHefflish(2));
-        Assert.assertEquals("", FourHandedSiteswapThro.intToHefflish(3));
-        Assert.assertEquals("quad", FourHandedSiteswapThro.intToHefflish(12));
-        Assert.assertEquals("", FourHandedSiteswapThro.intToHefflish(13));
-        Assert.assertEquals("", FourHandedSiteswapThro.intToHefflish(15));
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(-1)).isEqualTo("");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(0)).isEqualTo("gap");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(1)).isEqualTo("");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(2)).isEqualTo("zip");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(3)).isEqualTo("");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(12)).isEqualTo("quad");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(13)).isEqualTo("");
+        softly.assertThat(FourHandedSiteswapThro.intToHefflish(15)).isEqualTo("");
     }
 
     @Test

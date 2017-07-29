@@ -12,7 +12,7 @@ import static com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils.drop;
 /**
  Created by caspar on 25/07/17.
  */
-class VanillaStateBuilder
+public class VanillaStateBuilder
 {
     private final int maxThrow;
     private final int expectedObjects;

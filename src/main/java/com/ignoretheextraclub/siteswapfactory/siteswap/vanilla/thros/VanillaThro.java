@@ -162,19 +162,15 @@ public class VanillaThro implements Thro
     @Override
     public boolean equals(Object o)
     {
-        if (this == o)
+        try
         {
-            return true;
+            final VanillaThro other = (VanillaThro) o;
+            return other.thro == this.thro;
         }
-        if (o == null || getClass() != o.getClass())
+        catch (final Exception any)
         {
             return false;
         }
-        //TODO maybe we can say the FHS throws are equal?
-
-        VanillaThro that = (VanillaThro) o;
-
-        return thro == that.thro;
     }
 
     @Override

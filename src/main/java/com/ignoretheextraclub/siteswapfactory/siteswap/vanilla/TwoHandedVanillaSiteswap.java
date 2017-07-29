@@ -36,7 +36,7 @@ public class TwoHandedVanillaSiteswap extends VanillaSiteswap
     @Override
     public VanillaThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
     {
-        if (forJuggler == 0)
+        if (forJuggler < 0 || forJuggler > getNumJugglers())
         {
             return super.getThrowsForJuggler(forJuggler);
         }
@@ -46,7 +46,14 @@ public class TwoHandedVanillaSiteswap extends VanillaSiteswap
     @Override
     public int getStartingNumberOfObjects(final int forHand) throws IndexOutOfBoundsException
     {
-        return VanillaSiteswapUtils.getStartingNumberOfObjects(getNumHands(), forHand, getThrows(), getNumObjects());
+        if (forHand >= 0 && forHand < getNumHands())
+        {
+            return VanillaSiteswapUtils.getStartingNumberOfObjects(getNumHands(),
+                                                                   forHand,
+                                                                   getThrows(),
+                                                                   getNumObjects());
+        }
+        throw new IndexOutOfBoundsException("There are only " + getNumHands() + " hands. Cannot get for hand: " + forHand);
     }
 
     @Override

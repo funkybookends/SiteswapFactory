@@ -47,7 +47,7 @@ public class FourHandedSiteswapThro extends VanillaThro
     public static final Pattern P_THROWS = Pattern.compile(THROWS);
     public static final Pattern P_THROW_SET = Pattern.compile(THROW_SET);
     public static final Pattern P_PRECHAC = Pattern.compile(PRECHAC);
-    protected static final int MAX_THROW = charToInt('C');
+    protected static final int MAX_THROW = VanillaThroUtils.charToInt('C');
     private static final String HEFFLISH_DELIMETER = ", ";
 
     private static FourHandedSiteswapThro[] instances = new FourHandedSiteswapThro[MAX_THROW + 1];
@@ -70,7 +70,7 @@ public class FourHandedSiteswapThro extends VanillaThro
 
     public static FourHandedSiteswapThro get(char thro) throws BadThrowException
     {
-        return get(charToInt(thro));
+        return get(VanillaThroUtils.charToInt(thro));
     }
 
     public static FourHandedSiteswapThro get(final int thro) throws BadThrowException
@@ -105,7 +105,7 @@ public class FourHandedSiteswapThro extends VanillaThro
     {
         try
         {
-            return get(charToInt(thro));
+            return get(VanillaThroUtils.charToInt(thro));
         }
         catch (BadThrowException e)
         {

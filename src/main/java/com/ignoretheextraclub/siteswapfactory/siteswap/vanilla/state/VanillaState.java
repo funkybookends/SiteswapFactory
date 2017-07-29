@@ -42,7 +42,7 @@ public class VanillaState implements State
 
      @param occupied
      */
-    protected VanillaState(final boolean[] occupied) throws NumObjectsException, PeriodException
+    public VanillaState(final boolean[] occupied) throws NumObjectsException, PeriodException
     {
         validateSize(occupied.length);
         validateNumObjects(StateUtils.getNumObjects(occupied));
