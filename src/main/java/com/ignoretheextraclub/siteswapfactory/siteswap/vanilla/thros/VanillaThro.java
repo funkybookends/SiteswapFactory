@@ -1,24 +1,17 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-
-import java.util.Map;
-import java.util.TreeMap;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  Represents a Vanilla Siteswap Throw
  <p>
- Contains validation to ensure it is valid. Maximum throw is 'Z' == 35. Has methods which are guranteed to not throw
- exceptions, perhaps will return null instead. Has convenience methods for converting between representations.
+ Contains validation to ensure it is valid. {@link #MAX_THROW} is 'Z' == 35. Has methods which are guranteed to not throw
+ exceptions, and will return null instead. Has convenience methods for converting between representations.
  <p>
- Since there are a limited number of throws, this class denies access to the constructor. Instead use the static
- {@link #get(int)}, {@link #get(char)}, {@link #getOrNull(int)} or {@link #getOrNull(char)} to get a
- {@link VanillaThro} object. Internally we keep a {@link Map} of throws. You can call {@link #reset()} to empty the
- map if required.
  */
+@Immutable
 public class VanillaThro implements Thro
 {
     /**
@@ -32,20 +25,50 @@ public class VanillaThro implements Thro
     public static final int INVALID_INT = -1;
 
     /**
-     The lowest possible throw.
+     The lowest throw
      */
-    public static final int MIN_THROW = 0;
+    private static final int MIN_THROW = 0;
+
     /**
-     A store for the instances. This prevents thousands of the same instances without confining us to enums.
+     The maximum throw. Whilst you can throw higher throws technically, there is little use in reality. If you need this
+     functionality, then reimplement this class without this constraint.
      */
-    private static Map<Integer, VanillaThro> instances = new TreeMap<>();
-    @JsonPropertyDescription("The size of the throw. Better thought of as the number of beats before this object will" + "be thrown again.") protected final int thro;
+    private static final int MAX_THROW = 35;
+
+    /**
+     Given the small number of throws, we keep them all in an array so we can reuse them.
+     */
+    private static final VanillaThro[] THROWS = setup();
+
+    /**
+     Static method to build all the legal throws.
+     @return All legal throws.
+     */
+    private static VanillaThro[] setup()
+    {
+        try
+        {
+            final VanillaThro[] vanillaThros = new VanillaThro[MAX_THROW + 1];
+            for (int thro = 0; thro <= vanillaThros.length; thro++)
+            {
+                vanillaThros[thro] = new VanillaThro(thro);
+            }
+            return vanillaThros;
+        }
+        catch (final BadThrowException cause)
+        {
+            throw new IllegalStateException("Could not create throws", cause);
+        }
+    }
+
+    /**
+     The size of the throw.
+     */
+    protected final int thro;
 
     /**
      Constructs a throw
-
      @param thro the size of the throw.
-
      @throws BadThrowException if the throw is too small
      */
     protected VanillaThro(final int thro) throws BadThrowException
@@ -55,32 +78,6 @@ public class VanillaThro implements Thro
             throw new BadThrowException("Cannot throw Vanilla Throw less than 0");
         }
         this.thro = thro;
-    }
-
-    public static Thro getOrNull(final char thro)
-    {
-        try
-        {
-            return get(thro);
-        }
-        catch (BadThrowException ignored)
-        {
-            return null;
-        }
-    }
-
-    /**
-     An alternative to {@link #get(int)} which will convert to an int for you.
-     <p>
-     Use {@link #getOrNull(char)} if you prefer a null value to an exception if the throw is not valid.
-
-     @param thro
-
-     @return
-     */
-    public static Thro get(final char thro) throws BadThrowException
-    {
-        return get(VanillaThroUtils.charToInt(thro));
     }
 
     /**
@@ -96,40 +93,64 @@ public class VanillaThro implements Thro
      */
     public static VanillaThro get(final int thro) throws BadThrowException
     {
-        if (!instances.containsKey(thro))
+        if (thro < MIN_THROW || thro > MAX_THROW)
         {
-            instances.put(thro, new VanillaThro(thro));
+            throw new BadThrowException("Throw ["+thro+"] out of range");
         }
-        return instances.get(thro);
+        return THROWS[thro];
     }
 
+    /**
+     An alternative to {@link #get(int)} which will convert to an int for you.
+     <p>
+     Use {@link #getUnchecked(char)} if you prefer a null value to an exception if the throw is not valid.
+
+     @param thro
+
+     @return
+     */
+    public static VanillaThro get(final char thro) throws BadThrowException
+    {
+        return get(VanillaThroUtils.charToInt(thro));
+    }
+
+    /**
+     Gets a throw but will not throw an exception if illegal and instead will return null. Useful for static constant
+     generation. You should not use this generally and use {@link #get(char)} instead.
+     @param thro
+     @return The thro
+     */
+    public static VanillaThro getUnchecked(final char thro)
+    {
+        try
+        {
+            return get(thro);
+        }
+        catch (final BadThrowException cause)
+        {
+            throw new IllegalArgumentException(cause);
+        }
+    }
+
+    /**
+     Gets a throw but will not throw an exception if illegal and instead will return null. Useful for static constant
+     generation. You should not use this generally and use {@link #get(int)} instead.
+     @param thro
+     @return The thro
+     */
     public static VanillaThro getOrNull(final int thro)
     {
         try
         {
             return get(thro);
         }
-        catch (BadThrowException ignored)
+        catch (final BadThrowException cause)
         {
-            return null;
+            throw new IllegalArgumentException(cause);
         }
     }
 
-    /**
-     A method to empty the internal map of instances.
-     */
-    public static void reset()
-    {
-        instances = null;
-    }
-
-    /**
-     Get the int size of the throw.
-
-     @return
-     */
     @Override
-    @JsonProperty("throw_int")
     public int getNumBeats()
     {
         return thro;
@@ -141,13 +162,7 @@ public class VanillaThro implements Thro
         return this.getNumBeats() - ((VanillaThro) o).getNumBeats();
     }
 
-    /**
-     Get the number of objects needed to make this throw.
-
-     @return int number of objects
-     */
     @Override
-    @JsonProperty("num_objects_thrown")
     public int getNumObjectsThrown()
     {
         return thro == 0 ? 0 : 1;
@@ -174,7 +189,6 @@ public class VanillaThro implements Thro
     }
 
     @Override
-    @JsonProperty("throw_string")
     public String toString()
     {
         return String.valueOf(VanillaThroUtils.intToChar(thro));

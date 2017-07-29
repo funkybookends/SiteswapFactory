@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 import java.lang.reflect.Array;
@@ -291,5 +292,28 @@ public final class VanillaThroUtils
             intThrows[i] = charToInt(charThrows[i]);
         }
         return intThrows;
+    }
+
+    /**
+     Converts an array of ints to an FHS[]
+     @param siteswap
+     @return represented as an array of FHSs
+     @throws InvalidSiteswapException
+     */
+    public static FourHandedSiteswapThro[] intArrayToFourHandedSiteswapThrowArray(final int[] siteswap) throws InvalidSiteswapException
+    {
+        try
+        {
+            final FourHandedSiteswapThro[] thros = new FourHandedSiteswapThro[siteswap.length];
+            for (int i = 0; i < siteswap.length; i++)
+            {
+                thros[i] = FourHandedSiteswapThro.get(siteswap[i]);
+            }
+            return thros;
+        }
+        catch (final BadThrowException cause)
+        {
+            throw new InvalidSiteswapException("Not a valid four handed siteswap", cause);
+        }
     }
 }

@@ -61,7 +61,7 @@ public class SiteswapFactory
     public static FourHandedSiteswap createFHS(final int[] siteswap, final SortingStrategy<VanillaState> sortingStrategy, final boolean reduce) throws InvalidSiteswapException
     {
         final int[] reducedSiteswap = reduce ? SortingUtils.reduce(siteswap) : siteswap;
-        final FourHandedSiteswapThro[] thros = FourHandedSiteswapThro.intArrayToFourHandedSiteswapThrowArray(reducedSiteswap);
+        final FourHandedSiteswapThro[] thros = VanillaThroUtils.intArrayToFourHandedSiteswapThrowArray(reducedSiteswap);
         final VanillaState firstState = VanillaStateUtils.getFirstState(thros);
         final VanillaState[] allStates = StateUtils.getAllStates(firstState, thros);
         return new FourHandedSiteswap(allStates, thros, sortingStrategy);

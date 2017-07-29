@@ -18,12 +18,12 @@
 //    private static final VanillaState<Thro> tttff = get(true, true, true, false, false);
 //    private static final VanillaState<Thro> ftttf = get(false, true, true, true, false);
 //
-//    private static final VanillaThro ZERO = VanillaThro.getOrNull(0);
-//    private static final Thro ONE = VanillaThro.getOrNull(1);
-//    private static final Thro TWO = VanillaThro.getOrNull(2);
-//    private static final VanillaThro THREE = VanillaThro.getOrNull(3);
-//    private static final Thro FOUR = VanillaThro.getOrNull(4);
-//    private static final Thro FIVE = VanillaThro.getOrNull(5);
+//    private static final VanillaThro ZERO = VanillaThro.getUnchecked(0);
+//    private static final Thro ONE = VanillaThro.getUnchecked(1);
+//    private static final Thro TWO = VanillaThro.getUnchecked(2);
+//    private static final VanillaThro THREE = VanillaThro.getUnchecked(3);
+//    private static final Thro FOUR = VanillaThro.getUnchecked(4);
+//    private static final Thro FIVE = VanillaThro.getUnchecked(5);
 //
 //    @Test
 //    public void canThrow() throws Exception

@@ -15,15 +15,15 @@
 // */
 //public class VanillaThroTest
 //{
-//    private static final Thro ZERO = VanillaThro.getOrNull(0);
-//    private static final Thro ONE = VanillaThro.getOrNull(1);
-//    private static final Thro TWO = VanillaThro.getOrNull(2);
-//    private static final VanillaThro THREE = VanillaThro.getOrNull(3);
-//    private static final VanillaThro FOUR = VanillaThro.getOrNull(4);
-//    private static final VanillaThro FIVE = VanillaThro.getOrNull(5);
-//    private static final Thro SIX = VanillaThro.getOrNull(6);
-//    private static final Thro SEVEN = VanillaThro.getOrNull(7);
-//    private static final Thro EIGHT = VanillaThro.getOrNull(8);
+//    private static final Thro ZERO = VanillaThro.getUnchecked(0);
+//    private static final Thro ONE = VanillaThro.getUnchecked(1);
+//    private static final Thro TWO = VanillaThro.getUnchecked(2);
+//    private static final VanillaThro THREE = VanillaThro.getUnchecked(3);
+//    private static final VanillaThro FOUR = VanillaThro.getUnchecked(4);
+//    private static final VanillaThro FIVE = VanillaThro.getUnchecked(5);
+//    private static final Thro SIX = VanillaThro.getUnchecked(6);
+//    private static final Thro SEVEN = VanillaThro.getUnchecked(7);
+//    private static final Thro EIGHT = VanillaThro.getUnchecked(8);
 //
 //    private static final VanillaThro[] FIVE_THREE_FOUR = new VanillaThro[]{FIVE, THREE, FOUR};
 //
@@ -73,10 +73,10 @@
 //    }
 //
 //    @Test
-//    public void getOrNull() throws Exception
+//    public void getUnchecked() throws Exception
 //    {
-//        assertNull(VanillaThro.getOrNull(-1));
-//        assertNull(VanillaThro.getOrNull('?'));
+//        assertNull(VanillaThro.getUnchecked(-1));
+//        assertNull(VanillaThro.getUnchecked('?'));
 //    }
 //
 //    @Test(expected = BadThrowException.class)
