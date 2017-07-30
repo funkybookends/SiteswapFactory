@@ -263,8 +263,25 @@ public class VanillaState implements State
         {
             return false;
         }
+
         VanillaState state = (VanillaState) o;
-        return Arrays.equals(occupied, state.occupied);
+
+        if (state.getNumObjects() != this.getNumObjects())
+        {
+            return false;
+        }
+
+        final int shorterLength = this.occupied.length < state.occupied.length ? this.occupied.length : state.occupied.length;
+
+        for (int i = 0; i < shorterLength; i++)
+        {
+            if (this.occupied[i] != state.occupied[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @JsonProperty("occupancy")

@@ -8,6 +8,13 @@ import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
  */
 public class NoSortingStrategy<State> implements SortingStrategy<State>
 {
+    private static final NoSortingStrategy<?> INSTANCE = new NoSortingStrategy<>();
+
+    public  static NoSortingStrategy get()
+    {
+        return INSTANCE;
+    }
+
     @Override
     public String getName()
     {

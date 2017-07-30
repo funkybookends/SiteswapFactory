@@ -28,7 +28,6 @@ public class StateSearcher implements Iterator<Siteswap>
     private final ReturnStatePredicate aReturnableState;
     private final Function<State[], Siteswap> siteswapConstructor;
 
-    private Iterator<State> startingStatesIterator;
     private Stack<State> stateStack = new Stack<>();
     private Stack<Iterator<State>> iteratorStack = new Stack<>();
     private Siteswap next;
@@ -50,13 +49,6 @@ public class StateSearcher implements Iterator<Siteswap>
         this.aLegalState = statePredicates == null ? state -> true : statePredicates;
         this.aLegalIntermedateState = intermediateStatePredicates == null ? states -> true : intermediateStatePredicates;
         this.aReturnableState = returnStatePredicates == null ? states -> true : returnStatePredicates;
-
-        prepareStateSearcher();
-    }
-
-    private void prepareStateSearcher()
-    {
-        this.startingStatesIterator = startingStates.iterator();
     }
 
     public Siteswap get() throws NoMoreElementsException
@@ -110,18 +102,19 @@ public class StateSearcher implements Iterator<Siteswap>
     private void buildStack() throws NoMoreElementsException
     {
         assert iteratorStack.size() == stateStack.size();
-        if (iteratorStack.size() == 0)
-        {
-            LOG.trace("buildStack(): No iterators in stack, getting one from starting states");
-            prepareNewSearch();
-            return;
-        }
 
         if (stateStack.size() < maxPeriod)
         {
             LOG.trace("buildStack(): pushing next iterator onto stack.");
-            iteratorStack.push(stateStack.lastElement().getNextStates().iterator());
-            stateStack.push(null);
+            if (iteratorStack.isEmpty())
+            {
+                iteratorStack.push(startingStates.iterator());
+            }
+            else
+            {
+                iteratorStack.push(stateStack.lastElement().getNextStates().iterator());
+            }
+            stateStack.push(null); // Push a dummy item on the stack since we don't actually have a current yet.
             moveIteratorOnToNextState();
         }
         else
@@ -155,6 +148,10 @@ public class StateSearcher implements Iterator<Siteswap>
             else
             {
                 iteratorStack.pop();
+                if (iteratorStack.isEmpty())
+                {
+                    throw new NoMoreElementsException();
+                }
                 stateStack.pop();
                 moveIteratorOnToNextState();
             }
@@ -162,7 +159,6 @@ public class StateSearcher implements Iterator<Siteswap>
         else
         {
             LOG.trace("moveIteratorOnToNextState(): No iterators in stack");
-            prepareNewSearch();
         }
     }
 
@@ -171,22 +167,6 @@ public class StateSearcher implements Iterator<Siteswap>
         final State[] states = stateStack.toArray(new State[stateStack.size()]);
         LOG.trace("Current State {}: {}", states.length, states);
         return states;
-    }
-
-    private void prepareNewSearch() throws NoMoreElementsException
-    {
-        if (!startingStatesIterator.hasNext())
-        {
-            LOG.trace("prepareNewSearch(): No more starting states, therefore finished searching");
-            throw new NoMoreElementsException();
-        }
-        final State nextState = startingStatesIterator.next();
-        if (!aLegalState.test(nextState))
-        {
-            prepareNewSearch();
-        }
-        iteratorStack.push(nextState.getNextStates().iterator());
-        stateStack.push(nextState);
     }
 
     @Override
@@ -216,11 +196,5 @@ public class StateSearcher implements Iterator<Siteswap>
     private static class NoMoreElementsException extends Exception
     {
 
-    }
-
-    @Override
-    public String toString()
-    {
-        return "StateSearcher{" + "startingStates=" + startingStates + ", maxPeriod=" + maxPeriod + ", startingStatesIterator=" + startingStatesIterator + ", stateStack=" + stateStack + ", iteratorStack=" + iteratorStack + ", next=" + next + '}';
     }
 }

@@ -16,7 +16,7 @@ public final class VanillaSiteswapUtils
                                                  final int numObjects)
     {
         final int period = vanillaThros.length;
-        final int thro = ((VanillaThro) ThroUtils.getHighestThro(vanillaThros)).getNumBeats();
+        final int thro = ThroUtils.getHighestThro(vanillaThros).getNumBeats();
         final boolean[] landings = new boolean[period + thro];
 
         for (int i = 0; i < landings.length; i++)
