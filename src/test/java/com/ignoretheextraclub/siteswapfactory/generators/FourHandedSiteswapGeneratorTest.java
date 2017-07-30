@@ -7,7 +7,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoSortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,14 +31,14 @@ public class FourHandedSiteswapGeneratorTest
     @Test
     public void testGeneratorForTHSPeriod2() throws Exception
     {
-        final TwoHandedSiteswapGenerator generator = new TwoHandedSiteswapGenerator(3, NoSortingStrategy.get(), false);
-        final State groundState = VanillaStateUtils.getGroundState(5, 3);
+        final FourHandedSiteswapGenerator generator = new FourHandedSiteswapGenerator(5, HighestThrowFirstStrategy.get(), true);
+        final State groundState = VanillaStateUtils.getGroundState(9, 6);
         generator.addStartingState(groundState);
         final List<Siteswap> collect = generator.generate()
                                                 .peek((s) -> LOG.info("{}\t{}", s.toString(), s.getStates()))
                                                 .collect(Collectors.toList());
         final RequiredStatePredicate requiredStatePredicate = new RequiredStatePredicate(groundState);
-        assertThat(collect).hasSize(9).allMatch((s) -> requiredStatePredicate.test(s.getStates()));
+        assertThat(collect).hasSize(91).allMatch((s) -> requiredStatePredicate.test(s.getStates()));
     }
 
     private TwoHandedVanillaSiteswap ths(final String s) throws InvalidSiteswapException

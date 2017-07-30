@@ -16,7 +16,6 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.utils.SortingUtils;
 
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY;
@@ -77,7 +76,11 @@ public class SiteswapFactory
 
         try
         {
-            final FourHandedSiteswapThro[] fhsts = (FourHandedSiteswapThro[]) Arrays.stream(thros).map(vt -> FourHandedSiteswapThro.getUnchecked(vt.getNumBeats())).toArray();
+            final FourHandedSiteswapThro[] fhsts = new FourHandedSiteswapThro[thros.length];
+            for (int i = 0; i < fhsts.length; i++)
+            {
+                fhsts[i] = FourHandedSiteswapThro.get(thros[i].getNumBeats());
+            }
             return new TwoHandedVanillaSiteswap(reducedSiteswap, fhsts, sortingStrategy);
         }
         catch (final IllegalArgumentException uncheckedBadThrowException)

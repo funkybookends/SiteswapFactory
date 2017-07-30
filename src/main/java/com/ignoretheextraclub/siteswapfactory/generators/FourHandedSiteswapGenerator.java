@@ -25,7 +25,12 @@ public class FourHandedSiteswapGenerator extends SiteswapGenerator
         {
             try
             {
-                return SiteswapFactory.createFHS((VanillaState[]) states, sortingStrategy, reduce);
+                final VanillaState[] vanillaStates = new VanillaState[states.length];
+                for (int i = 0; i < vanillaStates.length; i++)
+                {
+                    vanillaStates[i] = (VanillaState) states[i];
+                }
+                return SiteswapFactory.createFHS(vanillaStates, sortingStrategy, reduce);
             }
             catch (InvalidSiteswapException e)
             {
