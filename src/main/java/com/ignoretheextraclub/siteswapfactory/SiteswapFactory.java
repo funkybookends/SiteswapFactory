@@ -125,7 +125,7 @@ public class SiteswapFactory
         {
             try
             {
-                return createFHS(VanillaThroUtils.stringToIntArray(siteswap), sortingStrategy, reduce);
+                return createTHS(VanillaThroUtils.stringToIntArray(siteswap), sortingStrategy, reduce);
             }
             catch (final InvalidSiteswapException ise)
             {
