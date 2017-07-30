@@ -22,7 +22,7 @@ public final class VanillaStateUtils
         {
             final int numObjects = VanillaThroUtils.numObjects(thros);
             final int period = thros.length;
-            final VanillaThro highestThro = (VanillaThro) ThroUtils.getHighestThro(thros);
+            final VanillaThro highestThro = ThroUtils.getHighestThro(thros);
             final VanillaStateBuilder builder = new VanillaStateBuilder(highestThro.getNumBeats(), numObjects);
 
             int index = 0;

@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.fail;
@@ -10,6 +11,7 @@ import static org.assertj.core.api.Java6Assertions.fail;
 public class NoSortingStrategyTest
 {
     @Test
+    @Ignore("Not implemented")
     public void test() throws Exception
     {
         fail("Test not yet implemented");

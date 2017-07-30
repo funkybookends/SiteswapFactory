@@ -3,6 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.utils;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -67,6 +68,7 @@ public class StateValidationUtilsTest
     }
 
     @Test
+    @Ignore("Not implemented yet")
     public void validateAllStatesConnect() throws Exception
     {
         fail("Test not yet implemented");

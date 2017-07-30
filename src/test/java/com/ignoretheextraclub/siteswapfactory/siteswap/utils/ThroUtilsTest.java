@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.utils;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,6 +11,7 @@ import static org.junit.Assert.*;
 public class ThroUtilsTest
 {
     @Test
+    @Ignore("Not implemented yet")
     public void getHighestThro() throws Exception
     {
         fail("Test not yet implemented");

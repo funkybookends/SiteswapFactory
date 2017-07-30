@@ -8,6 +8,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateValidationUtil
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.RotationsSiteswapSorter;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
@@ -167,5 +168,11 @@ public class VanillaSiteswap implements Siteswap
     public Stream<Siteswap> getRelated() throws UnsupportedOperationException
     {
         throw new UnsupportedOperationException("This method has not been implemented yet"); // TODO implement
+    }
+
+    @Override
+    public String toString()
+    {
+        return VanillaThroUtils.vanillaThrowArrayToString(thros);
     }
 }
