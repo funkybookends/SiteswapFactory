@@ -2,7 +2,9 @@ package com.ignoretheextraclub.siteswapfactory;
 
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
@@ -14,6 +16,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.utils.SortingUtils;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY;
@@ -57,6 +60,31 @@ public class SiteswapFactory
     // ============= Four Handed Siteswap
 
     // Implementations
+
+    public static Siteswap createFHS(final VanillaState[] states, final SortingStrategy<VanillaState> sortingStrategy, final boolean reduce) throws InvalidSiteswapException
+    {
+        final VanillaState[] reducedSiteswap = reduce ? SortingUtils.reduce(states) : states;
+        final Thro[] thros;
+
+        try
+        {
+            thros =  StateUtils.getAllThrows(reducedSiteswap);
+        }
+        catch (final TransitionException cause)
+        {
+            throw new InvalidSiteswapException("Not a valid siteswap", cause);
+        }
+
+        try
+        {
+            final FourHandedSiteswapThro[] fhsts = (FourHandedSiteswapThro[]) Arrays.stream(thros).map(vt -> FourHandedSiteswapThro.getUnchecked(vt.getNumBeats())).toArray();
+            return new TwoHandedVanillaSiteswap(reducedSiteswap, fhsts, sortingStrategy);
+        }
+        catch (final IllegalArgumentException uncheckedBadThrowException)
+        {
+            throw new InvalidSiteswapException("Not a valid FHS", uncheckedBadThrowException);
+        }
+    }
 
     public static FourHandedSiteswap createFHS(final int[] siteswap, final SortingStrategy<VanillaState> sortingStrategy, final boolean reduce) throws InvalidSiteswapException
     {
@@ -109,6 +137,21 @@ public class SiteswapFactory
 
     // Implementations
 
+    public static Siteswap createTHS(final VanillaState[] states, final SortingStrategy<VanillaState> sortingStrategy, final boolean reduce) throws InvalidSiteswapException
+    {
+        final VanillaState[] reducedSiteswap = reduce ? SortingUtils.reduce(states) : states;
+        final VanillaThro[] thros;
+        try
+        {
+            thros = (VanillaThro[]) StateUtils.getAllThrows(reducedSiteswap);
+        }
+        catch (final TransitionException cause)
+        {
+            throw new InvalidSiteswapException("Not a valid siteswap", cause);
+        }
+        return new TwoHandedVanillaSiteswap(reducedSiteswap, thros, sortingStrategy);
+    }
+
     public static TwoHandedVanillaSiteswap createTHS(final int[] siteswap, final SortingStrategy<VanillaState> sortingStrategy, final boolean reduce) throws InvalidSiteswapException
     {
         final int[] reducedSiteswap = reduce ? SortingUtils.reduce(siteswap) : siteswap;
@@ -147,5 +190,4 @@ public class SiteswapFactory
     {
         return createTHS(siteswap, DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true);
     }
-
 }

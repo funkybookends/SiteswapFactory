@@ -175,4 +175,40 @@ public class VanillaSiteswap implements Siteswap
     {
         return VanillaThroUtils.vanillaThrowArrayToString(thros);
     }
+
+    @Override
+    public boolean equals(final Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        final VanillaSiteswap that = (VanillaSiteswap) o;
+
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(states, that.states))
+        {
+            return false;
+        }
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(thros, that.thros))
+        {
+            return false;
+        }
+        return sortingStrategy.equals(that.sortingStrategy);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = Arrays.hashCode(states);
+        result = 31 * result + Arrays.hashCode(thros);
+        result = 31 * result + sortingStrategy.hashCode();
+        return result;
+    }
 }
