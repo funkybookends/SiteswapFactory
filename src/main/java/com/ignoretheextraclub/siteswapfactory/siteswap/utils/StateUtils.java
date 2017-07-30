@@ -2,7 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.utils;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
@@ -45,7 +45,8 @@ public final class StateUtils
     }
 
     @SuppressWarnings("unchecked")
-    public static <S extends State, T extends Thro> S[] getAllStates(S startingState, T[] thros) throws InvalidSiteswapException
+    public static <S extends State, T extends Thro> S[] getAllStates(S startingState,
+                                                                     T[] thros) throws InvalidSiteswapException
     {
         try
         {
@@ -64,35 +65,15 @@ public final class StateUtils
     }
 
     @SuppressWarnings("unchecked")
-    public static Thro[] getAllThrows(final State[] states) throws InvalidSiteswapException
+    public static Thro[] getAllThrows(final State[] states) throws TransitionException
     {
-        try
+        final Thro first = states[0].getThrow(states[1 % states.length]);
+        final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length);
+        thros[0] = first;
+        for (int i = 1; i < states.length; i++)
         {
-            final Thro first = states[0].getThrow(states[1 % states.length]);
-            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length);
-            thros[0] = first;
-            for (int i = 1; i < states.length; i++)
-            {
-                thros[i] = states[i].getThrow(states[(i + 1) % states.length]);
-            }
-            return thros;
+            thros[i] = states[i].getThrow(states[(i + 1) % states.length]);
         }
-        catch (final NoTransitionException cause)
-        {
-            throw new InvalidSiteswapException("Cannot construct all throws", cause);
-        }
-    }
-
-    public static int getNumObjects(final boolean[] array)
-    {
-        int i = 0;
-        for (boolean position : array)
-        {
-            if (position)
-            {
-                i++;
-            }
-        }
-        return i;
+        return thros;
     }
 }

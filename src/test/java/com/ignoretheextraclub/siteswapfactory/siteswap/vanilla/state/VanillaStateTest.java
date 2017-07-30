@@ -1,7 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -12,13 +10,15 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
+
 /**
  Created by caspar on 15/01/17.
  */
 public class VanillaStateTest
 {
-    private static final VanillaState tttff = get(true, true, true, false, false);
-    private static final VanillaState ftttf = get(false, true, true, true, false);
+    private static final VanillaState tttff = state(true, true, true, false, false);
+    private static final VanillaState ftttf = state(false, true, true, true, false);
 
     private static final VanillaThro ZERO = VanillaThro.getUnchecked(0);
     private static final VanillaThro ONE = VanillaThro.getUnchecked(1);
@@ -104,23 +104,11 @@ public class VanillaStateTest
     {
         Assert.assertEquals(tttff, tttff);
         Assert.assertEquals(ftttf, ftttf);
-        Assert.assertEquals(tttff, get(true, true, true, false, false));
-        Assert.assertEquals(ftttf, get(false, true, true, true, false));
+        Assert.assertEquals(tttff, state(true, true, true, false, false));
+        Assert.assertEquals(ftttf, state(false, true, true, true, false));
 
         Assert.assertNotEquals(tttff, ftttf);
         Assert.assertNotEquals(ftttf, tttff);
-    }
-
-    private static VanillaState get(final boolean... occupied)
-    {
-        try
-        {
-            return new VanillaState(occupied);
-        }
-        catch (final PeriodException | NumObjectsException cause)
-        {
-            throw new RuntimeException("Could not construct state", cause);
-        }
     }
 
     @Test
@@ -136,16 +124,16 @@ public class VanillaStateTest
         final Set<State> nextStates = tttff.getNextStates();
         Assert.assertEquals(3, nextStates.size());
         Assert.assertTrue(nextStates.contains(tttff));
-        Assert.assertTrue(nextStates.contains(get(true, true, false, true, false)));
-        Assert.assertTrue(nextStates.contains(get(true, true, false, false, true)));
+        Assert.assertTrue(nextStates.contains(state(true, true, false, true, false)));
+        Assert.assertTrue(nextStates.contains(state(true, true, false, false, true)));
 
         final Set<State> nextStates1 = ftttf.getNextStates();
         Assert.assertEquals(1, nextStates1.size());
         Assert.assertTrue(nextStates1.contains(tttff));
 
-        final Set<State> nextStates2 = get(false, true, true, true, false, false).getNextStates();
+        final Set<State> nextStates2 = state(false, true, true, true, false, false).getNextStates();
         Assert.assertEquals(1, nextStates2.size());
-        Assert.assertTrue(nextStates2.contains(get(true, true, true, false, false, false)));
+        Assert.assertTrue(nextStates2.contains(state(true, true, true, false, false, false)));
     }
 
     @Test
@@ -159,7 +147,7 @@ public class VanillaStateTest
     public void getFirstStateTest() throws Exception
     {
         VanillaState firstState = VanillaStateUtils.getFirstState(new VanillaThro[]{THREE});
-        Assert.assertEquals(get(true, true, true), firstState);
+        Assert.assertEquals(state(true, true, true), firstState);
 
         VanillaState firstState1 = VanillaStateUtils.getFirstState(new VanillaThro[]{FIVE, THREE, ONE});
         Assert.assertEquals(tttff, firstState1);
@@ -168,6 +156,6 @@ public class VanillaStateTest
     @Test
     public void testEqualsMethod() throws Exception
     {
-        Assert.assertTrue(get(true, false, false, true).equals(get(true, false, false, true)));
+        Assert.assertTrue(state(true, false, false, true).equals(state(true, false, false, true)));
     }
 }

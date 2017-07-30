@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
@@ -55,7 +55,7 @@ public class HighestThrowFirstStrategy implements SortingStrategy<VanillaState>
             }
             return true; //they are equivalent
         }
-        catch (NoTransitionException e)
+        catch (TransitionException e)
         {
             throw new InvalidSiteswapException("Could not determine transition", e);
         }

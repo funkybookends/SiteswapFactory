@@ -1,6 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateValidationUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
@@ -28,8 +30,16 @@ public class VanillaSiteswap implements Siteswap
                            final VanillaThro[] thros,
                            final SortingStrategy<VanillaState> sortingStrategy) throws InvalidSiteswapException
     {
-        StateValidationUtils.validateAllStatesConnect(states, thros);
-        StateValidationUtils.validateAllStatesHaveTheSameNumberOfObjects(states);
+        try
+        {
+            StateValidationUtils.validateAllStatesConnect(states, thros);
+            StateValidationUtils.validateAllStatesHaveTheSameNumberOfObjects(states);
+        }
+        catch (final BadThrowException | TransitionException cause)
+        {
+            throw new InvalidSiteswapException("Invalid Siteswap.", cause);
+        }
+
         final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(states, sortingStrategy);
         this.states = sorter.getWinningSort();
         this.thros = sorter.sortToMatch(thros);
@@ -129,7 +139,9 @@ public class VanillaSiteswap implements Siteswap
         }
         try
         {
-            final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(this.states, HighestThrowFirstStrategy.get());
+            final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(this.states,
+                                                                                               HighestThrowFirstStrategy
+                                                                                                       .get());
             sorter.sort();
             return Arrays.deepEquals(sorter.getWinningSort(), sorter.sortToMatch(other.getStates()));
         }

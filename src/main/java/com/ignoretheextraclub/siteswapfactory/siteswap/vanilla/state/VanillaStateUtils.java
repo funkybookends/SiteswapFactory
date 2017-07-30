@@ -67,4 +67,17 @@ public final class VanillaStateUtils
         }
         return strBuilder.toString();
     }
+
+    public static int getNumTrue(final boolean[] array)
+    {
+        int i = 0;
+        for (boolean position : array)
+        {
+            if (position)
+            {
+                i++;
+            }
+        }
+        return i;
+    }
 }

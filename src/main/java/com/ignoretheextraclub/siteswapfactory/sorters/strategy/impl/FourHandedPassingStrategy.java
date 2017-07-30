@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
@@ -68,7 +68,7 @@ public class FourHandedPassingStrategy implements SortingStrategy<VanillaState>
             }
             return score;
         }
-        catch (final NoTransitionException cause)
+        catch (final TransitionException cause)
         {
             throw new InvalidSiteswapException("Expected to score a valid siteswap, could not transition", cause);
         }

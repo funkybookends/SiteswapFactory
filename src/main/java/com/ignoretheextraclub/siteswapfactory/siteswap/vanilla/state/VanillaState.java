@@ -3,12 +3,11 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils;
 import jdk.nashorn.internal.ir.annotations.Immutable;
@@ -45,7 +44,7 @@ public class VanillaState implements State
     public VanillaState(final boolean[] occupied) throws NumObjectsException, PeriodException
     {
         validateSize(occupied.length);
-        validateNumObjects(StateUtils.getNumObjects(occupied));
+        validateNumObjects(VanillaStateUtils.getNumTrue(occupied));
         this.occupied = occupied;
     }
 
@@ -203,7 +202,7 @@ public class VanillaState implements State
     @Override
     public int getNumObjects()
     {
-        return StateUtils.getNumObjects(this.occupied);
+        return VanillaStateUtils.getNumTrue(this.occupied);
     }
 
     @Override
@@ -220,7 +219,7 @@ public class VanillaState implements State
     }
 
     @Override
-    public Thro getThrow(State toNextState) throws NoTransitionException
+    public Thro getThrow(State toNextState) throws TransitionException
     {
         if (toNextState == null)
         {
@@ -240,7 +239,7 @@ public class VanillaState implements State
                 throw new IllegalStateException("Could not throw legal throw from [" + thro + "] into [" + this.toString() + "]", badThrowException);
             }
         }
-        throw new NoTransitionException("Cannot transition between these two vanillaStates, from [" + this.toString() + "] to [" + toNextState.toString() + "]");
+        throw new TransitionException("Cannot transition between these two vanillaStates, from [" + this.toString() + "] to [" + toNextState.toString() + "]");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NoTransitionException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 
 import java.util.Set;
 
@@ -44,9 +44,9 @@ public interface State extends Comparable
      {@link #canTransition(State)} to first check if a transition exists.
      @param toNextState
      @return the throw
-     @throws NoTransitionException if no throw exists
+     @throws TransitionException if no throw exists
      */
-    Thro getThrow(State toNextState) throws NoTransitionException;
+    Thro getThrow(State toNextState) throws TransitionException;
 
     /**
      Similar to {@link #getThrow(State)} however may be optimized.
