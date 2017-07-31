@@ -101,8 +101,6 @@ public class StateSearcher implements Iterator<Siteswap>
 
     private void buildStack() throws NoMoreElementsException
     {
-        assert iteratorStack.size() == stateStack.size();
-
         if (stateStack.size() < maxPeriod)
         {
             LOG.trace("buildStack(): pushing next iterator onto stack.");
@@ -125,40 +123,32 @@ public class StateSearcher implements Iterator<Siteswap>
 
     private void moveIteratorOnToNextState() throws NoMoreElementsException
     {
-        assert iteratorStack.size() == stateStack.size();
         LOG.trace("moveIteratorOnToNextState(): Moving last stack iterator onto next element.");
-        if (iteratorStack.size() > 0)
+        if (iteratorStack.lastElement().hasNext())
         {
-            if (iteratorStack.lastElement().hasNext())
+            LOG.trace("moveIteratorOnToNextState(): getting next for iterator at {}", iteratorStack.size());
+            final State nextState = iteratorStack.lastElement().next();
+            if (aLegalState.test(nextState))
             {
-                LOG.trace("moveIteratorOnToNextState(): getting next for iterator at {}", iteratorStack.size());
-                final State nextState = iteratorStack.lastElement().next();
-                if (aLegalState.test(nextState))
-                {
-                    LOG.trace("moveIteratorOnToNextState(): Found next legal state, pushing onto the state stack.");
-                    stateStack.pop();
-                    stateStack.push(nextState);
-                }
-                else
-                {
-                    LOG.trace("moveIteratorOnToNextState(): Next state was not legal, retrying...");
-                    moveIteratorOnToNextState();
-                }
+                LOG.trace("moveIteratorOnToNextState(): Found next legal state, pushing onto the state stack.");
+                stateStack.pop();
+                stateStack.push(nextState);
             }
             else
             {
-                iteratorStack.pop();
-                if (iteratorStack.isEmpty())
-                {
-                    throw new NoMoreElementsException();
-                }
-                stateStack.pop();
+                LOG.trace("moveIteratorOnToNextState(): Next state was not legal, retrying...");
                 moveIteratorOnToNextState();
             }
         }
         else
         {
-            LOG.trace("moveIteratorOnToNextState(): No iterators in stack");
+            iteratorStack.pop();
+            if (iteratorStack.isEmpty())
+            {
+                throw new NoMoreElementsException();
+            }
+            stateStack.pop();
+            moveIteratorOnToNextState();
         }
     }
 

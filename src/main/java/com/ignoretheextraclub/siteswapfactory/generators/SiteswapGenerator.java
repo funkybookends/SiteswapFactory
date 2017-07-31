@@ -3,6 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.generators;
 import com.ignoretheextraclub.siteswapfactory.generators.predicates.IntermediateStatePredicate;
 import com.ignoretheextraclub.siteswapfactory.generators.predicates.ReturnStatePredicate;
 import com.ignoretheextraclub.siteswapfactory.generators.predicates.StatePredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.LastStateTransitionsToFirstStatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -22,8 +23,8 @@ public class SiteswapGenerator
     private Set<State> startingStates = new HashSet<>();
     private final int maxPeriod;
     private StatePredicate statePredicate;
-    private IntermediateStatePredicate intermediateStatePredicates;
-    private ReturnStatePredicate returnStatePredicates;
+    private IntermediateStatePredicate intermediateStatePredicate;
+    private ReturnStatePredicate returnStatePredicate = LastStateTransitionsToFirstStatePredicate.get(); // Always required
     private final Function<State[], Siteswap> siteswapConstructor;
 
     public SiteswapGenerator(final int maxPeriod, final Function<State[], Siteswap> siteswapConstructor)
@@ -44,19 +45,19 @@ public class SiteswapGenerator
 
     public SiteswapGenerator addPredicate(final StatePredicate statePredicate)
     {
-        this.statePredicate = andPredicate(this.statePredicate, statePredicate);
+        this.statePredicate = statePredicate.and(this.statePredicate);
         return this;
     }
 
     public SiteswapGenerator addPredicate(final IntermediateStatePredicate intermediateStatePredicate)
     {
-        this.intermediateStatePredicates = andPredicate(this.intermediateStatePredicates, intermediateStatePredicate);
+        this.intermediateStatePredicate = intermediateStatePredicate.and(this.intermediateStatePredicate);
         return this;
     }
 
     public SiteswapGenerator addPredicate(final ReturnStatePredicate returnStatePredicate)
     {
-        this.returnStatePredicates = andPredicate(this.returnStatePredicates, returnStatePredicate);
+        this.returnStatePredicate = returnStatePredicate.and(this.returnStatePredicate);
         return this;
     }
 
@@ -67,9 +68,7 @@ public class SiteswapGenerator
         final Spliterator<Siteswap> siteswapSpliterator = Spliterators.spliteratorUnknownSize(new StateSearcher(
                 startingStates,
                 maxPeriod,
-                statePredicate,
-                intermediateStatePredicates,
-                returnStatePredicates,
+                statePredicate, intermediateStatePredicate, returnStatePredicate,
                 siteswapConstructor), Spliterator.SIZED);
 
         return StreamSupport.stream(siteswapSpliterator, false).unordered();
@@ -78,55 +77,5 @@ public class SiteswapGenerator
     public Stream<Siteswap> generateDistinct()
     {
          return generate().distinct();
-    }
-
-    // Private members
-
-    private StatePredicate andPredicate(final StatePredicate first, final StatePredicate second)
-    {
-        if (first != null && second != null)
-        {
-            return (StatePredicate) first.and(second);
-        }
-        else if (first == null)
-        {
-            return second;
-        }
-        else
-        {
-            return first;
-        }
-    }
-
-    private IntermediateStatePredicate andPredicate(final IntermediateStatePredicate first, final IntermediateStatePredicate second)
-    {
-        if (first != null && second != null)
-        {
-            return (IntermediateStatePredicate) first.and(second);
-        }
-        else if (first == null)
-        {
-            return second;
-        }
-        else
-        {
-            return first;
-        }
-    }
-
-    private ReturnStatePredicate andPredicate(final ReturnStatePredicate first, final ReturnStatePredicate second)
-    {
-        if (first != null && second != null)
-        {
-            return (ReturnStatePredicate) first.and(second);
-        }
-        else if (first == null)
-        {
-            return second;
-        }
-        else
-        {
-            return first;
-        }
     }
 }

@@ -6,16 +6,16 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 /**
  Enforces that all returned siteswaps have a legal period.
  */
-public class RequirePeriodPredicate implements ReturnStatePredicate
+public class RequiredPeriodPredicate implements ReturnStatePredicate
 {
     private final int[] legalPeriods;
 
-    public RequirePeriodPredicate(final int legalPeriod)
+    public RequiredPeriodPredicate(final int legalPeriod)
     {
         this.legalPeriods = new int[]{legalPeriod};
     }
 
-    public RequirePeriodPredicate(final int... legalPeriods)
+    public RequiredPeriodPredicate(final int... legalPeriods)
     {
         this.legalPeriods = legalPeriods;
     }

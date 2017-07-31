@@ -1,18 +1,18 @@
 package com.ignoretheextraclub.siteswapfactory.generators.predicates.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.IntermediateStatePredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.ReturnStatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 /**
- Created by caspar on 30/07/17.
+ Created by caspar on 31/07/17.
  */
-public class BannedThroPredicate implements IntermediateStatePredicate
+public class BannedFinalThrowPredicate implements ReturnStatePredicate
 {
     private final Thro bannedThro;
 
-    public BannedThroPredicate(final Thro bannedThro)
+    public BannedFinalThrowPredicate(final Thro bannedThro)
     {
         this.bannedThro = bannedThro;
     }
@@ -22,12 +22,16 @@ public class BannedThroPredicate implements IntermediateStatePredicate
     {
         try
         {
-            return states.length < 2 || !states[states.length - 1].getThrow(states[states.length])
+            if (states.length < 2)
+            {
+                return !states[0].getThrow(states[0]).equals(bannedThro);
+            }
+            return !states[states.length - 2].getThrow(states[states.length - 1])
                                                                   .equals(bannedThro);
         }
         catch (TransitionException e)
         {
-            throw new IllegalStateException("Asked to verify illegal transition");
+            return false;
         }
     }
 }

@@ -9,4 +9,23 @@ import java.util.function.Predicate;
  */
 public interface StatePredicate extends Predicate<State>
 {
+    @Override
+    default StatePredicate and(Predicate<? super State> other)
+    {
+        if (other != null)
+        {
+            return (t) -> test(t) && other.test(t);
+        }
+        return this;
+    }
+
+    @Override
+    default StatePredicate or(Predicate<? super State> other)
+    {
+        if (other!= null)
+        {
+            return (t) -> test(t) || other.test(t);
+        }
+        return this;
+    }
 }

@@ -9,4 +9,23 @@ import java.util.function.Predicate;
  */
 public interface IntermediateStatePredicate extends Predicate<State[]>
 {
+    @Override
+    default IntermediateStatePredicate and(Predicate<? super State[]> other)
+    {
+        if (other != null)
+        {
+            return (t) -> test(t) && other.test(t);
+        }
+        return this;
+    }
+
+    @Override
+    default IntermediateStatePredicate or(Predicate<? super State[]> other)
+    {
+        if (other!= null)
+        {
+            return (t) -> test(t) || other.test(t);
+        }
+        return this;
+    }
 }
