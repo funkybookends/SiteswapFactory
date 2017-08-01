@@ -65,14 +65,27 @@ public final class StateUtils
     }
 
     @SuppressWarnings("unchecked")
-    public static Thro[] getAllThrows(final State[] states) throws TransitionException
+    public static Thro[] getAllThrows(final State[] states, final boolean loop) throws TransitionException
     {
-        final Thro first = states[0].getThrow(states[1 % states.length]);
-        final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length);
-        thros[0] = first;
-        for (int i = 1; i < states.length; i++)
+        if (states.length == 0)
         {
-            thros[i] = states[i].getThrow(states[(i + 1) % states.length]);
+            throw new IllegalArgumentException("No states");
+        }
+        if (!loop && states.length < 2)
+        {
+            throw new IllegalArgumentException("When not looping, need at least 2 states");
+        }
+
+        final Thro first = states[0].getThrow(states[1 % states.length]);
+        final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), loop ? states.length : states.length - 1);
+        thros[0] = first;
+        for (int i = 1; i < states.length - 1; i++)
+        {
+            thros[i] = states[i].getThrow(states[i + 1]);
+        }
+        if (loop)
+        {
+            thros[thros.length - 1] = states[states.length - 1].getThrow(states[0]);
         }
         return thros;
     }

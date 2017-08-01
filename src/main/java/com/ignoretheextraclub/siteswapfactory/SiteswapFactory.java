@@ -67,7 +67,7 @@ public class SiteswapFactory
 
         try
         {
-            thros =  StateUtils.getAllThrows(reducedSiteswap);
+            thros =  StateUtils.getAllThrows(reducedSiteswap, true);
         }
         catch (final TransitionException cause)
         {
@@ -146,7 +146,7 @@ public class SiteswapFactory
         final VanillaThro[] thros;
         try
         {
-            thros = (VanillaThro[]) StateUtils.getAllThrows(reducedSiteswap);
+            thros = (VanillaThro[]) StateUtils.getAllThrows(reducedSiteswap, true);
         }
         catch (final TransitionException cause)
         {

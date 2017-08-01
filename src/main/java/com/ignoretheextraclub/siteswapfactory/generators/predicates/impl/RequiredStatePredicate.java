@@ -1,6 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.generators.predicates.impl;
 
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.ReturnStatePredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.SequencePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 import java.util.stream.Stream;
@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  Created by caspar on 30/07/17.
  */
-public class RequiredStatePredicate implements ReturnStatePredicate
+public class RequiredStatePredicate implements SequencePredicate
 {
     private final State requiredState;
 
@@ -18,8 +18,8 @@ public class RequiredStatePredicate implements ReturnStatePredicate
     }
 
     @Override
-    public boolean test(final State[] states)
+    public boolean test(final State[] states, final Boolean loops)
     {
-        return Stream.of(states).anyMatch(requiredState::equals);
+        return !loops || Stream.of(states).anyMatch(requiredState::equals);
     }
 }

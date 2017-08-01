@@ -38,7 +38,7 @@ public class FourHandedSiteswapGeneratorTest
                                                 .peek((s) -> LOG.info("{}\t{}", s.toString(), s.getStates()))
                                                 .collect(Collectors.toList());
         final RequiredStatePredicate requiredStatePredicate = new RequiredStatePredicate(groundState);
-        assertThat(collect).hasSize(91).allMatch((s) -> requiredStatePredicate.test(s.getStates()));
+        assertThat(collect).hasSize(91).allMatch((s) -> requiredStatePredicate.test(s.getStates(), true));
     }
 
     private TwoHandedVanillaSiteswap ths(final String s) throws InvalidSiteswapException

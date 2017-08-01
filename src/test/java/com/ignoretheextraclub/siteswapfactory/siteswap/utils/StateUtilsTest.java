@@ -58,8 +58,8 @@ public class StateUtilsTest
     @Test
     public void getAllThrows() throws Exception
     {
-        softly.assertThat(StateUtils.getAllThrows(array(XXX__))).isEqualTo(new Thro[]{get(3)});
-        softly.assertThat(StateUtils.getAllThrows(array(XXX__, XX_X_))).isEqualTo(new Thro[]{get(4), get(2)});
+        softly.assertThat(StateUtils.getAllThrows(array(XXX__), true)).isEqualTo(new Thro[]{get(3)});
+        softly.assertThat(StateUtils.getAllThrows(array(XXX__, XX_X_), true)).isEqualTo(new Thro[]{get(4), get(2)});
         // TODO Add more
     }
 }

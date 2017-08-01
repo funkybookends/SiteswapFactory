@@ -1,7 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.generators;
 
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.IntermediateStatePredicate;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.ReturnStatePredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.SequencePredicate;
 import com.ignoretheextraclub.siteswapfactory.generators.predicates.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
@@ -24,8 +23,7 @@ public class StateSearcher implements Iterator<Siteswap>
     private final Set<State> startingStates;
     private final int maxPeriod;
     private final StatePredicate aLegalState;
-    private final IntermediateStatePredicate aLegalIntermedateState;
-    private final ReturnStatePredicate aReturnableState;
+    private final SequencePredicate isLegalSequence;
     private final Function<State[], Siteswap> siteswapConstructor;
 
     private Stack<State> stateStack = new Stack<>();
@@ -35,8 +33,7 @@ public class StateSearcher implements Iterator<Siteswap>
     protected StateSearcher(final Set<State> startingStates,
                             final int maxPeriod,
                             final StatePredicate statePredicates,
-                            final IntermediateStatePredicate intermediateStatePredicates,
-                            final ReturnStatePredicate returnStatePredicates,
+                            final SequencePredicate sequencePredicates,
                             final Function<State[], Siteswap> siteswapConstructor)
     {
         this.startingStates = Objects.requireNonNull(startingStates, "Starting States must not be null");
@@ -47,8 +44,7 @@ public class StateSearcher implements Iterator<Siteswap>
         }
         this.maxPeriod = maxPeriod;
         this.aLegalState = statePredicates == null ? state -> true : statePredicates;
-        this.aLegalIntermedateState = intermediateStatePredicates == null ? states -> true : intermediateStatePredicates;
-        this.aReturnableState = returnStatePredicates == null ? states -> true : returnStatePredicates;
+        this.isLegalSequence = sequencePredicates == null ? (states, loop) -> true : sequencePredicates;
     }
 
     public Siteswap get() throws NoMoreElementsException
@@ -58,7 +54,7 @@ public class StateSearcher implements Iterator<Siteswap>
         {
             getNextState();
         }
-        while (!aReturnableState.test(getCurrentState()));
+        while (loops() && !isLegalSequence.test(getCurrentState(), true));
 
         try
         {
@@ -77,6 +73,11 @@ public class StateSearcher implements Iterator<Siteswap>
         return get();
     }
 
+    private boolean loops()
+    {
+        return stateStack.lastElement().canTransition(stateStack.firstElement());
+    }
+
     private void getNextState() throws NoMoreElementsException
     {
         LOG.trace("getNextState(): Getting next State");
@@ -92,7 +93,7 @@ public class StateSearcher implements Iterator<Siteswap>
             moveIteratorOnToNextState();
         }
 
-        if (!aLegalIntermedateState.test(getCurrentState()))
+        if (!isLegalSequence.test(getCurrentState(), false))
         {
             LOG.trace("getNextState(): Current state not legal...");
             getNextState();

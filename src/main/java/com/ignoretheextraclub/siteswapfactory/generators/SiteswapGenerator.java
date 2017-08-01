@@ -1,9 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.generators;
 
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.IntermediateStatePredicate;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.ReturnStatePredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.SequencePredicate;
 import com.ignoretheextraclub.siteswapfactory.generators.predicates.StatePredicate;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.LastStateTransitionsToFirstStatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -23,8 +21,7 @@ public class SiteswapGenerator
     private Set<State> startingStates = new HashSet<>();
     private final int maxPeriod;
     private StatePredicate statePredicate;
-    private IntermediateStatePredicate intermediateStatePredicate;
-    private ReturnStatePredicate returnStatePredicate = LastStateTransitionsToFirstStatePredicate.get(); // Always required
+    private SequencePredicate sequencePredicate;
     private final Function<State[], Siteswap> siteswapConstructor;
 
     public SiteswapGenerator(final int maxPeriod, final Function<State[], Siteswap> siteswapConstructor)
@@ -49,15 +46,9 @@ public class SiteswapGenerator
         return this;
     }
 
-    public SiteswapGenerator addPredicate(final IntermediateStatePredicate intermediateStatePredicate)
+    public SiteswapGenerator addPredicate(final SequencePredicate sequencePredicate)
     {
-        this.intermediateStatePredicate = intermediateStatePredicate.and(this.intermediateStatePredicate);
-        return this;
-    }
-
-    public SiteswapGenerator addPredicate(final ReturnStatePredicate returnStatePredicate)
-    {
-        this.returnStatePredicate = returnStatePredicate.and(this.returnStatePredicate);
+        this.sequencePredicate = sequencePredicate.and(this.sequencePredicate);
         return this;
     }
 
@@ -68,7 +59,8 @@ public class SiteswapGenerator
         final Spliterator<Siteswap> siteswapSpliterator = Spliterators.spliteratorUnknownSize(new StateSearcher(
                 startingStates,
                 maxPeriod,
-                statePredicate, intermediateStatePredicate, returnStatePredicate,
+                statePredicate,
+                sequencePredicate,
                 siteswapConstructor), Spliterator.SIZED);
 
         return StreamSupport.stream(siteswapSpliterator, false).unordered();
@@ -76,6 +68,6 @@ public class SiteswapGenerator
 
     public Stream<Siteswap> generateDistinct()
     {
-         return generate().distinct();
+        return generate().distinct();
     }
 }

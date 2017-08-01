@@ -3,8 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.generators;
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.BannedFinalThrowPredicate;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.BannedIntermediateThroPredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.BannedThrowCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -47,10 +46,7 @@ public class FourHandedSiteswapGenerator extends SiteswapGenerator
             }
         });
 
-        this.addPredicate(new BannedIntermediateThroPredicate(VanillaThro.getUnchecked(3)));
-        this.addPredicate(new BannedIntermediateThroPredicate(VanillaThro.getUnchecked(1)));
-
-        this.addPredicate(new BannedFinalThrowPredicate(VanillaThro.getUnchecked(3)));
-        this.addPredicate(new BannedFinalThrowPredicate(VanillaThro.getUnchecked(1)));
+        this.addPredicate(new BannedThrowCombinationPredicate(VanillaThro.getUnchecked(3)));
+        this.addPredicate(new BannedThrowCombinationPredicate(VanillaThro.getUnchecked(1)));
     }
 }

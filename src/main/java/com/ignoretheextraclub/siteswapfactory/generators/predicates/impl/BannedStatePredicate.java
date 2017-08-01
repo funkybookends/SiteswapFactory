@@ -24,6 +24,11 @@ public class BannedStatePredicate implements StatePredicate
         Collections.addAll(this.bannedStates, bannedStates);
     }
 
+    public BannedStatePredicate(final Set<State> bannedStates)
+    {
+        this.bannedStates.addAll(bannedStates);
+    }
+
     @Override
     public boolean test(final State state)
     {

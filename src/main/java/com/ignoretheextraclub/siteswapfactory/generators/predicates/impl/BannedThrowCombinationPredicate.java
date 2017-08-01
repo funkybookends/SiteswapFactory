@@ -1,57 +1,85 @@
 package com.ignoretheextraclub.siteswapfactory.generators.predicates.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.IntermediateStatePredicate;
+import com.ignoretheextraclub.siteswapfactory.generators.predicates.SequencePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateUtils;
+import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 import java.util.Objects;
 
 /**
  Created by caspar on 30/07/17.
  */
-public class BannedThrowCombinationPredicate implements IntermediateStatePredicate
+public class BannedThrowCombinationPredicate implements SequencePredicate
 {
-    private final Thro[] bannedThrowCombination;
+    private final Thro[] btc;
 
     public BannedThrowCombinationPredicate(final Thro[] bannedThrowCombination)
     {
         Objects.requireNonNull(bannedThrowCombination[0], "The first throw must not be null");
         Objects.requireNonNull(bannedThrowCombination[bannedThrowCombination.length - 1],
                 "The last throw must not be null");
-        this.bannedThrowCombination = bannedThrowCombination;
+        this.btc = bannedThrowCombination;
+    }
+
+    public BannedThrowCombinationPredicate(final Thro bannedThrow)
+    {
+        Objects.requireNonNull(bannedThrow);
+        this.btc = new Thro[]{bannedThrow};
     }
 
     @Override
-    public boolean test(final State[] states)
+    public boolean test(final State[] states, final Boolean loops)
     {
-        if (states.length < bannedThrowCombination.length - 1)
-        {
-            return true;
-        }
-
         try
         {
-            for (int i = 0; i < bannedThrowCombination.length; i++)
+            if (states.length < btc.length - 1)
             {
-                final Thro bannedThrowFromEnd = bannedThrowCombination[bannedThrowCombination.length - i - 1];
-                if (bannedThrowFromEnd != null && bannedThrowFromEnd.equals(getThrowFromEnd(i, states)))
+                return true;
+            }
+
+            if (!loops && states.length > 1)
+            {
+                final Thro[] thros = StateUtils.getAllThrows(states, loops);
+
+                final ArrayLoopingIterator<Thro> looper = new ArrayLoopingIterator<>(thros, thros.length - btc.length);
+                if (matches(looper, btc))
                 {
                     return false;
                 }
             }
+
+            if (loops)
+            {
+                final Thro[] thros = StateUtils.getAllThrows(states, loops);
+
+                for (int i = thros.length - btc.length + 1; i < thros.length; i++)
+                {
+                    if (matches(new ArrayLoopingIterator<>(thros, i), btc))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
         catch (final TransitionException cause)
         {
             throw new IllegalStateException("Could not check throw because transition is illegal", cause);
         }
-
-        return true;
     }
 
-    private Thro getThrowFromEnd(final int i, final State[] states) throws TransitionException
+    private boolean matches(final ArrayLoopingIterator<Thro> looper, final Thro[] btc)
     {
-        final int from = states.length - i - 1;
-        return states[from].getThrow(states[from + 1]);
+        for (final Thro aBtc : btc)
+        {
+            if (aBtc != null && !looper.next().equals(aBtc))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
