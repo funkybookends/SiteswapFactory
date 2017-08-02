@@ -108,7 +108,7 @@ public class VanillaState implements State
         final Set<Thro> availableThros = new TreeSet<>();
         if (canThrow())
         {
-            final int maxThro = ((VanillaThro) getMaxThrow()).getNumBeats();
+            final int maxThro = getMaxThrow().getNumBeats();
 
             for (int pos = 0; pos < maxThro; pos++)
             {
@@ -160,7 +160,7 @@ public class VanillaState implements State
     @SuppressWarnings("unchecked")
     public State thro(Thro thro) throws BadThrowException
     {
-        final int numBeats = ((VanillaThro) thro).getNumBeats();
+        final int numBeats = thro.getNumBeats();
         if (!canThrow())
         {
             if (numBeats == 0)

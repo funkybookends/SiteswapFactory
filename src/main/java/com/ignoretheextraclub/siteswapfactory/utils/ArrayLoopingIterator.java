@@ -37,14 +37,8 @@ public class ArrayLoopingIterator<T> implements Iterator<T>
     }
 
     @Override
-    public void remove()
-    {
-        throw new UnsupportedOperationException("This operation is not supported");
-    }
-
-    @Override
     public void forEachRemaining(final Consumer<? super T> action)
     {
-        throw new UnsupportedOperationException("This operation is not supported");
+        throw new UnsupportedOperationException("forEachRemaining: Method would never terminate. Consider using a streamn and using .limit(int)");
     }
 }

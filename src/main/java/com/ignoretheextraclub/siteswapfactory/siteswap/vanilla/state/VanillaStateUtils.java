@@ -8,6 +8,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
+import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 /**
  Created by caspar on 26/07/17.
@@ -27,9 +28,11 @@ public final class VanillaStateUtils
 
             int index = 0;
 
+            final ArrayLoopingIterator<VanillaThro> throsLooper = new ArrayLoopingIterator<>(thros);
+
             while (builder.getGivenObjects() < numObjects || index % period != 0)
             {
-                builder.thenThrow(thros[index % period]);
+                builder.thenThrow(throsLooper.next());
                 index++;
             }
 
