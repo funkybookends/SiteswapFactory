@@ -2,6 +2,8 @@ package com.ignoretheextraclub.siteswapfactory.siteswap;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 import java.util.Set;
 
@@ -77,4 +79,12 @@ public interface State extends Comparable
      @return true if this is the ground state.
      */
     boolean isGroundState();
+
+    /**
+     returns the state that prior to the given throw
+     @param thro
+     @return the prior state
+     @throws UnsupportedOperationException if it cannot be determined.
+     */
+    VanillaState undo(VanillaThro thro) throws UnsupportedOperationException;
 }

@@ -6,6 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils.getFirstState;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils.stringToVanillaThrowArray;
 import static org.junit.Assert.fail;
@@ -21,9 +22,10 @@ public class VanillaStateUtilsTest
     @Test
     public void testgetFirstState() throws Exception
     {
-        softly.assertThat(getFirstState(stringToVanillaThrowArray("3"))).isEqualTo(XXX__);
-        softly.assertThat(getFirstState(stringToVanillaThrowArray("441"))).isEqualTo(XXX__);
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("3"))).isEqualTo(state(true, true, true));
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("441"))).isEqualTo(state(true, true, true, false));
         softly.assertThat(getFirstState(stringToVanillaThrowArray("441355203"))).isEqualTo(XXX__);
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("555004"))).isEqualTo(XXX__);
     }
 
     @Test

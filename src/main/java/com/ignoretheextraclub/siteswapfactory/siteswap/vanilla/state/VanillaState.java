@@ -284,6 +284,37 @@ public class VanillaState implements State
         return true;
     }
 
+    @Override
+    public VanillaState undo(final VanillaThro thro) throws UnsupportedOperationException
+    {
+        final boolean[] previous = new boolean[this.occupied.length];
+
+        System.arraycopy(this.occupied, 0, previous, 1, this.occupied.length - 1);
+
+        if (thro.getNumBeats() == 0)
+        {
+            previous[0] = false; // because threw 0
+        }
+        else if (thro.getNumBeats() == this.getMaxThrow().getNumBeats())
+        {
+            previous[0] = true;
+        }
+        else
+        {
+            previous[0] = true;
+            previous[thro.getNumBeats()] = false;
+        }
+
+        try
+        {
+            return new VanillaState(previous);
+        }
+        catch (NumObjectsException | PeriodException e)
+        {
+            throw new IllegalStateException("Could not create a new state with the same size as this one");
+        }
+    }
+
     @JsonProperty("occupancy")
     public String toString()
     {

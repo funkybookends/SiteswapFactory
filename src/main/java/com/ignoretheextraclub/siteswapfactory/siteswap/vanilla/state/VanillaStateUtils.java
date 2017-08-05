@@ -11,41 +11,58 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
+import java.util.Stack;
+
 /**
  Created by caspar on 26/07/17.
  */
 public final class VanillaStateUtils
 {
-    private VanillaStateUtils(){}
+    private VanillaStateUtils()
+    {
+    }
 
     public static VanillaState getFirstState(VanillaThro[] thros) throws InvalidSiteswapException
     {
         try
         {
             final int numObjects = VanillaThroUtils.numObjects(thros);
-            final int period = thros.length;
             final VanillaThro highestThro = ThroUtils.getHighestThro(thros);
-            final VanillaStateBuilder builder = new VanillaStateBuilder(highestThro.getNumBeats(), numObjects);
-
-            int index = 0;
+            final VanillaStateBuilder builder; // period & num objects
+            builder = new VanillaStateBuilder(highestThro.getNumBeats(), numObjects);
+            final Stack<VanillaThro> throStack = new Stack<>();
 
             final ArrayLoopingIterator<VanillaThro> throsLooper = new ArrayLoopingIterator<>(thros);
 
-            while (builder.getGivenObjects() < numObjects || index % period != 0)
+            while (builder.getGivenObjects() != numObjects)
             {
-                builder.thenThrow(throsLooper.next());
-                index++;
+                final VanillaThro thro = throsLooper.next();
+                throStack.push(thro);
+                builder.thenThrow(thro); // bad throw & num objects
             }
 
-            return new VanillaState(builder.getOccupied());
+            VanillaState state = new VanillaState(builder.getOccupied()); // period & numObjects
+
+            while (throStack.size() > 0)
+            {
+                final VanillaThro thro = throStack.pop();
+                state = state.undo(thro);
+            }
+
+            return state;
         }
-        catch (final PeriodException | NumObjectsException | BadThrowException cause)
+        catch (final PeriodException | NumObjectsException cause)
         {
             throw new InvalidSiteswapException("Could not determine first state", cause);
         }
+        catch (final BadThrowException cause)
+        {
+            throw new InvalidSiteswapException("Invalid Sequence", cause);
+        }
     }
 
-    public static State getGroundState(final int maxThrow, final int numObjects) throws PeriodException, NumObjectsException
+    public static State getGroundState(final int maxThrow,
+                                       final int numObjects) throws PeriodException, NumObjectsException
     {
         final boolean[] occupied = new boolean[maxThrow];
         for (int i = 0; i < maxThrow; i++)
