@@ -20,12 +20,14 @@ public class VanillaStateUtilsTest
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
-    public void testgetFirstState() throws Exception
+    public void testGetFirstState() throws Exception
     {
         softly.assertThat(getFirstState(stringToVanillaThrowArray("3"))).isEqualTo(state(true, true, true));
         softly.assertThat(getFirstState(stringToVanillaThrowArray("441"))).isEqualTo(state(true, true, true, false));
         softly.assertThat(getFirstState(stringToVanillaThrowArray("441355203"))).isEqualTo(XXX__);
-        softly.assertThat(getFirstState(stringToVanillaThrowArray("555004"))).isEqualTo(XXX__);
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("55500"))).isEqualTo(XXX__);
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("555"))).isEqualTo(state(true, true, true, true, true));
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("555"), 3)).isEqualTo(XXX__);
     }
 
     @Test

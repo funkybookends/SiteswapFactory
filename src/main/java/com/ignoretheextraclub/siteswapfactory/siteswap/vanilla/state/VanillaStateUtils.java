@@ -22,11 +22,15 @@ public final class VanillaStateUtils
     {
     }
 
-    public static VanillaState getFirstState(VanillaThro[] thros) throws InvalidSiteswapException
+    public static VanillaState getFirstState(final VanillaThro[] thros) throws InvalidSiteswapException
+    {
+        return getFirstState(thros, VanillaThroUtils.numObjects(thros));
+    }
+
+    public static VanillaState getFirstState(final VanillaThro[] thros, final int numObjects) throws InvalidSiteswapException
     {
         try
         {
-            final int numObjects = VanillaThroUtils.numObjects(thros);
             final VanillaThro highestThro = ThroUtils.getHighestThro(thros);
             final VanillaStateBuilder builder; // period & num objects
             builder = new VanillaStateBuilder(highestThro.getNumBeats(), numObjects);
