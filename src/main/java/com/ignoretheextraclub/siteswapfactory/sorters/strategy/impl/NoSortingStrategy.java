@@ -10,10 +10,12 @@ public class NoSortingStrategy<State> implements SortingStrategy<State>
 {
     private static final NoSortingStrategy<?> INSTANCE = new NoSortingStrategy<>();
 
-    public  static NoSortingStrategy get()
+    public static NoSortingStrategy get()
     {
         return INSTANCE;
     }
+
+    private NoSortingStrategy(){};
 
     @Override
     public String getName()
