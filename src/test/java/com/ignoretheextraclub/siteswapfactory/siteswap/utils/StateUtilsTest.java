@@ -1,12 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.utils;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX__X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.____X;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.array;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
@@ -15,36 +17,31 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.Vani
  */
 public class StateUtilsTest
 {
-    private static final VanillaState XXX__ = state(true, true, true, false, false);
-    private static final VanillaState XX_X_ = state(true, true, false, true, false);
-    private static final VanillaState XX__X_ = state(true, true, false, false, true);
-    private static final VanillaState ____X = state(false, false, false, false, true);
-
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
     public void containsARepeatedState() throws Exception
     {
-        softly.assertThat(StateUtils.containsARepeatedState(array(XX__X_, XX__X_))).isTrue();
-        softly.assertThat(StateUtils.containsARepeatedState(array(XX__X_, ____X))).isFalse();
-        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X_, ____X))).isFalse();
-        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X_, ____X, XXX__))).isTrue();
-        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X_, ____X, XX_X_))).isTrue();
-        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X_, ____X, XX__X_))).isTrue();
-        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X_, ____X, ____X))).isTrue();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XX__X, XX__X))).isTrue();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XX__X, ____X))).isFalse();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X, ____X))).isFalse();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X, ____X, XXX__))).isTrue();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X, ____X, XX_X_))).isTrue();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X, ____X, XX__X))).isTrue();
+        softly.assertThat(StateUtils.containsARepeatedState(array(XXX__, XX_X_, XX__X, ____X, ____X))).isTrue();
     }
 
     @Test
     public void containsGround() throws Exception
     {
-        softly.assertThat(StateUtils.containsGround(array(XX__X_, XX__X_))).isFalse();
-        softly.assertThat(StateUtils.containsGround(array(XX__X_, ____X))).isFalse();
-        softly.assertThat(StateUtils.containsGround(array(XXX__, XX_X_, XX__X_, ____X))).isTrue();
-        softly.assertThat(StateUtils.containsGround(array(XXX__, XX_X_, XX__X_, ____X, XXX__))).isTrue();
-        softly.assertThat(StateUtils.containsGround(array(XX_X_, XX__X_, ____X, XX_X_))).isFalse();
-        softly.assertThat(StateUtils.containsGround(array(XXX__, XX_X_, XX__X_, ____X, XX__X_))).isTrue();
-        softly.assertThat(StateUtils.containsGround(array(XX_X_, XX__X_, ____X, ____X))).isFalse();
+        softly.assertThat(StateUtils.containsGround(array(XX__X, XX__X))).isFalse();
+        softly.assertThat(StateUtils.containsGround(array(XX__X, ____X))).isFalse();
+        softly.assertThat(StateUtils.containsGround(array(XXX__, XX_X_, XX__X, ____X))).isTrue();
+        softly.assertThat(StateUtils.containsGround(array(XXX__, XX_X_, XX__X, ____X, XXX__))).isTrue();
+        softly.assertThat(StateUtils.containsGround(array(XX_X_, XX__X, ____X, XX_X_))).isFalse();
+        softly.assertThat(StateUtils.containsGround(array(XXX__, XX_X_, XX__X, ____X, XX__X))).isTrue();
+        softly.assertThat(StateUtils.containsGround(array(XX_X_, XX__X, ____X, ____X))).isFalse();
     }
 
     @Test

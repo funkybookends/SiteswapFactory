@@ -3,9 +3,10 @@ package com.ignoretheextraclub.siteswapfactory.generators;
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.BannedThrowCombinationPredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.impl.ThrowCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import org.slf4j.Logger;
@@ -32,21 +33,15 @@ public class FourHandedSiteswapGenerator extends SiteswapGenerator
             LOG.debug("{}, {}", "trying", states);
             try
             {
-                final VanillaState[] vanillaStates = new VanillaState[states.length];
-                for (int i = 0; i < vanillaStates.length; i++)
-                {
-                    vanillaStates[i] = (VanillaState) states[i];
-                }
-                return SiteswapFactory.createFHS(vanillaStates, sortingStrategy, reduce);
+                return SiteswapFactory.createFHS(VanillaStateUtils.castAllToVanillaState(states), sortingStrategy, reduce);
             }
-            catch (InvalidSiteswapException e)
+            catch (final InvalidSiteswapException cause)
             {
-                LOG.debug("invalid, {}", e);
-                throw new RuntimeException(e);
+                throw new IllegalArgumentException("Provided states were not valid.", cause);
             }
         });
 
-        this.addPredicate(new BannedThrowCombinationPredicate(VanillaThro.getUnchecked(3)));
-        this.addPredicate(new BannedThrowCombinationPredicate(VanillaThro.getUnchecked(1)));
+        this.addPredicate(new ThrowCombinationPredicate(VanillaThro.getUnchecked(3)).negate());
+        this.addPredicate(new ThrowCombinationPredicate(VanillaThro.getUnchecked(1)).negate());
     }
 }

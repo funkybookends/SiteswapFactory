@@ -2,7 +2,6 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -231,7 +230,7 @@ public final class VanillaThroUtils
 
      @return An array of {@link VanillaThro}
      */
-    public static Thro[] stringToVanillaThrowArray(String siteswap) throws BadThrowException
+    public static VanillaThro[] stringToVanillaThrowArray(String siteswap) throws BadThrowException
     {
         return intArrayToVanillaThrowArray(stringToIntArray(siteswap));
     }

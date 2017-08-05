@@ -5,6 +5,7 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapExceptio
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
@@ -82,5 +83,29 @@ public final class VanillaStateUtils
             }
         }
         return i;
+    }
+
+    public static VanillaThro[] castAllToVanillaThro(final Thro[] thros)
+    {
+        final VanillaThro[] result = new VanillaThro[thros.length];
+
+        for (int i = 0; i < thros.length; i++)
+        {
+            result[i] = (VanillaThro) thros[i];
+        }
+
+        return result;
+    }
+
+    public static VanillaState[] castAllToVanillaState(final State[] states)
+    {
+        final VanillaState[] result = new VanillaState[states.length];
+
+        for (int i = 0; i < states.length; i++)
+        {
+            result[i] = (VanillaState) states[i];
+        }
+
+        return result;
     }
 }

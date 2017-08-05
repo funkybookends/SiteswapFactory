@@ -1,13 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.generators;
 
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.SequencePredicate;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.StatePredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.SequencePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
@@ -22,8 +23,7 @@ public class StateSearcher implements Iterator<Siteswap>
 
     private final Set<State> startingStates;
     private final int maxPeriod;
-    private final StatePredicate aLegalState;
-    private final SequencePredicate isLegalSequence;
+    private final List<SequencePredicate> predicates;
     private final Function<State[], Siteswap> siteswapConstructor;
 
     private Stack<State> stateStack = new Stack<>();
@@ -32,8 +32,7 @@ public class StateSearcher implements Iterator<Siteswap>
 
     protected StateSearcher(final Set<State> startingStates,
                             final int maxPeriod,
-                            final StatePredicate statePredicates,
-                            final SequencePredicate sequencePredicates,
+                            final List<SequencePredicate> sequencePredicates,
                             final Function<State[], Siteswap> siteswapConstructor)
     {
         this.startingStates = Objects.requireNonNull(startingStates, "Starting States must not be null");
@@ -43,39 +42,54 @@ public class StateSearcher implements Iterator<Siteswap>
             throw new IllegalArgumentException("Must have at least 1 state");
         }
         this.maxPeriod = maxPeriod;
-        this.aLegalState = statePredicates == null ? state -> true : statePredicates;
-        this.isLegalSequence = sequencePredicates == null ? (states, loop) -> true : sequencePredicates;
+        this.predicates = sequencePredicates == null ? Collections.emptyList() : sequencePredicates;
     }
 
     public Siteswap get() throws NoMoreElementsException
     {
-        LOG.trace("get(): Getting next element");
-        do
+        while (true)
         {
-            getNextState();
-        }
-        while (loops() && !isLegalSequence.test(getCurrentState(), true));
-
-        try
-        {
-            return siteswapConstructor.apply(getCurrentState());
-        }
-        catch (final Exception ignored)
-        {
-            if (ignored instanceof ClassCastException)
+            LOG.trace("get(): Getting next element");
+            do
             {
-                throw new IllegalStateException("Function provided cannot handle State interface!", ignored);
+                getNextState();
             }
-            // Probably an illegal siteswap. Just return the next one we find.
-            LOG.trace("get(): state {} illegal, {}", stateStack, ignored);
-        }
+            while (!isLegalLoop());
 
-        return get();
+            try
+            {
+                return siteswapConstructor.apply(getCurrentState());
+            }
+            catch (final Exception ignored)
+            {
+                if (ignored instanceof ClassCastException)
+                {
+                    throw new IllegalStateException("Function provided cannot handle State interface!", ignored);
+                }
+                // Probably an illegal siteswap. Just return the next one we find.
+                LOG.trace("get(): state {} illegal, {}", stateStack, ignored);
+            }
+        }
     }
 
-    private boolean loops()
+    private boolean isLegalLoop()
     {
-        return stateStack.lastElement().canTransition(stateStack.firstElement());
+        if (!stateStack.lastElement().canTransition(stateStack.firstElement()))
+        {
+            return false;
+        }
+        final State[] currentState = getCurrentState();
+        return predicates.stream()
+                  .filter(SequencePredicate::supportsTestingLoops)
+                  .allMatch(p -> p.testLoop(currentState));
+    }
+
+    private boolean isLegalSequence()
+    {
+        final State[] currentState = getCurrentState();
+        return predicates.stream()
+                         .filter(SequencePredicate::supportsTestingSequences)
+                         .allMatch(p -> p.testSequence(currentState));
     }
 
     private void getNextState() throws NoMoreElementsException
@@ -93,7 +107,7 @@ public class StateSearcher implements Iterator<Siteswap>
             moveIteratorOnToNextState();
         }
 
-        if (!isLegalSequence.test(getCurrentState(), false))
+        if (!isLegalSequence())
         {
             LOG.trace("getNextState(): Current state not legal...");
             getNextState();
@@ -129,17 +143,8 @@ public class StateSearcher implements Iterator<Siteswap>
         {
             LOG.trace("moveIteratorOnToNextState(): getting next for iterator at {}", iteratorStack.size());
             final State nextState = iteratorStack.lastElement().next();
-            if (aLegalState.test(nextState))
-            {
-                LOG.trace("moveIteratorOnToNextState(): Found next legal state, pushing onto the state stack.");
-                stateStack.pop();
-                stateStack.push(nextState);
-            }
-            else
-            {
-                LOG.trace("moveIteratorOnToNextState(): Next state was not legal, retrying...");
-                moveIteratorOnToNextState();
-            }
+            stateStack.pop();
+            stateStack.push(nextState);
         }
         else
         {

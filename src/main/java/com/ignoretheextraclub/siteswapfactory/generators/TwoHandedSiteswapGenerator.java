@@ -5,6 +5,7 @@ import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfi
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +30,11 @@ public class TwoHandedSiteswapGenerator extends SiteswapGenerator
         {
             try
             {
-                final VanillaState[] vanillaStates = new VanillaState[states.length];
-                for (int i = 0; i < vanillaStates.length; i++)
-                {
-                    vanillaStates[i] = (VanillaState) states[i];
-                }
-                LOG.trace("Looking at {} : {}", "states", states);
-                return SiteswapFactory.createTHS(vanillaStates, sortingStrategy, reduce);
+                return SiteswapFactory.createTHS(VanillaStateUtils.castAllToVanillaState(states), sortingStrategy, reduce);
             }
-            catch (InvalidSiteswapException e)
+            catch (final InvalidSiteswapException cause)
             {
-                throw new RuntimeException(e);
+                throw new IllegalArgumentException("Provided states were invalid", cause);
             }
         });
     }

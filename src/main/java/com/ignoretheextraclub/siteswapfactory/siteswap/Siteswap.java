@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 import java.util.stream.Stream;
@@ -148,17 +149,6 @@ public interface Siteswap
     boolean same(Siteswap other);
 
     /**
-     Appends the provided siteswap to this siteswap. The implementer may insert transition throws if required.
-
-     @param other other siteswap to append.
-
-     @return A siteswap with other appended to this.
-
-     @throws UnsupportedOperationException If the types are not compatible or they could not be joined.
-     */
-    Siteswap append(Siteswap other) throws UnsupportedOperationException;
-
-    /**
      Returns a stream where the each {@link Siteswap} in the stream is an anagram of this.
      <p>
      Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
@@ -181,4 +171,15 @@ public interface Siteswap
      @return A list of related siteswaps
      */
     Stream<Siteswap> getRelated() throws UnsupportedOperationException;
+
+    /**
+     Returns a valid siteswap that is the concatenation if this siteswap with other. The implementation may have to add
+     transition throws in order to make it legal. Implementations should strive to use the fewest number of transition
+     throws possible.
+     @param other
+     @return A valid siteswap that is the concatenation of this siteswap and other
+     @throws UnsupportedOperationException if this implementation does not support it
+     @throws TransitionException if there is no transition or the other type is incompatible.
+     */
+    Siteswap append(Siteswap other) throws UnsupportedOperationException, TransitionException;
 }

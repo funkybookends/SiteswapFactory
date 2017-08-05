@@ -174,7 +174,7 @@ public class VanillaState implements State
                     throw new IllegalStateException("Was forced to throw a 0, but could not", cause);
                 }
             }
-            throw new BadThrowException("Cannot throw [" + thro + "], must throw 0");
+            throw new BadThrowException(this.toString() + " Cannot throw [" + thro + "], must throw 0");
         }
         try
         {

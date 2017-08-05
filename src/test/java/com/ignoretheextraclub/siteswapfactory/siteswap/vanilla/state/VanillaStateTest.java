@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.*;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
 
 /**
@@ -17,9 +18,6 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.sta
  */
 public class VanillaStateTest
 {
-    private static final VanillaState tttff = state(true, true, true, false, false);
-    private static final VanillaState ftttf = state(false, true, true, true, false);
-
     private static final VanillaThro ZERO = VanillaThro.getUnchecked(0);
     private static final VanillaThro ONE = VanillaThro.getUnchecked(1);
     private static final VanillaThro TWO = VanillaThro.getUnchecked(2);
@@ -33,20 +31,20 @@ public class VanillaStateTest
     @Test
     public void canThrow() throws Exception
     {
-        softly.assertThat(tttff.canThrow()).isTrue();
-        softly.assertThat(ftttf.canThrow()).isFalse();
+        softly.assertThat(XXX__.canThrow()).isTrue();
+        softly.assertThat(_XXX_.canThrow()).isFalse();
     }
 
     @Test
     public void getAvailableThrows() throws Exception
     {
-        Set<Thro> availableThrows = tttff.getAvailableThrows();
+        Set<Thro> availableThrows = XXX__.getAvailableThrows();
         softly.assertThat(availableThrows.size()).isEqualTo(3);
         softly.assertThat(availableThrows.contains(THREE)).isTrue();
         softly.assertThat(availableThrows.contains(FOUR)).isTrue();
         softly.assertThat(availableThrows.contains(FIVE)).isTrue();
 
-        Set<Thro> availableThrows1 = ftttf.getAvailableThrows();
+        Set<Thro> availableThrows1 = _XXX_.getAvailableThrows();
         softly.assertThat(availableThrows1.size()).isEqualTo(1);
         softly.assertThat(availableThrows1.contains(ZERO)).isTrue();
     }
@@ -54,82 +52,82 @@ public class VanillaStateTest
     @Test
     public void getMaxThrow() throws Exception
     {
-        softly.assertThat(tttff.getMaxThrow()).isSameAs(VanillaThro.get(5));
-        softly.assertThat(ftttf.getMaxThrow()).isSameAs(VanillaThro.get(5));
+        softly.assertThat(XXX__.getMaxThrow()).isSameAs(VanillaThro.get(5));
+        softly.assertThat(_XXX_.getMaxThrow()).isSameAs(VanillaThro.get(5));
     }
 
     @Test
     public void getNumObjects() throws Exception
     {
-        softly.assertThat(tttff.getNumObjects()).isEqualTo(3);
-        softly.assertThat(ftttf.getNumObjects()).isEqualTo(3);
+        softly.assertThat(XXX__.getNumObjects()).isEqualTo(3);
+        softly.assertThat(_XXX_.getNumObjects()).isEqualTo(3);
     }
 
     @Test
     public void isGroundState() throws Exception
     {
-        softly.assertThat(tttff.isGroundState()).isTrue();
-        softly.assertThat(ftttf.isGroundState()).isFalse();
+        softly.assertThat(XXX__.isGroundState()).isTrue();
+        softly.assertThat(_XXX_.isGroundState()).isFalse();
     }
 
     @Test
     public void getThrow() throws Exception
     {
-        softly.assertThat(ftttf.getThrow(tttff)).isEqualTo(ZERO);
-        softly.assertThat(tttff.getThrow(tttff)).isEqualTo(THREE);
+        softly.assertThat(_XXX_.getThrow(XXX__)).isEqualTo(ZERO);
+        softly.assertThat(XXX__.getThrow(XXX__)).isEqualTo(THREE);
     }
 
     @Test
     public void excitedness() throws Exception
     {
-        softly.assertThat(tttff.excitedness()).isEqualTo(7);
-        softly.assertThat(ftttf.excitedness()).isEqualTo(14);
+        softly.assertThat(XXX__.excitedness()).isEqualTo(7);
+        softly.assertThat(_XXX_.excitedness()).isEqualTo(14);
     }
 
     @Test
     public void getGroundState() throws Exception
     {
-        softly.assertThat(VanillaStateUtils.getGroundState(5, 3)).isEqualTo(tttff);
+        softly.assertThat(VanillaStateUtils.getGroundState(5, 3)).isEqualTo(XXX__);
     }
 
     @Test
     public void testToString() throws Exception
     {
-        Assert.assertEquals("XXX__", tttff.toString());
-        Assert.assertEquals("_XXX_", ftttf.toString());
+        Assert.assertEquals("XXX__", XXX__.toString());
+        Assert.assertEquals("_XXX_", _XXX_.toString());
     }
 
     @Test
     public void equals() throws Exception
     {
-        Assert.assertEquals(tttff, tttff);
-        Assert.assertEquals(ftttf, ftttf);
-        Assert.assertEquals(tttff, state(true, true, true, false, false));
-        Assert.assertEquals(ftttf, state(false, true, true, true, false));
+        Assert.assertEquals(XXX__, XXX__);
+        Assert.assertEquals(_XXX_, _XXX_);
+        Assert.assertEquals(XXX__, state(true, true, true, false, false));
+        Assert.assertEquals(_XXX_, state(false, true, true, true, false));
 
-        Assert.assertNotEquals(tttff, ftttf);
-        Assert.assertNotEquals(ftttf, tttff);
+        Assert.assertNotEquals(XXX__, _XXX_);
+        Assert.assertNotEquals(_XXX_, XXX__);
     }
 
     @Test
     public void thro() throws Exception
     {
-        softly.assertThat(ftttf.thro(ZERO)).isEqualTo(tttff);
-        softly.assertThat(tttff.thro(THREE)).isEqualTo(tttff);
+        softly.assertThat(_XXX_.thro(ZERO)).isEqualTo(XXX__);
+        softly.assertThat(XXX__.thro(THREE)).isEqualTo(XXX__);
     }
 
     @Test
     public void getNextStates() throws Exception
     {
-        final Set<State> nextStates = tttff.getNextStates();
+        final Set<State> nextStates = XXX__.getNextStates();
         Assert.assertEquals(3, nextStates.size());
-        Assert.assertTrue(nextStates.contains(tttff));
+        Assert.assertTrue(nextStates.contains(XXX__));
         Assert.assertTrue(nextStates.contains(state(true, true, false, true, false)));
         Assert.assertTrue(nextStates.contains(state(true, true, false, false, true)));
 
-        final Set<State> nextStates1 = ftttf.getNextStates();
+        final Set<State> nextStates1 = _XXX_.getNextStates();
         Assert.assertEquals(1, nextStates1.size());
-        Assert.assertTrue(nextStates1.contains(tttff));
+        Assert.assertTrue(nextStates1.contains(XXX__));
 
         final Set<State> nextStates2 = state(false, true, true, true, false, false).getNextStates();
         Assert.assertEquals(1, nextStates2.size());
@@ -139,8 +137,8 @@ public class VanillaStateTest
     @Test
     public void canTransition() throws Exception
     {
-        softly.assertThat(ftttf.canTransition(tttff)).isTrue();
-        softly.assertThat(tttff.canTransition(ftttf)).isFalse();
+        softly.assertThat(_XXX_.canTransition(XXX__)).isTrue();
+        softly.assertThat(XXX__.canTransition(_XXX_)).isFalse();
     }
 
     @Test
@@ -150,7 +148,7 @@ public class VanillaStateTest
         Assert.assertEquals(state(true, true, true), firstState);
 
         VanillaState firstState1 = VanillaStateUtils.getFirstState(new VanillaThro[]{FIVE, THREE, ONE});
-        Assert.assertEquals(tttff, firstState1);
+        Assert.assertEquals(XXX__, firstState1);
     }
 
     @Test

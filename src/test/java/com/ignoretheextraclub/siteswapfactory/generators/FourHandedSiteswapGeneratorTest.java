@@ -2,7 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.generators;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.impl.RequiredStatePredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.impl.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
@@ -35,10 +35,11 @@ public class FourHandedSiteswapGeneratorTest
         final State groundState = VanillaStateUtils.getGroundState(9, 6);
         generator.addStartingState(groundState);
         final List<Siteswap> collect = generator.generate()
+                                                .distinct()
                                                 .peek((s) -> LOG.info("{}\t{}", s.toString(), s.getStates()))
                                                 .collect(Collectors.toList());
-        final RequiredStatePredicate requiredStatePredicate = new RequiredStatePredicate(groundState);
-        assertThat(collect).hasSize(91).allMatch((s) -> requiredStatePredicate.test(s.getStates(), true));
+        final StatePredicate containsStatePredicate = new StatePredicate(groundState);
+        assertThat(collect).hasSize(59).allMatch((s) -> containsStatePredicate.test(s.getStates()));
     }
 
     private TwoHandedVanillaSiteswap ths(final String s) throws InvalidSiteswapException

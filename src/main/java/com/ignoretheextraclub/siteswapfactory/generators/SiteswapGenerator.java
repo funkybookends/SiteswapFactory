@@ -1,11 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.generators;
 
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.SequencePredicate;
-import com.ignoretheextraclub.siteswapfactory.generators.predicates.StatePredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.SequencePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
@@ -20,8 +21,7 @@ public class SiteswapGenerator
 
     private Set<State> startingStates = new HashSet<>();
     private final int maxPeriod;
-    private StatePredicate statePredicate;
-    private SequencePredicate sequencePredicate;
+    private List<SequencePredicate> sequencePredicates = new ArrayList<>();
     private final Function<State[], Siteswap> siteswapConstructor;
 
     public SiteswapGenerator(final int maxPeriod, final Function<State[], Siteswap> siteswapConstructor)
@@ -40,15 +40,9 @@ public class SiteswapGenerator
         return this;
     }
 
-    public SiteswapGenerator addPredicate(final StatePredicate statePredicate)
-    {
-        this.statePredicate = statePredicate.and(this.statePredicate);
-        return this;
-    }
-
     public SiteswapGenerator addPredicate(final SequencePredicate sequencePredicate)
     {
-        this.sequencePredicate = sequencePredicate.and(this.sequencePredicate);
+        this.sequencePredicates.add(sequencePredicate);
         return this;
     }
 
@@ -59,9 +53,8 @@ public class SiteswapGenerator
         final Spliterator<Siteswap> siteswapSpliterator = Spliterators.spliteratorUnknownSize(new StateSearcher(
                 startingStates,
                 maxPeriod,
-                statePredicate,
-                sequencePredicate,
-                siteswapConstructor), Spliterator.SIZED);
+                sequencePredicates,
+                siteswapConstructor), Spliterator.ORDERED | Spliterator.NONNULL);
 
         return StreamSupport.stream(siteswapSpliterator, false).unordered();
     }
