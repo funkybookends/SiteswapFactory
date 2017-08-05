@@ -27,7 +27,8 @@ public final class VanillaStateUtils
         return getFirstState(thros, VanillaThroUtils.numObjects(thros));
     }
 
-    public static VanillaState getFirstState(final VanillaThro[] thros, final int numObjects) throws InvalidSiteswapException
+    public static VanillaState getFirstState(final VanillaThro[] thros,
+                                             final int numObjects) throws InvalidSiteswapException
     {
         try
         {
@@ -43,6 +44,16 @@ public final class VanillaStateUtils
                 final VanillaThro thro = throsLooper.next();
                 throStack.push(thro);
                 builder.thenThrow(thro); // bad throw & num objects
+
+                try
+                {
+                    VanillaState.validateSize(throStack.size());
+                }
+                catch (PeriodException e)
+                {
+                    throw new InvalidSiteswapException("After " + throStack.size() + " throws of " + VanillaThroUtils.vanillaThrowArrayToString(
+                            thros) + " still had not thrown " + numObjects + " objects");
+                }
             }
 
             VanillaState state = new VanillaState(builder.getOccupied()); // period & numObjects

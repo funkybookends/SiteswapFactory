@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
+import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -16,8 +17,7 @@ import static org.junit.Assert.fail;
  */
 public class VanillaStateUtilsTest
 {
-    @Rule
-    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
+    @Rule public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
     public void testGetFirstState() throws Exception
@@ -26,8 +26,11 @@ public class VanillaStateUtilsTest
         softly.assertThat(getFirstState(stringToVanillaThrowArray("441"))).isEqualTo(state(true, true, true, false));
         softly.assertThat(getFirstState(stringToVanillaThrowArray("441355203"))).isEqualTo(XXX__);
         softly.assertThat(getFirstState(stringToVanillaThrowArray("55500"))).isEqualTo(XXX__);
-        softly.assertThat(getFirstState(stringToVanillaThrowArray("555"))).isEqualTo(state(true, true, true, true, true));
+        softly.assertThat(getFirstState(stringToVanillaThrowArray("555")))
+              .isEqualTo(state(true, true, true, true, true));
         softly.assertThat(getFirstState(stringToVanillaThrowArray("555"), 3)).isEqualTo(XXX__);
+        softly.assertThatThrownBy(() -> getFirstState(stringToVanillaThrowArray("555"), 6))
+              .isInstanceOf(InvalidSiteswapException.class);
     }
 
     @Test
