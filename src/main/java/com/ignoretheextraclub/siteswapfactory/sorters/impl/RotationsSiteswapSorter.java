@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.sorters.SiteswapSorter;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils;
@@ -8,14 +9,14 @@ import com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils;
 /**
  Created by caspar on 26/07/17.
  */
-public class RotationsSiteswapSorter<State> implements SiteswapSorter<State>
+public class RotationsSiteswapSorter implements SiteswapSorter
 {
     private final State[] origin;
-    private final SortingStrategy<State> sortingStrategy;
+    private final SortingStrategy sortingStrategy;
     private int winningIndex;
     private boolean sorted = false;
 
-    public RotationsSiteswapSorter(final State[] states, final SortingStrategy<State> sortingStrategy)
+    public RotationsSiteswapSorter(final State[] states, final SortingStrategy sortingStrategy)
     {
         this.origin = states;
         this.sortingStrategy = sortingStrategy;

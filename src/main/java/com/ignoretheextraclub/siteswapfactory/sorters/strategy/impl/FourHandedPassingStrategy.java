@@ -2,14 +2,13 @@ package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 /**
  Created by caspar on 10/12/16.
  */
-public class FourHandedPassingStrategy implements SortingStrategy<VanillaState>
+public class FourHandedPassingStrategy implements SortingStrategy
 {
     private static final String NAME = "FourHandedPassing";
 
@@ -41,7 +40,7 @@ public class FourHandedPassingStrategy implements SortingStrategy<VanillaState>
     }
 
     @Override
-    public boolean takeFirst(final VanillaState[] first, final VanillaState[] second) throws InvalidSiteswapException
+    public boolean takeFirst(final State[] first, final State[] second) throws InvalidSiteswapException
     {
         final int scoreFirst = scoreRotation(first);
         final int scoreSecond = scoreRotation(second);
@@ -54,16 +53,42 @@ public class FourHandedPassingStrategy implements SortingStrategy<VanillaState>
             return false;
         }
         return first[0].excitedness() < second[0].excitedness();
+//        for (int i = 0; i < first.length; i++)
+//        {
+//            if (first[i].excitedness() < second[i].excitedness())
+//            {
+//                return true;
+//            }
+//            else if (second[i].excitedness() < first[i].excitedness())
+//            {
+//                return false;
+//            }
+//        }
+//        for (int i = 0; i < first.length; i++)
+//        {
+//            final Thro firstThro = first[i].getThrow(first[(i + 1) % first.length]);
+//            final Thro seconThro = second[i].getThrow(first[(i + 1) % second.length]);
+//
+//            if (firstThro.getNumBeats() > seconThro.getNumBeats())
+//            {
+//                return true;
+//            }
+//            if (seconThro.getNumBeats() > firstThro.getNumBeats())
+//            {
+//                return false;
+//            }
+//        }
+//        return true;
     }
 
-    private int scoreRotation(final VanillaState[] states) throws InvalidSiteswapException
+    private int scoreRotation(final State[] states) throws InvalidSiteswapException
     {
         try
         {
             int score = 0;
             for (int i = 0; i < states.length; i++)
             {
-                final int thro = ((VanillaThro) states[i].getThrow(states[(i + 1) % states.length])).getNumBeats();
+                final int thro = states[i].getThrow(states[(i + 1) % states.length]).getNumBeats();
                 score += (states.length - i) * (thro + (thro % 2));
             }
             return score;

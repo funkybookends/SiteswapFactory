@@ -7,6 +7,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateValidationUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.RotationsSiteswapSorter;
@@ -25,11 +26,11 @@ public class VanillaSiteswap implements Siteswap
     private static final String TYPE = "Vanilla Siteswap";
     protected final VanillaState[] states;
     protected final VanillaThro[] thros;
-    protected final SortingStrategy<VanillaState> sortingStrategy;
+    protected final SortingStrategy sortingStrategy;
 
     public VanillaSiteswap(final VanillaState[] states,
                            final VanillaThro[] thros,
-                           final SortingStrategy<VanillaState> sortingStrategy) throws InvalidSiteswapException
+                           final SortingStrategy sortingStrategy) throws InvalidSiteswapException
     {
         try
         {
@@ -41,8 +42,8 @@ public class VanillaSiteswap implements Siteswap
             throw new InvalidSiteswapException("Invalid Siteswap.", cause);
         }
 
-        final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(states, sortingStrategy);
-        this.states = sorter.getWinningSort();
+        final RotationsSiteswapSorter sorter = new RotationsSiteswapSorter(states, sortingStrategy);
+        this.states = VanillaStateUtils.castAllToVanillaState(sorter.getWinningSort());
         this.thros = sorter.sortToMatch(thros);
         this.sortingStrategy = sortingStrategy;
     }
@@ -132,6 +133,7 @@ public class VanillaSiteswap implements Siteswap
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean same(final Siteswap other)
     {
         if (this.equals(other))
@@ -140,11 +142,13 @@ public class VanillaSiteswap implements Siteswap
         }
         try
         {
-            final RotationsSiteswapSorter<VanillaState> sorter = new RotationsSiteswapSorter<>(this.states,
-                                                                                               HighestThrowFirstStrategy
-                                                                                                       .get());
-            sorter.sort();
-            return Arrays.deepEquals(sorter.getWinningSort(), sorter.sortToMatch(other.getStates()));
+            final RotationsSiteswapSorter thisSorter = new RotationsSiteswapSorter(this.states,
+                    HighestThrowFirstStrategy.get());
+            thisSorter.sort();
+            final RotationsSiteswapSorter otherSorter = new RotationsSiteswapSorter(other.getStates(),
+                    HighestThrowFirstStrategy.get());
+            otherSorter.sort();
+            return Arrays.deepEquals(thisSorter.getWinningSort(), otherSorter.getWinningSort());
         }
         catch (final InvalidSiteswapException invalidSiteswapException)
         {
@@ -210,5 +214,18 @@ public class VanillaSiteswap implements Siteswap
         result = 31 * result + Arrays.hashCode(thros);
         result = 31 * result + sortingStrategy.hashCode();
         return result;
+    }
+
+    @Override
+    public Siteswap resort(final SortingStrategy newSortingStrategy)
+    {
+        try
+        {
+            return new VanillaSiteswap(this.getStates(), this.getThrows(), newSortingStrategy);
+        }
+        catch (InvalidSiteswapException e)
+        {
+            throw new IllegalStateException("Could not create new siteswap", e);
+        }
     }
 }

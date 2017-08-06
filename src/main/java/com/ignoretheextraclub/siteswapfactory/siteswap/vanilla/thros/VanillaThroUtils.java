@@ -2,6 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -306,5 +307,19 @@ public final class VanillaThroUtils
         {
             throw new InvalidSiteswapException("Not a valid four handed siteswap", cause);
         }
+    }
+
+
+
+    public static FourHandedSiteswapThro[] castAllToFourHandedSiteswapThro(final Thro[] thros)
+    {
+        final FourHandedSiteswapThro[] result = new FourHandedSiteswapThro[thros.length];
+
+        for (int i = 0; i < thros.length; i++)
+        {
+            result[i] = (FourHandedSiteswapThro) thros[i];
+        }
+
+        return result;
     }
 }

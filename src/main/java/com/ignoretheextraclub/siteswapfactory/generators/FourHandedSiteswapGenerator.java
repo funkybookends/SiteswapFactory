@@ -5,9 +5,10 @@ import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfi
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
+import com.ignoretheextraclub.siteswapfactory.predicates.SequencePredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.impl.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.impl.ThrowCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
@@ -21,8 +22,8 @@ public class FourHandedSiteswapGenerator extends SiteswapGenerator
 {
     private static final Logger LOG = LoggerFactory.getLogger(FourHandedSiteswapGenerator.class);
 
-    private FourHandedSiteswapGenerator(final int maxPeriod,
-                                        final SortingStrategy<VanillaState> sortingStrategy,
+    public FourHandedSiteswapGenerator(final int maxPeriod,
+                                        final SortingStrategy sortingStrategy,
                                         final boolean reduce)
     {
         super(maxPeriod, (State[] states) ->
@@ -51,7 +52,7 @@ public class FourHandedSiteswapGenerator extends SiteswapGenerator
 
     public static SiteswapGenerator ground(final int numObjects,
                                            final int maxPeriod,
-                                           final SortingStrategy<VanillaState> sortingStrategy) throws NumObjectsException, PeriodException
+                                           final SortingStrategy sortingStrategy) throws NumObjectsException, PeriodException
     {
         final FourHandedSiteswapGenerator generator = new FourHandedSiteswapGenerator(maxPeriod, sortingStrategy, true);
 
@@ -60,14 +61,39 @@ public class FourHandedSiteswapGenerator extends SiteswapGenerator
         return generator;
     }
 
+    public static SiteswapGenerator all(final int numObjects, final int maxPeriod) throws NumObjectsException, PeriodException
+    {
+        return all(numObjects, maxPeriod, SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY);
+    }
+
     public static SiteswapGenerator all(final int numObjects,
+                                        final int maxPeriod,
+                                        final SortingStrategy sortingStrategy) throws NumObjectsException, PeriodException
+    {
+        final FourHandedSiteswapGenerator generator = new FourHandedSiteswapGenerator(maxPeriod,
+                sortingStrategy,
+                true);
+
+        VanillaStateUtils.getAllStates(numObjects, maxPeriod).forEach(generator::addStartingState);
+
+        return generator;
+    }
+
+    public static SiteswapGenerator excited(final int numObjects,
                                         final int maxPeriod) throws NumObjectsException, PeriodException
     {
         final FourHandedSiteswapGenerator generator = new FourHandedSiteswapGenerator(maxPeriod,
                 SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY,
                 true);
 
-        VanillaStateUtils.getAllStates(numObjects, maxPeriod).forEach(generator::addStartingState);
+        final SequencePredicate banGroundState = new StatePredicate(VanillaStateUtils.getGroundState(numObjects,
+                maxPeriod)).negate();
+
+        VanillaStateUtils.getAllStates(numObjects, maxPeriod)
+                         .filter(banGroundState::testSequence)
+                         .forEach(generator::addStartingState);
+
+        generator.addPredicate(banGroundState);
 
         return generator;
     }

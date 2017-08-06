@@ -19,7 +19,7 @@ public interface SequencePredicate
 
     boolean testLoop(State[] looping);
 
-    boolean testSequence(State[] sequence);
+    boolean testSequence(State... sequence);
 
     boolean supportsTestingLoops();
 

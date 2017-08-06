@@ -1,11 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  Created by caspar on 15/12/16.
  */
-public interface SortingStrategy<State>
+public interface SortingStrategy
 {
     /**
      Returns the simple name for this sorting strategy.

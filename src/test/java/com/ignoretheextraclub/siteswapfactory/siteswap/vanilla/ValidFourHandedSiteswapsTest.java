@@ -42,15 +42,14 @@ public class ValidFourHandedSiteswapsTest
     @Test
     public void testCreateWithNoSortingStrategy() throws Exception
     {
-        final FourHandedSiteswap fhs = SiteswapFactory.createFHS(stringSiteswap, NoSortingStrategy.get(), true);
-        assertThat(fhs.toString()).isEqualTo(stringSiteswap.toUpperCase());
-    }
-
-    @Test
-    public void testCreateWithHighestThrowFirstStrategy() throws Exception
-    {
-        final FourHandedSiteswap fhs = SiteswapFactory.createFHS(stringSiteswap, HighestThrowFirstStrategy.get(), true);
-        assertThat(fhs.toString()).isEqualTo(stringSiteswap.toUpperCase());
+        final FourHandedSiteswap unsorted = SiteswapFactory.createFHS(stringSiteswap, NoSortingStrategy.get(), true);
+        assertThat(unsorted.toString()).isEqualTo(stringSiteswap.toUpperCase());
+        final FourHandedSiteswap hfsSorted = SiteswapFactory.createFHS(stringSiteswap, HighestThrowFirstStrategy.get(), true);
+        assertThat(hfsSorted.toString()).isEqualTo(stringSiteswap.toUpperCase());
+        assertThat(hfsSorted.same(unsorted)).isTrue();
+        assertThat(unsorted.same(hfsSorted)).isTrue();
+        assertThat(hfsSorted.equals(unsorted)).isTrue();
+        assertThat(unsorted.equals(hfsSorted)).isTrue();
     }
 
     @Test

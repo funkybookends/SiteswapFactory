@@ -97,7 +97,7 @@ public interface Siteswap
     /**
      @return
      */
-    SortingStrategy<State> getSortingStrategy();
+    SortingStrategy getSortingStrategy();
 
     /**
      Get the number of objects required for a hand when starting the siteswap
@@ -182,4 +182,11 @@ public interface Siteswap
      @throws TransitionException if there is no transition or the other type is incompatible.
      */
     Siteswap append(Siteswap other) throws UnsupportedOperationException, TransitionException;
+
+    /**
+     Return this siteswap sorted using the provided siteswap strategy.
+     @param newSortingStrategy
+     @return a new object that is this siteswap resorted
+     */
+    Siteswap resort(final SortingStrategy newSortingStrategy);
 }

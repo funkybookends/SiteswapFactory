@@ -2,14 +2,14 @@ package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 /**
  Created by caspar on 10/12/16.
  */
-public class HighestThrowFirstStrategy implements SortingStrategy<VanillaState>
+public class HighestThrowFirstStrategy implements SortingStrategy
 {
     private static final String NAME = "HighestThrowFirst";
 
@@ -36,7 +36,7 @@ public class HighestThrowFirstStrategy implements SortingStrategy<VanillaState>
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean takeFirst(VanillaState[] first, VanillaState[] second) throws InvalidSiteswapException
+    public boolean takeFirst(State[] first, State[] second) throws InvalidSiteswapException
     {
         try
         {

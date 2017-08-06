@@ -1,8 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 /**
@@ -16,7 +18,7 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
 
     public FourHandedSiteswap(final VanillaState[] states,
                               final FourHandedSiteswapThro[] thros,
-                              final SortingStrategy<VanillaState> sortingStrategy) throws InvalidSiteswapException
+                              final SortingStrategy sortingStrategy) throws InvalidSiteswapException
     {
         super(states, thros, sortingStrategy);
     }
@@ -51,4 +53,18 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
         return TYPE;
     }
 
+
+
+    @Override
+    public Siteswap resort(final SortingStrategy newSortingStrategy)
+    {
+        try
+        {
+            return new FourHandedSiteswap(this.getStates(), VanillaThroUtils.castAllToFourHandedSiteswapThro(thros), newSortingStrategy);
+        }
+        catch (InvalidSiteswapException e)
+        {
+            throw new IllegalStateException("Could not create new siteswap", e);
+        }
+    }
 }

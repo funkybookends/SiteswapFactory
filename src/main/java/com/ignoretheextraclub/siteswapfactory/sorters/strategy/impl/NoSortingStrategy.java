@@ -1,14 +1,15 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 /**
  Created by caspar on 25/06/17.
  */
-public class NoSortingStrategy<State> implements SortingStrategy<State>
+public class NoSortingStrategy implements SortingStrategy
 {
-    private static final NoSortingStrategy<?> INSTANCE = new NoSortingStrategy<>();
+    private static final NoSortingStrategy INSTANCE = new NoSortingStrategy();
 
     public static NoSortingStrategy get()
     {
