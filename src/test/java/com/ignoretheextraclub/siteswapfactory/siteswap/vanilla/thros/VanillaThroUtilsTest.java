@@ -40,35 +40,35 @@ public class VanillaThroUtilsTest
     @Test
     public void testNumObjects() throws Exception
     {
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 5,
                 6,
                 7)))).isEqualTo(6);
 
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 1)))).isEqualTo(1);
 
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 9,
                 7,
                 2)))).isEqualTo(6);
 
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 8,
                 9,
                 10)))).isEqualTo(9);
 
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 3,
                 4,
                 5)))).isEqualTo(4);
 
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 5,
                 6,
                 7)))).isEqualTo(6);
 
-        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.array(
+        softly.assertThat(VanillaThroUtils.numObjects(VanillaThroUtils.intArrayToVanillaThrowArray(StateTestUtils.thros(
                 5,
                 5,
                 5,
@@ -79,39 +79,39 @@ public class VanillaThroUtilsTest
     @Test
     public void globalToLocal() throws Exception
     {
-        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.array(9, 7, 5), 0))
-              .isEqualTo(StateTestUtils.array(9, 5, 7));
+        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.thros(9, 7, 5), 0))
+              .isEqualTo(StateTestUtils.thros(9, 5, 7));
 
-        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.array(9, 7, 5), 1))
-              .isEqualTo(StateTestUtils.array(7, 9, 5));
+        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.thros(9, 7, 5), 1))
+              .isEqualTo(StateTestUtils.thros(7, 9, 5));
 
-        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.array(7, 8, 9, 10, 6), 0))
-              .isEqualTo(StateTestUtils.array(7, 9, 6, 8, 10));
+        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.thros(7, 8, 9, 10, 6), 0))
+              .isEqualTo(StateTestUtils.thros(7, 9, 6, 8, 10));
 
-        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.array(7, 8, 9, 10, 6), 1))
-              .isEqualTo(StateTestUtils.array(8, 10, 7, 9, 6));
+        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.thros(7, 8, 9, 10, 6), 1))
+              .isEqualTo(StateTestUtils.thros(8, 10, 7, 9, 6));
 
-        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.array(7, 8, 6, 8, 6, 8, 6), 0))
-              .isEqualTo(StateTestUtils.array(7, 6, 6, 6, 8, 8, 8));
+        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.thros(7, 8, 6, 8, 6, 8, 6), 0))
+              .isEqualTo(StateTestUtils.thros(7, 6, 6, 6, 8, 8, 8));
 
-        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.array(7, 8, 6, 8, 6, 8, 6), 1))
-              .isEqualTo(StateTestUtils.array(8, 8, 8, 7, 6, 6, 6));
+        softly.assertThat(VanillaThroUtils.globalToLocal(StateTestUtils.thros(7, 8, 6, 8, 6, 8, 6), 1))
+              .isEqualTo(StateTestUtils.thros(8, 8, 8, 7, 6, 6, 6));
     }
 
     @Test
     public void localToGlobal() throws Exception
     {
-        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.array(9, 5, 7)))
-              .isEqualTo(StateTestUtils.array(9, 7, 5));
+        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.thros(9, 5, 7)))
+              .isEqualTo(StateTestUtils.thros(9, 7, 5));
 
-        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.array(7, 9, 6, 8, 10)))
-              .isEqualTo(StateTestUtils.array(7, 8, 9, 10, 6));
+        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.thros(7, 9, 6, 8, 10)))
+              .isEqualTo(StateTestUtils.thros(7, 8, 9, 10, 6));
 
-        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.array(7, 6, 6, 6, 8, 8, 8)))
-              .isEqualTo(StateTestUtils.array(7, 8, 6, 8, 6, 8, 6));
+        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.thros(7, 6, 6, 6, 8, 8, 8)))
+              .isEqualTo(StateTestUtils.thros(7, 8, 6, 8, 6, 8, 6));
 
-        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.array(8, 8, 8, 7, 6, 6, 6)))
-              .isEqualTo(StateTestUtils.array(8, 6, 8, 6, 8, 6, 7));
+        softly.assertThat(VanillaThroUtils.localToGlobal(StateTestUtils.thros(8, 8, 8, 7, 6, 6, 6)))
+              .isEqualTo(StateTestUtils.thros(8, 6, 8, 6, 8, 6, 7));
     }
 
     @Test
@@ -144,19 +144,19 @@ public class VanillaThroUtilsTest
     public void testVanillaThrowArrayToIntArray() throws Exception
     {
         softly.assertThat(VanillaThroUtils.vanillaThrowArrayToIntArray(new VanillaThro[]{get(1), get(2), get(3)}))
-              .isEqualTo(StateTestUtils.array(1, 2, 3));
+              .isEqualTo(StateTestUtils.thros(1, 2, 3));
 
         softly.assertThat(VanillaThroUtils.vanillaThrowArrayToIntArray(new VanillaThro[]{get(0), get(2), get(9)}))
-              .isEqualTo(StateTestUtils.array(0, 2, 9));
+              .isEqualTo(StateTestUtils.thros(0, 2, 9));
 
         softly.assertThat(VanillaThroUtils.vanillaThrowArrayToIntArray(new VanillaThro[]{get(12), get(2), get(3)}))
-              .isEqualTo(StateTestUtils.array(12, 2, 3));
+              .isEqualTo(StateTestUtils.thros(12, 2, 3));
 
         softly.assertThat(VanillaThroUtils.vanillaThrowArrayToIntArray(new VanillaThro[]{get(1), get(30), get(3)}))
-              .isEqualTo(StateTestUtils.array(1, 30, 3));
+              .isEqualTo(StateTestUtils.thros(1, 30, 3));
 
         softly.assertThat(VanillaThroUtils.vanillaThrowArrayToIntArray(new VanillaThro[]{get(1), get(30), get(3)}))
-              .isEqualTo(StateTestUtils.array(1, 30, 3));
+              .isEqualTo(StateTestUtils.thros(1, 30, 3));
 
         softly.assertThat(VanillaThroUtils.vanillaThrowArrayToIntArray(new VanillaThro[]{})).isEqualTo(new int[]{});
     }

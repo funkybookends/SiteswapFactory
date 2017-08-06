@@ -5,6 +5,8 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
@@ -17,6 +19,8 @@ import static org.junit.Assert.fail;
  */
 public class VanillaStateUtilsTest
 {
+    private static final Logger LOG = LoggerFactory.getLogger(VanillaStateUtilsTest.class);
+
     @Rule public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
@@ -52,5 +56,17 @@ public class VanillaStateUtilsTest
     public void testgetNumTrue() throws Exception
     {
         fail("Test not yet implemented");
+    }
+
+    @Test
+    public void testGetAllStates() throws Exception
+    {
+        softly.assertThat(VanillaStateUtils.getAllStates(7, 10)
+//                                            .peek(vanillaState -> LOG.info("{}", vanillaState))
+                                            .count()).isEqualTo(120);
+
+        softly.assertThat(VanillaStateUtils.getAllStates(3, 5)
+//                                            .peek(vanillaState -> LOG.info("{}", vanillaState))
+                                            .count()).isEqualTo(10);
     }
 }

@@ -19,6 +19,8 @@ allprojects {
         compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.5'
         compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+        compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+
 
         testCompile 'junit:junit:4.12'
         testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'

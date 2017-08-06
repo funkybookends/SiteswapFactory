@@ -3,12 +3,15 @@ package com.ignoretheextraclub.siteswapfactory.generators;
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.Function;
 
 /**
  Created by caspar on 30/07/17.
@@ -22,11 +25,17 @@ public class TwoHandedSiteswapGenerator extends SiteswapGenerator
         this(maxPeriod, SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true);
     }
 
-    public TwoHandedSiteswapGenerator(final int maxPeriod,
+    private TwoHandedSiteswapGenerator(final int maxPeriod,
                                       final SortingStrategy<VanillaState> sortingStrategy,
                                       final boolean reduce)
     {
-        super(maxPeriod, (State[] states) ->
+        super(maxPeriod, getSiteswapConstructor(sortingStrategy, reduce));
+    }
+
+    private static Function<State[], Siteswap> getSiteswapConstructor(final SortingStrategy<VanillaState> sortingStrategy,
+                                                                      final boolean reduce)
+    {
+        return (State[] states) ->
         {
             try
             {
@@ -36,6 +45,6 @@ public class TwoHandedSiteswapGenerator extends SiteswapGenerator
             {
                 throw new IllegalArgumentException("Provided states were invalid", cause);
             }
-        });
+        };
     }
 }

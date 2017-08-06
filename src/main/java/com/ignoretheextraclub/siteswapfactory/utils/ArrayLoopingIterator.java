@@ -25,7 +25,7 @@ public class ArrayLoopingIterator<T> implements Iterator<T>
     @Override
     public boolean hasNext()
     {
-        return true;
+        return array.length > 0;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.utils;
 
+import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.array;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
 import static org.junit.Assert.fail;
 
@@ -60,8 +60,8 @@ public class ArrayUtilsTest
     @Test
     public void getCopy() throws Exception
     {
-        softly.assertThat(ArrayUtils.getCopy(array(state(true, true, false), state(true, false, true), state(true, true, false)), 1))
-              .isEqualTo(array(state(true, false, true), state(true, true, false), state(true, true, false)));
+        softly.assertThat(ArrayUtils.getCopy(StateTestUtils.states(state(true, true, false), state(true, false, true), state(true, true, false)), 1))
+              .isEqualTo(StateTestUtils.states(state(true, false, true), state(true, true, false), state(true, true, false)));
     }
 
 

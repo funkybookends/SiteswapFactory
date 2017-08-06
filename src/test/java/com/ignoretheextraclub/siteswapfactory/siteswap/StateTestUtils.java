@@ -65,12 +65,17 @@ public final class StateTestUtils
         }
     }
 
-    public static VanillaState[] array(final VanillaState... states)
+    public static VanillaState[] states(final VanillaState... states)
     {
         return states;
     }
 
-    public static int[] array(final int... thros)
+    public static VanillaThro[] thros(final VanillaThro... thros)
+    {
+        return thros;
+    }
+
+    public static int[] thros(final int... thros)
     {
         return thros;
     }
@@ -84,7 +89,7 @@ public final class StateTestUtils
     {
         try
         {
-            return getGroundState(maxThrow, numObjects);
+            return getGroundState(numObjects, maxThrow);
         }
         catch (final PeriodException | NumObjectsException cause)
         {

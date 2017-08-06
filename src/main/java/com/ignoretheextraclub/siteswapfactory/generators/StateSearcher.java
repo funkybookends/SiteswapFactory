@@ -96,22 +96,20 @@ public class StateSearcher implements Iterator<Siteswap>
     {
         LOG.trace("getNextState(): Getting next State");
 
-        if (stateStack.size() < maxPeriod)
+        do
         {
-            LOG.trace("getNextState(): Not at max period, so building stack");
-            buildStack();
+            if (stateStack.size() < maxPeriod)
+            {
+                LOG.trace("getNextState(): Not at max period, so building stack");
+                buildStack();
+            }
+            else
+            {
+                LOG.trace("getNextState(): Reached max period, so moving on last iterator");
+                moveIteratorOnToNextState();
+            }
         }
-        else
-        {
-            LOG.trace("getNextState(): Reached max period, so moving on last iterator");
-            moveIteratorOnToNextState();
-        }
-
-        if (!isLegalSequence())
-        {
-            LOG.trace("getNextState(): Current state not legal...");
-            getNextState();
-        }
+        while (!isLegalSequence());
     }
 
     private void buildStack() throws NoMoreElementsException

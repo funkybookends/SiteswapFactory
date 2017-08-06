@@ -87,7 +87,7 @@ public class VanillaStateTest
     @Test
     public void getGroundState() throws Exception
     {
-        softly.assertThat(VanillaStateUtils.getGroundState(5, 3)).isEqualTo(XXX__);
+        softly.assertThat(VanillaStateUtils.getGroundState(3, 5)).isEqualTo(XXX__);
     }
 
     @Test
