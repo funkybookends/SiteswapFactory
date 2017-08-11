@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.generators;
 
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 
 /**
  Created by caspar on 30/07/17.
@@ -48,7 +50,7 @@ public class TwoHandedSiteswapGeneratorTest
     {
         final ArrayList<Object[]> tests = new ArrayList<>();
 
-        tests.add(new Object[]{3, 5, 41, 45, 4});
+        tests.add(new Object[]{3, 5, 25+13+5+2+1-5, 27+14+6+3+1 -6, 4}); // Minus the 6 that are not reduced
         tests.add(new Object[]{4, 7, 893, 1112, 1112-893});
 //        tests.add(new Object[]{5, 9, 694, 10271});
         tests.add(new Object[]{7, 9, 2797, 3034, 3034-2797});
@@ -73,6 +75,9 @@ public class TwoHandedSiteswapGeneratorTest
         softly.assertThat(generator.generateDistinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(allSiteswaps);
+
+        generator.generateDistinct().sorted(Comparator.comparingInt(Siteswap::getPeriod))
+                 .peek(siteswap -> LOG.info("{}", siteswap)).count();
     }
 
     @Test
@@ -82,6 +87,9 @@ public class TwoHandedSiteswapGeneratorTest
         softly.assertThat(generator.generateDistinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(excited);
+
+        generator.generateDistinct().sorted(Comparator.comparingInt(Siteswap::getPeriod))
+        .peek(siteswap -> LOG.info("{}", siteswap)).count();
     }
 
     @Test

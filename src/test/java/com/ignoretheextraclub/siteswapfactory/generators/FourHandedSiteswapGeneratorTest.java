@@ -50,10 +50,10 @@ public class FourHandedSiteswapGeneratorTest
     {
         final ArrayList<Object[]> tests = new ArrayList<>();
 
-        tests.add(new Object[]{3, 5, 8, 10, 2});
-        tests.add(new Object[]{4, 7, 195, 255, 255-195});
+        tests.add(new Object[]{3, 5, 6, 8, 2});
+        tests.add(new Object[]{4, 7, 142, 196, 54});
         //        tests.add(new Object[]{5, 9, 694, 10271});
-        tests.add(new Object[]{7, 9, 1937, 2045, 2045-1937});
+        tests.add(new Object[]{7, 9, 1748, 1856, 2045 - 1937});
         //        tests.add(new Object[]{6, 10, 56138, 82853});
 
         return tests;
@@ -75,7 +75,7 @@ public class FourHandedSiteswapGeneratorTest
         final SiteswapGenerator generator = FourHandedSiteswapGenerator.all(numObjects, maxPeriod);
         softly.assertThat(generator.generateDistinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
-                                    .count())
+                                   .count())
               .isEqualTo(allSiteswaps);
     }
 
@@ -93,19 +93,21 @@ public class FourHandedSiteswapGeneratorTest
     @Ignore("caused by fhs sorting strategy")
     public void testSorterProducesSameAmount() throws Exception
     {
-        final SiteswapGenerator hfsSorted = FourHandedSiteswapGenerator.all(numObjects, maxPeriod,
+        final SiteswapGenerator hfsSorted = FourHandedSiteswapGenerator.all(numObjects,
+                maxPeriod,
                 SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY);
 
-        final SiteswapGenerator passingSorted = FourHandedSiteswapGenerator.all(numObjects, maxPeriod,
+        final SiteswapGenerator passingSorted = FourHandedSiteswapGenerator.all(numObjects,
+                maxPeriod,
                 SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY);
 
         LOG.info("allHfsSorted");
         final List<Siteswap> allHfsSorted = hfsSorted.generateDistinct()
-//                                                     .peek(s -> LOG.info("{}", s))
+                                                     //                                                     .peek(s -> LOG.info("{}", s))
                                                      .collect(Collectors.toList());
         LOG.info("passing");
         final List<Siteswap> allPassingSorted = passingSorted.generateDistinct()
-//                                                             .peek(s -> LOG.info("{}" , s))
+                                                             //                                                             .peek(s -> LOG.info("{}" , s))
                                                              .collect(Collectors.toList());
 
         softly.assertThat(allHfsSorted.size()).isEqualTo(allPassingSorted.size());

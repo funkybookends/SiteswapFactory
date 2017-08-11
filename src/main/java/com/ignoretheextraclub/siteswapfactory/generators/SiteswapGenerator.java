@@ -22,6 +22,7 @@ public class SiteswapGenerator
     private Set<State> startingStates = new HashSet<>();
     private final int maxPeriod;
     private List<SequencePredicate> sequencePredicates = new ArrayList<>();
+    private List<SequencePredicate> loopPredicates = new ArrayList<>();
     private final Function<State[], Siteswap> siteswapConstructor;
 
     public SiteswapGenerator(final int maxPeriod, final Function<State[], Siteswap> siteswapConstructor)
@@ -40,7 +41,13 @@ public class SiteswapGenerator
         return this;
     }
 
-    public SiteswapGenerator addPredicate(final SequencePredicate sequencePredicate)
+    public SiteswapGenerator addResultPredicate(final SequencePredicate sequencePredicate)
+    {
+        this.loopPredicates.add(sequencePredicate);
+        return this;
+    }
+
+    public SiteswapGenerator addIntermediatePredicate(final SequencePredicate sequencePredicate)
     {
         this.sequencePredicates.add(sequencePredicate);
         return this;
@@ -54,6 +61,7 @@ public class SiteswapGenerator
                 startingStates,
                 maxPeriod,
                 sequencePredicates,
+                loopPredicates,
                 siteswapConstructor), Spliterator.ORDERED | Spliterator.NONNULL);
 
         return StreamSupport.stream(siteswapSpliterator, false).unordered();

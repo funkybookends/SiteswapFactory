@@ -85,7 +85,7 @@ public class TwoHandedSiteswapGenerator extends SiteswapGenerator
                          .filter(banGroundState::testSequence)
                          .forEach(generator::addStartingState);
 
-        generator.addPredicate(banGroundState);
+        generator.addIntermediatePredicate(banGroundState);
 
         return generator;
     }

@@ -23,7 +23,8 @@ public class StateSearcher implements Iterator<Siteswap>
 
     private final Set<State> startingStates;
     private final int maxPeriod;
-    private final List<SequencePredicate> predicates;
+    private final List<SequencePredicate> intermediatePredicates;
+    private final List<SequencePredicate> resultPredicates;
     private final Function<State[], Siteswap> siteswapConstructor;
 
     private Stack<State> stateStack = new Stack<>();
@@ -32,7 +33,8 @@ public class StateSearcher implements Iterator<Siteswap>
 
     protected StateSearcher(final Set<State> startingStates,
                             final int maxPeriod,
-                            final List<SequencePredicate> sequencePredicates,
+                            final List<SequencePredicate> intermediatePredicates,
+                            final List<SequencePredicate> resultPredicates,
                             final Function<State[], Siteswap> siteswapConstructor)
     {
         this.startingStates = Objects.requireNonNull(startingStates, "Starting States must not be null");
@@ -42,7 +44,16 @@ public class StateSearcher implements Iterator<Siteswap>
             throw new IllegalArgumentException("Must have at least 1 state");
         }
         this.maxPeriod = maxPeriod;
-        this.predicates = sequencePredicates == null ? Collections.emptyList() : sequencePredicates;
+        this.intermediatePredicates = intermediatePredicates == null ? Collections.emptyList() : intermediatePredicates;
+        this.resultPredicates = resultPredicates == null ? Collections.emptyList() : resultPredicates;
+        if (!this.intermediatePredicates.stream().allMatch(SequencePredicate::supportsTestingSequences))
+        {
+            throw new IllegalArgumentException("All intermediate predicates must support testing sequences");
+        }
+        if (!this.resultPredicates.stream().allMatch(SequencePredicate::supportsTestingLoops))
+        {
+            throw new IllegalArgumentException("All result predicates must support testing loops");
+        }
     }
 
     public Siteswap get() throws NoMoreElementsException
@@ -79,16 +90,13 @@ public class StateSearcher implements Iterator<Siteswap>
             return false;
         }
         final State[] currentState = getCurrentState();
-        return predicates.stream()
-                  .filter(SequencePredicate::supportsTestingLoops)
-                  .allMatch(p -> p.testLoop(currentState));
+        return resultPredicates.stream().allMatch(p -> p.testLoop(currentState));
     }
 
     private boolean isLegalSequence()
     {
         final State[] currentState = getCurrentState();
-        return predicates.stream()
-                         .filter(SequencePredicate::supportsTestingSequences)
+        return intermediatePredicates.stream()
                          .allMatch(p -> p.testSequence(currentState));
     }
 
