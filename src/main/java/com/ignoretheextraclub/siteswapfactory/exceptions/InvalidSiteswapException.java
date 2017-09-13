@@ -1,7 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.exceptions;
 
 /**
- Created by caspar on 26/11/16.
+ * Indicates that a provided {@link com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap} did not conform to the
+ * expectations of the interface, or that the provided constructor parameter could not be converted into a
+ * {@link com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap}
+ * @author Caspar Nonclercq
  */
 public class InvalidSiteswapException extends Exception
 {

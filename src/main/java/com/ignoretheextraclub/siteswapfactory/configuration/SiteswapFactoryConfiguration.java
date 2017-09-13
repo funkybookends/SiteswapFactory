@@ -5,7 +5,9 @@ import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.FourHandedPa
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
 
 /**
- Created by caspar on 29/07/17.
+ * A class for configuring a {@link com.ignoretheextraclub.siteswapfactory.SiteswapFactory}. Holds all the default
+ * values for a {@link com.ignoretheextraclub.siteswapfactory.SiteswapFactory}.
+ * @author Caspar Nonclercq
  */
 public class SiteswapFactoryConfiguration
 {

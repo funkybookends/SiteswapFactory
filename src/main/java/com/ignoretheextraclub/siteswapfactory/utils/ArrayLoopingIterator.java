@@ -36,9 +36,14 @@ public class ArrayLoopingIterator<T> implements Iterator<T>
         return next;
     }
 
+    public T peek()
+    {
+        return array[pointer];
+    }
+
     @Override
     public void forEachRemaining(final Consumer<? super T> action)
     {
-        throw new UnsupportedOperationException("forEachRemaining: Method would never terminate. Consider using a streamn and using .limit(int)");
+        throw new UnsupportedOperationException("forEachRemaining: Method would never terminate. Consider using a stream and using .limit(int)");
     }
 }

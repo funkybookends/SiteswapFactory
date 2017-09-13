@@ -1,7 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.exceptions;
 
 /**
- Created by caspar on 10/12/16.
+ * Indicates that the number of jugglers was not in the required bounds.
+ * @author Caspar Nonclercq
  */
 public class NumJugglersException extends InvalidSiteswapException
 {

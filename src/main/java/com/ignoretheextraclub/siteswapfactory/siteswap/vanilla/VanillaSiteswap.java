@@ -3,6 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.PrimePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateValidationUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
@@ -99,7 +100,7 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public boolean isPrime()
     {
-        return Stream.of(states).distinct().count() == getPeriod();
+        return PrimePredicate.isPrime(this.getStates());
     }
 
     @Override

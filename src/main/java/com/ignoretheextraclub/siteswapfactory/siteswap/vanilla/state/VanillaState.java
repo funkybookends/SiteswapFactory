@@ -28,8 +28,8 @@ public class VanillaState implements State
     protected static final String EMPTY = "_";
     protected static final String FILLED = "X";
 
-    protected static final int MIN_SIZE = 1;
-    protected static final int MAX_SIZE = 15;
+    public static final int MIN_SIZE = 1;
+    public static final int MAX_SIZE = 15;
 
     protected static final int MIN_OBJECTS = 1;
     protected static final int MAX_OBJECTS = 12;

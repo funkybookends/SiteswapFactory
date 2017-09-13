@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.exceptions;
 
 /**
- Created by caspar on 10/12/16.
+ * Indicates an issue with the period of a {@link com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap}
  */
 public class PeriodException extends InvalidSiteswapException
 {

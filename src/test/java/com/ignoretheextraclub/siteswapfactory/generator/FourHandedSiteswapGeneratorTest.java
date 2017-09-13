@@ -1,7 +1,11 @@
-package com.ignoretheextraclub.siteswapfactory.generators;
+package com.ignoretheextraclub.siteswapfactory.generator;
 
+import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
+import com.ignoretheextraclub.siteswapfactory.generator.factories.FourHandedSiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -62,8 +66,8 @@ public class FourHandedSiteswapGeneratorTest
     @Test
     public void testGround() throws Exception
     {
-        final SiteswapGenerator generator = FourHandedSiteswapGenerator.ground(numObjects, maxPeriod);
-        softly.assertThat(generator.generateDistinct()
+        final SiteswapGenerator<FourHandedSiteswap> generator = FourHandedSiteswapGenerator.ground(numObjects, maxPeriod);
+        softly.assertThat(generator.generate().distinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count())
               .isEqualTo(groundSiteswaps);
@@ -72,8 +76,8 @@ public class FourHandedSiteswapGeneratorTest
     @Test
     public void testAll() throws Exception
     {
-        final SiteswapGenerator generator = FourHandedSiteswapGenerator.all(numObjects, maxPeriod);
-        softly.assertThat(generator.generateDistinct()
+        final SiteswapGenerator<FourHandedSiteswap> generator = FourHandedSiteswapGenerator.all(numObjects, maxPeriod);
+        softly.assertThat(generator.generate().distinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count())
               .isEqualTo(allSiteswaps);
@@ -82,8 +86,8 @@ public class FourHandedSiteswapGeneratorTest
     @Test
     public void testExcited() throws Exception
     {
-        final SiteswapGenerator generator = FourHandedSiteswapGenerator.excited(numObjects, maxPeriod);
-        softly.assertThat(generator.generateDistinct()
+        final SiteswapGenerator<FourHandedSiteswap> generator = FourHandedSiteswapGenerator.excited(numObjects, maxPeriod);
+        softly.assertThat(generator.generate().distinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count())
               .isEqualTo(excited);
@@ -93,20 +97,20 @@ public class FourHandedSiteswapGeneratorTest
     @Ignore("caused by fhs sorting strategy")
     public void testSorterProducesSameAmount() throws Exception
     {
-        final SiteswapGenerator hfsSorted = FourHandedSiteswapGenerator.all(numObjects,
-                maxPeriod,
-                SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY);
+        final SiteswapGenerator<FourHandedSiteswap> hfsSorted = FourHandedSiteswapGenerator.allBuilder(numObjects,maxPeriod)
+                .setSiteswapConstructor(states -> SiteswapFactory.createFHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .create();
 
-        final SiteswapGenerator passingSorted = FourHandedSiteswapGenerator.all(numObjects,
-                maxPeriod,
-                SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY);
+        final SiteswapGenerator<FourHandedSiteswap> passingSorted = FourHandedSiteswapGenerator.allBuilder(numObjects,maxPeriod)
+                .setSiteswapConstructor(states -> SiteswapFactory.createFHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .create();
 
         LOG.info("allHfsSorted");
-        final List<Siteswap> allHfsSorted = hfsSorted.generateDistinct()
+        final List<Siteswap> allHfsSorted = hfsSorted.generate().distinct()
                                                      //                                                     .peek(s -> LOG.info("{}", s))
                                                      .collect(Collectors.toList());
         LOG.info("passing");
-        final List<Siteswap> allPassingSorted = passingSorted.generateDistinct()
+        final List<Siteswap> allPassingSorted = passingSorted.generate().distinct()
                                                              //                                                             .peek(s -> LOG.info("{}" , s))
                                                              .collect(Collectors.toList());
 

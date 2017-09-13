@@ -1,17 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.exceptions;
 
 /**
- Created by caspar on 26/11/16.
+ * Exception indicating a {@link com.ignoretheextraclub.siteswapfactory.siteswap.Thro} cannot be constructed, or for the
+ * current state the {@link com.ignoretheextraclub.siteswapfactory.siteswap.Thro} cannot be thrown.
+ * @author Caspar Nonclercq
  */
 public class BadThrowException extends InvalidSiteswapException
 {
-    public BadThrowException(String message)
+    public BadThrowException(final String message)
     {
         super(message);
-    }
-
-    public BadThrowException(String message, Throwable cause)
-    {
-        super(message, cause);
     }
 }

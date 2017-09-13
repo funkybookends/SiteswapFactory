@@ -1,7 +1,11 @@
-package com.ignoretheextraclub.siteswapfactory.generators;
+package com.ignoretheextraclub.siteswapfactory.generator;
 
+import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
+import com.ignoretheextraclub.siteswapfactory.generator.factories.TwoHandedSiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -63,7 +67,7 @@ public class TwoHandedSiteswapGeneratorTest
     public void testGround() throws Exception
     {
         final SiteswapGenerator generator = TwoHandedSiteswapGenerator.ground(numObjects, maxPeriod);
-        softly.assertThat(generator.generateDistinct()
+        softly.assertThat(generator.generate().distinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(groundSiteswaps);
     }
@@ -71,24 +75,24 @@ public class TwoHandedSiteswapGeneratorTest
     @Test
     public void testAll() throws Exception
     {
-        final SiteswapGenerator generator = TwoHandedSiteswapGenerator.all(numObjects, maxPeriod);
-        softly.assertThat(generator.generateDistinct()
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> generator = TwoHandedSiteswapGenerator.all(numObjects, maxPeriod);
+        softly.assertThat(generator.generate().distinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(allSiteswaps);
 
-        generator.generateDistinct().sorted(Comparator.comparingInt(Siteswap::getPeriod))
+        generator.generate().sorted(Comparator.comparingInt(Siteswap::getPeriod))
                  .peek(siteswap -> LOG.info("{}", siteswap)).count();
     }
 
     @Test
     public void testExcited() throws Exception
     {
-        final SiteswapGenerator generator = TwoHandedSiteswapGenerator.excited(numObjects, maxPeriod);
-        softly.assertThat(generator.generateDistinct()
-//                                   .peek(siteswap -> LOG.info("{}", siteswap))
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> generator = TwoHandedSiteswapGenerator.excited(numObjects, maxPeriod);
+        softly.assertThat(generator.generate().distinct()
+                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(excited);
 
-        generator.generateDistinct().sorted(Comparator.comparingInt(Siteswap::getPeriod))
+        generator.generate().sorted(Comparator.comparingInt(Siteswap::getPeriod))
         .peek(siteswap -> LOG.info("{}", siteswap)).count();
     }
 
@@ -96,16 +100,20 @@ public class TwoHandedSiteswapGeneratorTest
     @Ignore("caused by fhs sorting strategy")
     public void testSorterProducesSameAmount() throws Exception
     {
-        final SiteswapGenerator hfsSorted = TwoHandedSiteswapGenerator.all(numObjects, maxPeriod,
-                SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY);
-        softly.assertThat(hfsSorted.generateDistinct()
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> hfsSorted = TwoHandedSiteswapGenerator.allBuilder(numObjects, maxPeriod)
+                .setSiteswapConstructor(states -> SiteswapFactory.createTHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .create();
+
+        softly.assertThat(hfsSorted.generate().distinct()
 //                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(allSiteswaps);
 
-        final SiteswapGenerator passingSorted = TwoHandedSiteswapGenerator.all(numObjects, maxPeriod,
-                SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY);
-        softly.assertThat(passingSorted.generateDistinct()
-                                   .peek(siteswap -> LOG.info("{}", siteswap))
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> passingSorted = TwoHandedSiteswapGenerator.allBuilder(numObjects, maxPeriod)
+                .setSiteswapConstructor(states -> SiteswapFactory.createTHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .create();
+
+        softly.assertThat(passingSorted.generate().distinct()
+//                                   .peek(siteswap -> LOG.info("{}", siteswap))
                                    .count()).isEqualTo(allSiteswaps);
     }
 }
