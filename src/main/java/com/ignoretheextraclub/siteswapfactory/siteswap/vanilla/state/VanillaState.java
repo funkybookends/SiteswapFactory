@@ -55,21 +55,20 @@ public class VanillaState implements State
     }
 
     /**
-     Lower is better
+     Lower is closer to ground
 
      @return
      */
     @Override
-    @JsonIgnore
     public int excitedness()
     {
         int result = 0;
         int position_value = 1;
-        final int maxThro = ((VanillaThro) getMaxThrow()).getNumBeats();
+        final int maxThro = getMaxThrow().getNumBeats();
 
-        for (int position = 0; position < maxThro; position++)
+        for (int position = maxThro - 1; position >= 0; position--)
         {
-            if (occupied[position])
+            if (!occupied[position])
             {
                 result += position_value;
             }

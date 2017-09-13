@@ -2,7 +2,6 @@ package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 /**
@@ -42,87 +41,17 @@ public class FourHandedPassingStrategy implements SortingStrategy
     @Override
     public boolean takeFirst(final State[] first, final State[] second) throws InvalidSiteswapException
     {
-        // If one of them starts with the ground state, then that one is preferred
-        if (first[0].isGroundState() && !second[0].isGroundState())
-        {
-            return true;
-        }
-        else if (!first[0].isGroundState() && second[0].isGroundState())
-        {
-            return false;
-        } // They both begin in the ground state
-
-        int numPasses = 0;
-
-        // Prefer the one with the longest sequence of passes
-        for (int i = 0; i < first.length; i++)
-        {
-            final Thro firstThrow = first[i].getThrow(first[(i + 1) % first.length]);
-            final Thro secondThrow = second[i].getThrow(second[(i + 1) % second.length]);
-
-            final boolean firstIsPass = isPass(firstThrow);
-            final boolean secondIsPass = isPass(secondThrow);
-
-            if (firstIsPass && !secondIsPass)
-            {
-                return true;
-            }
-            if (!firstIsPass && secondIsPass)
-            {
-                return false;
-            }
-            else if (!firstIsPass && !secondIsPass)
-            {
-                break;
-            }
-            else
-            {
-                numPasses++;
-            }
-        } // They both have the same number of passes to begin with
-
-        // Prefer the one with the highest pass first.
-        for (int j = 0; j < numPasses; j++)
-        {
-            final Thro firstThrow = first[j].getThrow(first[(j + 1) % first.length]);
-            final Thro secondThrow = second[j].getThrow(second[(j + 1) % second.length]);
-
-            final boolean firstIsPass = isPass(firstThrow);
-            final boolean secondIsPass = isPass(secondThrow);
-
-            if (!firstThrow.equals(secondThrow))
-            {
-                if (firstIsPass && !secondIsPass)
-                {
-                    return true;
-                }
-                else if (!firstIsPass && secondIsPass)
-                {
-                    return false;
-                }
-                else if (firstIsPass && secondIsPass)
-                {
-                    return firstThrow.getNumBeats() < secondThrow.getNumBeats();
-                }
-            }
-        }
-
-        // Prefer the one with the highest pass first.
-        for (int j = numPasses; j < first.length; j++)
-        {
-            final Thro firstThrow = first[j].getThrow(first[(j + 1) % first.length]);
-            final Thro secondThrow = second[j].getThrow(second[(j + 1) % second.length]);
-
-            if (!firstThrow.equals(secondThrow))
-            {
-                return firstThrow.getNumBeats() > secondThrow.getNumBeats();
-            }
-        }
-        return true;
+        return scoreRotation(first) < scoreRotation(second);
     }
 
-    private boolean isPass(final Thro firstThrow)
+    private int scoreRotation(final State[] states) throws InvalidSiteswapException
     {
-        return firstThrow.getNumBeats() % 2 == 1;
+        int score = 0; // Higher is better
+        for (int i = 0; i < states.length; i++)
+        {
+            score -= states[i].excitedness() * i*i;
+            score -= states[i].getThrow(states[(i+1)%states.length]).getNumBeats() * i;
+        }
+        return score;
     }
 }

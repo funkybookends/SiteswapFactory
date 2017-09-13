@@ -27,6 +27,7 @@ public final class ThroUtils
 
      @return the highest.
      */
+    @SuppressWarnings("unchecked") // Thro extends Comparable
     public static <T extends Thro> T getHighestThro(T[] thros)
     {
         T highest = thros[0];

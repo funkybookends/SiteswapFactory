@@ -7,17 +7,34 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.*;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX__X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_XX_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_X_X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X__XX;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._XXX_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._XX_X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._X_XX;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.__XXX;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  Created by caspar on 15/01/17.
  */
 public class VanillaStateTest
 {
+    private static final Logger LOG = LoggerFactory.getLogger(VanillaStateTest.class);
+
     private static final VanillaThro ZERO = VanillaThro.getUnchecked(0);
     private static final VanillaThro ONE = VanillaThro.getUnchecked(1);
     private static final VanillaThro TWO = VanillaThro.getUnchecked(2);
@@ -25,8 +42,7 @@ public class VanillaStateTest
     private static final VanillaThro FOUR = VanillaThro.getUnchecked(4);
     private static final VanillaThro FIVE = VanillaThro.getUnchecked(5);
 
-    @Rule
-    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
+    @Rule public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
     public void canThrow() throws Exception
@@ -80,8 +96,8 @@ public class VanillaStateTest
     @Test
     public void excitedness() throws Exception
     {
-        softly.assertThat(XXX__.excitedness()).isEqualTo(7);
-        softly.assertThat(_XXX_.excitedness()).isEqualTo(14);
+        softly.assertThat(XXX__.excitedness()).isEqualTo(3);
+        softly.assertThat(_XXX_.excitedness()).isEqualTo(17);
     }
 
     @Test
@@ -155,5 +171,18 @@ public class VanillaStateTest
     public void testEqualsMethod() throws Exception
     {
         Assert.assertTrue(state(true, false, false, true).equals(state(true, false, false, true)));
+    }
+
+    @Test
+    public void testExcitedness() throws Exception
+    {
+        final List<VanillaState> collect = VanillaStateUtils.getAllStates(3, 5)
+                                                            .sorted(Comparator.comparing(State::excitedness))
+//                                                            .peek(state -> LOG.info("{} : {}",
+//                                                                    state.excitedness(),
+//                                                                    state.toString()))
+                                                            .collect(Collectors.toList());
+
+        assertThat(collect).containsExactly(XXX__, XX_X_, XX__X, X_XX_, X_X_X, X__XX, _XXX_, _XX_X, _X_XX, __XXX);
     }
 }

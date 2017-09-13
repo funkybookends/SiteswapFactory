@@ -37,9 +37,9 @@ public class TwoHandedVanillaSiteswap extends VanillaSiteswap
     @Override
     public VanillaThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
     {
-        if (forJuggler < 0 || forJuggler > getNumJugglers())
+        if (forJuggler >= 0 && forJuggler < getNumJugglers())
         {
-            return super.getThrowsForJuggler(forJuggler);
+            return thros;
         }
         throw new IndexOutOfBoundsException("There is only 1 juggler. Juggler 0");
     }

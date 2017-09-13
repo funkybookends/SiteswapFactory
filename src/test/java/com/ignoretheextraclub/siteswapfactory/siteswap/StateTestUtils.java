@@ -18,19 +18,24 @@ public final class StateTestUtils
     //@formatter:off
     
     // 3 ball
-    public static final VanillaState XXX__  = state( true,  true,  true, false, false);
-    public static final VanillaState XX_X_  = state( true,  true, false,  true, false);
-    public static final VanillaState _XXX_  = state(false,  true,  true,  true, false);
-    public static final VanillaState XX__X  = state( true,  true, false, false,  true);
-    public static final VanillaState X_XX_  = state( true, false,  true,  true, false);
-    public static final VanillaState X_X_X  = state( true, false,  true, false,  true);
-    public static final VanillaState __XXX  = state(false, false,  true,  true,  true);
+    public static final VanillaState XXX__ = state( true,  true,  true, false, false);
+    public static final VanillaState XX_X_ = state( true,  true, false,  true, false);
+    public static final VanillaState XX__X = state( true,  true, false, false,  true);
+    public static final VanillaState X_XX_ = state( true, false,  true,  true, false);
+    public static final VanillaState X_X_X = state( true, false,  true, false,  true);
+    public static final VanillaState X__XX = state( true, false, false,  true,  true);
+    public static final VanillaState _XXX_ = state(false,  true,  true,  true, false);
+    public static final VanillaState _XX_X = state(false,  true,  true, false,  true);
+    public static final VanillaState _X_XX = state(false,  true, false,  true,  true);
+    public static final VanillaState __XXX = state(false, false,  true,  true,  true);
 
     //  4 ball
     public static final VanillaState XXXX__     = state( true,  true,  true,  true, false, false);
     public static final VanillaState XXX__X_    = state( true,  true,  true, false, false,  true);
     public static final VanillaState X____X     = state( true, false, false, false, false,  true);
     public static final VanillaState XXX_X_     = state( true,  true,  true, false,  true, false);
+    public static final VanillaState XXX_X      = state( true,  true,  true, false,  true);
+    public static final VanillaState XXXX_      = state( true,  true,  true,  true, false);
 
     // other
     public static final VanillaState ____X = state(false, false, false, false,  true);

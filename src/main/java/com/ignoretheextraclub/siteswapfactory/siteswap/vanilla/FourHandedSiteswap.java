@@ -35,25 +35,21 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
         return NUM_HANDS;
     }
 
-
-//    @Override
-//    public FourHandedSiteswapThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
-//    {
-//        if (forJuggler > 0 && forJuggler < getNumJugglers())
-//        {
-//            return VanillaThroUtils.globalToLocal(getThrows(), forJuggler);
-//        }
-//        throw new IndexOutOfBoundsException("There are only 2 jugglers. Juggler 0 and Juggler 1");
-//    }
-
+    @Override
+    public FourHandedSiteswapThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
+    {
+        if (forJuggler >= 0 && forJuggler < getNumJugglers())
+        {
+            return VanillaThroUtils.globalToLocal(VanillaThroUtils.castAllToFourHandedSiteswapThro(thros), forJuggler);
+        }
+        throw new IndexOutOfBoundsException("There are only 2 jugglers. Juggler 0 and Juggler 1");
+    }
 
     @Override
     public String getType()
     {
         return TYPE;
     }
-
-
 
     @Override
     public Siteswap resort(final SortingStrategy newSortingStrategy)

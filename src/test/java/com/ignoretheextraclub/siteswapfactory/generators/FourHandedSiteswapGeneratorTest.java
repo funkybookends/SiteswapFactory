@@ -50,10 +50,10 @@ public class FourHandedSiteswapGeneratorTest
     {
         final ArrayList<Object[]> tests = new ArrayList<>();
 
-        tests.add(new Object[]{3, 5, 6, 8, 2});
+        tests.add(new Object[]{3, 5, 7, 9, 2});
         tests.add(new Object[]{4, 7, 142, 196, 54});
         //        tests.add(new Object[]{5, 9, 694, 10271});
-        tests.add(new Object[]{7, 9, 1748, 1856, 2045 - 1937});
+        tests.add(new Object[]{7, 9, 1749, 1857, 2045 - 1937});
         //        tests.add(new Object[]{6, 10, 56138, 82853});
 
         return tests;
