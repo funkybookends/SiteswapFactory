@@ -1,5 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
+import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -103,7 +105,7 @@ public class VanillaStateTest
     @Test
     public void getGroundState() throws Exception
     {
-        softly.assertThat(VanillaStateUtils.getGroundState(3, 5)).isEqualTo(XXX__);
+        softly.assertThat(VanillaStateGenerator.getGroundState(3, 5)).isEqualTo(XXX__);
     }
 
     @Test
@@ -160,10 +162,10 @@ public class VanillaStateTest
     @Test
     public void getFirstStateTest() throws Exception
     {
-        VanillaState firstState = VanillaStateUtils.getFirstState(new VanillaThro[]{THREE});
+        VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(new VanillaThro[]{THREE});
         Assert.assertEquals(state(true, true, true), firstState);
 
-        VanillaState firstState1 = VanillaStateUtils.getFirstState(new VanillaThro[]{FIVE, THREE, ONE});
+        VanillaState firstState1 = VanillaThrosToFirstStateConverter.get().apply(new VanillaThro[]{FIVE, THREE, ONE});
         Assert.assertEquals(XXX__, firstState1);
     }
 
@@ -176,7 +178,7 @@ public class VanillaStateTest
     @Test
     public void testExcitedness() throws Exception
     {
-        final List<VanillaState> collect = VanillaStateUtils.getAllStates(3, 5)
+        final List<VanillaState> collect = VanillaStateGenerator.getAllStates(3, 5)
                                                             .sorted(Comparator.comparing(State::excitedness))
 //                                                            .peek(state -> LOG.info("{} : {}",
 //                                                                    state.excitedness(),

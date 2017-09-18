@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.CharToIntConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
@@ -39,7 +40,7 @@ public class FourHandedSiteswapThro extends VanillaThro
      * The maximum allowed throw. This is reimplemented because generally we do not consider thro FHSs with higher
      * throws
      */
-    protected static final int MAX_THROW = VanillaThroUtils.charToInt('C');
+    protected static final int MAX_THROW = CharToIntConverter.get().apply('C');
     /**
      * The minimum legal throw.
      */
@@ -121,7 +122,7 @@ public class FourHandedSiteswapThro extends VanillaThro
      */
     public static FourHandedSiteswapThro get(char thro) throws BadThrowException
     {
-        return get(VanillaThroUtils.charToInt(thro));
+        return get(CharToIntConverter.get().apply(thro));
     }
 
     /**
@@ -158,7 +159,7 @@ public class FourHandedSiteswapThro extends VanillaThro
     {
         try
         {
-            return get(VanillaThroUtils.charToInt(thro));
+            return get(CharToIntConverter.get().apply(thro));
         }
         catch (final BadThrowException cause)
         {

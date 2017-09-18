@@ -2,10 +2,11 @@ package com.ignoretheextraclub.siteswapfactory.generator;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
-import com.ignoretheextraclub.siteswapfactory.generator.factories.TwoHandedSiteswapGenerator;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
+import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerator;
+import com.ignoretheextraclub.siteswapfactory.generator.siteswap.factories.TwoHandedSiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -100,8 +101,9 @@ public class TwoHandedSiteswapGeneratorTest
     @Ignore("caused by fhs sorting strategy")
     public void testSorterProducesSameAmount() throws Exception
     {
+        final StatesToVanillaStatesConverter statesConverter = StatesToVanillaStatesConverter.get();
         final SiteswapGenerator<TwoHandedVanillaSiteswap> hfsSorted = TwoHandedSiteswapGenerator.allBuilder(numObjects, maxPeriod)
-                .setSiteswapConstructor(states -> SiteswapFactory.createTHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .withSiteswapConstructor(states -> SiteswapFactory.createTHS(statesConverter.apply(states), SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true))
                 .create();
 
         softly.assertThat(hfsSorted.generate().distinct()
@@ -109,7 +111,7 @@ public class TwoHandedSiteswapGeneratorTest
                                    .count()).isEqualTo(allSiteswaps);
 
         final SiteswapGenerator<TwoHandedVanillaSiteswap> passingSorted = TwoHandedSiteswapGenerator.allBuilder(numObjects, maxPeriod)
-                .setSiteswapConstructor(states -> SiteswapFactory.createTHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .withSiteswapConstructor(states -> SiteswapFactory.createTHS(statesConverter.apply(states), SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true))
                 .create();
 
         softly.assertThat(passingSorted.generate().distinct()

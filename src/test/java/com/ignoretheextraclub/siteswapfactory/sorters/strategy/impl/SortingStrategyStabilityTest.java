@@ -2,8 +2,8 @@ package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.generator.factories.FourHandedSiteswapGenerator;
-import com.ignoretheextraclub.siteswapfactory.generator.factories.TwoHandedSiteswapGenerator;
+import com.ignoretheextraclub.siteswapfactory.generator.siteswap.factories.FourHandedSiteswapGenerator;
+import com.ignoretheextraclub.siteswapfactory.generator.siteswap.factories.TwoHandedSiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 import org.assertj.core.api.JUnitSoftAssertions;

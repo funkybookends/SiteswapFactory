@@ -6,7 +6,7 @@ package com.ignoretheextraclub.siteswapfactory.exceptions;
  * {@link com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap}
  * @author Caspar Nonclercq
  */
-public class InvalidSiteswapException extends Exception
+public class InvalidSiteswapException extends RuntimeException
 {
     public InvalidSiteswapException(String message)
     {
@@ -16,5 +16,10 @@ public class InvalidSiteswapException extends Exception
     public InvalidSiteswapException(String message, Throwable cause)
     {
         super(message, cause);
+    }
+
+    public InvalidSiteswapException(final InvalidSiteswapException cause)
+    {
+        super(cause);
     }
 }

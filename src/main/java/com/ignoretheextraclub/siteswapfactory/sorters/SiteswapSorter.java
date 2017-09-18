@@ -8,6 +8,8 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
  */
 public interface SiteswapSorter
 {
+    void sort() throws InvalidSiteswapException;
+
     int getWinningIndex() throws InvalidSiteswapException;
 
     State[] getWinningSort() throws InvalidSiteswapException;

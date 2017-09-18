@@ -1,11 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.impl;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound.VanillaThrosToVanillaStatesConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.StringToVanillaThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.ThroCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThrowCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
@@ -13,10 +16,8 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils.getLoop;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils.getSequence;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils.stringToVanillaThrowArray;
 
 /**
  Created by caspar on 02/08/17.
@@ -100,9 +101,10 @@ public class ThrowCombinationPredicateTest
     @Test
     public void testPairOfThrows() throws Exception
     {
-        final Predicate<State[]> sequence = new ThroCombinationPredicate(stringToVanillaThrowArray("42"));
+        final StringToVanillaThrosConverter converter = StringToVanillaThrosConverter.get();
+        final Predicate<State[]> sequence = new ThroCombinationPredicate(converter.apply("42"));
         final Predicate<State[]> sequenceNegated = sequence.negate();
-        final Predicate<State[]> loop = new LoopCheckingThrowCombinationPredicate(stringToVanillaThrowArray("42"));
+        final Predicate<State[]> loop = new LoopCheckingThrowCombinationPredicate(converter.apply("42"));
         final Predicate<State[]> loopNegated = loop.negate();
 
         softly.assertThat(sequence.test(seq("342"))).isTrue();
@@ -146,15 +148,15 @@ public class ThrowCombinationPredicateTest
 
     private State[] seq(final String seq) throws InvalidSiteswapException
     {
-        final VanillaThro[] vanillaThros = VanillaStateUtils.castAllToVanillaThro(stringToVanillaThrowArray(seq));
-        final VanillaState firstState = VanillaStateUtils.getFirstState(vanillaThros);
+        final VanillaThro[] vanillaThros = ThrosToVanillaThrosConverter.convert(StringToVanillaThrosConverter.get().apply(seq));
+        final VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(vanillaThros);
         return getSequence(firstState, vanillaThros);
     }
 
     private State[] loop(final String seq) throws InvalidSiteswapException
     {
-        final VanillaThro[] vanillaThros = VanillaStateUtils.castAllToVanillaThro(stringToVanillaThrowArray(seq));
-        final VanillaState firstState = VanillaStateUtils.getFirstState(vanillaThros);
-        return getLoop(firstState, vanillaThros);
+        final StringToVanillaThrosConverter converter = StringToVanillaThrosConverter.get();
+        final VanillaThro[] vanillaThros = converter.apply(seq);
+        return VanillaThrosToVanillaStatesConverter.get().apply(vanillaThros);
     }
 }

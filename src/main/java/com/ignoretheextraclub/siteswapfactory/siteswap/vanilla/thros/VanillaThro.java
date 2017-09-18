@@ -1,5 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.CharToIntConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import jdk.nashorn.internal.ir.annotations.Immutable;
@@ -111,7 +113,7 @@ public class VanillaThro implements Thro
      */
     public static VanillaThro get(final char thro) throws BadThrowException
     {
-        return get(VanillaThroUtils.charToInt(thro));
+        return get(CharToIntConverter.get().apply(thro));
     }
 
     /**
@@ -191,6 +193,6 @@ public class VanillaThro implements Thro
     @Override
     public String toString()
     {
-        return String.valueOf(VanillaThroUtils.intToChar(thro));
+        return String.valueOf(IntToCharConverter.get().apply(thro));
     }
 }

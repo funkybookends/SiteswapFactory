@@ -18,8 +18,6 @@ public final class ThroUtils
     {
     }
 
-    ;
-
     /**
      Will find and return the highest throw in an array of throws.
 

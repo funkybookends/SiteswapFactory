@@ -2,10 +2,11 @@ package com.ignoretheextraclub.siteswapfactory.generator;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
-import com.ignoretheextraclub.siteswapfactory.generator.factories.FourHandedSiteswapGenerator;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
+import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerator;
+import com.ignoretheextraclub.siteswapfactory.generator.siteswap.factories.FourHandedSiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -97,12 +98,13 @@ public class FourHandedSiteswapGeneratorTest
     @Ignore("caused by fhs sorting strategy")
     public void testSorterProducesSameAmount() throws Exception
     {
+        final StatesToVanillaStatesConverter statesConverter = StatesToVanillaStatesConverter.get();
         final SiteswapGenerator<FourHandedSiteswap> hfsSorted = FourHandedSiteswapGenerator.allBuilder(numObjects,maxPeriod)
-                .setSiteswapConstructor(states -> SiteswapFactory.createFHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .withSiteswapConstructor(states -> SiteswapFactory.createFHS(statesConverter.apply(states), SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true))
                 .create();
 
         final SiteswapGenerator<FourHandedSiteswap> passingSorted = FourHandedSiteswapGenerator.allBuilder(numObjects,maxPeriod)
-                .setSiteswapConstructor(states -> SiteswapFactory.createFHS(VanillaStateUtils.castAllToVanillaState(states), SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true))
+                .withSiteswapConstructor(states -> SiteswapFactory.createFHS(statesConverter.apply(states), SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true))
                 .create();
 
         LOG.info("allHfsSorted");

@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
@@ -18,11 +19,12 @@ public class VanillaThroTest
     {
         for (int asInt = 0; asInt < VanillaThro.MAX_THROW; asInt++)
         {
-            final char asChar = VanillaThroUtils.intToChar(asInt);
+            final IntToCharConverter intToCharConverter = IntToCharConverter.get();
+            final char asChar = intToCharConverter.apply(asInt);
             softly.assertThat(VanillaThro.get(asInt)).as(asInt + " as int - int").isSameAs(VanillaThro.get(asInt));
             softly.assertThat(VanillaThro.get(asChar)).as(asInt + " as char - char").isSameAs(VanillaThro.get(asChar));
             softly.assertThat(VanillaThro.get(asInt)).as(asInt + " as int - char").isSameAs(VanillaThro.get(asChar));
-            softly.assertThat(VanillaThro.get(asInt).toString()).isEqualTo(String.valueOf(VanillaThroUtils.intToChar(asInt)));
+            softly.assertThat(VanillaThro.get(asInt).toString()).isEqualTo(String.valueOf(intToCharConverter.apply(asInt)));
         }
     }
 

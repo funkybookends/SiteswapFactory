@@ -1,12 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateUtils;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.StringToTwoHandedSiteswapConverter;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoSortingStrategy;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
@@ -28,9 +22,10 @@ public class VanillaSiteswapTest
     @Test
     public void test534() throws Exception
     {
-        final VanillaSiteswap vanillaSiteswap = getVanillaSiteswap(new int[]{5, 3, 4}, NoSortingStrategy.get());
-        final VanillaSiteswap same = getVanillaSiteswap(new int[]{4,5,3}, NoSortingStrategy.get());
-        final VanillaSiteswap different = getVanillaSiteswap(new int[]{4,4,1}, NoSortingStrategy.get());
+        final StringToTwoHandedSiteswapConverter constructor = new StringToTwoHandedSiteswapConverter();
+        final VanillaSiteswap vanillaSiteswap = constructor.apply("534");
+        final VanillaSiteswap same = constructor.apply("453");
+        final VanillaSiteswap different = constructor.apply("441");
 
         softly.assertThatThrownBy(vanillaSiteswap::getNumJugglers).isInstanceOf(UnsupportedOperationException.class);
         softly.assertThatThrownBy(vanillaSiteswap::getNumHands).isInstanceOf(UnsupportedOperationException.class);
@@ -60,13 +55,5 @@ public class VanillaSiteswapTest
 //        softly.assertThat(vanillaSiteswap.getRelated()).isEqualTo();
 //        softly.assertThat(vanillaSiteswap.append(Siteswap other)).isEqualTo(); softly.assertThat(vanillaSiteswap.resort(
 //        softly.assertThat(vanillaSiteswap.resort()).isEqualTo();
-    }
-
-    private VanillaSiteswap getVanillaSiteswap(final int[] siteswap, final SortingStrategy strategy) throws InvalidSiteswapException
-    {
-        final VanillaThro[] thros = VanillaThroUtils.intArrayToVanillaThrowArray(siteswap);
-        final VanillaState firstState = VanillaStateUtils.getFirstState(thros);
-        final VanillaState[] allStates = StateUtils.getAllStates(firstState, thros);
-        return new VanillaSiteswap(allStates, thros, strategy);
     }
 }

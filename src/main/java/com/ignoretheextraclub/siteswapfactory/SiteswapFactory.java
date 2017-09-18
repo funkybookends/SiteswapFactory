@@ -1,33 +1,30 @@
 package com.ignoretheextraclub.siteswapfactory;
 
 import com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.OptionalWrapperConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.SiteswapWrapperConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.StatesToFourHandedSiteswapConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.StatesToTwoHandedSiteswapConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.StringToFourHandedSiteswapConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.siteswap.StringToTwoHandedSiteswapConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.utils.SortingUtils;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
-import static com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY;
-import static com.ignoretheextraclub.siteswapfactory.configuration.SiteswapFactoryConfiguration.DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY;
-
 /**
- Created by caspar on 29/07/17.
+ * Created by caspar on 29/07/17.
  */
 public class SiteswapFactory
 {
     private static final Pattern VANILLA_SITESWAP_FORMAT = Pattern.compile("^[\\da-zA-Z]+$");
+
     private final SiteswapFactoryConfiguration config;
 
     public SiteswapFactory(final SiteswapFactoryConfiguration config)
@@ -35,173 +32,103 @@ public class SiteswapFactory
         this.config = config;
     }
 
-    /**
-     Constructs a siteswap using the provided configuration.
-     @param input
-     @return
-     */
-    public Siteswap createSiteswap(final Object input)
+    public Siteswap createSiteswap(final String siteswap)
     {
-        throw new UnsupportedOperationException("Not implemented yet"); // TODO implement
+        return config.getSiteswapConstructors().stream()
+
+                     // Wrap result into a Siteswap
+                     .map(constructor -> constructor.andThen(new SiteswapWrapperConverter<>()))
+
+                     // Catch all exceptions and convert to Optional.empty()
+                     .map(constructor -> new OptionalWrapperConverter<Siteswap>().compose(constructor))
+
+                     // Map to optional
+                     .map(constructor -> constructor.apply(siteswap))
+
+                     // Get first
+                     .filter(Optional::isPresent)
+                     .map(Optional::get)
+                     .findFirst()
+                     .orElseThrow(() -> new InvalidSiteswapException("No suitable constructor found"));
     }
 
-    public Siteswap createSiteswap(final Object[] input)
+    // ============================== Configured Creators: These use the provided configuration
+
+    public FourHandedSiteswap createFourHandedSiteswap(final String siteswap)
     {
-        throw new UnsupportedOperationException();
+        return createFHS(siteswap,
+                config.getDefaultFourHandedSiteswapSortingStrategy(),
+                config.getDefaultReducePolicy());
     }
 
-    public Siteswap createSiteswap(final int[] input)
+    public TwoHandedVanillaSiteswap createTwoHandedSiteswap(final String siteswap)
     {
-        throw new UnsupportedOperationException();
+        return createTHS(siteswap, config.getDefaultTwoHandedSortingStrategy(), config.getDefaultReducePolicy());
     }
 
     // ============================== STATIC CONSTRUCTORS: These use the default configurations
 
     // ============= Four Handed Siteswap
 
-    // Implementations
-
-    public static FourHandedSiteswap createFHS(final VanillaState[] states, final SortingStrategy sortingStrategy, final boolean reduce) throws InvalidSiteswapException
-    {
-        final VanillaState[] reducedSiteswap = reduce ? SortingUtils.reduce(states) : states;
-        final Thro[] thros;
-
-        try
-        {
-            thros =  StateUtils.getAllThrows(reducedSiteswap, true);
-        }
-        catch (final TransitionException cause)
-        {
-            throw new InvalidSiteswapException("Not a valid siteswap", cause);
-        }
-
-        try
-        {
-            final FourHandedSiteswapThro[] fhsts = new FourHandedSiteswapThro[thros.length];
-            for (int i = 0; i < fhsts.length; i++)
-            {
-                fhsts[i] = FourHandedSiteswapThro.get(thros[i].getNumBeats());
-            }
-            return new FourHandedSiteswap(reducedSiteswap, fhsts, sortingStrategy);
-        }
-        catch (final IllegalArgumentException uncheckedBadThrowException)
-        {
-            throw new InvalidSiteswapException("Not a valid FHS", uncheckedBadThrowException);
-        }
-    }
-
-    public static FourHandedSiteswap createFHS(final int[] siteswap, final SortingStrategy sortingStrategy, final boolean reduce) throws InvalidSiteswapException
-    {
-        final int[] reducedSiteswap = reduce ? SortingUtils.reduce(siteswap) : siteswap;
-        final FourHandedSiteswapThro[] thros = VanillaThroUtils.intArrayToFourHandedSiteswapThrowArray(reducedSiteswap);
-        final VanillaState firstState = VanillaStateUtils.getFirstState(thros);
-        final VanillaState[] allStates = StateUtils.getAllStates(firstState, thros);
-        return new FourHandedSiteswap(allStates, thros, sortingStrategy);
-    }
-
-    public static FourHandedSiteswap createFHS(final String siteswap, final SortingStrategy sortingStrategy, final boolean reduce) throws InvalidSiteswapException
-    {
-        InvalidSiteswapException cause = null;
-        if (VANILLA_SITESWAP_FORMAT.matcher(siteswap).matches())
-        {
-            try
-            {
-                final char[] charArray = siteswap.toCharArray();
-                final int[] intArray = new int[charArray.length];
-
-                for (int i = 0; i < charArray.length; i++)
-                {
-                    intArray[i] = FourHandedSiteswapThro.get(charArray[i]).getNumBeats();
-                }
-
-                return createFHS(intArray, sortingStrategy, reduce);
-            }
-            catch (final InvalidSiteswapException ise)
-            {
-                cause = ise;
-            }
-        }
-
-        throw new InvalidSiteswapException("Could not create siteswap from [" + siteswap + "]", cause);
-    }
-
-    // Default Providers
-
     public static FourHandedSiteswap createFHS(final String siteswap) throws InvalidSiteswapException
     {
-        return createFHS(siteswap, DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true);
+        return createFHS(siteswap,
+                SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY,
+                SiteswapFactoryConfiguration.DEFAULT_REDUCE);
     }
 
-    public static FourHandedSiteswap createFHS(final int[] siteswap) throws InvalidSiteswapException
+    public static FourHandedSiteswap createFHS(final String siteswap,
+                                               final SortingStrategy sortingStrategy,
+                                               final boolean reduce) throws InvalidSiteswapException
     {
-        return createFHS(siteswap, DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true);
+        return new StringToFourHandedSiteswapConverter(reduce, sortingStrategy).apply(siteswap);
+    }
+
+    public static FourHandedSiteswap createFHS(final State[] states)
+    {
+        return createFHS(states,
+                SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY,
+                SiteswapFactoryConfiguration.DEFAULT_REDUCE);
+    }
+
+    public static FourHandedSiteswap createFHS(final State[] states,
+                                               final SortingStrategy sortingStrategy,
+                                               final boolean reduce)
+    {
+        return StatesToVanillaStatesConverter.get()
+                                             .andThen(new StatesToFourHandedSiteswapConverter(reduce, sortingStrategy))
+                                             .apply(states);
     }
 
     // ============= Two Handed Siteswap
 
-    // Implementations
-
-    public static TwoHandedVanillaSiteswap createTHS(final VanillaState[] states, final SortingStrategy sortingStrategy, final boolean reduce) throws InvalidSiteswapException
-    {
-        final VanillaState[] reducedSiteswap = reduce ? SortingUtils.reduce(states) : states;
-        final VanillaThro[] thros;
-        try
-        {
-            thros = (VanillaThro[]) StateUtils.getAllThrows(reducedSiteswap, true);
-        }
-        catch (final TransitionException cause)
-        {
-            throw new InvalidSiteswapException("Not a valid siteswap", cause);
-        }
-        return new TwoHandedVanillaSiteswap(reducedSiteswap, thros, sortingStrategy);
-    }
-
-    public static TwoHandedVanillaSiteswap createTHS(final int[] siteswap, final SortingStrategy sortingStrategy, final boolean reduce) throws InvalidSiteswapException
-    {
-        final int[] reducedSiteswap = reduce ? SortingUtils.reduce(siteswap) : siteswap;
-        final VanillaThro[] thros = VanillaThroUtils.intArrayToVanillaThrowArray(reducedSiteswap);
-        final VanillaState firstState = VanillaStateUtils.getFirstState(thros);
-        final VanillaState[] allStates = StateUtils.getAllStates(firstState, thros);
-        return new TwoHandedVanillaSiteswap(allStates, thros, sortingStrategy);
-    }
-
-    public static TwoHandedVanillaSiteswap createTHS(final String siteswap, final SortingStrategy sortingStrategy, final boolean reduce) throws InvalidSiteswapException
-    {
-        InvalidSiteswapException cause = null;
-        if (VANILLA_SITESWAP_FORMAT.matcher(siteswap).matches())
-        {
-            try
-            {
-                return createTHS(VanillaThroUtils.stringToIntArray(siteswap), sortingStrategy, reduce);
-            }
-            catch (final InvalidSiteswapException ise)
-            {
-                cause = ise;
-            }
-        }
-
-        throw new InvalidSiteswapException("Could not create siteswap from [" + siteswap + "]", cause);
-    }
-
-    // Default Providers
-
     public static TwoHandedVanillaSiteswap createTHS(final String siteswap) throws InvalidSiteswapException
     {
-        return createTHS(siteswap, DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true);
+        return createTHS(siteswap,
+                SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY,
+                SiteswapFactoryConfiguration.DEFAULT_REDUCE);
     }
 
-    public static TwoHandedVanillaSiteswap createTHS(final int[] siteswap) throws InvalidSiteswapException
+    public static TwoHandedVanillaSiteswap createTHS(final String siteswap,
+                                                     final SortingStrategy sortingStrategy,
+                                                     final boolean reduce) throws InvalidSiteswapException
     {
-        return createTHS(siteswap, DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true);
+        return new StringToTwoHandedSiteswapConverter(reduce, sortingStrategy).apply(siteswap);
     }
 
-    public static TwoHandedVanillaSiteswap createTHS(final State[] states) throws InvalidSiteswapException
+    public static TwoHandedVanillaSiteswap createTHS(final State[] states)
     {
-        return createTHS(VanillaStateUtils.castAllToVanillaState(states), DEFAULT_TWO_HANDED_SITESWAP_SORTING_STRATEGY, true);
+        return createTHS(states,
+                SiteswapFactoryConfiguration.DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY,
+                SiteswapFactoryConfiguration.DEFAULT_REDUCE);
     }
 
-    public static FourHandedSiteswap createFHS(final State[] states) throws InvalidSiteswapException
+    public static TwoHandedVanillaSiteswap createTHS(final State[] states,
+                                                     final SortingStrategy sortingStrategy,
+                                                     final boolean reduce)
     {
-        return createFHS(VanillaStateUtils.castAllToVanillaState(states), DEFAULT_FOUR_HANDED_SITESWAP_SORTING_STRATEGY, true);
+        return StatesToVanillaStatesConverter.get()
+                                             .andThen(new StatesToTwoHandedSiteswapConverter(reduce, sortingStrategy))
+                                             .apply(states);
     }
 }

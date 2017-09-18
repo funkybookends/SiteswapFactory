@@ -328,7 +328,7 @@ public class VanillaState implements State
         }
     }
 
-    protected static void validateSize(final int size) throws PeriodException
+    public static void validateSize(final int size) throws PeriodException
     {
         if (size < MIN_SIZE || size > MAX_SIZE)
         {

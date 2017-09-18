@@ -1,16 +1,18 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.VanillaThrosToStringConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.PrimePredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.SameNumberOfObjectsPredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopsPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.utils.StateValidationUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
+import com.ignoretheextraclub.siteswapfactory.sorters.SiteswapSorter;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.RotationsSiteswapSorter;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
@@ -19,7 +21,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 /**
- Created by caspar on 26/07/17.
+ * Created by caspar on 26/07/17.
  */
 public class VanillaSiteswap implements Siteswap
 {
@@ -33,18 +35,20 @@ public class VanillaSiteswap implements Siteswap
                            final VanillaThro[] thros,
                            final SortingStrategy sortingStrategy) throws InvalidSiteswapException
     {
-        try
+        if (!LoopsPredicate.loops(states))
         {
-            StateValidationUtils.validateAllStatesConnect(states, thros);
-            StateValidationUtils.validateAllStatesHaveTheSameNumberOfObjects(states);
+            throw new InvalidSiteswapException("Invalid Siteswap",
+                    new TransitionException("States do not all connect"));
         }
-        catch (final BadThrowException | TransitionException cause)
+        if (!SameNumberOfObjectsPredicate.hasSameNumberOfObjects(states))
         {
-            throw new InvalidSiteswapException("Invalid Siteswap.", cause);
+            throw new InvalidSiteswapException("Invalid Siteswap",
+                    new NumObjectsException("Not all states have the same number of objects"));
         }
 
-        final RotationsSiteswapSorter sorter = new RotationsSiteswapSorter(states, sortingStrategy);
-        this.states = VanillaStateUtils.castAllToVanillaState(sorter.getWinningSort());
+        final SiteswapSorter sorter = new RotationsSiteswapSorter(states, sortingStrategy);
+        sorter.sort();
+        this.states = StatesToVanillaStatesConverter.get().apply(sorter.getWinningSort());
         this.thros = sorter.sortToMatch(thros);
         this.sortingStrategy = sortingStrategy;
     }
@@ -143,10 +147,10 @@ public class VanillaSiteswap implements Siteswap
         }
         try
         {
-            final RotationsSiteswapSorter thisSorter = new RotationsSiteswapSorter(this.states,
+            final SiteswapSorter thisSorter = new RotationsSiteswapSorter(this.states,
                     HighestThrowFirstStrategy.get());
             thisSorter.sort();
-            final RotationsSiteswapSorter otherSorter = new RotationsSiteswapSorter(other.getStates(),
+            final SiteswapSorter otherSorter = new RotationsSiteswapSorter(other.getStates(),
                     HighestThrowFirstStrategy.get());
             otherSorter.sort();
             return Arrays.deepEquals(thisSorter.getWinningSort(), otherSorter.getWinningSort());
@@ -178,7 +182,7 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public String toString()
     {
-        return VanillaThroUtils.vanillaThrowArrayToString(thros);
+        return VanillaThrosToStringConverter.get().apply(thros);
     }
 
     @Override

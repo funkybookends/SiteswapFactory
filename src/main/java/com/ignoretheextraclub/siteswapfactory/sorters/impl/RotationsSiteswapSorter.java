@@ -22,6 +22,7 @@ public class RotationsSiteswapSorter implements SiteswapSorter
         this.sortingStrategy = sortingStrategy;
     }
 
+    @Override
     public void sort() throws InvalidSiteswapException
     {
         if (!sorted)

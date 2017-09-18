@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
@@ -15,11 +16,14 @@ public class FourHandedSiteswapThroTest
     @Test
     public void when_getting_expect_sameObjectEachTime_AND_testToStringMethod() throws Exception
     {
+        final IntToCharConverter intToCharConverter = IntToCharConverter.get();
+
         for (int asInt = 0; asInt < FourHandedSiteswapThro.MAX_THROW; asInt++)
         {
             if (asInt != 1 && asInt != 3)
             {
-                final char asChar = VanillaThroUtils.intToChar(asInt);
+                final char asChar = intToCharConverter.apply(asInt);
+
                 softly.assertThat(FourHandedSiteswapThro.get(asInt))
                       .as(asInt + " as int - int")
                       .isSameAs(FourHandedSiteswapThro.get(asInt));
@@ -33,7 +37,7 @@ public class FourHandedSiteswapThroTest
                       .isSameAs(FourHandedSiteswapThro.get(asChar));
 
                 softly.assertThat(FourHandedSiteswapThro.get(asInt).toString())
-                      .isEqualTo(String.valueOf(VanillaThroUtils.intToChar(asInt)));
+                      .isEqualTo(String.valueOf(intToCharConverter.apply(asInt)));
             }
         }
     }

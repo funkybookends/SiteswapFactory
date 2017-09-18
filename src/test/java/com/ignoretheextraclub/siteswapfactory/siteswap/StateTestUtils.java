@@ -3,10 +3,9 @@ package com.ignoretheextraclub.siteswapfactory.siteswap;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
+import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateUtils.getGroundState;
 
 /**
  Created by caspar on 30/07/17.
@@ -94,7 +93,7 @@ public final class StateTestUtils
     {
         try
         {
-            return getGroundState(numObjects, maxThrow);
+            return VanillaStateGenerator.getGroundState(numObjects, maxThrow);
         }
         catch (final PeriodException | NumObjectsException cause)
         {
