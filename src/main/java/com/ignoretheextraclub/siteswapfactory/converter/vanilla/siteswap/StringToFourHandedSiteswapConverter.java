@@ -31,7 +31,7 @@ public class StringToFourHandedSiteswapConverter implements Function<String, Fou
         sortingStrategy = DEFAULT_SORTING_STRATEGY;
     }
 
-    public StringToFourHandedSiteswapConverter(final boolean reduce)
+    public StringToFourHandedSiteswapConverter(final boolean reduce) // TODO rethink sorting strategy interface
     {
         this.reduce = reduce;
         sortingStrategy = DEFAULT_SORTING_STRATEGY;

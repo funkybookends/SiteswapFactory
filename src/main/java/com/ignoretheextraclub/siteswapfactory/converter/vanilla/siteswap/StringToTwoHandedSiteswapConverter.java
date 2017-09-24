@@ -31,7 +31,7 @@ public class StringToTwoHandedSiteswapConverter implements Function<String, TwoH
         sortingStrategy = DEFAULT_SORTING_STRATEGY;
     }
 
-    public StringToTwoHandedSiteswapConverter(final boolean reduce)
+    public StringToTwoHandedSiteswapConverter(final boolean reduce) // TODO rethink sorting strategy interface
     {
         this.reduce = reduce;
         sortingStrategy = DEFAULT_SORTING_STRATEGY;
