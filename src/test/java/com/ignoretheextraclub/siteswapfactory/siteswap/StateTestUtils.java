@@ -15,8 +15,16 @@ public final class StateTestUtils
     public static final String MESSAGE = "Test configuration incorrect";
 
     //@formatter:off
+    // 3 Ball - Max Throw: 3
+    public static final VanillaState XXX = state( true,  true,  true);
+
+    // 3 Ball - Max Throw: 4
+    public static final VanillaState XXX_ = state( true,  true,  true, false);
+    public static final VanillaState XX_X = state( true,  true, false,  true);
+    public static final VanillaState X_XX = state( true, false,  true,  true);
+    public static final VanillaState _XXX = state(false,  true,  true,  true);
     
-    // 3 ball
+    // 3 ball - Max Throw: 5
     public static final VanillaState XXX__ = state( true,  true,  true, false, false);
     public static final VanillaState XX_X_ = state( true,  true, false,  true, false);
     public static final VanillaState XX__X = state( true,  true, false, false,  true);
@@ -28,13 +36,18 @@ public final class StateTestUtils
     public static final VanillaState _X_XX = state(false,  true, false,  true,  true);
     public static final VanillaState __XXX = state(false, false,  true,  true,  true);
 
-    //  4 ball
+    // 4 ball - Max Throw: 4
+    public static final VanillaState XXX_X      = state( true,  true,  true, false,  true);
+    public static final VanillaState XXXX_      = state( true,  true,  true,  true, false);
+
+    // 4 ball - Max Throw: 5
     public static final VanillaState XXXX__     = state( true,  true,  true,  true, false, false);
     public static final VanillaState XXX__X_    = state( true,  true,  true, false, false,  true);
     public static final VanillaState X____X     = state( true, false, false, false, false,  true);
     public static final VanillaState XXX_X_     = state( true,  true,  true, false,  true, false);
-    public static final VanillaState XXX_X      = state( true,  true,  true, false,  true);
-    public static final VanillaState XXXX_      = state( true,  true,  true,  true, false);
+
+    // 8 ball - Max Throw: 10
+    public static final VanillaState XXXXXXXX__ = state(true, true, true, true, true, true, true, true, false, false);
 
     // other
     public static final VanillaState ____X = state(false, false, false, false,  true);

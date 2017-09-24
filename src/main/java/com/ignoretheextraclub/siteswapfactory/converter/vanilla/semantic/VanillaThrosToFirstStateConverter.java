@@ -7,7 +7,11 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
 import java.util.function.Function;
 
 /**
- * // TODO
+ * Returns the first state from a set of {@link VanillaThro}s. Uses {@link VanillaThrosToFirstStateBiConverter} and
+ * calculates the number of objects required by taking the average of all the throws.
+ *
+ * @author Caspar Nonclercq
+ * @see VanillaThrosToFirstStateBiConverter Use this directly if you already know the number of objects
  */
 public class VanillaThrosToFirstStateConverter implements Function<VanillaThro[], VanillaState>
 {
@@ -27,9 +31,31 @@ public class VanillaThrosToFirstStateConverter implements Function<VanillaThro[]
         return INSTANCE;
     }
 
+    /**
+     * Gets the first state from an array of {@link VanillaThro}. Calculates the number of objects by taking the average
+     * of the throws.
+     *
+     * @param thros The thros from which to calculate the first state
+     *
+     * @return The first state.
+     */
     @Override
     public VanillaState apply(final VanillaThro[] thros)
     {
-        return ThrosToFirstStateBiConverter.get().apply(thros, VanillaThroUtils.numObjects(thros));
+        return VanillaThrosToFirstStateBiConverter.get().apply(thros, VanillaThroUtils.numObjects(thros));
+    }
+
+    /**
+     * Conveneint static method to get the first state from an array of {@link VanillaThro}.
+     *
+     * @param thros The thros from which to calculate the first state
+     *
+     * @return The first state
+     *
+     * @see #apply(VanillaThro[])
+     */
+    public static VanillaState getFirstState(final VanillaThro[] thros)
+    {
+        return get().apply(thros);
     }
 }

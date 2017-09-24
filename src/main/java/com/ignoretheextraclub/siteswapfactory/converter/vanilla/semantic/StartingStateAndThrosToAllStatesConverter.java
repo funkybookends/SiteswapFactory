@@ -6,13 +6,18 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
  * Determines all the states, given a starting state and a set of throws. Ensures that the last state transitions to the
- * first.
+ * first. Although it should be noted that this does not mean that this ensures it is a valid siteswap.
  *
  * @author Caspar Nonclercq
+ * @see StatesToSequenceConverter A similar converter that does not enforce the looping constraint.
+ * @see com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound.VanillaThrosToVanillaStatesConverter
+ * A converter that does not require the first state.
  */
 public class StartingStateAndThrosToAllStatesConverter implements BiFunction<State, Thro[], State[]>
 {
@@ -33,16 +38,29 @@ public class StartingStateAndThrosToAllStatesConverter implements BiFunction<Sta
     }
 
     /**
-     * Gets the all the states given the starting state and an array of throws.
+     * Gets the all states given the starting state and an array of throws.
+     * <p>
+     * Note: This does not guarantee that the state array is a valid siteswap.
+     *
      * @param startingState The starting state.
-     * @param thros The array of Thros
+     * @param thros         The array of Thros
+     *
      * @return An array of states.
-     * @throws TransitionException If no transition is available from the last state to the first.
-     * @throws BadThrowException If a thro cannot be thrown.
+     *
+     * @throws InvalidSiteswapException If the throws do not make a valid siteswap
+     * @see #getAllStates(State, Thro[]) A convenient static method
      */
     @Override
     public State[] apply(final State startingState, final Thro[] thros)
     {
+        Objects.requireNonNull(startingState, "startingState cannot be null");
+        Objects.requireNonNull(thros, "thros cannot be null");
+
+        if (thros.length < 1)
+        {
+            throw new IllegalArgumentException("thros must have at least one throw");
+        }
+
         try
         {
             final State[] states = new State[thros.length];
@@ -63,7 +81,23 @@ public class StartingStateAndThrosToAllStatesConverter implements BiFunction<Sta
         }
         catch (BadThrowException | TransitionException cause)
         {
-            throw new InvalidSiteswapException(cause);
+            throw new InvalidSiteswapException("Could not create valid siteswap from [" + startingState.toString() + "] " +
+                    "and " + Arrays.toString(thros), cause);
         }
+    }
+
+    /**
+     * Convenient static method to get all the states given the starting state and an array of throws.
+     *
+     * @param startingState The starting state.
+     * @param thros         The array of Thros
+     *
+     * @return An array of states.
+     *
+     * @throws InvalidSiteswapException If the throws do not make a valid siteswap
+     */
+    public static State[] getAllStates(final State startingState, final Thro[] thros)
+    {
+        return get().apply(startingState, thros);
     }
 }

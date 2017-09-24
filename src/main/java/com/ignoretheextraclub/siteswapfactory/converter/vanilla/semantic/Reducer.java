@@ -1,63 +1,108 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
- Created by caspar on 11/12/16.
+ * Returns the shortest repeating unit that when repeated n times would return the input array.
+ * <p>
+ * <pre>
+ *     [A, B, C, A, B, C, A, B, C] -> [A, B, C]
+ *     [A, B]                      -> [A, B]
+ * </pre>
+ *
+ * @param <T> The type of the array
+ *
+ * @author Caspar Nonclercq
+ * @see IntReducer A primitive int version
  */
 public class Reducer<T> implements Function<T[], T[]>
 {
+    /**
+     * Returns the reduced version of an array.
+     * <p>
+     * <pre>
+     *     [A, B, C, A, B, C, A, B, C] -> [A, B, C]
+     *     [A, B]                      -> [A, B]
+     * </pre>
+     *
+     * @param duplicated The repeating array
+     *
+     * @return An new array that does not repeat or the original array
+     */
     public T[] apply(final T[] duplicated)
     {
-        final int len = duplicated.length;
-        for (int i = 1; i <= len / 2; i++)
-        {
-            if (len % i == 0)
-            {
-                if (checkFactors(i, duplicated))
-                {
-                    return Arrays.copyOf(duplicated, i);
-                }
-            }
-        }
-        return duplicated;
+        Objects.requireNonNull(duplicated, "duplicated must not be null");
+
+        return IntStream.rangeClosed(1, duplicated.length / 2) // From 1 to half the length inclusive
+                        .filter(candidateFactor -> duplicated.length % candidateFactor == 0)
+                        .filter(factor -> isRepeatingUnit(factor, duplicated))
+                        .boxed().findFirst()
+                        .map(length -> Arrays.copyOf(duplicated, length)) // Get shorter version
+                        .orElse(duplicated); // return the full version
     }
 
-    private static <T> boolean checkFactors(final int factor, final T[] arr)
+    private static <T> boolean isRepeatingUnit(final int factor, final T[] array)
     {
-        for (int j = 1; j < arr.length / factor; j++)
-        {
-            if (!rangeCompare(j * factor, factor, arr))
-            {
-                return false;
-            }
-        }
-        return true;
+        return IntStream.range(1, array.length / factor)
+                        .allMatch(part -> rangeContainsEqualObjects(part * factor, factor, array));
     }
 
-    private static <T> boolean rangeCompare(final int offset, final int len, final T[] arr)
+    private static <T> boolean rangeContainsEqualObjects(final int offset, final int length, final T[] array)
     {
-        for (int i = 0; i < len; i++)
-        {
-            if (!arr[i].equals(arr[offset + i]))
-            {
-                return false;
-            }
-        }
-        return true;
+        return IntStream.range(0, length)
+                        .allMatch(index -> array[index].equals(array[offset + index]));
     }
 
+    /**
+     * Convenient static method for reducing an array
+     *
+     * @param duplicated The repeated array
+     * @param <T>        The type of the array
+     *
+     * @return The shortest repeating unit
+     *
+     * @see #reduce(int[]) A primative int version
+     */
     public static <T> T[] reduce(final T[] duplicated)
     {
         return new Reducer<T>().apply(duplicated);
     }
 
-    public static <T> Function<T[], T[]> getReducerFor(final T[] duplicated)
+    /**
+     * Convenient static metod for reducing an int array
+     *
+     * @param duplicated The repeated array
+     *
+     * @return The shortest repeating unit
+     *
+     * @see #reduce(Object[]) An object version
+     */
+    public static int[] reduce(final int[] duplicated)
+    {
+        return IntReducer.get().apply(duplicated);
+    }
+
+    /**
+     * Convenient static method for getting a reducer for a type.
+     *
+     * @param arrayType The array of type
+     * @param <T>       The type
+     *
+     * @return A reducer for that type
+     *
+     * @see #reduce(Object[]) A direct method to reduce
+     */
+    public static <T> Reducer<T> getReducerFor(final T[] arrayType)
     {
         return new Reducer<>();
     }
 
+    /**
+     * A primative int version
+     */
     public static class IntReducer implements Function<int[], int[]>
     {
         public static IntReducer INSTANCE;
@@ -76,44 +121,35 @@ public class Reducer<T> implements Function<T[], T[]>
             return INSTANCE;
         }
 
+        /**
+         * Reduces an array to its shortest repeating unit
+         *
+         * @param duplicated The repeating array
+         *
+         * @return The shortest array
+         */
         public int[] apply(final int[] duplicated)
         {
-            final int len = duplicated.length;
-            for (int i = 1; i <= len / 2; i++)
-            {
-                if (len % i == 0)
-                {
-                    if (checkFactors(i, duplicated))
-                    {
-                        return Arrays.copyOf(duplicated, i);
-                    }
-                }
-            }
-            return duplicated;
+            Objects.requireNonNull(duplicated, "duplicated must not be null");
+
+            return IntStream.rangeClosed(1, duplicated.length / 2) // From 1 to half the length inclusive
+                            .filter(candidateFactor -> duplicated.length % candidateFactor == 0)
+                            .filter(factor -> isRepeatingUnit(factor, duplicated))
+                            .boxed().findFirst()
+                            .map(length -> Arrays.copyOf(duplicated, length)) // Get shorter version
+                            .orElse(duplicated); // return the full version
         }
 
-        private static boolean checkFactors(final int factor, final int[] arr)
+        private static boolean isRepeatingUnit(final int factor, final int[] array)
         {
-            for (int j = 1; j < arr.length / factor; j++)
-            {
-                if (!rangeCompare(j * factor, factor, arr))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return IntStream.range(1, array.length / factor)
+                            .allMatch(part -> rangeContainsEqualObjects(part * factor, factor, array));
         }
 
-        private static boolean rangeCompare(final int offset, final int len, final int[] arr)
+        private static boolean rangeContainsEqualObjects(final int offset, final int length, final int[] array)
         {
-            for (int i = 0; i < len; i++)
-            {
-                if (!(arr[i] == arr[offset + i]))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return IntStream.range(0, length)
+                            .allMatch(index -> array[index] == array[offset + index]);
         }
     }
 }

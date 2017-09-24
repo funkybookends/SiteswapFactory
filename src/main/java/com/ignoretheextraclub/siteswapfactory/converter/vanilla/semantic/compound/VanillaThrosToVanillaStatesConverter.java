@@ -3,18 +3,20 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compou
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToAllStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
+import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 /**
- * Determines the {@link VanillaState}[] a given {@link VanillaThro}[] corresponds to.
+ * Determines the {@code VanillaState[]} a given {@code VanillaThro[]} corresponds to.
  * <p>
  * This is a composite converter that uses {@link VanillaThrosToFirstStateConverter} to determine the first state, and
  * then uses {@link StartingStateAndThrosToAllStatesConverter} to get all the states, and then uses {@link
- * StatesToVanillaStatesConverter} to get the result as a VanillaState[]
+ * StatesToVanillaStatesConverter} to get the result as a {@code VanillaState[]}
  *
  * @author Caspar Nonclercq
  */
@@ -44,14 +46,21 @@ public class VanillaThrosToVanillaStatesConverter implements Function<VanillaThr
      * @return The set of states this corresponds to.
      *
      * @throws com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException if not valid.
-     * @see #convertThrosToStates(VanillaThro[]) for a static version.
+     * @see #convertThrosToStates(VanillaThro[]) A static method.
      */
     @Override
     public VanillaState[] apply(final VanillaThro[] thros)
     {
-        final VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(thros);
-        final State[] states = StartingStateAndThrosToAllStatesConverter.get().apply(firstState, thros);
-        return StatesToVanillaStatesConverter.get().apply(states);
+        try
+        {
+            final VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(thros);
+            final State[] states = StartingStateAndThrosToAllStatesConverter.get().apply(firstState, thros);
+            return StatesToVanillaStatesConverter.get().apply(states);
+        }
+        catch (final InvalidSiteswapException cause)
+        {
+            throw new InvalidSiteswapException("Throws [" + Arrays.toString(thros) + "] are not a valid siteswap", cause);
+        }
     }
 
     /**
@@ -62,7 +71,6 @@ public class VanillaThrosToVanillaStatesConverter implements Function<VanillaThr
      * @return The set of states this corresponds to.
      *
      * @throws com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException if not valid.
-     * @see #apply(VanillaThro[]) for the implementation
      */
     public static VanillaState[] convertThrosToStates(final VanillaThro[] thros)
     {

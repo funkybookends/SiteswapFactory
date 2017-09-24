@@ -5,14 +5,16 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
-import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
  * Converts an array of states to an array of throws that are used to transition between them. The resulting array will
  * be one element shorter, and therefore at least two states are needed.
+ *
  * @author Caspar Nonclercq
- * @see StatesToThrosConverter if the states should loop.
+ * @see StatesToThrosConverter A version that ensures the state array loops
  */
 public class StatesToSequenceConverter implements Function<State[], Thro[]>
 {
@@ -34,27 +36,27 @@ public class StatesToSequenceConverter implements Function<State[], Thro[]>
 
     /**
      * Convert the states into the Thros that transition them.
-     * @param states The array of states
+     *
+     * @param states The array of states, at least two in length
+     *
      * @return The array of thros.
      */
     @Override
     public Thro[] apply(final State[] states)
     {
+        Objects.requireNonNull(states, "states cannot be null");
+        if (states.length < 2)
+        {
+            throw new IllegalArgumentException("Need at least 2 states");
+        }
+
         try
         {
-            if (states.length < 2)
+            final Thro[] thros = new Thro[states.length - 1];
+
+            for (int i = 0; i < states.length - 1; i++)
             {
-                throw new IllegalArgumentException("Need at least 2 states");
-            }
 
-            final Thro first = states[0].getThrow(states[1 % states.length]);
-
-            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length - 1);
-
-            thros[0] = first;
-
-            for (int i = 1; i < states.length - 1; i++)
-            {
                 thros[i] = states[i].getThrow(states[i + 1]);
             }
 
@@ -62,7 +64,19 @@ public class StatesToSequenceConverter implements Function<State[], Thro[]>
         }
         catch (final TransitionException cause)
         {
-            throw new InvalidSiteswapException(cause);
+            throw new InvalidSiteswapException("States [" + Arrays.toString(states) + "] cannot transition", cause);
         }
+    }
+
+    /**
+     * Convenient static method to get the sequence.
+     *
+     * @param states The states, at least 2 in length.
+     *
+     * @return The throws between the states.
+     */
+    public static Thro[] getSequence(final State[] states)
+    {
+        return get().apply(states);
     }
 }

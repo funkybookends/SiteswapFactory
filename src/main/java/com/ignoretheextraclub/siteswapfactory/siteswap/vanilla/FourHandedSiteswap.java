@@ -7,7 +7,10 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapExceptio
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+
+import java.util.function.Function;
 
 /**
  * Created by caspar on 26/07/17.
@@ -17,6 +20,9 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
     private static final String TYPE = "Four Handed Siteswap";
     private static final int NUM_JUGGLERS = 2;
     private static final int NUM_HANDS = 4;
+    private static final Function<VanillaThro[], FourHandedSiteswapThro[]> VANILLA_THROS_TO_FHS_THROS_CONVERTER = VanillaThrosToIntsConverter
+            .get()
+            .andThen(IntsToFourHandedSiteswapThrosConverter.get());
 
     public FourHandedSiteswap(final VanillaState[] states,
                               final FourHandedSiteswapThro[] thros,
@@ -42,7 +48,7 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
     {
         if (forJuggler >= 0 && forJuggler < getNumJugglers())
         {
-            return new GlobalToLocalBiConverter<FourHandedSiteswapThro>().apply(getFHSThros(), forJuggler);
+            return GlobalToLocalBiConverter.convertToLocal(getFHSThros(), forJuggler);
         }
         throw new IndexOutOfBoundsException("There are only 2 jugglers. Juggler 0 and Juggler 1");
     }
@@ -68,8 +74,6 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
 
     private FourHandedSiteswapThro[] getFHSThros()
     {
-        return VanillaThrosToIntsConverter.get()
-                                          .andThen(IntsToFourHandedSiteswapThrosConverter.get())
-                                          .apply(thros);
+        return VANILLA_THROS_TO_FHS_THROS_CONVERTER.apply(thros);
     }
 }

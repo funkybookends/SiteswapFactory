@@ -5,13 +5,15 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
-import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
  * Converts a set of states to the throws that join them, enforcing that the last throw returns to the first state.
- * @see StatesToSequenceConverter for a version that does not ensure the looping.
+ *
  * @author Caspar Nonclercq
+ * @see StatesToSequenceConverter for a version that does not ensure the looping.
  */
 public class StatesToThrosConverter implements Function<State[], Thro[]>
 {
@@ -33,38 +35,49 @@ public class StatesToThrosConverter implements Function<State[], Thro[]>
 
     /**
      * Convert an array of states to the throws that join them
+     *
      * @param states The set of states
+     *
      * @return The throws that join them
-     * @throws TransitionException if a transition is not available.
+     *
+     * @throws InvalidSiteswapException if a transition is not possible.
      */
     @Override
     public Thro[] apply(final State[] states)
     {
+        Objects.requireNonNull(states, "states cannot be null");
+        if (states.length == 0)
+        {
+            throw new IllegalArgumentException("No states");
+        }
+
         try
         {
-            if (states.length == 0)
+            final Thro[] thros = new Thro[states.length];
+
+            for (int i = 0; i < states.length; i++)
             {
-                throw new IllegalArgumentException("No states");
+                thros[i] = states[i].getThrow(states[(i + 1) % states.length]);
             }
-
-            final Thro first = states[0].getThrow(states[1 % states.length]);
-
-            final Thro[] thros = (Thro[]) Array.newInstance(first.getClass(), states.length);
-
-            thros[0] = first;
-
-            for (int i = 1; i < states.length - 1; i++)
-            {
-                thros[i] = states[i].getThrow(states[i + 1]);
-            }
-
-            thros[thros.length - 1] = states[states.length - 1].getThrow(states[0]);
 
             return thros;
         }
         catch (TransitionException cause)
         {
-            throw new InvalidSiteswapException(cause);
+            throw new InvalidSiteswapException("Cannot transition between all states " + Arrays.toString(states),
+                    cause);
         }
+    }
+
+    /**
+     * Convenient static method to convert states to thros.
+     *
+     * @param states The set of states.
+     *
+     * @return the throws that are used to transition between all the states.
+     */
+    public static Thro[] getThros(final State[] states)
+    {
+        return get().apply(states);
     }
 }

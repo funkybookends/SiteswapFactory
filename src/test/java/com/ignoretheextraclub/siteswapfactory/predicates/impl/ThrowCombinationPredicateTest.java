@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.impl;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToAllStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound.VanillaThrosToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.StringToVanillaThrosConverter;
@@ -16,7 +17,6 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils.getSequence;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
 
 /**
@@ -150,7 +150,7 @@ public class ThrowCombinationPredicateTest
     {
         final VanillaThro[] vanillaThros = ThrosToVanillaThrosConverter.convert(StringToVanillaThrosConverter.get().apply(seq));
         final VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(vanillaThros);
-        return getSequence(firstState, vanillaThros);
+        return StartingStateAndThrosToAllStatesConverter.getAllStates(firstState, vanillaThros);
     }
 
     private State[] loop(final String seq) throws InvalidSiteswapException

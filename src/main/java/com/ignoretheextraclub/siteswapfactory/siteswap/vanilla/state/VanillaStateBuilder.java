@@ -32,21 +32,26 @@ public class VanillaStateBuilder
     public VanillaStateBuilder thenThrow(final VanillaThro aThro) throws BadThrowException, NumObjectsException
     {
         final int thro = aThro.getNumBeats();
+
+        // Check Throw
         if (thro < 0 || thro > maxThrow)
         {
             throw new BadThrowException("VanillaThro [" + thro + "] out of bounds [0," + maxThrow + "]");
         }
 
+        // Record new object
         if (!occupied[0] && thro != 0)
         {
             givenObjects++;
         }
 
+        // Check num objects
         if (givenObjects > expectedObjects)
         {
             throw new NumObjectsException("Given an unexpected object. Already have [" + givenObjects + "] in [" + this.toString() + "]");
         }
 
+        // Do throw
         if (thro == maxThrow)
         {
             occupied = drop(occupied, true);
@@ -78,5 +83,10 @@ public class VanillaStateBuilder
     public String toString()
     {
         return VanillaStateUtils.toString(occupied, FILLED, EMPTY);
+    }
+
+    public VanillaState getState()
+    {
+        return new VanillaState(this.occupied);
     }
 }

@@ -1,74 +1,59 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@RunWith(Parameterized.class)
+@RunWith(JUnitParamsRunner.class)
 public class VanillaThrosToVanillaStatesConverterTest
 {
-    private final VanillaThro[] input;
-    private final VanillaState[] expected;
-    private final Class<? extends Exception> exception;
-
-    @Parameterized.Parameters()
-    public static Collection<Object[]> data()
+    @Test
+    @Parameters
+    public void testApply(final VanillaThro[] input, final VanillaState[] expected) throws Exception
     {
-        final ArrayList<Object[]> tests = new ArrayList<>();
-
-        tests.add(new Object[]{new VanillaThro[]{getUnchecked(4), getUnchecked(2), getUnchecked(3)}, new VanillaState[]{XXX__, XX_X_, XXX__}, null});
-        tests.add(new Object[]{new VanillaThro[]{getUnchecked(5), getUnchecked(3), getUnchecked(4)}, new VanillaState[]{XXXX__, XXX_X_, XXXX__}, null});
-        tests.add(new Object[]{new VanillaThro[]{getUnchecked(5), getUnchecked(4), getUnchecked(3)}, null, InvalidSiteswapException.class});
-        // TODO add more test cases
-
-        return tests;
+        assertThat(VanillaThrosToVanillaStatesConverter.get().apply(input)).isEqualTo(expected);
+        assertThat(VanillaThrosToVanillaStatesConverter.convertThrosToStates(input)).isEqualTo(expected);
     }
 
-    public VanillaThrosToVanillaStatesConverterTest(final VanillaThro[] input, final VanillaState[] expected, final Class<? extends Exception> exception)
+    private Object parametersForTestApply()
     {
-        this.input = input;
-        this.expected = expected;
-        this.exception = exception;
+        return new Object[]{
+                new Object[]{thros(getUnchecked(4), getUnchecked(2), getUnchecked(3)), StateTestUtils.states(XXX__, XX_X_, XXX__)},
+                new Object[]{thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)), StateTestUtils.states(XXXX__, XXX_X_, XXXX__)},
+                };
+        // TODO add more
     }
 
     @Test
-    public void testApply() throws Exception
+    @Parameters
+    public void testException(final VanillaThro[] input, final Exception exception) throws Exception
     {
-        if (expected != null)
-        {
-            assertThat(VanillaThrosToVanillaStatesConverter.get().apply(input)).isEqualTo(expected);
-        }
+        assertThatThrownBy(() -> VanillaThrosToVanillaStatesConverter.convertThrosToStates(input))
+                .isInstanceOf(exception.getClass())
+                .hasMessageContaining(exception.getMessage());
     }
 
-    @Test
-    public void testConvert() throws Exception
+    private Object parametersForTestException()
     {
-        if (expected != null)
-        {
-            assertThat(VanillaThrosToVanillaStatesConverter.convertThrosToStates(input)).isEqualTo(expected);
-        }
-    }
-
-    @Test
-    public void testException() throws Exception
-    {
-        if (exception != null)
-        {
-            assertThatThrownBy(() -> VanillaThrosToVanillaStatesConverter.convertThrosToStates(input)).isInstanceOf(exception);
-        }
+        return new Object[]{
+                new Object[]{thros(getUnchecked(5), getUnchecked(4), getUnchecked(3)), new InvalidSiteswapException("[5, 4, 3]")},
+                new Object[]{null, new NullPointerException("thros")},
+                new Object[]{new VanillaThro[]{}, new IllegalArgumentException("thros cannot be empty")},
+        };
+        // TODO add more
     }
 }
