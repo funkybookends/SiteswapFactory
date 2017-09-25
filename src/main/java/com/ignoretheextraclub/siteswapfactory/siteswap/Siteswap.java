@@ -1,6 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.GroundedPredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.PrimePredicate;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
 
 import java.util.stream.Stream;
@@ -81,7 +83,10 @@ public interface Siteswap
      *
      * @return if this siteswap moves through the ground state.
      */
-    boolean isGrounded();
+    default boolean isGrounded()
+    {
+        return GroundedPredicate.isGround(this);
+    }
 
     /**
      * True if the the list of vanillaStates is unique.
@@ -90,14 +95,20 @@ public interface Siteswap
      *
      * @see #getStates()
      */
-    boolean isPrime();
+    default boolean isPrime()
+    {
+        return PrimePredicate.isPrime(this);
+    }
 
     /**
      * The highest throw. It is up to the {@link Thro} type to determine what is "highest".
      *
      * @return The highest {@link Thro}.
      */
-    Thro getHighestThro();
+    default Thro getHighestThro()
+    {
+        return Thro.getHighest(this.getThrows());
+    }
 
     /**
      * @return

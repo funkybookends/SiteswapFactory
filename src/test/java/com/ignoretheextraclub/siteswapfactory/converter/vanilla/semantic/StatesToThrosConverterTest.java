@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.*;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.states;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -31,11 +31,11 @@ public class StatesToThrosConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{states(XXX__, XX_X_), thros(getUnchecked(4), getUnchecked(2))},
-                new Object[]{states(XXX__, XX_X_, XXX__), thros(getUnchecked(4), getUnchecked(2), getUnchecked(3))},
-                new Object[]{states(XXX__, XX_X_, XXX__, XXX__), thros(getUnchecked(4), getUnchecked(2), getUnchecked(3), getUnchecked(3))},
-                new Object[]{states(XXXX__, XXXX__), thros(getUnchecked(4), getUnchecked(4))},
-                new Object[]{states(XXXX__, XXX_X_), thros(getUnchecked(5), getUnchecked(3))},
+                new Object[]{states(XXX__, XX_X_), thros(get(4), get(2))},
+                new Object[]{states(XXX__, XX_X_, XXX__), thros(get(4), get(2), get(3))},
+                new Object[]{states(XXX__, XX_X_, XXX__, XXX__), thros(get(4), get(2), get(3), get(3))},
+                new Object[]{states(XXXX__, XXXX__), thros(get(4), get(4))},
+                new Object[]{states(XXXX__, XXX_X_), thros(get(5), get(3))},
                 };
         // TODO add more
     }

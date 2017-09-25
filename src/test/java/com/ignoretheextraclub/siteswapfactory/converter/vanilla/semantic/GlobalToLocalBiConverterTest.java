@@ -7,18 +7,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(JUnitParamsRunner.class)
 public class GlobalToLocalBiConverterTest
 {
-    private static final VanillaThro _1 = getUnchecked(1);
-    private static final VanillaThro _2 = getUnchecked(2);
-    private static final VanillaThro _3 = getUnchecked(3);
-    private static final VanillaThro _4 = getUnchecked(4);
-    private static final VanillaThro _5 = getUnchecked(5);
+    private static final VanillaThro _1 = get(1);
+    private static final VanillaThro _2 = get(2);
+    private static final VanillaThro _3 = get(3);
+    private static final VanillaThro _4 = get(4);
+    private static final VanillaThro _5 = get(5);
 
     @Test
     @Parameters

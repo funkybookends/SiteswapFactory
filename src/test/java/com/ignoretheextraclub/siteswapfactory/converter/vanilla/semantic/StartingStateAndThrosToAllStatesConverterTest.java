@@ -20,7 +20,7 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.states;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -43,13 +43,13 @@ public class StartingStateAndThrosToAllStatesConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{XXX_, thros(getUnchecked(4), getUnchecked(2), getUnchecked(3)), states(XXX_, XX_X, XXX_)},
-                new Object[]{XXX__, thros(getUnchecked(4), getUnchecked(2), getUnchecked(3)), states(XXX__, XX_X_, XXX__)},
-                new Object[]{XXXX_, thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)), states(XXXX_, XXX_X, XXXX_)},
-                new Object[]{XXXX_, thros(getUnchecked(5), getUnchecked(3), getUnchecked(5)), states(XXXX_, XXX_X, XXXX_)},
-                new Object[]{XXX__, thros(getUnchecked(3)), states(XXX__)},
-                new Object[]{XXX_, thros(getUnchecked(3)), states(XXX_)},
-                new Object[]{XXX, thros(getUnchecked(3)), states(XXX)},
+                new Object[]{XXX_, thros(get(4), get(2), get(3)), states(XXX_, XX_X, XXX_)},
+                new Object[]{XXX__, thros(get(4), get(2), get(3)), states(XXX__, XX_X_, XXX__)},
+                new Object[]{XXXX_, thros(get(5), get(3), get(4)), states(XXXX_, XXX_X, XXXX_)},
+                new Object[]{XXXX_, thros(get(5), get(3), get(5)), states(XXXX_, XXX_X, XXXX_)},
+                new Object[]{XXX__, thros(get(3)), states(XXX__)},
+                new Object[]{XXX_, thros(get(3)), states(XXX_)},
+                new Object[]{XXX, thros(get(3)), states(XXX)},
                 };
         // TODO add more
     }
@@ -69,8 +69,8 @@ public class StartingStateAndThrosToAllStatesConverterTest
     {
         return new Object[]{
                 //@formatter:off
-            new Object[]{XXX__, thros(getUnchecked(5), getUnchecked(4), getUnchecked(3)), new InvalidSiteswapException("[5, 4, 3]")},
-            new Object[]{XXX__, thros(getUnchecked(5), getUnchecked(4), getUnchecked(3)), new InvalidSiteswapException("XXX__")},
+            new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("[5, 4, 3]")},
+            new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("XXX__")},
             new Object[]{XXX__, null, new NullPointerException("thros cannot be null")},
             new Object[]{null, new VanillaThro[]{}, new NullPointerException("startingState cannot be null")},
             new Object[]{XXX__, new VanillaThro[]{}, new IllegalArgumentException("thros must have at least one throw")}
@@ -95,8 +95,8 @@ public class StartingStateAndThrosToAllStatesConverterTest
     {
         return new Object[]{
                 //@formatter:off
-            new Object[]{XXX__, thros(getUnchecked(5), getUnchecked(4)), new InvalidSiteswapException("XXX__")},
-            new Object[]{XXX__, thros(getUnchecked(5), getUnchecked(5)), new InvalidSiteswapException("XXX__")},
+            new Object[]{XXX__, thros(get(5), get(4)), new InvalidSiteswapException("XXX__")},
+            new Object[]{XXX__, thros(get(5), get(5)), new InvalidSiteswapException("XXX__")},
             //@formatter:on
         };
         // TODO add more

@@ -4,6 +4,8 @@ import java.util.function.Function;
 
 /**
  * Converts an int[] to a string
+ *
+ * @author Caspar Nonclercq
  */
 public class IntsToStringConverter implements Function<int[], String>
 {
@@ -25,12 +27,26 @@ public class IntsToStringConverter implements Function<int[], String>
 
     /**
      * Converts an int[] to a string
-     * @param ints
-     * @return
+     *
+     * @param ints ints to convert
+     *
+     * @return a string
      */
     @Override
     public String apply(final int[] ints)
     {
         return new String(IntsToCharsConverter.get().apply(ints));
+    }
+
+    /**
+     * Convenient static method to convert ints to string
+     *
+     * @param ints the ints to convert
+     *
+     * @return the string
+     */
+    public static String convert(final int[] ints)
+    {
+        return get().apply(ints);
     }
 }

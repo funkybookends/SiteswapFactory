@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 /**
  * Converts a VanillaThro[] to a String
+ *
+ * @author Caspar Nonclercq
  */
 public class VanillaThrosToStringConverter implements Function<VanillaThro[], String>
 {
@@ -29,8 +31,10 @@ public class VanillaThrosToStringConverter implements Function<VanillaThro[], St
 
     /**
      * Converts a VanillaThro[] to a String
-     * @param thros
-     * @return
+     *
+     * @param thros The throws
+     *
+     * @return The string representation
      */
     @Override
     public String apply(final VanillaThro[] thros)
@@ -46,5 +50,17 @@ public class VanillaThrosToStringConverter implements Function<VanillaThro[], St
     private VanillaThrosToIntsConverter convertToInts()
     {
         return VanillaThrosToIntsConverter.get();
+    }
+
+    /**
+     * Convenient static method to convert thros to a string
+     *
+     * @param thros The throws
+     *
+     * @return A string representation
+     */
+    public static String toString(final VanillaThro[] thros)
+    {
+        return get().apply(thros);
     }
 }

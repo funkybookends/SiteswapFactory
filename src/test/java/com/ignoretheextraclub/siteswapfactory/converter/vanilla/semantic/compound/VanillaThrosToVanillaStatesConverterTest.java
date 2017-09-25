@@ -14,7 +14,7 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -32,8 +32,8 @@ public class VanillaThrosToVanillaStatesConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{thros(getUnchecked(4), getUnchecked(2), getUnchecked(3)), StateTestUtils.states(XXX__, XX_X_, XXX__)},
-                new Object[]{thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)), StateTestUtils.states(XXXX__, XXX_X_, XXXX__)},
+                new Object[]{thros(get(4), get(2), get(3)), StateTestUtils.states(XXX__, XX_X_, XXX__)},
+                new Object[]{thros(get(5), get(3), get(4)), StateTestUtils.states(XXXX__, XXX_X_, XXXX__)},
                 };
         // TODO add more
     }
@@ -50,7 +50,7 @@ public class VanillaThrosToVanillaStatesConverterTest
     private Object parametersForTestException()
     {
         return new Object[]{
-                new Object[]{thros(getUnchecked(5), getUnchecked(4), getUnchecked(3)), new InvalidSiteswapException("[5, 4, 3]")},
+                new Object[]{thros(get(5), get(4), get(3)), new InvalidSiteswapException("[5, 4, 3]")},
                 new Object[]{null, new NullPointerException("thros")},
                 new Object[]{new VanillaThro[]{}, new IllegalArgumentException("thros cannot be empty")},
         };

@@ -8,19 +8,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(JUnitParamsRunner.class)
 public class LocalToGlobalConverterTest
 {
-    private static final VanillaThro _5 = getUnchecked(5);
-    private static final VanillaThro _6 = getUnchecked(6);
-    private static final VanillaThro _7 = getUnchecked(7);
-    private static final VanillaThro _8 = getUnchecked(8);
-    private static final VanillaThro _9 = getUnchecked(9);
-    private static final VanillaThro _10 = getUnchecked(10);
+    private static final VanillaThro _5 = get(5);
+    private static final VanillaThro _6 = get(6);
+    private static final VanillaThro _7 = get(7);
+    private static final VanillaThro _8 = get(8);
+    private static final VanillaThro _9 = get(9);
+    private static final VanillaThro _10 = get(10);
 
     @Test
     @Parameters

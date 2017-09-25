@@ -5,11 +5,9 @@ import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.PrimePredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.SameNumberOfObjectsPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopsPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.SiteswapSorter;
@@ -93,24 +91,6 @@ public class VanillaSiteswap implements Siteswap
     public VanillaState[] getStates()
     {
         return states;
-    }
-
-    @Override
-    public boolean isGrounded()
-    {
-        return Stream.of(states).anyMatch(VanillaState::isGroundState);
-    }
-
-    @Override
-    public boolean isPrime()
-    {
-        return PrimePredicate.isPrime(this.getStates());
-    }
-
-    @Override
-    public VanillaThro getHighestThro()
-    {
-        return ThroUtils.getHighestThro(thros);
     }
 
     @Override

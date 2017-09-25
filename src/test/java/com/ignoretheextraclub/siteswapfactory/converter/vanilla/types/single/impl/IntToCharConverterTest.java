@@ -4,8 +4,6 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.assertj.core.api.Fail.fail;
-
 /**
  * Created by caspar on 14/09/17.
  */
@@ -36,11 +34,7 @@ public class IntToCharConverterTest
         softly.assertThat(intToCharConverter.apply(15)).isEqualTo('F');
         softly.assertThat(intToCharConverter.apply(16)).isEqualTo('G');
         softly.assertThat(intToCharConverter.apply(17)).isEqualTo('H');
-    }
-
-    @Test
-    public void testExceptions() throws Exception
-    {
-        fail("Test not yet implemented");
+        softly.assertThat(intToCharConverter.apply(null)).isEqualTo('?');
+        softly.assertThat(intToCharConverter.apply(46)).isEqualTo('?');
     }
 }

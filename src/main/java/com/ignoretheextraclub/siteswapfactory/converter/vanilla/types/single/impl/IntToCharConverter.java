@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 /**
  * Converts an int to a char. Guaranteed to not throw an exception, returns '?' if not valid.
- * It is your responsibility to catch invalid throws.
+ * @author Caspar Nonclercq
  */
 public class IntToCharConverter implements Function<Integer, Character>
 {
@@ -25,10 +25,16 @@ public class IntToCharConverter implements Function<Integer, Character>
         }
         return INSTANCE;
     }
+
+    /**
+     *
+     * @param thro
+     * @return
+     */
     @Override
     public Character apply(final Integer thro)
     {
-        if (thro < 0)
+        if (thro == null || thro < 0)
         {
             return VanillaThro.INVALID_CHAR;
         }

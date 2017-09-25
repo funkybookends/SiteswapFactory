@@ -11,4 +11,9 @@ public class BadThrowException extends InvalidSiteswapException
     {
         super(message);
     }
+
+    public BadThrowException(final String message, final Throwable cause)
+    {
+        super(message, cause);
+    }
 }

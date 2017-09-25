@@ -2,10 +2,13 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.imp
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * Converts an int[] to a FourHandedSiteswap[]
+ * Converts an int[] to a FourHandedSiteswapThro[]
+ *
+ * @author Caspar Nonclercq
  */
 public class IntsToFourHandedSiteswapThrosConverter implements Function<int[], FourHandedSiteswapThro[]>
 {
@@ -26,20 +29,36 @@ public class IntsToFourHandedSiteswapThrosConverter implements Function<int[], F
     }
 
     /**
-     * Converts an int[] to a FourHandedSiteswap[]
-     * @param siteswap
-     * @return
+     * Converts an int[] to a FourHandedSiteswapThro[]
+     *
+     * @param thros an array of ints
+     *
+     * @return an array of FourHandedSiteswapThros
      */
     @Override
-    public FourHandedSiteswapThro[] apply(final int[] siteswap)
+    public FourHandedSiteswapThro[] apply(final int[] thros)
     {
-        final FourHandedSiteswapThro[] thros = new FourHandedSiteswapThro[siteswap.length];
+        Objects.requireNonNull(thros, "thros cannot be null");
 
-        for (int i = 0; i < siteswap.length; i++)
+        final FourHandedSiteswapThro[] fourHandedSiteswapThros = new FourHandedSiteswapThro[thros.length];
+
+        for (int i = 0; i < thros.length; i++)
         {
-            thros[i] = FourHandedSiteswapThro.getUnchecked(siteswap[i]);
+            fourHandedSiteswapThros[i] = FourHandedSiteswapThro.get(thros[i]);
         }
 
-        return thros;
+        return fourHandedSiteswapThros;
+    }
+
+    /**
+     * Convenient static method to convert ints to {@link FourHandedSiteswapThro}s
+     *
+     * @param thros ints
+     *
+     * @return FourHandedSiteswapThros
+     */
+    public static FourHandedSiteswapThro[] convert(final int[] thros)
+    {
+        return get().apply(thros);
     }
 }

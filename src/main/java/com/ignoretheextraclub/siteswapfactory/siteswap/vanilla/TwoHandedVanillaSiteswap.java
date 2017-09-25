@@ -5,9 +5,10 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 /**
- Created by caspar on 26/07/17.
+ * Created by caspar on 26/07/17.
  */
 public class TwoHandedVanillaSiteswap extends VanillaSiteswap
 {
@@ -45,16 +46,42 @@ public class TwoHandedVanillaSiteswap extends VanillaSiteswap
     }
 
     @Override
-    public int getStartingNumberOfObjects(final int forHand) throws IndexOutOfBoundsException
+    public int getStartingNumberOfObjects(final int hand) throws IndexOutOfBoundsException
     {
-        if (forHand >= 0 && forHand < getNumHands())
+        if (hand < 0 || hand >= getNumHands())
         {
-            return VanillaSiteswapUtils.getStartingNumberOfObjects(getNumHands(),
-                                                                   forHand,
-                                                                   getThrows(),
-                                                                   getNumObjects());
+            throw new IndexOutOfBoundsException("There are only " + getNumHands() + " hands. Cannot get for hand: " + hand);
         }
-        throw new IndexOutOfBoundsException("There are only " + getNumHands() + " hands. Cannot get for hand: " + forHand);
+
+        final boolean[] landings = new boolean[getPeriod() + getHighestThro().getNumBeats()];
+
+        final ArrayLoopingIterator<VanillaThro> looper = new ArrayLoopingIterator<>(getThrows());
+
+        for (int i = 0; i < landings.length; i++)
+        {
+            final int landing_position = i + looper.next().getNumBeats();
+
+            if (landing_position < landings.length)
+            {
+                landings[landing_position] = true;
+            }
+        }
+
+        int tot = 0;
+        int i = 0;
+        final int[] hands = new int[getNumHands()];
+
+        while (tot < getNumObjects())
+        {
+            if (!landings[i])
+            {
+                hands[i % getNumHands()]++;
+                tot++;
+            }
+            i++;
+        }
+
+        return hands[hand];
     }
 
     @Override
@@ -63,8 +90,6 @@ public class TwoHandedVanillaSiteswap extends VanillaSiteswap
         return TYPE;
     }
 
-
-
     @Override
     public Siteswap resort(final SortingStrategy newSortingStrategy)
     {
@@ -72,9 +97,9 @@ public class TwoHandedVanillaSiteswap extends VanillaSiteswap
         {
             return new TwoHandedVanillaSiteswap(this.getStates(), this.getThrows(), newSortingStrategy);
         }
-        catch (InvalidSiteswapException e)
+        catch (final InvalidSiteswapException cause)
         {
-            throw new IllegalStateException("Could not create new siteswap", e);
+            throw new IllegalStateException("Could not create new siteswap", cause);
         }
     }
 }

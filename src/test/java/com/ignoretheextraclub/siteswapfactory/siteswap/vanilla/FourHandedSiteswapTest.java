@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
 /**
  Created by caspar on 06/08/17.
@@ -28,13 +28,13 @@ public class FourHandedSiteswapTest
         softly.assertThat(vanillaSiteswap.getNumHands()).isEqualTo(4);
         softly.assertThat(vanillaSiteswap.getNumObjects()).isEqualTo(7);
         softly.assertThat(vanillaSiteswap.getPeriod()).isEqualTo(3);
-        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(getUnchecked(7), getUnchecked(8), getUnchecked(6)));
-        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(getUnchecked(7), getUnchecked(6), getUnchecked(8)));
-        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(1)).isEqualTo(thros(getUnchecked(8), getUnchecked(7), getUnchecked(6)));
+        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(get(7), get(8), get(6)));
+        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(get(7), get(6), get(8)));
+        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(1)).isEqualTo(thros(get(8), get(7), get(6)));
         softly.assertThatThrownBy(() -> vanillaSiteswap.getThrowsForJuggler(2)).isInstanceOf(IndexOutOfBoundsException.class);
         softly.assertThat(vanillaSiteswap.isGrounded()).isEqualTo(true);
         softly.assertThat(vanillaSiteswap.isPrime()).isEqualTo(false);
-        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(getUnchecked(8));
+        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(get(8));
         softly.assertThat(vanillaSiteswap.getSortingStrategy()).isEqualTo(FourHandedPassingStrategy.get());
         softly.assertThat(vanillaSiteswap.getStartingNumberOfObjects(0)).isEqualTo(2);
         softly.assertThat(vanillaSiteswap.getStartingNumberOfObjects(1)).isEqualTo(2);

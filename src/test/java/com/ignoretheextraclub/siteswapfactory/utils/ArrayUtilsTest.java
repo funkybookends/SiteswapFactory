@@ -2,7 +2,6 @@ package com.ignoretheextraclub.siteswapfactory.utils;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,28 +29,24 @@ public class ArrayUtilsTest
     }
 
     @Test
-    @Ignore("still need implementing")
     public void getFirstMinIndex() throws Exception
     {
         fail("Test not yet implemented");
     }
 
     @Test
-    @Ignore("still need implementing")
     public void getFirstMinIndex1() throws Exception
     {
         fail("Test not yet implemented");
     }
 
     @Test
-    @Ignore("still need implementing")
     public void getFirstMaxIndex() throws Exception
     {
         fail("Test not yet implemented");
     }
 
     @Test
-    @Ignore("still need implementing")
     public void getFirstMaxIndex1() throws Exception
     {
         fail("Test not yet implemented");

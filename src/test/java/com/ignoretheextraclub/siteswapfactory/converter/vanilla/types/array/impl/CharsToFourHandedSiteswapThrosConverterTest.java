@@ -1,6 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -12,31 +11,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Created by caspar on 14/09/17.
+ * Created by caspar on 24/09/17.
  */
 @RunWith(JUnitParamsRunner.class)
-public class ThrosToFourHandedSiteswapThrosConverterTest
+public class CharsToFourHandedSiteswapThrosConverterTest
 {
     @Test
     @Parameters
-    public void testApply(final Thro[] thros, final FourHandedSiteswapThro[] expected) throws Exception
+    public void testApply(final char[] chars, final FourHandedSiteswapThro[] expected) throws Exception
     {
-        assertThat(ThrosToFourHandedSiteswapThrosConverter.get().apply(thros)).isEqualTo(expected);
-        assertThat(ThrosToFourHandedSiteswapThrosConverter.convert(thros)).isEqualTo(expected);
+        assertThat(CharsToFourHandedSiteswapThrosConverter.get().apply(chars)).isEqualTo(expected);
+        assertThat(CharsToFourHandedSiteswapThrosConverter.convert(chars)).isEqualTo(expected);
     }
 
     public Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{new Thro[]{}, new FourHandedSiteswapThro[]{}},
-                new Object[]{new Thro[]{get(0), get(2), get(4), get(6), get(9)}, new FourHandedSiteswapThro[]{get(0), get(2), get(4), get(6), get(9)}},
-        }; // TODO add more
+                new Object[]{new char[]{'0','A'}, new FourHandedSiteswapThro[]{get(0), get('A')}},
+                new Object[]{new char[]{}, new FourHandedSiteswapThro[]{}},
+        };
+        // TODO add more
     }
 
     @Test
     public void testException() throws Exception
     {
-        assertThatThrownBy(() -> ThrosToFourHandedSiteswapThrosConverter.get().apply(null))
+        assertThatThrownBy(() -> CharsToFourHandedSiteswapThrosConverter.convert(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("thros");
     }

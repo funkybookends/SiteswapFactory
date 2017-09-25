@@ -4,7 +4,7 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.utils.ThroUtils;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -67,7 +67,7 @@ public class VanillaThrosToFirstStateBiConverter implements BiFunction<VanillaTh
 
         try
         {
-            final int highestThro = ThroUtils.getHighestThro(thros).getNumBeats();
+            final int highestThro = Thro.getHighest(thros).getNumBeats();
 
             final VanillaStateBuilder stateBuilder = new VanillaStateBuilder(highestThro,numObjects);
 

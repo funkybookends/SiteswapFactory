@@ -37,12 +37,12 @@ public class VanillaStateTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(VanillaStateTest.class);
 
-    private static final VanillaThro ZERO = VanillaThro.getUnchecked(0);
-    private static final VanillaThro ONE = VanillaThro.getUnchecked(1);
-    private static final VanillaThro TWO = VanillaThro.getUnchecked(2);
-    private static final VanillaThro THREE = VanillaThro.getUnchecked(3);
-    private static final VanillaThro FOUR = VanillaThro.getUnchecked(4);
-    private static final VanillaThro FIVE = VanillaThro.getUnchecked(5);
+    private static final VanillaThro ZERO = VanillaThro.get(0);
+    private static final VanillaThro ONE = VanillaThro.get(1);
+    private static final VanillaThro TWO = VanillaThro.get(2);
+    private static final VanillaThro THREE = VanillaThro.get(3);
+    private static final VanillaThro FOUR = VanillaThro.get(4);
+    private static final VanillaThro FIVE = VanillaThro.get(5);
 
     @Rule public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 

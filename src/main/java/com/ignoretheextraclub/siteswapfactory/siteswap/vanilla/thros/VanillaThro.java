@@ -6,45 +6,50 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
- Represents a Vanilla Siteswap Throw
- <p>
- Contains validation to ensure it is valid. {@link #MAX_THROW} is 'Z' == 35. Has methods which are guranteed to not throw
- exceptions, and will return null instead. Has convenience methods for converting between representations.
- <p>
+ * Represents a Vanilla Siteswap Throw
+ * <p>
+ * Contains validation to ensure it is valid. {@link #MAX_THROW} is 'Z' == 35. Has methods which are guranteed to not
+ * throw
+ * exceptions, and will return null instead. Has convenience methods for converting between representations.
  */
 @Immutable
 public class VanillaThro implements Thro
 {
     /**
-     The char returned if an int is invalid or greater than 'z'.
+     * The char returned if an int is invalid or greater than 'z'.
      */
     public static final char INVALID_CHAR = '?';
 
     /**
-     The int returned if a char is invalid.
+     * The int returned if a char is invalid.
      */
     public static final int INVALID_INT = -1;
 
     /**
-     The lowest throw
+     * The lowest throw
      */
     private static final int MIN_THROW = 0;
 
     /**
-     The maximum throw. Whilst you can throw higher throws technically, there is little use in reality. If you need this
-     functionality, then reimplement this class without this constraint.
+     * The maximum throw. Whilst you can throw higher throws technically, there is little use in reality. If you need
+     * this
+     * functionality, then reimplement this class without this constraint.
      */
     public static final int MAX_THROW = 35;
 
     /**
-     Given the small number of throws, we keep them all in an array so we can reuse them.
+     * Given the small number of throws, we keep them all in an array so we can reuse them.
      */
     private static final VanillaThro[] THROWS = setup();
 
     /**
-     Static method to build all the legal throws.
-     @return All legal throws.
+     * Static method to build all the legal throws.
+     *
+     * @return All legal throws.
      */
     private static VanillaThro[] setup()
     {
@@ -64,14 +69,16 @@ public class VanillaThro implements Thro
     }
 
     /**
-     The size of the throw.
+     * The size of the throw.
      */
     protected final int thro;
 
     /**
-     Constructs a throw
-     @param thro the size of the throw.
-     @throws BadThrowException if the throw is too small
+     * Constructs a throw
+     *
+     * @param thro the size of the throw.
+     *
+     * @throws BadThrowException if the throw is too small
      */
     protected VanillaThro(final int thro) throws BadThrowException
     {
@@ -83,72 +90,41 @@ public class VanillaThro implements Thro
     }
 
     /**
-     A static method to obtain a {@link VanillaThro} object.
-     <p>
-     Use {@link #getUnchecked(int)} if you prefer a null value returned instead of an exception for illegal throws.
-
-     @param thro
-
-     @return VanillaThro
-
-     @throws BadThrowException if the throw is illegal.
+     * A static method to obtain a {@link VanillaThro} object.
+     * <p>
+     *
+     * @param thro
+     *
+     * @return VanillaThro
+     *
+     * @throws BadThrowException if the throw is illegal.
      */
     public static VanillaThro get(final int thro) throws BadThrowException
     {
         if (thro < MIN_THROW || thro > MAX_THROW)
         {
-            throw new BadThrowException("Throw ["+thro+"] out of range");
+            throw new BadThrowException("Throw [" + thro + "] out of range");
         }
         return THROWS[thro];
     }
 
     /**
-     An alternative to {@link #get(int)} which will convert to an int for you.
-     <p>
-     Use {@link #getUnchecked(char)} if you prefer a null value to an exception if the throw is not valid.
-
-     @param thro
-
-     @return
+     * An alternative to {@link #get(int)} which will convert to an int for you.
+     * <p>
+     *
+     * @param thro
+     *
+     * @return
      */
     public static VanillaThro get(final char thro) throws BadThrowException
     {
-        return get(CharToIntConverter.get().apply(thro));
-    }
-
-    /**
-     Gets a throw but will not throw an exception if illegal and instead will return null. Useful for static constant
-     generation. You should not use this generally and use {@link #get(char)} instead.
-     @param thro
-     @return The thro
-     */
-    public static VanillaThro getUnchecked(final char thro)
-    {
         try
         {
-            return get(thro);
+            return get(CharToIntConverter.get().apply(thro));
         }
         catch (final BadThrowException cause)
         {
-            throw new IllegalArgumentException(cause);
-        }
-    }
-
-    /**
-     Gets a throw but will not throw an exception if illegal and instead will return null. Useful for static constant
-     generation. You should not use this generally and use {@link #get(int)} instead.
-     @param thro
-     @return The thro
-     */
-    public static VanillaThro getUnchecked(final int thro)
-    {
-        try
-        {
-            return get(thro);
-        }
-        catch (final BadThrowException cause)
-        {
-            throw new IllegalArgumentException(cause);
+            throw new BadThrowException("char [" + thro + "] was not a valid throw", cause);
         }
     }
 
@@ -194,5 +170,21 @@ public class VanillaThro implements Thro
     public String toString()
     {
         return String.valueOf(IntToCharConverter.get().apply(thro));
+    }
+
+    public static int numObjects(VanillaThro[] thros)
+    {
+        Objects.requireNonNull(thros, "thros cannot be null");
+
+        final int sum = Arrays.stream(thros)
+                              .mapToInt(VanillaThro::getNumBeats)
+                              .sum();
+
+        if (sum % thros.length != 0)
+        {
+            throw new IllegalArgumentException("thros " + Arrays.toString(thros) + " sum is not a factor of its length");
+        }
+
+        return sum / thros.length;
     }
 }

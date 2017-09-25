@@ -2,12 +2,15 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.com
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToFourHandedSiteswapThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 
 import java.util.function.Function;
 
 /**
- * Created by caspar on 17/09/17.
+ * Converts a string of numbers to an array of FourHandedSiteswapThros
+ *
+ * @author Caspar Nonclercq
  */
 public class StringToFourHandedSiteswapThrosConverter implements Function<String, FourHandedSiteswapThro[]>
 {
@@ -27,10 +30,26 @@ public class StringToFourHandedSiteswapThrosConverter implements Function<String
         return INSTANCE;
     }
 
+    /**
+     * Converts string to {@link FourHandedSiteswapThro}[]
+     *
+     * @param siteswap a string of numbers
+     *
+     * @return the converted string
+     *
+     * @see #convert(String) A static method version
+     */
     @Override
     public FourHandedSiteswapThro[] apply(final String siteswap)
     {
-        return convertToInts().andThen(convertToFourHandedSiteswapThros()).apply(siteswap);
+        try
+        {
+            return convertToInts().andThen(convertToFourHandedSiteswapThros()).apply(siteswap);
+        }
+        catch (final BadThrowException cause)
+        {
+            throw new BadThrowException("String [" + siteswap + "] contained a bad throw", cause);
+        }
     }
 
     private IntsToFourHandedSiteswapThrosConverter convertToFourHandedSiteswapThros()
@@ -41,5 +60,17 @@ public class StringToFourHandedSiteswapThrosConverter implements Function<String
     private StringToIntsConverter convertToInts()
     {
         return StringToIntsConverter.get();
+    }
+
+    /**
+     * Convenient static method to convert a string
+     *
+     * @param siteswap a string of numbers.
+     *
+     * @return the converted string
+     */
+    public static FourHandedSiteswapThro[] convert(final String siteswap)
+    {
+        return get().apply(siteswap);
     }
 }

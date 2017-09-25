@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
 /**
  Created by caspar on 02/08/17.
@@ -29,35 +29,35 @@ public class ThrowCombinationPredicateTest
     @Test
     public void testThatFirstAndLastElementsMustNotBeNull() throws Exception
     {
-        softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate(null, getUnchecked(3)))
+        softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate(null, get(3)))
               .isInstanceOf(IllegalArgumentException.class);
 
-        softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate(getUnchecked(3), null))
+        softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate(get(3), null))
               .isInstanceOf(IllegalArgumentException.class);
 
         softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate((VanillaThro) null))
               .isInstanceOf(IllegalArgumentException.class);
 
         softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate((VanillaThro) null,
-                getUnchecked(3),
-                getUnchecked(5),
-                getUnchecked(1))).isInstanceOf(IllegalArgumentException.class);
+                get(3),
+                get(5),
+                get(1))).isInstanceOf(IllegalArgumentException.class);
 
-        softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate(getUnchecked(3),
-                getUnchecked(5),
-                getUnchecked(1),
+        softly.assertThatThrownBy(() -> new LoopCheckingThrowCombinationPredicate(get(3),
+                get(5),
+                get(1),
                 null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void testSingleThro() throws Exception
     {
-        final Predicate<State[]> sequence = new ThroCombinationPredicate(getUnchecked(3));
+        final Predicate<State[]> sequence = new ThroCombinationPredicate(get(3));
         final Predicate<State[]> sequenceNegated = sequence.negate();
-        final Predicate<State[]> loop = new LoopCheckingThrowCombinationPredicate(getUnchecked(3));
+        final Predicate<State[]> loop = new LoopCheckingThrowCombinationPredicate(get(3));
         final Predicate<State[]> loopNegated = loop.negate();
 
-        softly.assertThat(sequence.test(seq("3"))).isTrue();
+        softly.assertThat(sequence.test(seq("33"))).isTrue();
         softly.assertThat(sequence.test(seq("53"))).isTrue();
         softly.assertThat(sequence.test(seq("441355500"))).isTrue();
         softly.assertThat(sequence.test(seq("4413"))).isTrue();
@@ -122,14 +122,14 @@ public class ThrowCombinationPredicateTest
     @Test
     public void testSequenceWithNulls() throws Exception
     {
-        final Predicate<State[]> sequence = new ThroCombinationPredicate(getUnchecked(5),
+        final Predicate<State[]> sequence = new ThroCombinationPredicate(get(5),
                 null,
-                getUnchecked(1));
+                get(1));
 
         final Predicate<State[]> sequenceNegated = sequence.negate();
-        final Predicate<State[]> loop = new LoopCheckingThrowCombinationPredicate(getUnchecked(5),
+        final Predicate<State[]> loop = new LoopCheckingThrowCombinationPredicate(get(5),
                 null,
-                getUnchecked(1));
+                get(1));
 
         final Predicate<State[]> loopNegated = loop.negate();
 

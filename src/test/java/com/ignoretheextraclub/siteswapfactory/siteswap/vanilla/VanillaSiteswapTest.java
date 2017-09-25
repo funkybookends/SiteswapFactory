@@ -10,7 +10,7 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.states;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
 /**
  Created by caspar on 12/08/17.
@@ -31,12 +31,12 @@ public class VanillaSiteswapTest
         softly.assertThatThrownBy(vanillaSiteswap::getNumHands).isInstanceOf(UnsupportedOperationException.class);
         softly.assertThat(vanillaSiteswap.getNumObjects()).isEqualTo(4);
         softly.assertThat(vanillaSiteswap.getPeriod()).isEqualTo(3);
-        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)));
-        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)));
+        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(get(5), get(3), get(4)));
+        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(get(5), get(3), get(4)));
         softly.assertThat(vanillaSiteswap.getStates()).isEqualTo(states(XXXX_, XXX_X, XXXX_));
         softly.assertThat(vanillaSiteswap.isGrounded()).isEqualTo(true);
         softly.assertThat(vanillaSiteswap.isPrime()).isEqualTo(false);
-        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(getUnchecked(5));
+        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(get(5));
         softly.assertThat(vanillaSiteswap.getSortingStrategy()).isEqualTo(NoSortingStrategy.get());
         softly.assertThatThrownBy(() -> vanillaSiteswap.getStartingNumberOfObjects(0)).isInstanceOf(UnsupportedOperationException.class);
         softly.assertThat(vanillaSiteswap.getType()).isEqualTo("Vanilla Siteswap");

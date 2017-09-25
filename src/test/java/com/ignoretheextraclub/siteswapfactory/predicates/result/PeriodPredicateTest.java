@@ -1,17 +1,15 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import org.junit.Test;
-
-import java.util.function.Predicate;
 
 import static org.assertj.core.api.Fail.fail;
 
 /**
- * Created by caspar on 20/09/17.
+ * Created by caspar on 24/09/17.
  */
-public class AmbidextrousPredicateTest
+public class PeriodPredicateTest
 {
+
     @Test
     public void name() throws Exception
     {

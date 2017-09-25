@@ -11,7 +11,7 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.states;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.getUnchecked;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
 /**
  Created by caspar on 12/08/17.
@@ -31,13 +31,13 @@ public class TwoHandedVanillaSiteswapTest
         softly.assertThat(vanillaSiteswap.getNumHands()).isEqualTo(2);
         softly.assertThat(vanillaSiteswap.getNumObjects()).isEqualTo(4);
         softly.assertThat(vanillaSiteswap.getPeriod()).isEqualTo(3);
-        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)));
-        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(getUnchecked(5), getUnchecked(3), getUnchecked(4)));
+        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(get(5), get(3), get(4)));
+        softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(get(5), get(3), get(4)));
         softly.assertThatThrownBy(() -> vanillaSiteswap.getThrowsForJuggler(1)).isInstanceOf(IndexOutOfBoundsException.class);
         softly.assertThat(vanillaSiteswap.getStates()).isEqualTo(states(XXXX_, XXX_X_, XXXX_));
         softly.assertThat(vanillaSiteswap.isGrounded()).isEqualTo(true);
         softly.assertThat(vanillaSiteswap.isPrime()).isEqualTo(false);
-        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(getUnchecked(5));
+        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(get(5));
         softly.assertThat(vanillaSiteswap.getSortingStrategy()).isEqualTo(HighestThrowFirstStrategy.get());
         softly.assertThat(vanillaSiteswap.getStartingNumberOfObjects(0)).isEqualTo(2);
         softly.assertThat(vanillaSiteswap.getStartingNumberOfObjects(1)).isEqualTo(2);

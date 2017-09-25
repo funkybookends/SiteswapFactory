@@ -36,10 +36,10 @@ public class VanillaThroTest
         softly.assertThatThrownBy(() -> VanillaThro.get(500)).isInstanceOf(BadThrowException.class).hasMessageContaining("500");
         softly.assertThatThrownBy(() -> VanillaThro.get(VanillaThro.MAX_THROW+1)).isInstanceOf(BadThrowException.class).hasMessageContaining("36");
 
-        softly.assertThatThrownBy(() -> VanillaThro.getUnchecked(-1)).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("-1");
-        softly.assertThatThrownBy(() -> VanillaThro.getUnchecked(-20)).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("-20");
-        softly.assertThatThrownBy(() -> VanillaThro.getUnchecked(500)).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("500");
-        softly.assertThatThrownBy(() -> VanillaThro.getUnchecked(VanillaThro.MAX_THROW+1)).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("36");
+        softly.assertThatThrownBy(() -> VanillaThro.get(-1)).isInstanceOf(BadThrowException.class).hasMessageContaining("-1");
+        softly.assertThatThrownBy(() -> VanillaThro.get(-20)).isInstanceOf(BadThrowException.class).hasMessageContaining("-20");
+        softly.assertThatThrownBy(() -> VanillaThro.get(500)).isInstanceOf(BadThrowException.class).hasMessageContaining("500");
+        softly.assertThatThrownBy(() -> VanillaThro.get(VanillaThro.MAX_THROW+1)).isInstanceOf(BadThrowException.class).hasMessageContaining("36");
     }
 
     @Test

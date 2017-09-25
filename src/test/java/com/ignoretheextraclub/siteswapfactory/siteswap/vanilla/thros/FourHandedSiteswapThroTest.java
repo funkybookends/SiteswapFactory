@@ -77,7 +77,7 @@ public class FourHandedSiteswapThroTest
               .isInstanceOf(BadThrowException.class)
               .hasMessageContaining("13");
 
-        softly.assertThatThrownBy(() -> FourHandedSiteswapThro.getUnchecked('D'))
+        softly.assertThatThrownBy(() -> FourHandedSiteswapThro.get('D'))
               .isInstanceOf(IllegalArgumentException.class)
               .hasMessageContaining("13");
     }

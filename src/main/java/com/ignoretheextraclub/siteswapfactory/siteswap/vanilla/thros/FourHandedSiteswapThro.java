@@ -20,7 +20,7 @@ public class FourHandedSiteswapThro extends VanillaThro
     public static Thro[] ILLEGAL_THROS()
     {
         return new Thro[]{
-                VanillaThro.getUnchecked(1), VanillaThro.getUnchecked(3)
+                VanillaThro.get(1), VanillaThro.get(3)
         };
     }
 
@@ -29,10 +29,10 @@ public class FourHandedSiteswapThro extends VanillaThro
     public static Thro[] PASS_THROS()
     {
         return new Thro[]{
-                FourHandedSiteswapThro.getUnchecked(5),
-                FourHandedSiteswapThro.getUnchecked(7),
-                FourHandedSiteswapThro.getUnchecked(9),
-                FourHandedSiteswapThro.getUnchecked(11)
+                FourHandedSiteswapThro.get(5),
+                FourHandedSiteswapThro.get(7),
+                FourHandedSiteswapThro.get(9),
+                FourHandedSiteswapThro.get(11)
         };
     }
 
@@ -67,6 +67,7 @@ public class FourHandedSiteswapThro extends VanillaThro
             }
             catch (final BadThrowException ignoreIllegalThrow)
             {
+                // Ignore illegal thros
             }
         }
         return thros;
@@ -82,10 +83,12 @@ public class FourHandedSiteswapThro extends VanillaThro
     protected FourHandedSiteswapThro(int thro) throws BadThrowException
     {
         super(thro);
+
         if (thro > MAX_THROW)
         {
             throw new BadThrowException("Throw too large");
         }
+
         for (int illegalThrow : ILLEGAL_THROWS)
         {
             if (thro == illegalThrow)
@@ -114,7 +117,7 @@ public class FourHandedSiteswapThro extends VanillaThro
     }
 
     /**
-     * A convienence method to get a throw via a char.
+     * A convenient method to get a throw via a char.
      *
      * @param thro
      *
@@ -122,48 +125,13 @@ public class FourHandedSiteswapThro extends VanillaThro
      */
     public static FourHandedSiteswapThro get(char thro) throws BadThrowException
     {
-        return get(CharToIntConverter.get().apply(thro));
-    }
-
-    /**
-     * A connvience method to a get a throw without having to catch an exception. Useful for static constants. You
-     * should
-     * not use this generally, and instead use {@link #get(int)}
-     *
-     * @param thro
-     *
-     * @return
-     */
-    public static FourHandedSiteswapThro getUnchecked(final int thro)
-    {
-        try
-        {
-            return get(thro);
-        }
-        catch (final BadThrowException cause)
-        {
-            throw new IllegalArgumentException(cause);
-        }
-    }
-
-    /**
-     * A connvience method to a get a throw without having to catch an exception. Useful for static constants. You
-     * should
-     * not use this generally, and instead use {@link #get(char)}
-     *
-     * @param thro
-     *
-     * @return
-     */
-    public static FourHandedSiteswapThro getUnchecked(final char thro)
-    {
         try
         {
             return get(CharToIntConverter.get().apply(thro));
         }
         catch (final BadThrowException cause)
         {
-            throw new IllegalArgumentException(cause);
+            throw new BadThrowException("char [" + thro + "] is not a valid throw", cause);
         }
     }
 }

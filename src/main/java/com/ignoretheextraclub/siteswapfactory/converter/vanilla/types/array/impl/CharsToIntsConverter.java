@@ -2,10 +2,13 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.imp
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.CharToIntConverter;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
  * Converts a char[] to an int[]
+ *
+ * @author Caspar Nonclercq
  */
 public class CharsToIntsConverter implements Function<char[], int[]>
 {
@@ -27,21 +30,37 @@ public class CharsToIntsConverter implements Function<char[], int[]>
 
     /**
      * Converts a char[] to an int[]
-     * @param charThrows an array of chars
+     *
+     * @param thros an array of thros
+     *
      * @return an array of ints
      */
     @Override
-    public int[] apply(final char[] charThrows)
+    public int[] apply(final char[] thros)
     {
-        final int[] intThrows = new int[charThrows.length];
+        Objects.requireNonNull(thros, "thros cannot be null");
+
+        final int[] intThrows = new int[thros.length];
 
         final CharToIntConverter charToIntConverter = CharToIntConverter.get();
 
-        for (int i = 0; i < charThrows.length; i++)
+        for (int i = 0; i < thros.length; i++)
         {
-            intThrows[i] = charToIntConverter.apply(charThrows[i]);
+            intThrows[i] = charToIntConverter.apply(thros[i]);
         }
 
         return intThrows;
+    }
+
+    /**
+     * Convenient static method to convert chars to ints
+     *
+     * @param chars
+     *
+     * @return
+     */
+    public static int[] convert(final char[] chars)
+    {
+        return get().apply(chars);
     }
 }
