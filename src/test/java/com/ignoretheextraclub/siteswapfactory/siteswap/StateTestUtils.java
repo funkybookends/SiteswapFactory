@@ -46,6 +46,12 @@ public final class StateTestUtils
     public static final VanillaState X____X     = state( true, false, false, false, false,  true);
     public static final VanillaState XXX_X_     = state( true,  true,  true, false,  true, false);
 
+    // 7 ball - Max Throw: 9
+    public static final VanillaState XXXXXXX__  = state(true, true, true, true, true, true, true, false, false);
+
+    // 7 ball - Max Throw: 10
+    public static final VanillaState XXXXXXX___  = state(true, true, true, true, true, true, true, false, false, false);
+
     // 8 ball - Max Throw: 10
     public static final VanillaState XXXXXXXX__ = state(true, true, true, true, true, true, true, true, false, false);
 

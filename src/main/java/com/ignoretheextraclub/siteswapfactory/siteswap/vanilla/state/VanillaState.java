@@ -1,26 +1,27 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils;
-import jdk.nashorn.internal.ir.annotations.Immutable;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils;
+
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
 import static com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils.drop;
 
 /**
- Created by caspar on 26/11/16.
+ * Created by caspar on 26/11/16.
  */
 @Immutable
 public class VanillaState implements State
@@ -34,18 +35,49 @@ public class VanillaState implements State
     protected static final int MIN_OBJECTS = 1;
     protected static final int MAX_OBJECTS = 12;
 
-    @JsonIgnore private final boolean[] occupied;
+    @JsonIgnore
+    private final boolean[] occupied;
 
     /**
-     Actually constructs a new object
-
-     @param occupied
+     * Actually constructs a new object
+     *
+     * @param occupied
      */
     public VanillaState(final boolean[] occupied) throws NumObjectsException, PeriodException
     {
         validateSize(occupied.length);
-        validateNumObjects(VanillaStateUtils.getNumTrue(occupied));
+        validateNumObjects(getNumTrue(occupied));
         this.occupied = occupied;
+    }
+
+    static String toString(final boolean[] filledPositions, final String filled, final String empty)
+    {
+        StringBuilder strBuilder = new StringBuilder();
+        for (boolean filledPosition : filledPositions)
+        {
+            if (filledPosition)
+            {
+                strBuilder.append(filled);
+            }
+            else
+            {
+                strBuilder.append(empty);
+            }
+        }
+        return strBuilder.toString();
+    }
+
+    static int getNumTrue(final boolean[] array)
+    {
+        int i = 0;
+        for (boolean position : array)
+        {
+            if (position)
+            {
+                i++;
+            }
+        }
+        return i;
     }
 
     @Override
@@ -55,9 +87,9 @@ public class VanillaState implements State
     }
 
     /**
-     Lower is closer to ground
-
-     @return
+     * Lower is closer to ground
+     *
+     * @return
      */
     @Override
     public int excitedness()
@@ -122,7 +154,7 @@ public class VanillaState implements State
                     }
                 }
             }
-                availableThros.add(getMaxThrow());
+            availableThros.add(getMaxThrow());
         }
         else
         {
@@ -196,12 +228,16 @@ public class VanillaState implements State
         {
             throw new IllegalStateException("Could not throw legal throw.", cause);
         }
+        catch (final ArrayIndexOutOfBoundsException cause)
+        {
+            throw new BadThrowException("Throw [" + numBeats + "] too large for state: " + this.toString() + ". State has size: " + this.occupied.length, cause);
+        }
     }
 
     @Override
     public int getNumObjects()
     {
-        return VanillaStateUtils.getNumTrue(this.occupied);
+        return getNumTrue(this.occupied);
     }
 
     @Override
@@ -317,7 +353,7 @@ public class VanillaState implements State
     @JsonProperty("occupancy")
     public String toString()
     {
-        return VanillaStateUtils.toString(this.occupied, FILLED, EMPTY);
+        return toString(this.occupied, FILLED, EMPTY);
     }
 
     protected static void validateNumObjects(final int numObjects) throws NumObjectsException

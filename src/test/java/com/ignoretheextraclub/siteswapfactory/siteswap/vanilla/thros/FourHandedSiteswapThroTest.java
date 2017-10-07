@@ -1,10 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 
 /**
  Created by caspar on 29/07/17.
@@ -78,7 +79,7 @@ public class FourHandedSiteswapThroTest
               .hasMessageContaining("13");
 
         softly.assertThatThrownBy(() -> FourHandedSiteswapThro.get('D'))
-              .isInstanceOf(IllegalArgumentException.class)
+              .isInstanceOf(BadThrowException.class)
               .hasMessageContaining("13");
     }
 
@@ -116,5 +117,21 @@ public class FourHandedSiteswapThroTest
                 softly.assertThat(lower).isEqualTo(lower);
             }
         }
+    }
+
+    @Test
+    public void testFHST_equal_VT() throws Exception
+    {
+        softly.assertThat(VanillaThro.get(0)).isEqualTo(FourHandedSiteswapThro.get(0));
+        softly.assertThat(VanillaThro.get(2)).isEqualTo(FourHandedSiteswapThro.get(2));
+        softly.assertThat(VanillaThro.get(4)).isEqualTo(FourHandedSiteswapThro.get(4));
+        softly.assertThat(VanillaThro.get(5)).isEqualTo(FourHandedSiteswapThro.get(5));
+        softly.assertThat(VanillaThro.get(6)).isEqualTo(FourHandedSiteswapThro.get(6));
+        softly.assertThat(VanillaThro.get(7)).isEqualTo(FourHandedSiteswapThro.get(7));
+        softly.assertThat(VanillaThro.get(8)).isEqualTo(FourHandedSiteswapThro.get(8));
+        softly.assertThat(VanillaThro.get(9)).isEqualTo(FourHandedSiteswapThro.get(9));
+        softly.assertThat(VanillaThro.get(10)).isEqualTo(FourHandedSiteswapThro.get(10));
+        softly.assertThat(VanillaThro.get(11)).isEqualTo(FourHandedSiteswapThro.get(11));
+        softly.assertThat(VanillaThro.get(12)).isEqualTo(FourHandedSiteswapThro.get(12));
     }
 }

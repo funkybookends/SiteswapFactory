@@ -82,7 +82,7 @@ public class VanillaStateBuilder
     @Override
     public String toString()
     {
-        return VanillaStateUtils.toString(occupied, FILLED, EMPTY);
+        return VanillaState.toString(occupied, FILLED, EMPTY);
     }
 
     public VanillaState getState()
