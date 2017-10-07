@@ -9,6 +9,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
@@ -28,6 +31,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.Stri
  */
 public final class SiteswapFactory
 {
+    private static final Logger LOG = LoggerFactory.getLogger(SiteswapFactory.class);
 
     /**
      * An ordered list of siteswap constructors that will be used, in order, to create a siteswap.
@@ -78,7 +82,15 @@ public final class SiteswapFactory
 
         return getSiteswapStream(siteswap, invalidSiteswapException)
             .findFirst()
-            .orElseThrow(() -> invalidSiteswapException);
+            .orElseThrow(() ->
+            {
+                LOG.warn(invalidSiteswapException.getMessage() + ". Request: {}. Constructors: {}", siteswap, this.constructors);
+                if (invalidSiteswapException.getSuppressed().length > 0)
+                {
+                    invalidSiteswapException.initCause(invalidSiteswapException.getSuppressed()[0]);
+                }
+                return invalidSiteswapException;
+            });
     }
 
     /**
@@ -104,10 +116,18 @@ public final class SiteswapFactory
      */
     private Stream<Siteswap> getSiteswapStream(final Object siteswap, final InvalidSiteswapException invalidSiteswapException)
     {
-        final SiteswapRequest siteswapRequest = siteswapRequestBuilder.createSiteswapRequest(siteswap);
+        final SiteswapRequest siteswapRequest;
+        if (SiteswapRequest.class.isInstance(siteswap))
+        {
+            siteswapRequest = SiteswapRequest.class.cast(siteswap);
+        }
+        else
+        {
+            siteswapRequest = siteswapRequestBuilder.createSiteswapRequest(siteswap);
+        }
 
         return this.constructors.stream()
-            .filter(siteswapConstructor -> siteswapConstructor.accepts(siteswapRequest.getConstructor().getClass()))
+            .filter(siteswapConstructor -> siteswapConstructor.accepts(siteswapRequest.getConstructor()))
             .map(toSiteswapOrNull(siteswapRequest, invalidSiteswapException))
             .filter(Objects::nonNull);
     }
@@ -128,7 +148,7 @@ public final class SiteswapFactory
             {
                 return constructor.apply(siteswapRequest);
             }
-            catch (final InvalidSiteswapException cause)
+            catch (final Throwable cause)
             {
                 if (invalidSiteswapException != null)
                 {

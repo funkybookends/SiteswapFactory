@@ -63,6 +63,12 @@ public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor
     @Override
     public boolean accepts(final Object object)
     {
-        return String.class.isAssignableFrom(object.getClass());
+        return String.class.isInstance(object);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "StringToTwoHandedSiteswapConstructor{}";
     }
 }
