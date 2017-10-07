@@ -1,15 +1,16 @@
 package com.ignoretheextraclub.siteswapfactory.generator.siteswap;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 /**
- * A builder class for a state searcher. Can be reused with different {@link StateSearcher.SiteswapConstructor}s
+ * A builder class for a state searcher. Can be reused with different {@link SiteswapConstructor}s
  * to generate multiple types.
  *
  * @author Caspar Nonclercq
@@ -20,7 +21,8 @@ public class StateSearcherBuilder<T extends Siteswap>
     private int maxPeriod = -1;
     private Predicate<State[]> intermediatePredicate = StateSearcher.acceptAll();
     private Predicate<State[]> resultPredicate = StateSearcher.acceptAll();
-    private Function<State[], T> siteswapConstructor;
+    private SiteswapConstructor<T> siteswapConstructor;
+    private SiteswapRequestBuilder siteswapRequestBuilder = new SiteswapRequestBuilder();
 
     private StateSearcherBuilder()
     {
@@ -141,9 +143,15 @@ public class StateSearcherBuilder<T extends Siteswap>
         return resultPredicate;
     }
 
-    public StateSearcherBuilder<T> withSiteswapConstructor(final Function<State[], T> siteswapConstructor)
+    public StateSearcherBuilder<T> withSiteswapConstructor(final SiteswapConstructor<T> siteswapConstructor)
     {
         this.siteswapConstructor = siteswapConstructor;
+        return this;
+    }
+
+    public StateSearcherBuilder<T> withSiteswaRequestBuilder(final SiteswapRequestBuilder siteswaRequestBuilder)
+    {
+        this.siteswapRequestBuilder = siteswaRequestBuilder;
         return this;
     }
 
@@ -153,6 +161,7 @@ public class StateSearcherBuilder<T extends Siteswap>
                 maxPeriod,
                 intermediatePredicate,
                 resultPredicate,
-                siteswapConstructor);
+                siteswapConstructor,
+                siteswapRequestBuilder);
     }
 }

@@ -1,8 +1,8 @@
-package com.ignoretheextraclub.siteswapfactory.predicates.result;
-
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+package com.ignoretheextraclub.siteswapfactory.predicates.validation;
 
 import java.util.function.Predicate;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  * Created by caspar on 14/09/17.

@@ -20,15 +20,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * Created by caspar on 24/09/17.
  */
 @RunWith(JUnitParamsRunner.class)
-public class VanillaThrosToFirstStateConverterTest
+public class VanillaThrosToStartingStateConverterTest
 {
     @Test
     @Parameters
     public void testApply(final VanillaThro[] input,
                           final VanillaState expected) throws Exception
     {
-        assertThat(VanillaThrosToFirstStateConverter.get().apply(input)).isEqualTo(expected);
-        assertThat(VanillaThrosToFirstStateConverter.getFirstState(input)).isEqualTo(expected);
+        assertThat(VanillaThrosToStartingStateConverter.get().apply(input)).isEqualTo(expected);
+        assertThat(VanillaThrosToStartingStateConverter.getFirstState(input)).isEqualTo(expected);
     }
 
     private Object parametersForTestApply()
@@ -59,10 +59,10 @@ public class VanillaThrosToFirstStateConverterTest
     public void testException(final VanillaThro[] input,
                               final Exception exception) throws Exception
     {
-        assertThatThrownBy(() -> VanillaThrosToFirstStateConverter.get()
+        assertThatThrownBy(() -> VanillaThrosToStartingStateConverter.get()
                                                                   .apply(input)).isInstanceOf(exception.getClass())
                                                                                 .hasMessageContaining(exception.getMessage());
-        assertThatThrownBy(() -> VanillaThrosToFirstStateConverter.getFirstState(input)).isInstanceOf(exception.getClass())
+        assertThatThrownBy(() -> VanillaThrosToStartingStateConverter.getFirstState(input)).isInstanceOf(exception.getClass())
                                                                                         .hasMessageContaining(exception.getMessage());
     }
 

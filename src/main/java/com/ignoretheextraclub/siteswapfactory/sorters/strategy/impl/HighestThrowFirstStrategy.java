@@ -1,25 +1,27 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
+import java.util.Locale;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
 
 /**
  Created by caspar on 10/12/16.
  */
-public class HighestThrowFirstStrategy implements SortingStrategy
+public class HighestThrowFirstStrategy implements StartingStrategy
 {
     private static final String NAME = "HighestThrowFirst";
 
-    private static SortingStrategy instance;
+    private static StartingStrategy instance;
 
     private HighestThrowFirstStrategy()
     {
     }
 
-    public static SortingStrategy get()
+    public static StartingStrategy get()
     {
         if (instance == null)
         {
@@ -36,7 +38,7 @@ public class HighestThrowFirstStrategy implements SortingStrategy
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean takeFirst(State[] first, State[] second) throws InvalidSiteswapException
+    public boolean test(State[] first, State[] second) throws InvalidSiteswapException
     {
         try
         {
@@ -62,7 +64,7 @@ public class HighestThrowFirstStrategy implements SortingStrategy
     }
 
     @Override
-    public String getDescription()
+    public String getDescription(final Locale locale)
     {
         return "The default representation of siteswaps.";
     }

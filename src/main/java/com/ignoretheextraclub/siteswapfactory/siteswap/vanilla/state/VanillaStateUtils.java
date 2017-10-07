@@ -10,7 +10,7 @@ public final class VanillaStateUtils
     }
 
     public static String toString(final boolean[] filledPositions, final String filled, final String empty)
-    {
+    { // TODO move to state
         StringBuilder strBuilder = new StringBuilder();
         for (boolean filledPosition : filledPositions)
         {

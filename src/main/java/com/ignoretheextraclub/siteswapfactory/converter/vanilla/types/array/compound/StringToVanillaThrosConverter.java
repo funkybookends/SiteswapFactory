@@ -1,11 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound;
 
+import java.util.function.Function;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-
-import java.util.function.Function;
 
 /**
  * Converts a string of ints to an array of VanillaThros
@@ -46,7 +47,7 @@ public class StringToVanillaThrosConverter implements Function<String, VanillaTh
         }
         catch (final BadThrowException cause)
         {
-            throw new BadThrowException("String [" + siteswap + "] contained a bad throw", cause);
+            throw new InvalidSiteswapException("String [" + siteswap + "] contained a bad throw", cause);
         }
     }
 

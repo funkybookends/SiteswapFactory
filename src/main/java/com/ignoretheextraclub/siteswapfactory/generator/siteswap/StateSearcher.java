@@ -1,11 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.generator.siteswap;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,10 +8,18 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.Stack;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
 /**
  * The iterator underlying the siteswap generator.
@@ -35,7 +37,8 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     private final int maxPeriod;
     private final Predicate<State[]> intermediatePredicate;
     private final Predicate<State[]> resultPredicate;
-    private final Function<State[], T> siteswapConstructor;
+    private final SiteswapRequestBuilder siteswapRequestBuilder;
+    private final SiteswapConstructor<T> siteswapConstructor;
 
     /**
      * Internal state
@@ -48,27 +51,28 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
      * Creates a {@link StateSearcher} which will find successive {@link Siteswap}s based on the provided configuration.
      *
      * @param startingStates        The list of starting states which are acceptable.
-     * @param maxPeriod             The maximum period of {@link Siteswap}. To restrict to a specific period, include
-     *                              an {@code resultPredicate} requiring this period. This should be set accurately to
-     *                              ensure good performance.
-     * @param intermediatePredicate A predicate that will be tested after each addition of a new {@link State} to the
-     *                              internal State[]. If the intermediate state fails, then the last state will be
-     *                              removed, and the next state will be found.
-     * @param resultPredicate       A predicate that will be tested prior to attempting to construct a {@link
-     *                              Siteswap}. If it fails then the {@code siteswapConstructor} will not be invoked.
+     * @param maxPeriod             The maximum period of {@link Siteswap}. To restrict to a specific period, include an {@code resultPredicate} requiring this period. This should be set accurately to ensure good performance.
+     * @param intermediatePredicate A predicate that will be tested after each addition of a new {@link State} to the internal State[]. If the intermediate state fails, then the last state will be removed, and the next state will be found.
+     * @param resultPredicate       A predicate that will be tested prior to attempting to construct a {@link Siteswap}. If it fails then the {@code siteswapConstructor} will not be invoked.
      * @param siteswapConstructor   A function which takes a {@link State}[] and returns a {@link Siteswap}.
      */
-    protected StateSearcher(final Set<State> startingStates,
-            final int maxPeriod,
-            final Predicate<State[]> intermediatePredicate,
-            final Predicate<State[]> resultPredicate,
-            final Function<State[], T> siteswapConstructor)
+    public StateSearcher(final Set<State> startingStates,
+                         final int maxPeriod,
+                         final Predicate<State[]> intermediatePredicate,
+                         final Predicate<State[]> resultPredicate,
+                         final SiteswapConstructor<T> siteswapConstructor,
+                         final SiteswapRequestBuilder siteswapRequestBuilder)
     {
         this.startingStates = startingStates != null ? startingStates : new HashSet<>();
         this.siteswapConstructor = Objects.requireNonNull(siteswapConstructor);
+        if (!siteswapConstructor.accepts(new State[0]))
+        {
+            throw new IllegalArgumentException("siteswapConstructor must accept " + State[].class.getCanonicalName());
+        }
         this.maxPeriod = validatePeriod(maxPeriod);
         this.intermediatePredicate = intermediatePredicate == null ? acceptAll() : intermediatePredicate;
         this.resultPredicate = resultPredicate == null ? isLegalLoop() : isLegalLoop().and(resultPredicate);
+        this.siteswapRequestBuilder = Objects.requireNonNull(siteswapRequestBuilder);
     }
 
     @Override
@@ -79,7 +83,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
             this.next = get();
             return true;
         }
-        catch (final NoMoreElementsException noMoreElementsException)
+        catch (final NoMoreSiteswapsException noMoreSiteswapsException)
         {
             LOG.trace("No more elements");
             return false;
@@ -97,7 +101,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         return next;
     }
 
-    public T get() throws NoMoreElementsException
+    public T get() throws NoMoreSiteswapsException
     {
         while (true)
         {
@@ -110,16 +114,13 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
 
             try
             {
-                return siteswapConstructor.apply(getCurrentState());
+                return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(getCurrentState()));
             }
             catch (final Exception ignored)
             {
-                if (ignored instanceof ClassCastException)
-                {
-                    throw new IllegalArgumentException("Function provided cannot handle State interface!", ignored);
-                }
                 // Probably an illegal siteswap. Just return the next one we find.
                 LOG.trace("get(): state {} illegal, {}", stateStack, ignored);
+                LOG.trace("Stack Trace", ignored);
             }
         }
     }
@@ -140,7 +141,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         return isLegalIntermediateState;
     }
 
-    private void getNextState() throws NoMoreElementsException
+    private void getNextState() throws NoMoreSiteswapsException
     {
         LOG.trace("getNextState(): Getting next State");
 
@@ -160,7 +161,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         while (!isLegalSequence());
     }
 
-    private void buildStack() throws NoMoreElementsException
+    private void buildStack() throws NoMoreSiteswapsException
     {
         if (stateStack.size() < maxPeriod)
         {
@@ -182,7 +183,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         }
     }
 
-    private void moveIteratorOnToNextState() throws NoMoreElementsException
+    private void moveIteratorOnToNextState() throws NoMoreSiteswapsException
     {
         LOG.trace("moveIteratorOnToNextState(): Moving last stack iterator onto next element.");
         if (iteratorStack.lastElement().hasNext())
@@ -197,7 +198,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
             iteratorStack.pop();
             if (iteratorStack.isEmpty())
             {
-                throw new NoMoreElementsException();
+                throw new NoMoreSiteswapsException();
             }
             stateStack.pop();
             moveIteratorOnToNextState();
@@ -214,7 +215,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     public Stream<T> generate()
     {
         final Spliterator<T> siteswapSpliterator = Spliterators.spliteratorUnknownSize(this,
-                Spliterator.ORDERED | Spliterator.NONNULL);
+            Spliterator.ORDERED | Spliterator.NONNULL);
 
         return StreamSupport.stream(siteswapSpliterator, false).unordered();
     }
@@ -244,7 +245,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         return (any) -> true;
     }
 
-    private static class NoMoreElementsException extends Exception
+    private static class NoMoreSiteswapsException extends Exception
     {
     }
 }

@@ -1,34 +1,24 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.GlobalToLocalBiConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToFourHandedSiteswapThrosConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.VanillaThrosToIntsConverter;
-import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToFourHandedSiteswapThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
-
-import java.util.function.Function;
 
 /**
  * Created by caspar on 26/07/17.
  */
-public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
+public class FourHandedSiteswap extends VanillaSiteswap
 {
     private static final String TYPE = "Four Handed Siteswap";
+
     private static final int NUM_JUGGLERS = 2;
     private static final int NUM_HANDS = 4;
-    private static final Function<VanillaThro[], FourHandedSiteswapThro[]> VANILLA_THROS_TO_FHS_THROS_CONVERTER = VanillaThrosToIntsConverter
-            .get()
-            .andThen(IntsToFourHandedSiteswapThrosConverter.get());
 
-    public FourHandedSiteswap(final VanillaState[] states,
-                              final FourHandedSiteswapThro[] thros,
-                              final SortingStrategy sortingStrategy) throws InvalidSiteswapException
+    public FourHandedSiteswap(final VanillaState[] states)
     {
-        super(states, thros, sortingStrategy);
+        super(states);
     }
 
     @Override
@@ -44,11 +34,17 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
     }
 
     @Override
+    public FourHandedSiteswapThro[] getThrows()
+    {
+        return StatesToThrosConverter.get().andThen(ThrosToFourHandedSiteswapThrosConverter.get()).apply(getStates());
+    }
+
+    @Override
     public FourHandedSiteswapThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
     {
         if (forJuggler >= 0 && forJuggler < getNumJugglers())
         {
-            return GlobalToLocalBiConverter.convertToLocal(getFHSThros(), forJuggler);
+            return GlobalToLocalBiConverter.convertToLocal(getThrows(), forJuggler);
         }
         throw new IndexOutOfBoundsException("There are only 2 jugglers. Juggler 0 and Juggler 1");
     }
@@ -59,21 +55,4 @@ public class FourHandedSiteswap extends TwoHandedVanillaSiteswap
         return TYPE;
     }
 
-    @Override
-    public Siteswap resort(final SortingStrategy newSortingStrategy)
-    {
-        try
-        {
-            return new FourHandedSiteswap(this.getStates(), getFHSThros(), newSortingStrategy);
-        }
-        catch (InvalidSiteswapException e)
-        {
-            throw new IllegalStateException("Could not create new siteswap", e);
-        }
-    }
-
-    private FourHandedSiteswapThro[] getFHSThros()
-    {
-        return VANILLA_THROS_TO_FHS_THROS_CONVERTER.apply(thros);
-    }
 }

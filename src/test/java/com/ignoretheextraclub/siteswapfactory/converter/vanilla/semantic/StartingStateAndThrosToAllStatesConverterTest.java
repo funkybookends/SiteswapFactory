@@ -68,13 +68,11 @@ public class StartingStateAndThrosToAllStatesConverterTest
     private Object parametersForTestException()
     {
         return new Object[]{
-                //@formatter:off
             new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("[5, 4, 3]")},
             new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("XXX__")},
             new Object[]{XXX__, null, new NullPointerException("thros cannot be null")},
             new Object[]{null, new VanillaThro[]{}, new NullPointerException("startingState cannot be null")},
             new Object[]{XXX__, new VanillaThro[]{}, new IllegalArgumentException("thros must have at least one throw")}
-            //@formatter:on
         };
         // TODO add more
     }
@@ -94,10 +92,8 @@ public class StartingStateAndThrosToAllStatesConverterTest
     private Object parametersForTestEnforcesLoop()
     {
         return new Object[]{
-                //@formatter:off
             new Object[]{XXX__, thros(get(5), get(4)), new InvalidSiteswapException("XXX__")},
             new Object[]{XXX__, thros(get(5), get(5)), new InvalidSiteswapException("XXX__")},
-            //@formatter:on
         };
         // TODO add more
     }

@@ -1,7 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.impl;
 
+import java.util.function.Predicate;
+
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
+import org.junit.Test;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToAllStatesConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound.VanillaThrosToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.StringToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;
@@ -11,11 +17,6 @@ import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThro
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import org.assertj.core.api.JUnitSoftAssertions;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.util.function.Predicate;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
@@ -149,7 +150,7 @@ public class ThrowCombinationPredicateTest
     private State[] seq(final String seq) throws InvalidSiteswapException
     {
         final VanillaThro[] vanillaThros = ThrosToVanillaThrosConverter.convert(StringToVanillaThrosConverter.get().apply(seq));
-        final VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(vanillaThros);
+        final VanillaState firstState = VanillaThrosToStartingStateConverter.get().apply(vanillaThros);
         return StartingStateAndThrosToAllStatesConverter.getAllStates(firstState, vanillaThros);
     }
 

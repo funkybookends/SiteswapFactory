@@ -1,16 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.GroundedPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.PrimePredicate;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
-
-import java.util.stream.Stream;
 
 /**
  * A siteswap represents a jugging pattern.
  *
- * // TODO better description
  *
  * @author Caspar Nonclercq
  */
@@ -35,7 +30,10 @@ public interface Siteswap
      *
      * @return the number of objects.
      */
-    int getNumObjects();
+    default int getNumObjects()
+    {
+        return getStates()[0].getNumObjects();
+    }
 
     /**
      * The number of beats before the siteswap repeats. True for the siteswap, not
@@ -43,7 +41,10 @@ public interface Siteswap
      *
      * @return the period.
      */
-    int getPeriod();
+    default int getPeriod()
+    {
+        return getStates().length;
+    }
 
     /**
      * The throws needed to juggled the siteswap.
@@ -111,11 +112,6 @@ public interface Siteswap
     }
 
     /**
-     * @return
-     */
-    SortingStrategy getSortingStrategy();
-
-    /**
      * Get the number of objects required for a hand when starting the siteswap
      *
      * @param forHand the hand for which the number should be returned
@@ -165,52 +161,52 @@ public interface Siteswap
      */
     boolean same(Siteswap other);
 
-    /**
-     * Returns a stream where the each {@link Siteswap} in the stream is an anagram of this.
-     * <p>
-     * Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
-     * a collection, and clients are advised to set appropriate limits.
-     *
-     * @return a stream of anagrams
-     *
-     * @throws UnsupportedOperationException if this siteswap type does not have anagrams.
-     */
-    Stream<Siteswap> getAnagrams() throws UnsupportedOperationException;
-
-    /**
-     * Returns a stream of related Siteswaps.
-     * <p>
-     * Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
-     * a collection, and clients are advised to set appropriate limits.
-     * <p>
-     * It is up to the implementation to define "related", and they are encouraged to document this in their API.
-     *
-     * @return A list of related siteswaps
-     */
-    Stream<Siteswap> getRelated() throws UnsupportedOperationException;
-
-    /**
-     * Returns a valid siteswap that is the concatenation if this siteswap with other. The implementation may have to
-     * add
-     * transition throws in order to make it legal. Implementations should strive to use the fewest number of
-     * transition
-     * throws possible.
-     *
-     * @param other
-     *
-     * @return A valid siteswap that is the concatenation of this siteswap and other
-     *
-     * @throws UnsupportedOperationException if this implementation does not support it
-     * @throws TransitionException           if there is no transition or the other type is incompatible.
-     */
-    Siteswap append(Siteswap other) throws UnsupportedOperationException, TransitionException;
-
-    /**
-     * Return this siteswap sorted using the provided siteswap strategy.
-     *
-     * @param newSortingStrategy
-     *
-     * @return a new object that is this siteswap resorted
-     */
-    Siteswap resort(final SortingStrategy newSortingStrategy);
+//    /**
+//     * Returns a stream where the each {@link Siteswap} in the stream is an anagram of this.
+//     * <p>
+//     * Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
+//     * a collection, and clients are advised to set appropriate limits.
+//     *
+//     * @return a stream of anagrams
+//     *
+//     * @throws UnsupportedOperationException if this siteswap type does not have anagrams.
+//     */
+//    Stream<Siteswap> getAnagrams() throws UnsupportedOperationException;
+//
+//    /**
+//     * Returns a stream of related Siteswaps.
+//     * <p>
+//     * Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
+//     * a collection, and clients are advised to set appropriate limits.
+//     * <p>
+//     * It is up to the implementation to define "related", and they are encouraged to document this in their API.
+//     *
+//     * @return A list of related siteswaps
+//     */
+//    Stream<Siteswap> getRelated() throws UnsupportedOperationException;
+//
+//    /**
+//     * Returns a valid siteswap that is the concatenation if this siteswap with other. The implementation may have to
+//     * add
+//     * transition throws in order to make it legal. Implementations should strive to use the fewest number of
+//     * transition
+//     * throws possible.
+//     *
+//     * @param other
+//     *
+//     * @return A valid siteswap that is the concatenation of this siteswap and other
+//     *
+//     * @throws UnsupportedOperationException if this implementation does not support it
+//     * @throws TransitionException           if there is no transition or the other type is incompatible.
+//     */
+//    Siteswap append(Siteswap other) throws UnsupportedOperationException, TransitionException;
+//
+//    /**
+//     * Return this siteswap sorted using the provided siteswap strategy.
+//     *
+//     * @param newStartingStrategy
+//     *
+//     * @return a new object that is this siteswap resorted
+//     */
+//    Siteswap resort(final StartingStrategy newStartingStrategy);
 }

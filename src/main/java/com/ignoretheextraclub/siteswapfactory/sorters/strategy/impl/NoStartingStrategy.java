@@ -1,22 +1,24 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
+import java.util.Locale;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
 
 /**
  Created by caspar on 25/06/17.
  */
-public class NoSortingStrategy implements SortingStrategy
+public class NoStartingStrategy implements StartingStrategy
 {
-    private static final NoSortingStrategy INSTANCE = new NoSortingStrategy();
+    private static final NoStartingStrategy INSTANCE = new NoStartingStrategy();
 
-    public static NoSortingStrategy get()
+    public static NoStartingStrategy get()
     {
         return INSTANCE;
     }
 
-    private NoSortingStrategy(){};
+    private NoStartingStrategy(){};
 
     @Override
     public String getName()
@@ -25,13 +27,13 @@ public class NoSortingStrategy implements SortingStrategy
     }
 
     @Override
-    public boolean takeFirst(final State[] first, final State[] second) throws InvalidSiteswapException
+    public boolean test(final State[] first, final State[] second) throws InvalidSiteswapException
     {
         return true;
     }
 
     @Override
-    public String getDescription()
+    public String getDescription(final Locale locale)
     {
         return "The siteswap as given.";
     }

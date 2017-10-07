@@ -17,7 +17,7 @@ public class FourHandedSiteswapThro extends VanillaThro
      */
     public static final int[] ILLEGAL_THROWS = new int[]{1, 3};
 
-    public static Thro[] ILLEGAL_THROS()
+    public static Thro[] getIllegalThrows()
     {
         return new Thro[]{
                 VanillaThro.get(1), VanillaThro.get(3)
@@ -26,7 +26,7 @@ public class FourHandedSiteswapThro extends VanillaThro
 
     public static final int[] PASS_THROWS = new int[]{5, 7, 9, 11};
 
-    public static Thro[] PASS_THROS()
+    public static Thro[] getPassThrows()
     {
         return new Thro[]{
                 FourHandedSiteswapThro.get(5),

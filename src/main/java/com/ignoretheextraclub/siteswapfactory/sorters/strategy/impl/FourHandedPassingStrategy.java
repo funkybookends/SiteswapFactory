@@ -1,13 +1,15 @@
 package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 
+import java.util.Locale;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
 
 /**
  Created by caspar on 10/12/16.
  */
-public class FourHandedPassingStrategy implements SortingStrategy
+public class FourHandedPassingStrategy implements StartingStrategy
 {
     private static final String NAME = "FourHandedPassing";
 
@@ -17,7 +19,7 @@ public class FourHandedPassingStrategy implements SortingStrategy
     {
     }
 
-    public static SortingStrategy get()
+    public static StartingStrategy get()
     {
         if (instance == null)
         {
@@ -33,13 +35,13 @@ public class FourHandedPassingStrategy implements SortingStrategy
     }
 
     @Override
-    public String getDescription()
+    public String getDescription(final Locale locale)
     {
         return "The best starting position for club passing.";
     }
 
     @Override
-    public boolean takeFirst(final State[] first, final State[] second) throws InvalidSiteswapException
+    public boolean test(final State[] first, final State[] second) throws InvalidSiteswapException
     {
         return scoreRotation(first) < scoreRotation(second);
     }

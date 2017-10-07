@@ -1,7 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToAllStatesConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 /**
  * Determines the {@code VanillaState[]} a given {@code VanillaThro[]} corresponds to.
  * <p>
- * This is a composite converter that uses {@link VanillaThrosToFirstStateConverter} to determine the first state, and
+ * This is a composite converter that uses {@link VanillaThrosToStartingStateConverter} to determine the first state, and
  * then uses {@link StartingStateAndThrosToAllStatesConverter} to get all the states, and then uses {@link
  * StatesToVanillaStatesConverter} to get the result as a {@code VanillaState[]}
  *
@@ -53,7 +53,7 @@ public class VanillaThrosToVanillaStatesConverter implements Function<VanillaThr
     {
         try
         {
-            final VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(thros);
+            final VanillaState firstState = VanillaThrosToStartingStateConverter.get().apply(thros);
             final State[] states = StartingStateAndThrosToAllStatesConverter.get().apply(firstState, thros);
             return StatesToVanillaStatesConverter.get().apply(states);
         }

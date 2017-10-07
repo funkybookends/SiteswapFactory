@@ -1,32 +1,32 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import java.util.function.Function;
+
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThroUtils;
 
-import java.util.function.Function;
-
 /**
- * Returns the first state from a set of {@link VanillaThro}s. Uses {@link VanillaThrosToFirstStateBiConverter} and
+ * Returns the first state from a set of {@link VanillaThro}s. Uses {@link VanillaThrosAndNumObjectsToFirstStateBiConverter} and
  * calculates the number of objects required by taking the average of all the throws.
  *
  * @author Caspar Nonclercq
- * @see VanillaThrosToFirstStateBiConverter Use this directly if you already know the number of objects
+ * @see VanillaThrosAndNumObjectsToFirstStateBiConverter Use this directly if you already know the number of objects
  */
-public class VanillaThrosToFirstStateConverter implements Function<VanillaThro[], VanillaState>
+public class VanillaThrosToStartingStateConverter implements Function<VanillaThro[], VanillaState>
 {
-    public static VanillaThrosToFirstStateConverter INSTANCE;
+    public static VanillaThrosToStartingStateConverter INSTANCE;
 
-    private VanillaThrosToFirstStateConverter()
+    private VanillaThrosToStartingStateConverter()
     {
         // Singleton
     }
 
-    public static VanillaThrosToFirstStateConverter get()
+    public static VanillaThrosToStartingStateConverter get()
     {
         if (INSTANCE == null)
         {
-            INSTANCE = new VanillaThrosToFirstStateConverter();
+            INSTANCE = new VanillaThrosToStartingStateConverter();
         }
         return INSTANCE;
     }
@@ -42,7 +42,7 @@ public class VanillaThrosToFirstStateConverter implements Function<VanillaThro[]
     @Override
     public VanillaState apply(final VanillaThro[] thros)
     {
-        return VanillaThrosToFirstStateBiConverter.get().apply(thros, VanillaThroUtils.numObjects(thros));
+        return VanillaThrosAndNumObjectsToFirstStateBiConverter.get().apply(thros, VanillaThroUtils.numObjects(thros));
     }
 
     /**

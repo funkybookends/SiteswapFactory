@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -40,5 +41,13 @@ public class IntsToFourHandedSiteswapThrosConverterTest
         assertThatThrownBy(() -> IntsToFourHandedSiteswapThrosConverter.get().apply(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining("thros");
+
+        assertThatThrownBy(() -> IntsToFourHandedSiteswapThrosConverter.get().apply(new int[]{3}))
+                .isInstanceOf(BadThrowException.class)
+                .hasMessageContaining("3");
+
+        assertThatThrownBy(() -> IntsToFourHandedSiteswapThrosConverter.get().apply(new int[]{1}))
+                .isInstanceOf(BadThrowException.class)
+                .hasMessageContaining("1");
     }
 }

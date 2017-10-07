@@ -1,90 +1,76 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
+import java.util.Arrays;
+
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.VanillaThrosToStringConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.SameNumberOfObjectsPredicate;
-import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopsPredicate;
+import com.ignoretheextraclub.siteswapfactory.exceptions.NumJugglersException;
+import com.ignoretheextraclub.siteswapfactory.predicates.validation.LoopsPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.sorters.SiteswapSorter;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.RotationsSiteswapSorter;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.SortingStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
+import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 /**
  * Created by caspar on 26/07/17.
  */
 public class VanillaSiteswap implements Siteswap
 {
-    private static final String UNDEFINED_NUMBER_OF_JUGGLERS_ERROR_MESSAGE = "The number of jugglers is undefined for this type of siteswap.";
     private static final String TYPE = "Vanilla Siteswap";
-    protected final VanillaState[] states;
-    protected final VanillaThro[] thros;
-    protected final SortingStrategy sortingStrategy;
 
-    public VanillaSiteswap(final VanillaState[] states,
-                           final VanillaThro[] thros,
-                           final SortingStrategy sortingStrategy) throws InvalidSiteswapException
+    protected final VanillaState[] states;
+
+    public VanillaSiteswap(final VanillaState[] states)
     {
         if (!LoopsPredicate.loops(states))
         {
-            throw new InvalidSiteswapException("Invalid Siteswap",
-                    new TransitionException("States do not all connect"));
+            throw new InvalidSiteswapException("States " + Arrays.toString(states) + " is not a valid state loop.");
         }
-        if (!SameNumberOfObjectsPredicate.hasSameNumberOfObjects(states))
-        {
-            throw new InvalidSiteswapException("Invalid Siteswap",
-                    new NumObjectsException("Not all states have the same number of objects"));
-        }
-
-        final SiteswapSorter sorter = new RotationsSiteswapSorter(states, sortingStrategy);
-        sorter.sort();
-        this.states = StatesToVanillaStatesConverter.get().apply(sorter.getWinningSort());
-        this.thros = sorter.sortToMatch(thros);
-        this.sortingStrategy = sortingStrategy;
+        this.states = states;
     }
 
     @Override
     public int getNumJugglers()
     {
-        throw new UnsupportedOperationException(UNDEFINED_NUMBER_OF_JUGGLERS_ERROR_MESSAGE);
+        throw new NumJugglersException("The number of jugglers for a " + TYPE + " is undefined.");
     }
 
     @Override
     public int getNumHands()
     {
-        throw new UnsupportedOperationException(UNDEFINED_NUMBER_OF_JUGGLERS_ERROR_MESSAGE);
+        throw new NumJugglersException("The number of jugglers for a " + TYPE + " is undefined.");
     }
 
     @Override
     public int getNumObjects()
     {
-        return states[0].getNumObjects();
+        return getStates()[0].getNumObjects();
     }
 
     @Override
     public int getPeriod()
     {
-        return states.length;
+        return getStates().length;
     }
 
     @Override
     public VanillaThro[] getThrows()
     {
-        return thros;
+        return StatesToThrosConverter.get().andThen(ThrosToVanillaThrosConverter.get()).apply(getStates());
     }
 
     @Override
-    public VanillaThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
+    public Thro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
     {
-        return thros;
+        if (forJuggler >= 0 && forJuggler < getNumJugglers())
+        {
+            return getThrows();
+        }
+        throw new IndexOutOfBoundsException("There is only 1 juggler. Juggler 0");
     }
 
     @Override
@@ -94,15 +80,42 @@ public class VanillaSiteswap implements Siteswap
     }
 
     @Override
-    public SortingStrategy getSortingStrategy()
+    public int getStartingNumberOfObjects(final int hand) throws IndexOutOfBoundsException
     {
-        return sortingStrategy;
-    }
+        if (hand < 0 || hand >= getNumHands())
+        {
+            throw new IndexOutOfBoundsException("There are only " + getNumHands() + " hands. Cannot get for hand: " + hand);
+        }
 
-    @Override
-    public int getStartingNumberOfObjects(final int forHand) throws IndexOutOfBoundsException
-    {
-        throw new UnsupportedOperationException(UNDEFINED_NUMBER_OF_JUGGLERS_ERROR_MESSAGE);
+        final boolean[] landings = new boolean[getPeriod() + getHighestThro().getNumBeats()];
+
+        final ArrayLoopingIterator<VanillaThro> looper = new ArrayLoopingIterator<>(getThrows());
+
+        for (int i = 0; i < landings.length; i++)
+        {
+            final int landing_position = i + looper.next().getNumBeats();
+
+            if (landing_position < landings.length)
+            {
+                landings[landing_position] = true;
+            }
+        }
+
+        int tot = 0;
+        int i = 0;
+        final int[] hands = new int[getNumHands()];
+
+        while (tot < getNumObjects())
+        {
+            if (!landings[i])
+            {
+                hands[i % getNumHands()]++;
+                tot++;
+            }
+            i++;
+        }
+
+        return hands[hand];
     }
 
     @Override
@@ -114,7 +127,7 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public boolean equals(final Siteswap other)
     {
-        return other == this || Arrays.deepEquals(states, other.getStates());
+        return other == this || Arrays.deepEquals(getStates(), other.getStates());
     }
 
     @Override
@@ -125,92 +138,40 @@ public class VanillaSiteswap implements Siteswap
         {
             return true;
         }
-        try
-        {
-            final SiteswapSorter thisSorter = new RotationsSiteswapSorter(this.states,
-                    HighestThrowFirstStrategy.get());
-            thisSorter.sort();
-            final SiteswapSorter otherSorter = new RotationsSiteswapSorter(other.getStates(),
-                    HighestThrowFirstStrategy.get());
-            otherSorter.sort();
-            return Arrays.deepEquals(thisSorter.getWinningSort(), otherSorter.getWinningSort());
-        }
-        catch (final InvalidSiteswapException invalidSiteswapException)
+
+        final State[] myStates = getStates();
+        final State[] otherStates = other.getStates();
+
+        if (otherStates.length != myStates.length)
         {
             return false;
         }
+
+        for (int i = 0; i < myStates.length; i++)
+        {
+            if (same(myStates, new ArrayLoopingIterator<>(otherStates, i)))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
-    @Override
-    public Siteswap append(final Siteswap other) throws UnsupportedOperationException
+    private boolean same(final State[] myStates, final ArrayLoopingIterator<State> stateArrayLoopingIterator)
     {
-        throw new UnsupportedOperationException("This method has not been implemented yet"); // TODO implement
-    }
-
-    @Override
-    public Stream<Siteswap> getAnagrams() throws UnsupportedOperationException
-    {
-        throw new UnsupportedOperationException("This method has not been implemented yet"); // TODO implement
-    }
-
-    @Override
-    public Stream<Siteswap> getRelated() throws UnsupportedOperationException
-    {
-        throw new UnsupportedOperationException("This method has not been implemented yet"); // TODO implement
+        for (final State myState : myStates)
+        {
+            if (!myState.equals(stateArrayLoopingIterator.next()))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public String toString()
     {
-        return VanillaThrosToStringConverter.get().apply(thros);
-    }
-
-    @Override
-    public boolean equals(final Object o)
-    {
-        if (this == o)
-        {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        final VanillaSiteswap that = (VanillaSiteswap) o;
-
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        if (!Arrays.equals(states, that.states))
-        {
-            return false;
-        }
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        if (!Arrays.equals(thros, that.thros))
-        {
-            return false;
-        }
-        return sortingStrategy.equals(that.sortingStrategy);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int result = Arrays.hashCode(states);
-        result = 31 * result + Arrays.hashCode(thros);
-        result = 31 * result + sortingStrategy.hashCode();
-        return result;
-    }
-
-    @Override
-    public Siteswap resort(final SortingStrategy newSortingStrategy)
-    {
-        try
-        {
-            return new VanillaSiteswap(this.getStates(), this.getThrows(), newSortingStrategy);
-        }
-        catch (InvalidSiteswapException e)
-        {
-            throw new IllegalStateException("Could not create new siteswap", e);
-        }
+        return VanillaThrosToStringConverter.get().apply(getThrows());
     }
 }

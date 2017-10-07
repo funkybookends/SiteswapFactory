@@ -1,5 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.function.BiFunction;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
@@ -10,10 +14,6 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStat
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
-import java.util.Arrays;
-import java.util.Stack;
-import java.util.function.BiFunction;
-
 /**
  * Calculates the first state from an array of Thros. Requires the expected number of objects.
  * <p>
@@ -23,22 +23,22 @@ import java.util.function.BiFunction;
  * If the number of objects is lower than intended, it will return prematurely.
  *
  * @author Caspar Nonclercq
- * @see VanillaThrosToFirstStateConverter A version that attempts to detect the correct number of objects.
+ * @see VanillaThrosToStartingStateConverter A version that attempts to detect the correct number of objects.
  */
-public class VanillaThrosToFirstStateBiConverter implements BiFunction<VanillaThro[], Integer, VanillaState>
+public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunction<VanillaThro[], Integer, VanillaState>
 {
-    public static VanillaThrosToFirstStateBiConverter INSTANCE;
+    public static VanillaThrosAndNumObjectsToFirstStateBiConverter INSTANCE;
 
-    private VanillaThrosToFirstStateBiConverter()
+    private VanillaThrosAndNumObjectsToFirstStateBiConverter()
     {
         // Singleton
     }
 
-    public static VanillaThrosToFirstStateBiConverter get()
+    public static VanillaThrosAndNumObjectsToFirstStateBiConverter get()
     {
         if (INSTANCE == null)
         {
-            INSTANCE = new VanillaThrosToFirstStateBiConverter();
+            INSTANCE = new VanillaThrosAndNumObjectsToFirstStateBiConverter();
         }
         return INSTANCE;
     }

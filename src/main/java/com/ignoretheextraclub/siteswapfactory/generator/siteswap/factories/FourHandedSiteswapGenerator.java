@@ -1,6 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.generator.siteswap.factories;
 
-import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
@@ -12,15 +15,13 @@ import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThro
 import com.ignoretheextraclub.siteswapfactory.predicates.result.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StatesToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 /**
  * Factory for creating generators that generate {@link FourHandedSiteswap}s
+ *
  * @author Caspar Nonclercq
  */
 public class FourHandedSiteswapGenerator
@@ -28,16 +29,16 @@ public class FourHandedSiteswapGenerator
     private static StateSearcherBuilder<FourHandedSiteswap> builder()
     {
         return StateSearcherBuilder.<FourHandedSiteswap>builder()
-                .withSiteswapConstructor(SiteswapFactory::createFHS)
-                .addIntermediatePredicate(ThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.ILLEGAL_THROS()))
-                .andResultPredicate(LoopCheckingThrowCombinationPredicate.requireAnyOneOf(FourHandedSiteswapThro.PASS_THROS()));
+            .withSiteswapConstructor(StatesToFourHandedSiteswapConstructor.get())
+            .addIntermediatePredicate(ThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()))
+            .andResultPredicate(LoopCheckingThrowCombinationPredicate.requireAnyOneOf(FourHandedSiteswapThro.getPassThrows()));
     }
 
-    public static StateSearcherBuilder<FourHandedSiteswap> groundBuilder(final int numObjects,
-            final int maxPeriod) throws NumObjectsException, PeriodException
+    public static StateSearcherBuilder<FourHandedSiteswap> groundBuilder(final int numObjects, final int maxPeriod) throws NumObjectsException, PeriodException
     {
-        return builder().addStartingState(VanillaStateGenerator.getGroundState(numObjects, maxPeriod))
-                .setMaxPeriod(maxPeriod);
+        return builder()
+            .addStartingState(VanillaStateGenerator.getGroundState(numObjects, maxPeriod))
+            .setMaxPeriod(maxPeriod);
     }
 
     public static SiteswapGenerator<FourHandedSiteswap> ground(final int numObjects, final int maxPeriod) throws InvalidSiteswapException
@@ -47,9 +48,10 @@ public class FourHandedSiteswapGenerator
 
     public static StateSearcherBuilder<FourHandedSiteswap> allBuilder(final int numObjects, final int maxPeriod)
     {
-        return builder().setStartingStates(VanillaStateGenerator.getAllStates(numObjects, maxPeriod)
-                .map((VanillaState state) -> (State) state)
-                .collect(Collectors.toSet())).setMaxPeriod(maxPeriod);
+        return builder()
+            .setStartingStates(VanillaStateGenerator.getAllStates(numObjects, maxPeriod)
+            .map((VanillaState state) -> (State) state)
+            .collect(Collectors.toSet())).setMaxPeriod(maxPeriod);
     }
 
     public static SiteswapGenerator<FourHandedSiteswap> all(final int numObjects, final int maxPeriod)
@@ -64,14 +66,14 @@ public class FourHandedSiteswapGenerator
         final Predicate<State[]> banGroundState = new StatePredicate(groundState).negate();
 
         final Set<State> excitedStates = VanillaStateGenerator.getAllStates(numObjects, maxPeriod)
-                .map(vanillaState -> (State) vanillaState)
-                .filter((state) -> !state.equals(banGroundState))
-                .collect(Collectors.toSet());
+            .map(vanillaState -> (State) vanillaState)
+            .filter((state) -> !state.equals(banGroundState))
+            .collect(Collectors.toSet());
 
         return builder()
-                .setStartingStates(excitedStates)
-                .addIntermediatePredicate(banGroundState)
-                .setMaxPeriod(maxPeriod);
+            .setStartingStates(excitedStates)
+            .addIntermediatePredicate(banGroundState)
+            .setMaxPeriod(maxPeriod);
     }
 
     public static SiteswapGenerator<FourHandedSiteswap> excited(final int numObjects, final int maxPeriod) throws NumObjectsException, PeriodException

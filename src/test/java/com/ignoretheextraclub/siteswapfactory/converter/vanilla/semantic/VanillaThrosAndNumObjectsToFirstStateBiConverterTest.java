@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * Created by caspar on 14/09/17.
  */
 @RunWith(JUnitParamsRunner.class)
-public class VanillaThrosToFirstStateBiConverterTest
+public class VanillaThrosAndNumObjectsToFirstStateBiConverterTest
 {
     @Test
     @Parameters
@@ -28,8 +28,8 @@ public class VanillaThrosToFirstStateBiConverterTest
                           final Integer numObjects,
                           final VanillaState expected) throws Exception
     {
-        assertThat(VanillaThrosToFirstStateBiConverter.get().apply(input, numObjects)).isEqualTo(expected);
-        assertThat(VanillaThrosToFirstStateBiConverter.getFirstState(input, numObjects)).isEqualTo(expected);
+        assertThat(VanillaThrosAndNumObjectsToFirstStateBiConverter.get().apply(input, numObjects)).isEqualTo(expected);
+        assertThat(VanillaThrosAndNumObjectsToFirstStateBiConverter.getFirstState(input, numObjects)).isEqualTo(expected);
     }
 
     private Object parametersForTestApply()
@@ -61,10 +61,10 @@ public class VanillaThrosToFirstStateBiConverterTest
                               final Integer numObjects,
                               final Exception exception) throws Exception
     {
-        assertThatThrownBy(() -> VanillaThrosToFirstStateBiConverter.get().apply(input,
+        assertThatThrownBy(() -> VanillaThrosAndNumObjectsToFirstStateBiConverter.get().apply(input,
                 numObjects)).isInstanceOf(exception.getClass())
                             .hasMessageContaining(exception.getMessage());
-        assertThatThrownBy(() -> VanillaThrosToFirstStateBiConverter.getFirstState(input,
+        assertThatThrownBy(() -> VanillaThrosAndNumObjectsToFirstStateBiConverter.getFirstState(input,
                 numObjects)).isInstanceOf(exception.getClass())
                             .hasMessageContaining(exception.getMessage());
     }

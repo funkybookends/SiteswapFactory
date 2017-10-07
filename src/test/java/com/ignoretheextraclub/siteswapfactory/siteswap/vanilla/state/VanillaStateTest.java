@@ -1,6 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToFirstStateConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
 import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
@@ -162,10 +162,10 @@ public class VanillaStateTest
     @Test
     public void getFirstStateTest() throws Exception
     {
-        VanillaState firstState = VanillaThrosToFirstStateConverter.get().apply(new VanillaThro[]{THREE});
+        VanillaState firstState = VanillaThrosToStartingStateConverter.get().apply(new VanillaThro[]{THREE});
         Assert.assertEquals(state(true, true, true), firstState);
 
-        VanillaState firstState1 = VanillaThrosToFirstStateConverter.get().apply(new VanillaThro[]{FIVE, THREE, ONE});
+        VanillaState firstState1 = VanillaThrosToStartingStateConverter.get().apply(new VanillaThro[]{FIVE, THREE, ONE});
         Assert.assertEquals(XXX__, firstState1);
     }
 
