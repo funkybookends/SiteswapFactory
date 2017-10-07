@@ -1,18 +1,21 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.function.Predicate;
 
 /**
  * Checks to see if a state[] contains a throw combination. Use {@code null} to allow any throw.
  * <p>
  * This implementation is only safe to use as an intermediatePredicate if you require combinations to be banned.
+ *
  * @author Caspar Nonclercq
  */
 public class ThroCombinationPredicate implements Predicate<State[]>
@@ -24,6 +27,7 @@ public class ThroCombinationPredicate implements Predicate<State[]>
     /**
      * Creates a throCombination predicate. Nulls may be used to match any throw, but the first and last throws must not
      * be null.
+     *
      * @param throCombination the throw combination to check.
      */
     public ThroCombinationPredicate(final Thro... throCombination)
@@ -55,6 +59,7 @@ public class ThroCombinationPredicate implements Predicate<State[]>
 
     /**
      * Accepts a length of throws shorter or longer than the {@code throwCombination}
+     *
      * @param thros the array of throws
      * @return true if the thros contains the {@code throwCombination}
      */
@@ -75,7 +80,8 @@ public class ThroCombinationPredicate implements Predicate<State[]>
 
     /**
      * Tests if an array of throws matches the given combination.
-     * @param thros The set of throws to check
+     *
+     * @param thros           The set of throws to check
      * @param throCombination The throw combination to match against
      * @return true if the {@code thros} matches the {@code throCombination}
      */
@@ -101,6 +107,7 @@ public class ThroCombinationPredicate implements Predicate<State[]>
 
     /**
      * Tests all sublists
+     *
      * @param thros
      * @return
      */
@@ -164,5 +171,11 @@ public class ThroCombinationPredicate implements Predicate<State[]>
         }
 
         return predicate;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ThroCombinationPredicate{" + Arrays.toString(throCombination) + '}';
     }
 }

@@ -1,14 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.BiFunction;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.BiFunction;
 
 /**
  * Determines all the states, given a starting state and a set of throws. Ensures that the last state transitions to the
@@ -16,8 +16,6 @@ import java.util.function.BiFunction;
  *
  * @author Caspar Nonclercq
  * @see StatesToSequenceConverter A similar converter that does not enforce the looping constraint.
- * @see com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound.VanillaThrosToVanillaStatesConverter
- * A converter that does not require the first state.
  */
 public class StartingStateAndThrosToAllStatesConverter implements BiFunction<State, Thro[], State[]>
 {
