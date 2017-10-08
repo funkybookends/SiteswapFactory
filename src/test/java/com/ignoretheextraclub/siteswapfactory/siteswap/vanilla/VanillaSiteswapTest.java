@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.exceptions.NumJugglersException;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X;
@@ -22,21 +23,21 @@ public class VanillaSiteswapTest
    @Test
    public void test534() throws Exception
    {
-       final VanillaSiteswap vanillaSiteswap = SiteswapFactory.getTwoHandedSiteswap("534");
-       final VanillaSiteswap same = SiteswapFactory.getTwoHandedSiteswap("453");
-       final VanillaSiteswap different = SiteswapFactory.getTwoHandedSiteswap("441");
+       //todo construct vanilla siteswap
+       final VanillaSiteswap vanillaSiteswap = new VanillaSiteswap(SiteswapFactory.getTwoHandedSiteswap("534").getStates());
+       final VanillaSiteswap same = new VanillaSiteswap(SiteswapFactory.getTwoHandedSiteswap("453").getStates());
+       final VanillaSiteswap different = new VanillaSiteswap(SiteswapFactory.getTwoHandedSiteswap("441").getStates());
 
-       softly.assertThatThrownBy(vanillaSiteswap::getNumJugglers).isInstanceOf(UnsupportedOperationException.class);
-       softly.assertThatThrownBy(vanillaSiteswap::getNumHands).isInstanceOf(UnsupportedOperationException.class);
+       softly.assertThatThrownBy(vanillaSiteswap::getNumJugglers).isInstanceOf(NumJugglersException.class);
+       softly.assertThatThrownBy(vanillaSiteswap::getNumHands).isInstanceOf(NumJugglersException.class);
        softly.assertThat(vanillaSiteswap.getNumObjects()).isEqualTo(4);
        softly.assertThat(vanillaSiteswap.getPeriod()).isEqualTo(3);
        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(get(5), get(3), get(4)));
-       softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(get(5), get(3), get(4)));
        softly.assertThat(vanillaSiteswap.getStates()).isEqualTo(states(XXXX_, XXX_X, XXXX_));
        softly.assertThat(vanillaSiteswap.isGrounded()).isEqualTo(true);
        softly.assertThat(vanillaSiteswap.isPrime()).isEqualTo(false);
        softly.assertThat(vanillaSiteswap.getHighestThro()).isEqualTo(get(5));
-       softly.assertThatThrownBy(() -> vanillaSiteswap.getStartingNumberOfObjects(0)).isInstanceOf(UnsupportedOperationException.class);
+       softly.assertThatThrownBy(() -> vanillaSiteswap.getStartingNumberOfObjects(0)).isInstanceOf(NumJugglersException.class);
        softly.assertThat(vanillaSiteswap.getType()).isEqualTo("Vanilla Siteswap");
        softly.assertThat(vanillaSiteswap.toString()).isEqualTo("534");
 

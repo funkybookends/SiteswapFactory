@@ -1,9 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  * A predicate that checks to see if a {@code State[]} contains a given state.
@@ -48,21 +48,6 @@ public class StatePredicate implements Predicate<State[]>
 
     public static Predicate<State[]> noneOf(final State... states)
     {
-        if (states.length == 0)
-        {
-            throw new IllegalArgumentException("No states provided");
-        }
-
-        Predicate<State[]> predicate = new StatePredicate(states[0]).negate();
-
-        if (states.length > 1)
-        {
-            for (int i = 1; i < states.length; i++)
-            {
-                predicate = predicate.and(new StatePredicate(states[i]).negate());
-            }
-        }
-
-        return predicate;
+       return anyOf(states).negate();
     }
 }

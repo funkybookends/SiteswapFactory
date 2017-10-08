@@ -5,7 +5,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToFourHandedSiteswapThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
@@ -49,9 +52,16 @@ public class FourHandedSiteswapTest
        softly.assertThat(vanillaSiteswap.same(same)).isEqualTo(true);
        softly.assertThat(vanillaSiteswap.equals(different)).isEqualTo(false);
        softly.assertThat(vanillaSiteswap.same(different)).isEqualTo(false);
-       //        softly.assertThat(vanillaSiteswap.getAnagrams()).isEqualTo();
-       //        softly.assertThat(vanillaSiteswap.getRelated()).isEqualTo();
-       //        softly.assertThat(vanillaSiteswap.append(Siteswap other)).isEqualTo(); softly.assertThat(vanillaSiteswap.resort(
-       //            softly.assertThat(vanillaSiteswap.resort()).isEqualTo();
    }
+
+    @Test
+    public void testMixedAbilityPattern() throws Exception
+    {
+        final FourHandedSiteswap fourHandedSiteswap = SiteswapFactory.getFourHandedSiteswap("88578686");
+        final FourHandedSiteswapThro[] leader = StringToIntsConverter.get().andThen(IntsToFourHandedSiteswapThrosConverter.get()).apply("8588");
+        final FourHandedSiteswapThro[] follower = StringToIntsConverter.get().andThen(IntsToFourHandedSiteswapThrosConverter.get()).apply("8766");
+
+        softly.assertThat(fourHandedSiteswap.getThrowsForJuggler(0)).isEqualTo(leader);
+        softly.assertThat(fourHandedSiteswap.getThrowsForJuggler(1)).isEqualTo(follower);
+    }
 }

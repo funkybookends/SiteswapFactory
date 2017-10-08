@@ -11,7 +11,7 @@ import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerat
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.StateSearcherBuilder;
 import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.ThroCombinationPredicate;
-import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThrowCombinationPredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThroCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.result.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
@@ -31,7 +31,7 @@ public class FourHandedSiteswapGenerator
         return StateSearcherBuilder.<FourHandedSiteswap>builder()
             .withSiteswapConstructor(StatesToFourHandedSiteswapConstructor.get())
             .addIntermediatePredicate(ThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()))
-            .andResultPredicate(LoopCheckingThrowCombinationPredicate.requireAnyOneOf(FourHandedSiteswapThro.getPassThrows()));
+            .andResultPredicate(LoopCheckingThroCombinationPredicate.requireAnyOneOf(FourHandedSiteswapThro.getPassThrows()));
     }
 
     public static StateSearcherBuilder<FourHandedSiteswap> groundBuilder(final int numObjects, final int maxPeriod) throws NumObjectsException, PeriodException

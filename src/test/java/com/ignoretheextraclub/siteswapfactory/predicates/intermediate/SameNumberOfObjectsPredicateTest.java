@@ -1,18 +1,27 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 
-import static org.assertj.core.api.Fail.fail;
+import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.*;
 
 /**
  * Created by caspar on 24/09/17.
  */
 public class SameNumberOfObjectsPredicateTest
 {
+    @Rule
+    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
     public void name() throws Exception
     {
-        fail("Test not yet implemented");
+        softly.assertThat(SameNumberOfObjectsPredicate.get().test(SiteswapFactory.getTwoHandedSiteswap("534444555504").getStates())).isTrue();
+        softly.assertThat(SameNumberOfObjectsPredicate.hasSameNumberOfObjects(new State[]{XXX__, XXX_})).isTrue();
+        softly.assertThat(SameNumberOfObjectsPredicate.hasSameNumberOfObjects(new State[]{XXX__, XXXX_})).isFalse();
     }
 }

@@ -1,19 +1,21 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.ThroCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
-import java.util.function.Predicate;
-
 /**
  * Returns a predicate that is suitable for resultPredicates
+ *
  * @author Caspar Nonclercq
  */
-public class LoopCheckingThrowCombinationPredicate extends ThroCombinationPredicate
+public class LoopCheckingThroCombinationPredicate extends ThroCombinationPredicate
 {
-    public LoopCheckingThrowCombinationPredicate(final Thro... throCombination)
+    public LoopCheckingThroCombinationPredicate(final Thro... throCombination)
     {
         super(throCombination);
     }
@@ -36,6 +38,7 @@ public class LoopCheckingThrowCombinationPredicate extends ThroCombinationPredic
 
     /**
      * Returns a predicate that requires the state
+     *
      * @param thros
      * @return
      */
@@ -57,5 +60,11 @@ public class LoopCheckingThrowCombinationPredicate extends ThroCombinationPredic
         }
 
         return predicate;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "LoopCheckingThroCombinationPredicate{" + Arrays.toString(throCombination) + "}";
     }
 }

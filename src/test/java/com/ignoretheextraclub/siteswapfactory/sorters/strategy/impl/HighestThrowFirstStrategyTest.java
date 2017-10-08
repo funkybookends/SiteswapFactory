@@ -3,12 +3,15 @@ package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
 Created by caspar on 15/01/17.
@@ -32,8 +35,8 @@ public class HighestThrowFirstStrategyTest
        {
            for (String constructor : correctToRotations.get(expected))
            {
-               final TwoHandedSiteswap twoHandedSiteswap = SiteswapFactory.getTwoHandedSiteswap(constructor);
-               Assert.assertEquals(constructor, expected, twoHandedSiteswap.toString());
+               final TwoHandedSiteswap twoHandedSiteswap = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(constructor, false, null, null, HighestThrowFirstStrategy.get()));
+               assertThat(twoHandedSiteswap.toString()).isEqualTo(expected);
            }
        }
    }

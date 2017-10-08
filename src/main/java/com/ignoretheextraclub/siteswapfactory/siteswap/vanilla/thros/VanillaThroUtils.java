@@ -3,6 +3,8 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 import java.util.Arrays;
 import java.util.Objects;
 
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+
 /**
  * Created by caspar on 26/07/17.
  */
@@ -32,6 +34,18 @@ public final class VanillaThroUtils
             throw new IllegalArgumentException("thros cannot be empty");
         }
 
-        return (int) Arrays.stream(thros).mapToInt(VanillaThro::getNumBeats).average().getAsDouble();
+        int sum = 0;
+
+        for (int i = 0; i < thros.length; i++)
+        {
+            sum += thros[i].getNumBeats();
+        }
+
+        if (sum % thros.length != 0)
+        {
+            throw new BadThrowException("Throws " + Arrays.toString(thros) + " does not hava a valid average");
+        }
+
+        return sum / thros.length;
     }
 }

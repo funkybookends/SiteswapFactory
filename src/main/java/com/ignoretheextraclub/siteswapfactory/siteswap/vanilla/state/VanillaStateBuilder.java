@@ -24,6 +24,11 @@ public class VanillaStateBuilder
         VanillaState.validateSize(maxThrow);
         VanillaState.validateNumObjects(expectedObjects);
 
+        if (expectedObjects > maxThrow)
+        {
+            throw new IllegalArgumentException("expectedObjects cannot be larger than maxThrow");
+        }
+
         this.maxThrow = maxThrow;
         this.expectedObjects = expectedObjects;
         this.occupied = new boolean[maxThrow];
@@ -48,7 +53,7 @@ public class VanillaStateBuilder
         // Check num objects
         if (givenObjects > expectedObjects)
         {
-            throw new NumObjectsException("Given an unexpected object. Already have [" + givenObjects + "] in [" + this.toString() + "]");
+            throw new NumObjectsException("Given an unexpected object. Expecting [" + expectedObjects + "]");
         }
 
         // Do throw

@@ -1,12 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.utils;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.state;
-import static org.junit.Assert.fail;
+import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
+
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
 
 /**
  Created by caspar on 29/07/17.
@@ -19,7 +20,10 @@ public class ArrayUtilsTest
     @Test
     public void copy() throws Exception
     {
-        softly.assertThat(ArrayUtils.copy(new boolean[]{true, false})).isEqualTo(new boolean[]{true, false});
+        final boolean[] positions = {true, false};
+        final boolean[] result = ArrayUtils.copy(positions);
+        softly.assertThat(positions).isEqualTo(result);
+        softly.assertThat(positions).isNotSameAs(result);
     }
 
     @Test
@@ -29,34 +33,10 @@ public class ArrayUtilsTest
     }
 
     @Test
-    public void getFirstMinIndex() throws Exception
-    {
-        fail("Test not yet implemented");
-    }
-
-    @Test
-    public void getFirstMinIndex1() throws Exception
-    {
-        fail("Test not yet implemented");
-    }
-
-    @Test
-    public void getFirstMaxIndex() throws Exception
-    {
-        fail("Test not yet implemented");
-    }
-
-    @Test
-    public void getFirstMaxIndex1() throws Exception
-    {
-        fail("Test not yet implemented");
-    }
-
-    @Test
     public void getCopy() throws Exception
     {
-        softly.assertThat(ArrayUtils.getCopy(StateTestUtils.states(state(true, true, false), state(true, false, true), state(true, true, false)), 1))
-              .isEqualTo(StateTestUtils.states(state(true, false, true), state(true, true, false), state(true, true, false)));
+        softly.assertThat(ArrayUtils.getCopy(StateTestUtils.states(XXX__, XX_X_, XXX__), 1))
+              .isEqualTo(StateTestUtils.states(XX_X_, XXX__, XXX__));
     }
 
 

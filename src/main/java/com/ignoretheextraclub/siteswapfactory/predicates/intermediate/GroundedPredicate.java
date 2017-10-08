@@ -1,10 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  * This predicate tests if a {@link com.ignoretheextraclub.siteswapfactory.siteswap.State}[] is grounded.
@@ -28,6 +29,7 @@ public class GroundedPredicate implements Predicate<State[]>
     @Override
     public boolean test(final State[] states)
     {
+        Objects.requireNonNull(states, "states cannot be null");
         return Stream.of(states).anyMatch(State::isGroundState);
     }
 

@@ -47,7 +47,7 @@ public class VanillaState implements State
     {
         validateSize(occupied.length);
         validateNumObjects(getNumTrue(occupied));
-        this.occupied = occupied;
+        this.occupied = ArrayUtils.copy(occupied);
     }
 
     static String toString(final boolean[] filledPositions, final String filled, final String empty)

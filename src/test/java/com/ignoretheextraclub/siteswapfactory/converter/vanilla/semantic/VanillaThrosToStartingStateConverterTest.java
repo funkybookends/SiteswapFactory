@@ -1,12 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXXXXXX__;
@@ -34,23 +36,11 @@ public class VanillaThrosToStartingStateConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{thros(get(3)), XXX},
-                new Object[]{thros(get(4), get(2)), XXX_},
-                new Object[]{
-                        thros(get(8),
-                                get(9),
-                                get(10),
-                                get(6),
-                                get(7)), XXXXXXXX__
-                },
-                new Object[]{
-                        thros(get(9),
-                                get(10),
-                                get(6),
-                                get(7),
-                                get(8)), XXXXXXXX__
-                },
-                };
+            new Object[]{thros(get(3)), XXX},
+            new Object[]{thros(get(4), get(2)), XXX_},
+            new Object[]{thros(get(8), get(9), get(10), get(6), get(7)), XXXXXXXX__},
+            new Object[]{thros(get(9), get(10), get(6), get(7), get(8)), XXXXXXXX__},
+        };
         // TODO add more
     }
 
@@ -59,28 +49,22 @@ public class VanillaThrosToStartingStateConverterTest
     public void testException(final VanillaThro[] input,
                               final Exception exception) throws Exception
     {
-        assertThatThrownBy(() -> VanillaThrosToStartingStateConverter.get()
-                                                                  .apply(input)).isInstanceOf(exception.getClass())
-                                                                                .hasMessageContaining(exception.getMessage());
-        assertThatThrownBy(() -> VanillaThrosToStartingStateConverter.getFirstState(input)).isInstanceOf(exception.getClass())
-                                                                                        .hasMessageContaining(exception.getMessage());
+        assertThatThrownBy(() -> VanillaThrosToStartingStateConverter.get().apply(input))
+            .isInstanceOf(exception.getClass())
+            .hasMessageContaining(exception.getMessage());
+
+        assertThatThrownBy(() -> VanillaThrosToStartingStateConverter.getFirstState(input))
+            .isInstanceOf(exception.getClass())
+            .hasMessageContaining(exception.getMessage());
     }
 
     private Object parametersForTestException()
     {
         return new Object[]{
-                new Object[]{
-                        thros(get(3), get(4), get(3)), new InvalidSiteswapException(
-                        "[3, 4, 3]")
-                },
-                new Object[]{
-                        thros(get(3), get(4), get(3)), new InvalidSiteswapException(
-                        "[3] objects")
-                },
-                new Object[]{
-                        null, new NullPointerException("thros cannot be null")
-                },
-                };
+            new Object[]{thros(get(3), get(4), get(3)), new InvalidSiteswapException("[3, 4, 3]")},
+            new Object[]{thros(get(3), get(4), get(3)), new InvalidSiteswapException("average")},
+            new Object[]{null, new NullPointerException("thros cannot be null")},
+        };
         // TODO add more
     }
 }

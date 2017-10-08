@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
@@ -51,9 +50,5 @@ public class TwoHandedVanillaSiteswapTest
        softly.assertThat(vanillaSiteswap.same(same)).isEqualTo(true);
        softly.assertThat(vanillaSiteswap.equals(different)).isEqualTo(false);
        softly.assertThat(vanillaSiteswap.same(different)).isEqualTo(false);
-//        softly.assertThat(vanillaSiteswap.getAnagrams()).isEqualTo();
-//        softly.assertThat(vanillaSiteswap.getRelated()).isEqualTo();
-//        softly.assertThat(vanillaSiteswap.append(Siteswap other)).isEqualTo(); softly.assertThat(vanillaSiteswap.resort(
-//            softly.assertThat(vanillaSiteswap.resort()).isEqualTo();
    }
 }

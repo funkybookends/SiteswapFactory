@@ -1,18 +1,24 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 
-import static org.assertj.core.api.Fail.fail;
+import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 
 /**
  * Created by caspar on 24/09/17.
  */
 public class PrimePredicateTest
 {
+    @Rule
+    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
     public void name() throws Exception
     {
-        fail("Test not yet implemented");
+        softly.assertThat(PrimePredicate.isPrime(SiteswapFactory.getTwoHandedSiteswap("5"))).isTrue();
+        softly.assertThat(PrimePredicate.isPrime(SiteswapFactory.getTwoHandedSiteswap("564"))).isFalse();
+        //todo add More
     }
 }

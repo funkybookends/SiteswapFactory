@@ -79,8 +79,8 @@ public class StartingStateAndThrosToAllStatesConverter implements BiFunction<Sta
         }
         catch (BadThrowException | TransitionException cause)
         {
-            throw new InvalidSiteswapException("Could not create valid siteswap from [" + startingState.toString() + "] " +
-                    "and " + Arrays.toString(thros), cause);
+            throw new InvalidSiteswapException("Could not create valid siteswap using starting state [" + startingState.toString() + "] " +
+                    "and throws" + Arrays.toString(thros), cause);
         }
     }
 

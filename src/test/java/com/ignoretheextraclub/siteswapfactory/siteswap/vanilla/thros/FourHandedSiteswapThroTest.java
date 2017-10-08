@@ -80,7 +80,7 @@ public class FourHandedSiteswapThroTest
 
         softly.assertThatThrownBy(() -> FourHandedSiteswapThro.get('D'))
               .isInstanceOf(BadThrowException.class)
-              .hasMessageContaining("13");
+              .hasMessageContaining("D");
     }
 
     @Test

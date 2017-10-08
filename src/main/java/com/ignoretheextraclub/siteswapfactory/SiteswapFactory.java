@@ -19,6 +19,7 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StatesToTwoHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToTwoHandedSiteswapConstructor;
 
@@ -82,15 +83,7 @@ public final class SiteswapFactory
 
         return getSiteswapStream(siteswap, invalidSiteswapException)
             .findFirst()
-            .orElseThrow(() ->
-            {
-                LOG.warn(invalidSiteswapException.getMessage() + ". Request: {}. Constructors: {}", siteswap, this.constructors);
-                if (invalidSiteswapException.getSuppressed().length > 0)
-                {
-                    invalidSiteswapException.initCause(invalidSiteswapException.getSuppressed()[0]);
-                }
-                return invalidSiteswapException;
-            });
+            .orElseThrow(() -> invalidSiteswapException);
     }
 
     /**
@@ -152,7 +145,14 @@ public final class SiteswapFactory
             {
                 if (invalidSiteswapException != null)
                 {
-                    invalidSiteswapException.addSuppressed(cause);
+                    if (invalidSiteswapException.getCause() == null)
+                    {
+                        invalidSiteswapException.initCause(cause);
+                    }
+                    else
+                    {
+                        invalidSiteswapException.addSuppressed(cause);
+                    }
                 }
                 return (Siteswap) null;
             }
@@ -165,7 +165,8 @@ public final class SiteswapFactory
      * A list of {@link com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap} {@link SiteswapConstructor}s.
      */
     private static final List<SiteswapConstructor<? extends Siteswap>> TWO_HANDED_SITESWAP_CONSTRUCTORS = Arrays.asList(
-        StringToTwoHandedSiteswapConstructor.get()
+        StringToTwoHandedSiteswapConstructor.get(),
+        StatesToTwoHandedSiteswapConstructor.get()
     );
 
     public static TwoHandedSiteswap getTwoHandedSiteswap(final Object siteswap)
@@ -182,6 +183,7 @@ public final class SiteswapFactory
      * A list of {@link com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap} {@link SiteswapConstructor}s.
      */
     private static final List<SiteswapConstructor<? extends Siteswap>> FOUR_HANDED_SITESWAP_CONSTRUCTORS = Arrays.asList(
+        StringToFourHandedSiteswapConstructor.get(),
         StringToFourHandedSiteswapConstructor.get()
     );
 

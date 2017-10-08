@@ -1,18 +1,29 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 
-import static org.assertj.core.api.Fail.fail;
+import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 
 /**
  * Created by caspar on 24/09/17.
  */
 public class GroundedPredicateTest
 {
+    @Rule
+    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
-    public void name() throws Exception
+    public void test() throws Exception
     {
-        fail("Test not yet implemented");
+        softly.assertThat(GroundedPredicate.get().test(new State[]{XXX__})).isTrue();
+        softly.assertThat(GroundedPredicate.isGround(SiteswapFactory.getTwoHandedSiteswap("3"))).isTrue();
+        softly.assertThat(GroundedPredicate.isGround(SiteswapFactory.getTwoHandedSiteswap("55500"))).as("55500").isTrue();
+        softly.assertThat(GroundedPredicate.isGround(SiteswapFactory.getTwoHandedSiteswap("55050"))).as("55050").isFalse();
+        // todo add more
     }
 }

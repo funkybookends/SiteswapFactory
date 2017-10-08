@@ -1,8 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-
 import java.util.function.Predicate;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  * Checks if a siteswap has a specified period, i.e. the length matches
@@ -17,6 +18,10 @@ public class PeriodPredicate implements Predicate<State[]>
 
     public PeriodPredicate(final int period)
     {
+        if (period < 0)
+        {
+            throw new IllegalArgumentException("period cannot be less than 0");
+        }
         this.period = period;
     }
 
@@ -24,6 +29,11 @@ public class PeriodPredicate implements Predicate<State[]>
     public boolean test(final State[] states)
     {
         return states.length == period;
+    }
+
+    public boolean test(final Siteswap siteswap)
+    {
+        return test(siteswap.getStates());
     }
 
     /**
@@ -50,5 +60,10 @@ public class PeriodPredicate implements Predicate<State[]>
         }
 
         return predicate;
+    }
+
+    public static Predicate<State[]> noneOf(final int... periods)
+    {
+        return anyOf(periods).negate();
     }
 }

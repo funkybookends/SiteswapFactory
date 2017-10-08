@@ -1,13 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-
 import java.util.function.Predicate;
 
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+
 /**
+ * Tests if a siteswap is ambidextrous. A siteswap is ambidextrous if all jugglers have an ambidextrous throw set. A throw set is ambidextrous if it has an odd period.
  * @author Caspar Nonclercq
  */
-public class AmbidextrousPredicate implements Predicate<Thro[]>
+public class AmbidextrousPredicate implements Predicate<Siteswap>
 {
     public static AmbidextrousPredicate INSTANCE;
 
@@ -26,33 +27,20 @@ public class AmbidextrousPredicate implements Predicate<Thro[]>
     }
 
     @Override
-    public boolean test(final Thro[] thros)
+    public boolean test(final Siteswap siteswap)
     {
-        return thros.length % 2 != 0;
+        for (int juggler = 0; juggler < siteswap.getNumJugglers(); juggler++)
+        {
+            if (siteswap.getThrowsForJuggler(juggler).length % 2 == 0)
+            {
+                return false; // TODO make better, this is a primitive approach - should really reduce as well.
+            }
+        }
+        return true;
     }
 
-    public static class FourHandedSiteswap implements Predicate<Thro[]>
+    public static boolean isAmbidextrous(final Siteswap siteswap)
     {
-        public static FourHandedSiteswap INSTANCE;
-
-        private FourHandedSiteswap()
-        {
-            // Singleton
-        }
-
-        public static FourHandedSiteswap get()
-        {
-            if (INSTANCE == null)
-            {
-                INSTANCE = new FourHandedSiteswap();
-            }
-            return INSTANCE;
-        }
-
-        @Override
-        public boolean test(final Thro[] thros)
-        {
-            return thros.length % 2 != 0 || (thros.length / 2) % 2 != 0;
-        }
+        return get().test(siteswap);
     }
 }
