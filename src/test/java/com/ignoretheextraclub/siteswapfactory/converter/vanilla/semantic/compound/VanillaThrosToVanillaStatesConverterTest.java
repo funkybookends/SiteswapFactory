@@ -1,13 +1,15 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.compound;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X_;
@@ -32,9 +34,9 @@ public class VanillaThrosToVanillaStatesConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{thros(get(4), get(2), get(3)), StateTestUtils.states(XXX__, XX_X_, XXX__)},
-                new Object[]{thros(get(5), get(3), get(4)), StateTestUtils.states(XXXX__, XXX_X_, XXXX__)},
-                };
+            new Object[]{thros(get(4), get(2), get(3)), StateTestUtils.states(XXX__, XX_X_, XXX__)},
+            new Object[]{thros(get(5), get(3), get(4)), StateTestUtils.states(XXXX__, XXX_X_, XXXX__)},
+        };
         // TODO add more
     }
 
@@ -43,16 +45,16 @@ public class VanillaThrosToVanillaStatesConverterTest
     public void testException(final VanillaThro[] input, final Exception exception) throws Exception
     {
         assertThatThrownBy(() -> VanillaThrosToVanillaStatesConverter.convertThrosToStates(input))
-                .isInstanceOf(exception.getClass())
-                .hasMessageContaining(exception.getMessage());
+            .isInstanceOf(exception.getClass())
+            .hasMessageContaining(exception.getMessage());
     }
 
     private Object parametersForTestException()
     {
         return new Object[]{
-                new Object[]{thros(get(5), get(4), get(3)), new InvalidSiteswapException("[5, 4, 3]")},
-                new Object[]{null, new NullPointerException("thros")},
-                new Object[]{new VanillaThro[]{}, new IllegalArgumentException("thros cannot be empty")},
+            new Object[]{thros(get(5), get(4), get(3)), new InvalidSiteswapException("[5, 4, 3]")},
+            new Object[]{null, new NullPointerException("thros")},
+            new Object[]{new VanillaThro[]{}, new IllegalArgumentException("thros cannot be empty")},
         };
         // TODO add more
     }

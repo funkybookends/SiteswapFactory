@@ -1,10 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,16 +29,16 @@ public class VanillaThrosToIntsConverterTest
     public Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{new VanillaThro[]{}, new int[]{}},
-                new Object[]{new VanillaThro[]{get(0), get(2), get(4), get(6), get(9)}, new int[]{0, 2, 4, 6, 9}},
-                }; // TODO add more
+            new Object[]{new VanillaThro[]{}, new int[]{}},
+            new Object[]{new VanillaThro[]{get(0), get(2), get(4), get(6), get(9)}, new int[]{0, 2, 4, 6, 9}},
+        }; // TODO add more
     }
 
     @Test
     public void testException() throws Exception
     {
         assertThatThrownBy(() -> VanillaThrosToIntsConverter.get().apply(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessageContaining("thros");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessageContaining("thros");
     }
 }

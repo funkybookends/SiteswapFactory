@@ -37,7 +37,7 @@ public class StreamingMappingReducingStartFinder implements StartFinder
     {
         return IntStream.range(0, stateArray.length)
                         .boxed()
-                        .map(startIndex -> new SimpleStartFinderResult(ArrayUtils.getCopy(stateArray, startIndex), startIndex, startingStrategy))
+                        .map(startIndex -> new SimpleStartFinderResult(ArrayUtils.getRotatedCopy(stateArray, startIndex), startIndex, startingStrategy))
                         .reduce(toBestSort(startingStrategy))
                         .orElseThrow(() -> new IllegalArgumentException("stateArray must have at least one element"));
     }

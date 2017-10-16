@@ -133,7 +133,7 @@ public interface Siteswap
     /**
      * A concise representation of the siteswap.
      *
-     * @return a concise represetation of the siteswap.
+     * @return a concise representation of the siteswap.
      */
     String toString();
 
@@ -160,53 +160,4 @@ public interface Siteswap
      * @see #equals(Siteswap)
      */
     boolean same(Siteswap other);
-
-//    /**
-//     * Returns a stream where the each {@link Siteswap} in the stream is an anagram of this.
-//     * <p>
-//     * Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
-//     * a collection, and clients are advised to set appropriate limits.
-//     *
-//     * @return a stream of anagrams
-//     *
-//     * @throws UnsupportedOperationException if this siteswap type does not have anagrams.
-//     */
-//    Stream<Siteswap> getAnagrams() throws UnsupportedOperationException;
-//
-//    /**
-//     * Returns a stream of related Siteswaps.
-//     * <p>
-//     * Note that for some types of Siteswap this could be large; this is why the interface returns a stream rather than
-//     * a collection, and clients are advised to set appropriate limits.
-//     * <p>
-//     * It is up to the implementation to define "related", and they are encouraged to document this in their API.
-//     *
-//     * @return A list of related siteswaps
-//     */
-//    Stream<Siteswap> getRelated() throws UnsupportedOperationException;
-//
-//    /**
-//     * Returns a valid siteswap that is the concatenation if this siteswap with other. The implementation may have to
-//     * add
-//     * transition throws in order to make it legal. Implementations should strive to use the fewest number of
-//     * transition
-//     * throws possible.
-//     *
-//     * @param other
-//     *
-//     * @return A valid siteswap that is the concatenation of this siteswap and other
-//     *
-//     * @throws UnsupportedOperationException if this implementation does not support it
-//     * @throws TransitionException           if there is no transition or the other type is incompatible.
-//     */
-//    Siteswap append(Siteswap other) throws UnsupportedOperationException, TransitionException;
-//
-//    /**
-//     * Return this siteswap sorted using the provided siteswap strategy.
-//     *
-//     * @param newStartingStrategy
-//     *
-//     * @return a new object that is this siteswap resorted
-//     */
-//    Siteswap resort(final StartingStrategy newStartingStrategy);
 }

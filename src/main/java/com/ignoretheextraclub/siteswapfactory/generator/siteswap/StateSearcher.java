@@ -3,6 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.generator.siteswap;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
@@ -72,7 +73,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         this.maxPeriod = validatePeriod(maxPeriod);
         this.intermediatePredicate = intermediatePredicate == null ? acceptAll() : intermediatePredicate;
         this.resultPredicate = resultPredicate == null ? isLegalLoop() : isLegalLoop().and(resultPredicate);
-        this.siteswapRequestBuilder = Objects.requireNonNull(siteswapRequestBuilder);
+        this.siteswapRequestBuilder = siteswapRequestBuilder == null ? new SiteswapRequestBuilder() : siteswapRequestBuilder;
     }
 
     @Override
@@ -86,6 +87,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         catch (final NoMoreSiteswapsException noMoreSiteswapsException)
         {
             LOG.trace("No more elements");
+            this.next = null;
             return false;
         }
     }
@@ -95,8 +97,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     {
         if (next == null)
         {
-            LOG.warn("Incorrect usage of iterator. Expected a call to hasNext() before a call to next()");
-            throw new IllegalStateException("Expected a call to hasNext before a call to next.");
+            throw new NoSuchElementException("No call to next(), or call to next() after hasNext() returned false.");
         }
         return next;
     }
@@ -116,11 +117,11 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
             {
                 return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(getCurrentState()));
             }
-            catch (final Exception ignored)
+            catch (final Throwable ignored)
             {
                 // Probably an illegal siteswap. Just return the next one we find.
-                LOG.trace("get(): state {} illegal, {}", stateStack, ignored);
-                LOG.trace("Stack Trace", ignored);
+                LOG.debug("SiteswapConstructor {} rejected {}. {}. See stack trace at trace level.", siteswapConstructor, stateStack, ignored);
+                LOG.trace("Stack Trace: ", ignored);
             }
         }
     }

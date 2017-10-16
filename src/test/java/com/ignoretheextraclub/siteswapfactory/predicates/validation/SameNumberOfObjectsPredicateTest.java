@@ -1,10 +1,11 @@
-package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
+package com.ignoretheextraclub.siteswapfactory.predicates.validation;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.predicates.validation.SameNumberOfObjectsPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.*;

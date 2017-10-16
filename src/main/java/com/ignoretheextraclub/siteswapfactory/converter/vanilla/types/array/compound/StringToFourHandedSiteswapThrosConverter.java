@@ -1,11 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound;
 
+import java.util.function.Function;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToFourHandedSiteswapThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-
-import java.util.function.Function;
 
 /**
  * Converts a string of numbers to an array of FourHandedSiteswapThros
@@ -42,6 +44,11 @@ public class StringToFourHandedSiteswapThrosConverter implements Function<String
     @Override
     public FourHandedSiteswapThro[] apply(final String siteswap)
     {
+        if (StringUtils.isEmpty(siteswap))
+        {
+            throw new IllegalArgumentException("siteswap cannot be null or empty");
+        }
+
         try
         {
             return convertToInts().andThen(convertToFourHandedSiteswapThros()).apply(siteswap);

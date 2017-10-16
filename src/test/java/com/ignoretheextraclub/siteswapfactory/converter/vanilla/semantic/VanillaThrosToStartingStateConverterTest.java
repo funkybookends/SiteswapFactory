@@ -64,7 +64,7 @@ public class VanillaThrosToStartingStateConverterTest
             new Object[]{thros(get(3), get(4), get(3)), new InvalidSiteswapException("[3, 4, 3]")},
             new Object[]{thros(get(3), get(4), get(3)), new InvalidSiteswapException("average")},
             new Object[]{null, new NullPointerException("thros cannot be null")},
+            new Object[]{new VanillaThro[]{}, new IllegalArgumentException("thros")},
         };
-        // TODO add more
     }
 }

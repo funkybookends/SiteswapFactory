@@ -1,13 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Converts a set of states to the throws that join them, enforcing that the last throw returns to the first state.
@@ -46,6 +46,7 @@ public class StatesToThrosConverter implements Function<State[], Thro[]>
     public Thro[] apply(final State[] states)
     {
         Objects.requireNonNull(states, "states cannot be null");
+
         if (states.length == 0)
         {
             throw new IllegalArgumentException("No states");

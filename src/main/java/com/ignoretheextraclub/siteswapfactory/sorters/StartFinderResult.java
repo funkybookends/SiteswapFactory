@@ -55,6 +55,6 @@ public interface StartFinderResult
                     sorted) + " and " + Arrays.toString(unsorted) + " do not match");
         }
 
-        return ArrayUtils.getCopy(unsorted, getWinningIndex());
+        return ArrayUtils.getRotatedCopy(unsorted, getWinningIndex());
     }
 }

@@ -46,18 +46,6 @@ public class VanillaSiteswap implements Siteswap
     }
 
     @Override
-    public int getNumObjects()
-    {
-        return getStates()[0].getNumObjects();
-    }
-
-    @Override
-    public int getPeriod()
-    {
-        return getStates().length;
-    }
-
-    @Override
     public VanillaThro[] getThrows()
     {
         return StatesToThrosConverter.get().andThen(ThrosToVanillaThrosConverter.get()).apply(getStates());
@@ -70,7 +58,15 @@ public class VanillaSiteswap implements Siteswap
         {
             return getThrows();
         }
-        throw new IndexOutOfBoundsException("There is only 1 juggler. Juggler 0");
+
+        if (getNumJugglers() == 1)
+        {
+            throw new IndexOutOfBoundsException("There is only 1 juggler. Juggler 0");
+        }
+        else
+        {
+            throw new IndexOutOfBoundsException("There are only " + getNumJugglers() + " jugglers, 0 indexed");
+        }
     }
 
     @Override

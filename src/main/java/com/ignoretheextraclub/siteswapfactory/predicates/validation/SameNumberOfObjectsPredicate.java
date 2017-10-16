@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
+package com.ignoretheextraclub.siteswapfactory.predicates.validation;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 

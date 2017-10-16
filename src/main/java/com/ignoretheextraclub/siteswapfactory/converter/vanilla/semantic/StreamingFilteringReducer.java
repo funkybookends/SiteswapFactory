@@ -16,20 +16,20 @@ import java.util.stream.IntStream;
  * @author Caspar Nonclercq
  * @see IntReducer A primitive int version
  */
-public class SimpleReducer implements Reducer
+public class StreamingFilteringReducer implements Reducer
 {
-    public static SimpleReducer INSTANCE;
+    public static StreamingFilteringReducer INSTANCE;
 
-    private SimpleReducer()
+    private StreamingFilteringReducer()
     {
         // Singleton
     }
 
-    public static SimpleReducer get()
+    public static StreamingFilteringReducer get()
     {
         if (INSTANCE == null)
         {
-            INSTANCE = new SimpleReducer();
+            INSTANCE = new StreamingFilteringReducer();
         }
         return INSTANCE;
     }

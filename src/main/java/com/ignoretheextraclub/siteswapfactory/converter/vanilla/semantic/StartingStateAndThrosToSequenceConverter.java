@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
@@ -40,6 +41,9 @@ public class StartingStateAndThrosToSequenceConverter implements BiFunction<Stat
     @Override
     public State[] apply(final State startingState, final Thro[] thros)
     {
+        Objects.requireNonNull(startingState, "startingState cannot be null");
+        Objects.requireNonNull(thros, "thros cannot be null");
+
         final State[] states = new State[thros.length + 1];
 
         states[0] = startingState;

@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.SimpleReducer;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.sorters.StartFinder;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.StreamingMappingReducingStartFinder;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
@@ -21,7 +21,7 @@ public class SiteswapRequest
     /**
      * The default {@link Reducer} to use if reducing is requested, but no {@code Reducer} is provided.
      */
-    private static final Reducer DEFAULT_REDUCER = SimpleReducer.get();
+    private static final Reducer DEFAULT_REDUCER = StreamingFilteringReducer.get();
 
     /**
      * The default {@link StartFinder} to use if a {@link StartingStrategy} is supplied, but no {@code StartFinder} is supplied.

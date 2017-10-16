@@ -3,12 +3,22 @@ package com.ignoretheextraclub.siteswapfactory.utils;
 import java.lang.reflect.Array;
 
 /**
- Created by caspar on 25/07/17.
+ * Utility methods for array operations
+ *
+ * @author Caspar Nonclercq
  */
 public final class ArrayUtils
 {
-    private ArrayUtils(){}
+    private ArrayUtils()
+    {
+    }
 
+    /**
+     * Creates a new array that matches the input.
+     *
+     * @param positions the input
+     * @return A copy of the input
+     */
     public static boolean[] copy(final boolean[] positions)
     {
         boolean[] copy = new boolean[positions.length];
@@ -16,6 +26,13 @@ public final class ArrayUtils
         return copy;
     }
 
+    /**
+     * Creates a new array where all the positions have been shifted left, and the topmost place has been filled with the {@code highestState}
+     *
+     * @param filledPositions the original array
+     * @param highestState    the new topmost position
+     * @return a copy bitshifted
+     */
     public static boolean[] drop(final boolean[] filledPositions, final boolean highestState)
     {
         final int maxThrow = filledPositions.length;
@@ -25,8 +42,16 @@ public final class ArrayUtils
         return next;
     }
 
+    /**
+     * Creates a copt of the input array rotated such that the {@code start} is at the {@code start} position
+     *
+     * @param src   The input array
+     * @param start The new 0th position
+     * @param <T>   The type
+     * @return A copy that has been rotated
+     */
     @SuppressWarnings("unchecked")
-    public static <T> T[] getCopy(final T[] src, final int start)
+    public static <T> T[] getRotatedCopy(final T[] src, final int start)
     {
         final T[] dest = (T[]) Array.newInstance(src.getClass().getComponentType(), src.length);
         System.arraycopy(src, start, dest, 0, src.length - start);

@@ -1,12 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX__;
@@ -36,12 +38,12 @@ public class StatesToSequenceConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{states(XXX__, XX_X_), thros(get(4))},
-                new Object[]{states(XXX__, XX_X_, XXX__), thros(get(4), get(2))},
-                new Object[]{states(XXX__, XX_X_, XXX__, XXX__), thros(get(4), get(2), get(3))},
-                new Object[]{states(XXXX__, XXXX__), thros(get(4))},
-                new Object[]{states(XXXX__, XXX_X_), thros(get(5))},
-                };
+            new Object[]{states(XXX__, XX_X_), thros(get(4))},
+            new Object[]{states(XXX__, XX_X_, XXX__), thros(get(4), get(2))},
+            new Object[]{states(XXX__, XX_X_, XXX__, XXX__), thros(get(4), get(2), get(3))},
+            new Object[]{states(XXXX__, XXXX__), thros(get(4))},
+            new Object[]{states(XXXX__, XXX_X_), thros(get(5))},
+        };
         // TODO add more
     }
 
@@ -51,18 +53,17 @@ public class StatesToSequenceConverterTest
                               final Exception exception) throws Exception
     {
         assertThatThrownBy(() -> StatesToSequenceConverter.getSequence(startingState))
-                .isInstanceOf(exception.getClass())
-                .hasMessageContaining(exception.getMessage());
+            .isInstanceOf(exception.getClass())
+            .hasMessageContaining(exception.getMessage());
     }
 
     private Object parametersForTestException()
     {
         return new Object[]{
-                new Object[]{states(XXX__), new IllegalArgumentException("Need at least 2 states")},
-                new Object[]{states(XXX__, XXXX_), new InvalidSiteswapException("XXX__, XXXX_")},
-                new Object[]{null, new NullPointerException("states")},
-                new Object[]{new State[]{}, new IllegalArgumentException("states")},
+            new Object[]{states(XXX__), new IllegalArgumentException("Need at least 2 states")},
+            new Object[]{states(XXX__, XXXX_), new InvalidSiteswapException("XXX__, XXXX_")},
+            new Object[]{null, new NullPointerException("states")},
+            new Object[]{new State[]{}, new IllegalArgumentException("states")},
         };
-        // TODO add more
     }
 }

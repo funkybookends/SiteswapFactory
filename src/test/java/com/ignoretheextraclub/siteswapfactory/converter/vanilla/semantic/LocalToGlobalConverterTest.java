@@ -1,11 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
@@ -33,11 +35,11 @@ public class LocalToGlobalConverterTest
     private Object parametersForTestApply()
     {
         return new Object[]{
-                new Object[]{thros(_7), thros(_7)},
-                new Object[]{thros(_9, _5, _7), thros(_9, _7, _5)},
-                new Object[]{thros(_7, _9, _6, _8, _10), thros(_7, _8, _9, _10, _6)},
-                new Object[]{thros(_7, _6, _6, _6, _8, _8, _8), thros(_7, _8, _6, _8, _6, _8, _6)},
-                };
+            new Object[]{thros(_7), thros(_7)},
+            new Object[]{thros(_9, _5, _7), thros(_9, _7, _5)},
+            new Object[]{thros(_7, _9, _6, _8, _10), thros(_7, _8, _9, _10, _6)},
+            new Object[]{thros(_7, _6, _6, _6, _8, _8, _8), thros(_7, _8, _6, _8, _6, _8, _6)},
+        };
     }
 
     @Test
@@ -51,11 +53,11 @@ public class LocalToGlobalConverterTest
     private Object parametersForTestApplyInt()
     {
         return new Object[]{
-                new Object[]{StateTestUtils.thros(7), StateTestUtils.thros(7)},
-                new Object[]{StateTestUtils.thros(9, 5, 7), StateTestUtils.thros(9, 7, 5)},
-                new Object[]{StateTestUtils.thros(7, 9, 6, 8, 10), StateTestUtils.thros(7, 8, 9, 10, 6)},
-                new Object[]{StateTestUtils.thros(7, 6, 6, 6, 8, 8, 8), StateTestUtils.thros(7, 8, 6, 8, 6, 8, 6)},
-                };
+            new Object[]{StateTestUtils.thros(7), StateTestUtils.thros(7)},
+            new Object[]{StateTestUtils.thros(9, 5, 7), StateTestUtils.thros(9, 7, 5)},
+            new Object[]{StateTestUtils.thros(7, 9, 6, 8, 10), StateTestUtils.thros(7, 8, 9, 10, 6)},
+            new Object[]{StateTestUtils.thros(7, 6, 6, 6, 8, 8, 8), StateTestUtils.thros(7, 8, 6, 8, 6, 8, 6)},
+        };
     }
 
     @Test
@@ -63,16 +65,16 @@ public class LocalToGlobalConverterTest
     public void testException(final VanillaThro[] input, final Exception exception) throws Exception
     {
         assertThatThrownBy(() -> LocalToGlobalConverter.convertToGlobal(input)).isInstanceOf(exception.getClass())
-                                                                               .hasMessageContaining(exception.getMessage());
+            .hasMessageContaining(exception.getMessage());
     }
 
     private Object parametersForTestException()
     {
         return new Object[]{
-                new Object[]{thros(_6, _7), new IllegalArgumentException("local must have odd length")},
-                new Object[]{thros(_6, _7, _8, _9), new IllegalArgumentException("local must have odd length")},
-                new Object[]{null, new NullPointerException("local")},
-                new Object[]{new VanillaThro[]{}, new IllegalArgumentException("local")},
+            new Object[]{thros(_6, _7), new IllegalArgumentException("local must have odd length")},
+            new Object[]{thros(_6, _7, _8, _9), new IllegalArgumentException("local must have odd length")},
+            new Object[]{null, new NullPointerException("local")},
+            new Object[]{new VanillaThro[]{}, new IllegalArgumentException("local")},
         };
     }
 
@@ -80,17 +82,18 @@ public class LocalToGlobalConverterTest
     @Parameters
     public void testExceptionInt(final int[] input, final Exception exception) throws Exception
     {
-        assertThatThrownBy(() -> LocalToGlobalConverter.convertToGlobal(input)).isInstanceOf(exception.getClass())
-                                                                               .hasMessageContaining(exception.getMessage());
+        assertThatThrownBy(() -> LocalToGlobalConverter.convertToGlobal(input))
+            .isInstanceOf(exception.getClass())
+            .hasMessageContaining(exception.getMessage());
     }
 
     private Object parametersForTestExceptionInt()
     {
         return new Object[]{
-                new Object[]{StateTestUtils.thros(6, 7), new IllegalArgumentException("local must have odd length")},
-                new Object[]{StateTestUtils.thros(6, 7, 8, 9), new IllegalArgumentException("local must have odd length")},
-                new Object[]{null, new NullPointerException("local")},
-                new Object[]{new int[]{}, new IllegalArgumentException("local")},
+            new Object[]{StateTestUtils.thros(6, 7), new IllegalArgumentException("local must have odd length")},
+            new Object[]{StateTestUtils.thros(6, 7, 8, 9), new IllegalArgumentException("local must have odd length")},
+            new Object[]{null, new NullPointerException("local")},
+            new Object[]{new int[]{}, new IllegalArgumentException("local")},
         };
     }
 }

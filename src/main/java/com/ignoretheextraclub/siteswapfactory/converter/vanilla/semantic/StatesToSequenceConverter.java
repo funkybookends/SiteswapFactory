@@ -1,13 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Converts an array of states to an array of throws that are used to transition between them. The resulting array will
@@ -45,6 +45,7 @@ public class StatesToSequenceConverter implements Function<State[], Thro[]>
     public Thro[] apply(final State[] states)
     {
         Objects.requireNonNull(states, "states cannot be null");
+
         if (states.length < 2)
         {
             throw new IllegalArgumentException("Need at least 2 states");

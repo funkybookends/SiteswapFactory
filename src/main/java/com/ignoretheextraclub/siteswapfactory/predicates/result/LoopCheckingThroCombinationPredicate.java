@@ -62,6 +62,32 @@ public class LoopCheckingThroCombinationPredicate extends ThroCombinationPredica
         return predicate;
     }
 
+    /**
+     * Returns a predicate than bans all of these single throws.
+     *
+     * @param thros the throws to ban. Not a combination, but all individually.
+     * @return a predicate.
+     */
+    public static Predicate<State[]> banAllSingleThros(final Thro... thros)
+    {
+        if (thros.length == 0)
+        {
+            throw new IllegalArgumentException("No thros provided");
+        }
+
+        Predicate<State[]> predicate = new LoopCheckingThroCombinationPredicate(thros[0]).negate();
+
+        if (thros.length > 1)
+        {
+            for (int i = 1; i < thros.length; i++)
+            {
+                predicate = predicate.and(new LoopCheckingThroCombinationPredicate(thros[i]).negate());
+            }
+        }
+
+        return predicate;
+    }
+
     @Override
     public String toString()
     {

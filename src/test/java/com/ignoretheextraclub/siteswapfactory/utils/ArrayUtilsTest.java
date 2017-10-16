@@ -4,6 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
@@ -29,15 +30,21 @@ public class ArrayUtilsTest
     @Test
     public void drop() throws Exception
     {
-        softly.assertThat(ArrayUtils.drop(new boolean[]{true, false, true, true, false}, true)).isEqualTo(new boolean[]{false, true, true, false, true});
+        softly.assertThat(ArrayUtils.drop(new boolean[]{true, false, true, true, false}, true))
+            .isEqualTo(new boolean[]{false, true, true, false, true});
     }
 
     @Test
     public void getCopy() throws Exception
     {
-        softly.assertThat(ArrayUtils.getCopy(StateTestUtils.states(XXX__, XX_X_, XXX__), 1))
+        softly.assertThat(ArrayUtils.getRotatedCopy(StateTestUtils.states(XXX__, XX_X_, XXX__), 1))
               .isEqualTo(StateTestUtils.states(XX_X_, XXX__, XXX__));
     }
 
-
+    @Test
+    public void getRotation() throws Exception
+    {
+        softly.assertThat(ArrayUtils.getRotatedCopy(new State[]{XXX__, XX_X_}, 1)).isEqualTo(new State[]{XX_X_, XXX__});
+        // todo add more
+    }
 }

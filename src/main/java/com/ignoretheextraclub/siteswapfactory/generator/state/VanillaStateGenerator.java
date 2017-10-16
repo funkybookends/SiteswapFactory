@@ -1,22 +1,27 @@
 package com.ignoretheextraclub.siteswapfactory.generator.state;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import org.apache.commons.collections4.iterators.PermutationIterator;
-
 import java.util.ArrayList;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.collections4.iterators.PermutationIterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
+import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+
 /**
  * Created by caspar on 14/09/17.
  */
 public class VanillaStateGenerator
 {
+    private static final Logger LOG = LoggerFactory.getLogger(VanillaStateGenerator.class);
+
     public static State getGroundState(final int numObjects,
                                        final int maxThrow) throws PeriodException, NumObjectsException
     {
@@ -38,6 +43,7 @@ public class VanillaStateGenerator
         {
             throw new IllegalArgumentException("maxThrow must not be less than numObjects");
         }
+
         final ArrayList<Boolean> groundState = new ArrayList<>();
 
         for (int i = 0; i < maxThro; i++)
@@ -66,6 +72,6 @@ public class VanillaStateGenerator
                                 {
                                     throw new IllegalArgumentException("Cannot create states", cause);
                                 }
-                            }).distinct(); // TODO improve - currently each combination multiple times.
+                            }).distinct(); // TODO improve - currently each combination multiple times - cannot be a recursive solution though.
     }
 }

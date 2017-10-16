@@ -2,10 +2,11 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.com
 
 import java.util.function.Function;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
@@ -41,13 +42,17 @@ public class StringToVanillaThrosConverter implements Function<String, VanillaTh
     @Override
     public VanillaThro[] apply(final String siteswap)
     {
+        if (StringUtils.isEmpty(siteswap))
+        {
+            throw new IllegalArgumentException("siteswap cannot be null or empty");
+        }
         try
         {
             return convertToInts().andThen(convertToVanillaThros()).apply(siteswap);
         }
         catch (final BadThrowException cause)
         {
-            throw new InvalidSiteswapException("String [" + siteswap + "] contained a bad throw", cause);
+            throw new BadThrowException("String [" + siteswap + "] contained a bad throw", cause);
         }
     }
 

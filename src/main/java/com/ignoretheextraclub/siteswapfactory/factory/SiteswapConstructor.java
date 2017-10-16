@@ -25,6 +25,9 @@ public interface SiteswapConstructor<T extends Siteswap> extends Function<Sitesw
     /**
      * Returns true if this constructor can construct using the given type.
      *
+     * Implementors should not inspect the object prematurely, as they may be passed a dummy version
+     * for sorting or validation purposes.
+     *
      * @param object The type in the {@link SiteswapRequest}
      * @return If a siteswap could be constructed using this type.
      */

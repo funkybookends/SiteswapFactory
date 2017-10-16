@@ -44,6 +44,8 @@ public final class SiteswapFactory
      */
     private final SiteswapRequestBuilder siteswapRequestBuilder;
 
+    // region Constructors
+
     /**
      * Takes a list of constructors to use with the default configuration for building those {@link Siteswap}s.
      *
@@ -69,6 +71,41 @@ public final class SiteswapFactory
         this.siteswapRequestBuilder = siteswapRequestBuilder;
     }
 
+    // endregion
+
+    // region Public Methods
+
+    /**
+     * Gets the first siteswap that a constructor from {@link SiteswapFactory#constructors} could construct.
+     *
+     * @param siteswapRequest The siteswapRequest to construct the siteswap with.
+     * @return A siteswap
+     * @throws InvalidSiteswapException If no constructor available could construct a siteswap.
+     */
+    public Siteswap getOne(final SiteswapRequest siteswapRequest) throws InvalidSiteswapException
+    {
+        final InvalidSiteswapException invalidSiteswapException = new InvalidSiteswapException(
+            "Could not find a suitable constructor for siteswap request constructing: " + siteswapRequest.getConstructor().toString());
+
+        return getSiteswapStream(siteswapRequest, invalidSiteswapException)
+            .findFirst()
+            .orElseThrow(() -> invalidSiteswapException);
+    }
+
+    /**
+     * Gets all the {@link Siteswap}s, in the same order as the {@link SiteswapFactory#constructors} could construct.
+     * If a constructor could not construct a siteswap, it will have no entry in the list, hence the list could
+     * be shorter than the {@link SiteswapFactory#constructors} list, or empty.
+     *
+     * @param siteswapRequest The siteswapRequest to construct the siteswap with.
+     * @return A modifiable list of {@link Siteswap}s.
+     */
+    public List<Siteswap> getAll(final SiteswapRequest siteswapRequest)
+    {
+        return getSiteswapStream(siteswapRequest, null)
+            .collect(Collectors.toList());
+    }
+
     /**
      * Gets the first siteswap that a constructor from {@link SiteswapFactory#constructors} could construct.
      *
@@ -78,12 +115,7 @@ public final class SiteswapFactory
      */
     public Siteswap getOne(final Object siteswap) throws InvalidSiteswapException
     {
-        final InvalidSiteswapException invalidSiteswapException = new InvalidSiteswapException(
-            "Could not find a suitable constructor for siteswap request");
-
-        return getSiteswapStream(siteswap, invalidSiteswapException)
-            .findFirst()
-            .orElseThrow(() -> invalidSiteswapException);
+        return getOne(siteswapRequestBuilder.createSiteswapRequest(siteswap));
     }
 
     /**
@@ -96,29 +128,22 @@ public final class SiteswapFactory
      */
     public List<Siteswap> getAll(final Object siteswap)
     {
-        return getSiteswapStream(siteswap, null)
-            .collect(Collectors.toList());
+        return getAll(siteswapRequestBuilder.createSiteswapRequest(siteswap));
     }
+
+    // endregion
+
+    // region Private Methods
 
     /**
      * Returns a stream of {@link Siteswap} using the
      *
-     * @param siteswap                 The constructor
+     * @param siteswapRequest          The siteswapRequest
      * @param invalidSiteswapException A nullable exception to populate.
      * @return A stream of siteswaps.
      */
-    private Stream<Siteswap> getSiteswapStream(final Object siteswap, final InvalidSiteswapException invalidSiteswapException)
+    private Stream<Siteswap> getSiteswapStream(final SiteswapRequest siteswapRequest, final InvalidSiteswapException invalidSiteswapException)
     {
-        final SiteswapRequest siteswapRequest;
-        if (SiteswapRequest.class.isInstance(siteswap))
-        {
-            siteswapRequest = SiteswapRequest.class.cast(siteswap);
-        }
-        else
-        {
-            siteswapRequest = siteswapRequestBuilder.createSiteswapRequest(siteswap);
-        }
-
         return this.constructors.stream()
             .filter(siteswapConstructor -> siteswapConstructor.accepts(siteswapRequest.getConstructor()))
             .map(toSiteswapOrNull(siteswapRequest, invalidSiteswapException))
@@ -159,6 +184,8 @@ public final class SiteswapFactory
         };
     }
 
+    // endregion
+
     // region TwoHandedSiteswap
 
     /**
@@ -170,6 +197,12 @@ public final class SiteswapFactory
     );
 
     public static TwoHandedSiteswap getTwoHandedSiteswap(final Object siteswap)
+    {
+        final SiteswapFactory siteswapFactory = new SiteswapFactory(TWO_HANDED_SITESWAP_CONSTRUCTORS);
+        return (TwoHandedSiteswap) siteswapFactory.getOne(siteswap);
+    }
+
+    public static TwoHandedSiteswap getTwoHandedSiteswap(final SiteswapRequest siteswap)
     {
         final SiteswapFactory siteswapFactory = new SiteswapFactory(TWO_HANDED_SITESWAP_CONSTRUCTORS);
         return (TwoHandedSiteswap) siteswapFactory.getOne(siteswap);
@@ -188,6 +221,12 @@ public final class SiteswapFactory
     );
 
     public static FourHandedSiteswap getFourHandedSiteswap(final Object siteswap)
+    {
+        final SiteswapFactory siteswapFactory = new SiteswapFactory(FOUR_HANDED_SITESWAP_CONSTRUCTORS);
+        return (FourHandedSiteswap) siteswapFactory.getOne(siteswap);
+    }
+
+    public static FourHandedSiteswap getFourHandedSiteswap(final SiteswapRequest siteswap)
     {
         final SiteswapFactory siteswapFactory = new SiteswapFactory(FOUR_HANDED_SITESWAP_CONSTRUCTORS);
         return (FourHandedSiteswap) siteswapFactory.getOne(siteswap);

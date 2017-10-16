@@ -3,7 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.factory;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.SimpleReducer;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.sorters.StartFinder;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.StreamingMappingReducingStartFinder;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
@@ -44,7 +44,7 @@ public class SiteswapRequestTest
         final SiteswapRequest siteswapRequest = new SiteswapRequest(constructor, true, null, startFinder, startingStrategy);
 
         assertThat(siteswapRequest.getConstructor()).isSameAs(constructor);
-        assertThat(siteswapRequest.getReducer()).contains(SimpleReducer.get());
+        assertThat(siteswapRequest.getReducer()).contains(StreamingFilteringReducer.get());
         assertThat(siteswapRequest.getStartFinder()).containsSame(startFinder);
         assertThat(siteswapRequest.getStartingStrategy()).isSameAs(startingStrategy);
     }

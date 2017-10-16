@@ -1,10 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
-import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -12,10 +12,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
+import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
@@ -37,12 +38,12 @@ public class VanillaStateTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(VanillaStateTest.class);
 
-    private static final VanillaThro ZERO = VanillaThro.get(0);
-    private static final VanillaThro ONE = VanillaThro.get(1);
-    private static final VanillaThro TWO = VanillaThro.get(2);
-    private static final VanillaThro THREE = VanillaThro.get(3);
-    private static final VanillaThro FOUR = VanillaThro.get(4);
-    private static final VanillaThro FIVE = VanillaThro.get(5);
+    private static final VanillaThro _0 = VanillaThro.get(0);
+    private static final VanillaThro _1 = VanillaThro.get(1);
+    private static final VanillaThro _2 = VanillaThro.get(2);
+    private static final VanillaThro _3 = VanillaThro.get(3);
+    private static final VanillaThro _4 = VanillaThro.get(4);
+    private static final VanillaThro _5 = VanillaThro.get(5);
 
     @Rule public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
@@ -58,13 +59,13 @@ public class VanillaStateTest
     {
         Set<Thro> availableThrows = XXX__.getAvailableThrows();
         softly.assertThat(availableThrows.size()).isEqualTo(3);
-        softly.assertThat(availableThrows.contains(THREE)).isTrue();
-        softly.assertThat(availableThrows.contains(FOUR)).isTrue();
-        softly.assertThat(availableThrows.contains(FIVE)).isTrue();
+        softly.assertThat(availableThrows.contains(_3)).isTrue();
+        softly.assertThat(availableThrows.contains(_4)).isTrue();
+        softly.assertThat(availableThrows.contains(_5)).isTrue();
 
         Set<Thro> availableThrows1 = _XXX_.getAvailableThrows();
         softly.assertThat(availableThrows1.size()).isEqualTo(1);
-        softly.assertThat(availableThrows1.contains(ZERO)).isTrue();
+        softly.assertThat(availableThrows1.contains(_0)).isTrue();
     }
 
     @Test
@@ -91,8 +92,8 @@ public class VanillaStateTest
     @Test
     public void getThrow() throws Exception
     {
-        softly.assertThat(_XXX_.getThrow(XXX__)).isEqualTo(ZERO);
-        softly.assertThat(XXX__.getThrow(XXX__)).isEqualTo(THREE);
+        softly.assertThat(_XXX_.getThrow(XXX__)).isEqualTo(_0);
+        softly.assertThat(XXX__.getThrow(XXX__)).isEqualTo(_3);
     }
 
     @Test
@@ -130,8 +131,8 @@ public class VanillaStateTest
     @Test
     public void thro() throws Exception
     {
-        softly.assertThat(_XXX_.thro(ZERO)).isEqualTo(XXX__);
-        softly.assertThat(XXX__.thro(THREE)).isEqualTo(XXX__);
+        softly.assertThat(_XXX_.thro(_0)).isEqualTo(XXX__);
+        softly.assertThat(XXX__.thro(_3)).isEqualTo(XXX__);
     }
 
     @Test
@@ -162,10 +163,10 @@ public class VanillaStateTest
     @Test
     public void getFirstStateTest() throws Exception
     {
-        VanillaState firstState = VanillaThrosToStartingStateConverter.get().apply(new VanillaThro[]{THREE});
+        VanillaState firstState = VanillaThrosToStartingStateConverter.get().apply(new VanillaThro[]{_3});
         Assert.assertEquals(state(true, true, true), firstState);
 
-        VanillaState firstState1 = VanillaThrosToStartingStateConverter.get().apply(new VanillaThro[]{FIVE, THREE, ONE});
+        VanillaState firstState1 = VanillaThrosToStartingStateConverter.get().apply(new VanillaThro[]{_5, _3, _1});
         Assert.assertEquals(XXX__, firstState1);
     }
 

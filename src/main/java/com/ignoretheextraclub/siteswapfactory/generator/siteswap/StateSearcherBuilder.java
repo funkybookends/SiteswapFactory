@@ -92,7 +92,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      * @param intermediatePredicate a new intermediate predicate
      * @return this
      */
-    public StateSearcherBuilder<T> addIntermediatePredicate(final Predicate<State[]> intermediatePredicate)
+    public StateSearcherBuilder<T> andIntermediatePredicate(final Predicate<State[]> intermediatePredicate)
     {
         this.intermediatePredicate = this.intermediatePredicate.and(intermediatePredicate);
         return this;
