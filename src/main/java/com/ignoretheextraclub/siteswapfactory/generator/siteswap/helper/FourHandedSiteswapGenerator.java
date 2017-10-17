@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.generator.siteswap.premade;
+package com.ignoretheextraclub.siteswapfactory.generator.siteswap.helper;
 
 import java.util.Set;
 import java.util.function.Predicate;

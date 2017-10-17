@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.generator.siteswap.premade;
+package com.ignoretheextraclub.siteswapfactory.generator.siteswap.helper;
 
 import java.util.function.Predicate;
 
@@ -9,16 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerator;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by caspar on 09/10/17.
  */
-public class TwoHandedSiteswapGeneratorTest
-{ 
-    private static final Logger LOG = LoggerFactory.getLogger(TwoHandedSiteswapGeneratorTest.class);
+public class FourHandedSiteswapGeneratorTest
+{
+    private static final Logger LOG = LoggerFactory.getLogger(FourHandedSiteswapGeneratorTest.class);
 
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
@@ -29,13 +29,13 @@ public class TwoHandedSiteswapGeneratorTest
         final int numObjects = 5;
         final int maxPeriod = 3;
         final int maxThro = 9;
-        final SiteswapGenerator<TwoHandedSiteswap> ground = TwoHandedSiteswapGenerator.ground(numObjects, maxThro, maxPeriod);
+        final SiteswapGenerator<FourHandedSiteswap> ground = FourHandedSiteswapGenerator.ground(numObjects, maxThro, maxPeriod);
 
-        Predicate<TwoHandedSiteswap> test = numObjectsEquals(numObjects)
+        Predicate<FourHandedSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly())
             .and(isGrounded())
-            .and(twoHandedSiteswap -> twoHandedSiteswap.getHighestThro().getNumBeats() < 9);
+            .and(fourHandedSiteswap -> fourHandedSiteswap.getHighestThro().getNumBeats() < 9);
 
         assertThat(ground.generate().allMatch(test)).isTrue();
     }
@@ -46,9 +46,9 @@ public class TwoHandedSiteswapGeneratorTest
         final int numObjects = 5;
         final int maxPeriod = 3;
         final int maxThro = 9;
-        final SiteswapGenerator<TwoHandedSiteswap> excited = TwoHandedSiteswapGenerator.excited(numObjects, maxThro, maxPeriod);
+        final SiteswapGenerator<FourHandedSiteswap> excited = FourHandedSiteswapGenerator.excited(numObjects, maxThro, maxPeriod);
 
-        Predicate<TwoHandedSiteswap> test = numObjectsEquals(numObjects)
+        Predicate<FourHandedSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly())
             .and(isNotGrounded())
@@ -63,9 +63,9 @@ public class TwoHandedSiteswapGeneratorTest
         final int numObjects = 5;
         final int maxPeriod = 3;
         final int maxThro = 9;
-        final SiteswapGenerator<TwoHandedSiteswap> all = TwoHandedSiteswapGenerator.all(numObjects, maxThro, maxPeriod);
+        final SiteswapGenerator<FourHandedSiteswap> all = FourHandedSiteswapGenerator.all(numObjects, maxThro, maxPeriod);
 
-        Predicate<TwoHandedSiteswap> test = numObjectsEquals(numObjects)
+        Predicate<FourHandedSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly())
             .and(highestThroLessThanOrEqualTo(maxThro));
@@ -76,109 +76,109 @@ public class TwoHandedSiteswapGeneratorTest
     @Test
     public void WHEN_maxThroLessThanNumObjects_EXPECT_exception() throws Exception
     {
-        softly.assertThatThrownBy(() -> TwoHandedSiteswapGenerator.all(5, 4, 8))
+        softly.assertThatThrownBy(() -> FourHandedSiteswapGenerator.all(5, 4, 8))
             .isInstanceOf(IllegalArgumentException.class);
 
-        softly.assertThatThrownBy(() -> TwoHandedSiteswapGenerator.ground(5, 4, 8))
+        softly.assertThatThrownBy(() -> FourHandedSiteswapGenerator.ground(5, 4, 8))
             .isInstanceOf(IllegalArgumentException.class);
 
-        softly.assertThatThrownBy(() -> TwoHandedSiteswapGenerator.excited(5, 4, 8))
+        softly.assertThatThrownBy(() -> FourHandedSiteswapGenerator.excited(5, 4, 8))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     // TODO add more
 
-    private Predicate<TwoHandedSiteswap> isNotGrounded()
+    private Predicate<FourHandedSiteswap> isNotGrounded()
     {
-        return twoHandedSiteswap ->
+        return fourHandedSiteswap ->
         {
-            if (!twoHandedSiteswap.isGrounded())
+            if (!fourHandedSiteswap.isGrounded())
             {
                 return true;
             }
             else
             {
-                LOG.warn("{} failed isNotGrounded", twoHandedSiteswap);
+                LOG.warn("{} failed isNotGrounded", fourHandedSiteswap);
                 return false;
             }
         };
     }
 
-    private Predicate<TwoHandedSiteswap> periodLessThan(final int maxPeriod)
+    private Predicate<FourHandedSiteswap> periodLessThan(final int maxPeriod)
     {
-        return twoHandedSiteswap ->
+        return fourHandedSiteswap ->
         {
-            if (twoHandedSiteswap.getPeriod() <= maxPeriod)
+            if (fourHandedSiteswap.getPeriod() <= maxPeriod)
             {
                 return true;
             }
             else
             {
-                LOG.warn("{} failed periodLessThan", twoHandedSiteswap);
+                LOG.warn("{} failed periodLessThan", fourHandedSiteswap);
                 return false;
             }
         };
     }
 
-    private Predicate<TwoHandedSiteswap> isGrounded()
+    private Predicate<FourHandedSiteswap> isGrounded()
     {
-        return (twoHandedSiteswap) ->
+        return (fourHandedSiteswap) ->
         {
-            if (twoHandedSiteswap.isGrounded())
+            if (fourHandedSiteswap.isGrounded())
             {
                 return true;
             }
             else
             {
-                LOG.warn("{} failed isGrounded", twoHandedSiteswap);
+                LOG.warn("{} failed isGrounded", fourHandedSiteswap);
                 return false;
             }
         };
     }
 
-    private Predicate<TwoHandedSiteswap> highestThroLessThanOrEqualTo(final int maxThro)
+    private Predicate<FourHandedSiteswap> highestThroLessThanOrEqualTo(final int maxThro)
     {
-        return twoHandedSiteswap ->
+        return fourHandedSiteswap ->
         {
-            if (twoHandedSiteswap.getHighestThro().getNumBeats() <= maxThro)
+            if (fourHandedSiteswap.getHighestThro().getNumBeats() <= maxThro)
             {
                 return true;
             }
             else
             {
-                LOG.warn("{} failed highestThroLessThanOrEqualTo", twoHandedSiteswap);
+                LOG.warn("{} failed highestThroLessThanOrEqualTo", fourHandedSiteswap);
                 return false;
             }
         };
     }
 
-    private Predicate<TwoHandedSiteswap> classIsExactly()
+    private Predicate<FourHandedSiteswap> classIsExactly()
     {
-        return twoHandedSiteswap ->
+        return fourHandedSiteswap ->
         {
-            if (twoHandedSiteswap.getClass() == TwoHandedSiteswap.class)
+            if (fourHandedSiteswap.getClass() == FourHandedSiteswap.class)
             {
                 return true;
             }
             else
             {
-                LOG.warn("{} failed classIsExactly", twoHandedSiteswap);
+                LOG.warn("{} failed classIsExactly", fourHandedSiteswap);
                 return false;
             }
         };
     }
 
-    private Predicate<TwoHandedSiteswap> numObjectsEquals(final int numObjects)
+    private Predicate<FourHandedSiteswap> numObjectsEquals(final int numObjects)
     {
-        return twoHandedSiteswap ->
+        return fourHandedSiteswap ->
         {
-            if (twoHandedSiteswap.getNumObjects() == numObjects)
+            if (fourHandedSiteswap.getNumObjects() == numObjects)
             {
                 return true;
             }
             else
             {
-                LOG.warn("{} failed numObjectsEquals", twoHandedSiteswap);
+                LOG.warn("{} failed numObjectsEquals", fourHandedSiteswap);
                 return false;
             }
         };
