@@ -375,6 +375,7 @@ public class VanillaState implements State
     @Override
     public int compareTo(final Object o)
     {
-        throw new UnsupportedOperationException("This method has not been implemented yet"); // TODO implement
+        final VanillaState other = (VanillaState) o;
+        return Integer.valueOf(this.excitedness()).compareTo(other.excitedness());
     }
 }

@@ -5,16 +5,8 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 /**
- * Returns the shortest repeating unit that when repeated n times would return the input array.
- * <p>
- * <pre>
- *     [A, B, C, A, B, C, A, B, C] -> [A, B, C]
- *     [A, B]                      -> [A, B]
- * </pre> // TODO move doc up to interface
- *
- *
+ * A streaming reducer.
  * @author Caspar Nonclercq
- * @see IntReducer A primitive int version
  */
 public class StreamingFilteringReducer implements Reducer
 {
@@ -34,18 +26,6 @@ public class StreamingFilteringReducer implements Reducer
         return INSTANCE;
     }
 
-    /**
-     * Returns the reduced version of an array.
-     * <p>
-     * <pre>
-     *     [A, B, C, A, B, C, A, B, C] -> [A, B, C]
-     *     [A, B]                      -> [A, B]
-     * </pre>
-     *
-     * @param duplicated The repeating array
-     *
-     * @return An new array that does not repeat or the original array
-     */
     public <T> T[] reduce(final T[] duplicated)
     {
         Objects.requireNonNull(duplicated, "duplicated must not be null");

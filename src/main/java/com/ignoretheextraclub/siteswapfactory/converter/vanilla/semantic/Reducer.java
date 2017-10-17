@@ -1,14 +1,30 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
 /**
- * Created by caspar on 26/09/17.
+ * Returns the shortest repeating unit that when repeated n times would return the input array.
+ * <p>
+ * <pre>
+ *     [A, B, C, A, B, C, A, B, C] -> [A, B, C]
+ *     [A, B]                      -> [A, B]
+ * </pre>
+ *
+ *
+ * @author Caspar Nonclercq
+ * @see StreamingFilteringReducer.IntReducer A primitive int version
  */
 public interface Reducer
 {
     /**
-     * Returns a non repeating array
-     * @param duplicated a repeated array
-     * @return a non repeating array
+     * Returns the reduced version of an array.
+     * <p>
+     * <pre>
+     *     [A, B, C, A, B, C, A, B, C] -> [A, B, C]
+     *     [A, B]                      -> [A, B]
+     * </pre>
+     *
+     * @param duplicated The repeating array
+     *
+     * @return An new array that does not repeat or the original array
      */
     <T> T[] reduce(T[] duplicated);
 
