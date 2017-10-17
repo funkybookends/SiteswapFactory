@@ -121,9 +121,20 @@ public class VanillaSiteswap implements Siteswap
     }
 
     @Override
-    public boolean equals(final Siteswap other)
+    public boolean equals(final Object o)
     {
-        return other == this || Arrays.deepEquals(getStates(), other.getStates());
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final VanillaSiteswap other = (VanillaSiteswap) o;
+
+        return Arrays.deepEquals(getStates(), other.getStates());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Arrays.hashCode(states);
     }
 
     @Override

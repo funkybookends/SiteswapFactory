@@ -138,18 +138,6 @@ public interface Siteswap
     String toString();
 
     /**
-     * True if the other siteswap is the same as this one. It is up to the implementation to decide what constitutes
-     * equality.
-     *
-     * @param other The other siteswap to test for equality
-     *
-     * @return if they are equal.
-     *
-     * @see #same(Siteswap)
-     */
-    boolean equals(Siteswap other);
-
-    /**
      * Less stringent than {@link #equals(Object)}. Two siteswaps may be the same, but not equal. For example a
      * rotation.
      *
@@ -157,7 +145,6 @@ public interface Siteswap
      *
      * @return if they are the same.
      *
-     * @see #equals(Siteswap)
      */
     boolean same(Siteswap other);
 }

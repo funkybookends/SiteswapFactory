@@ -55,4 +55,6 @@ public class FourHandedSiteswap extends VanillaSiteswap
         return TYPE;
     }
 
+
+
 }

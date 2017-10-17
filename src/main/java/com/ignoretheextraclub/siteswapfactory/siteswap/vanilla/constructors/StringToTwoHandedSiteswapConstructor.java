@@ -1,5 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
 
+import java.util.Optional;
+
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToAllStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.StringToVanillaThrosConverter;
@@ -10,6 +13,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.ignoretheextraclub.siteswapfactory.sorters.StartFinder;
 import com.ignoretheextraclub.siteswapfactory.sorters.StartFinderResult;
 
 /**
@@ -41,17 +45,19 @@ public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor
         final String siteswap = siteswapRequest.getConstructor().toString();
         VanillaThro[] vanillaThros = StringToVanillaThrosConverter.convert(siteswap);
 
-        if (siteswapRequest.getReducer().isPresent())
+        final Optional<Reducer> reducer = siteswapRequest.getReducer();
+        if (reducer.isPresent())
         {
-            vanillaThros = siteswapRequest.getReducer().get().reduce(vanillaThros);
+            vanillaThros = reducer.get().reduce(vanillaThros);
         }
 
         final VanillaState startingState = VanillaThrosToStartingStateConverter.getFirstState(vanillaThros);
         State[] allStates = StartingStateAndThrosToAllStatesConverter.getAllStates(startingState, vanillaThros);
 
-        if (siteswapRequest.getStartFinder().isPresent())
+        final Optional<StartFinder> startFinder = siteswapRequest.getStartFinder();
+        if (startFinder.isPresent())
         {
-            final StartFinderResult startFinderResult = siteswapRequest.getStartFinder().get().sort(allStates, siteswapRequest.getStartingStrategy());
+            final StartFinderResult startFinderResult = startFinder.get().sort(allStates, siteswapRequest.getStartingStrategy());
             allStates = startFinderResult.getSorted();
         }
 
