@@ -3,6 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToFourHandedSiteswapThrosConverter;
@@ -11,12 +12,16 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 
 /**
 Created by caspar on 06/08/17.
 */
+@RunWith(JUnitParamsRunner.class)
 public class FourHandedSiteswapTest
 {
    @Rule
@@ -63,5 +68,30 @@ public class FourHandedSiteswapTest
 
         softly.assertThat(fourHandedSiteswap.getThrowsForJuggler(0)).isEqualTo(leader);
         softly.assertThat(fourHandedSiteswap.getThrowsForJuggler(1)).isEqualTo(follower);
+    }
+
+    @Test
+    @Parameters
+    public void testStartingHands(final String siteswap, final int first, final int second, final int third, final int fourth) throws Exception
+    {
+        final FourHandedSiteswap fourHandedSiteswap = SiteswapFactory.getFourHandedSiteswap(siteswap);
+        softly.assertThat(fourHandedSiteswap.getNumObjects()).as("Num objects is wrong").isEqualTo(first + second + third + fourth);
+        softly.assertThat(fourHandedSiteswap.getStartingNumberOfObjects(0)).as("Leader First Hand:" + siteswap).isEqualTo(first);
+        softly.assertThat(fourHandedSiteswap.getStartingNumberOfObjects(1)).as("Follower First Hand:" + siteswap).isEqualTo(second);
+        softly.assertThat(fourHandedSiteswap.getStartingNumberOfObjects(2)).as("Leader Second Hand:" + siteswap).isEqualTo(third);
+        softly.assertThat(fourHandedSiteswap.getStartingNumberOfObjects(3)).as("Follower Second Hand:" + siteswap).isEqualTo(fourth);
+    }
+
+    public Object parametersForTestStartingHands()
+    {
+        return new Object[]{
+            new Object[]{"978", 2, 2, 2, 2},
+            new Object[]{"9", 3, 2, 2, 2},
+            new Object[]{"88A72", 2, 2, 1, 2},
+            new Object[]{"789A6", 3, 2, 2, 1},
+            new Object[]{"7592552", 2, 1, 1, 1},
+            new Object[]{"89990", 1, 2, 2, 2},
+            new Object[]{"69640", 1, 2, 1, 1},
+        };
     }
 }

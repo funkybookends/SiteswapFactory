@@ -78,9 +78,11 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public int getStartingNumberOfObjects(final int hand) throws IndexOutOfBoundsException
     {
-        if (hand < 0 || hand >= getNumHands())
+        final int numHands = getNumHands();
+
+        if (hand < 0 || hand >= numHands)
         {
-            throw new IndexOutOfBoundsException("There are only " + getNumHands() + " hands. Cannot get for hand: " + hand);
+            throw new IndexOutOfBoundsException("There are only " + numHands + " hands. Cannot get for hand: " + hand);
         }
 
         final boolean[] landings = new boolean[getPeriod() + getHighestThro().getNumBeats()];
@@ -99,13 +101,14 @@ public class VanillaSiteswap implements Siteswap
 
         int tot = 0;
         int i = 0;
-        final int[] hands = new int[getNumHands()];
+        final int[] hands = new int[numHands];
+        final int numObjects = getNumObjects();
 
-        while (tot < getNumObjects())
+        while (tot < numObjects)
         {
             if (!landings[i])
             {
-                hands[i % getNumHands()]++;
+                hands[i % numHands]++;
                 tot++;
             }
             i++;
