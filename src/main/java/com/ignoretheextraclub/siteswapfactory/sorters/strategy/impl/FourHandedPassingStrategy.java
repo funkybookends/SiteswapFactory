@@ -43,7 +43,14 @@ public class FourHandedPassingStrategy implements StartingStrategy
     @Override
     public boolean test(final State[] first, final State[] second) throws InvalidSiteswapException
     {
-        return scoreRotation(first) < scoreRotation(second);
+        final int firstScore = scoreRotation(first);
+        final int secondScore = scoreRotation(second);
+
+        if (firstScore == secondScore)
+        {
+            return HighestThrowFirstStrategy.get().test(first, second);
+        }
+        return firstScore < secondScore;
     }
 
     private int scoreRotation(final State[] states) throws InvalidSiteswapException
