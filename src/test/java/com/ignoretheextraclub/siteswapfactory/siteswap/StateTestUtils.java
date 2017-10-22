@@ -1,14 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
-import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
- Created by caspar on 30/07/17.
+ * A cataloge of states and utilities for making specific states.
+ * @author Caspar Nonclercq
  */
 public final class StateTestUtils
 {
@@ -46,6 +45,13 @@ public final class StateTestUtils
     public static final VanillaState X____X     = state( true, false, false, false, false,  true);
     public static final VanillaState XXX_X_     = state( true,  true,  true, false,  true, false);
 
+    // 5 ball - Max Throw: 9
+    public static final VanillaState XX_X_X_X_ = state( true,  true, false,  true, false,  true, false,  true, false);
+    public static final VanillaState XXX_X_X__ = state( true,  true,  true, false,  true, false,  true, false, false);
+    public static final VanillaState XXXX_X___ = state( true,  true,  true,  true, false,  true, false, false, false);
+    public static final VanillaState XXXXX____ = state( true,  true,  true,  true,  true, false, false, false, false);
+
+
     // 7 ball - Max Throw: 9
     public static final VanillaState XXXXXXX__  = state(true, true, true, true, true, true, true, false, false);
 
@@ -59,18 +65,7 @@ public final class StateTestUtils
     public static final VanillaState ____X = state(false, false, false, false,  true);
 
     //@formatter:on
-    
-    private static State thro(final State state, final VanillaThro unchecked)
-    {
-        try
-        {
-            return state.thro(unchecked);
-        }
-        catch (BadThrowException cause)
-        {
-            throw new RuntimeException(MESSAGE, cause);
-        }
-    }
+
 
     private StateTestUtils()
     {
@@ -101,22 +96,5 @@ public final class StateTestUtils
     public static int[] thros(final int... thros)
     {
         return thros;
-    }
-
-    public static Integer[] integerArray(final Integer... thros)
-    {
-        return thros;
-    }
-
-    private static State getOrRuntime(final int maxThrow, final int numObjects)
-    {
-        try
-        {
-            return VanillaStateGenerator.getGroundState(numObjects, maxThrow);
-        }
-        catch (final PeriodException | NumObjectsException cause)
-        {
-            throw new RuntimeException(MESSAGE, cause);
-        }
     }
 }
