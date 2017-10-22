@@ -16,14 +16,11 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
-
 import static com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils.drop;
 
 /**
  * Created by caspar on 26/11/16.
  */
-@Immutable
 public class VanillaState implements State
 {
     protected static final String EMPTY = "_";

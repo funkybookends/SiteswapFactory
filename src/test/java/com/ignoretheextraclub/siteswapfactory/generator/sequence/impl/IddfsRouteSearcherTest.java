@@ -1,11 +1,10 @@
-package com.ignoretheextraclub.siteswapfactory.generator.state;
+package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.generator.sequence.IddfsRouteSearcher;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.RouteSearcher;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -17,6 +16,7 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_X___;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X_X__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_X_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX__X;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X__XX;
@@ -41,6 +41,7 @@ public class IddfsRouteSearcherTest
     {
         return new Object[]{
             new Object[]{XXX__, XXX__, new State[]{XXX__}},
+            new Object[]{XXX__, XX_X_, new State[]{XXX__, XX_X_}},
             new Object[]{XXX__, __XXX, new State[]{XXX__, XX__X, X__XX, __XXX}},
             new Object[]{__XXX, XXX__, new State[]{__XXX, _XXX_, XXX__,}},
             new Object[]{__XXX, XXX__, new State[]{__XXX, _XXX_, XXX__,}},

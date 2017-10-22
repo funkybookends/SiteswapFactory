@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.generator.sequence;
+package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.generator.sequence.RouteSearcher;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**

@@ -7,64 +7,67 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
 
 /**
  * A cataloge of states and utilities for making specific states.
+ *
  * @author Caspar Nonclercq
  */
 public final class StateTestUtils
 {
     public static final String MESSAGE = "Test configuration incorrect";
 
-    //@formatter:off
+
     // 3 Ball - Max Throw: 3
-    public static final VanillaState XXX = state( true,  true,  true);
+    public static final VanillaState XXX = parse("XXX");
 
     // 3 Ball - Max Throw: 4
-    public static final VanillaState XXX_ = state( true,  true,  true, false);
-    public static final VanillaState XX_X = state( true,  true, false,  true);
-    public static final VanillaState X_XX = state( true, false,  true,  true);
-    public static final VanillaState _XXX = state(false,  true,  true,  true);
-    
+    public static final VanillaState XXX_ = parse("XXX_");
+    public static final VanillaState XX_X = parse("XX_X");
+    public static final VanillaState X_XX = parse("X_XX");
+    public static final VanillaState _XXX = parse("_XXX");
+
     // 3 ball - Max Throw: 5
-    public static final VanillaState XXX__ = state( true,  true,  true, false, false);
-    public static final VanillaState XX_X_ = state( true,  true, false,  true, false);
-    public static final VanillaState XX__X = state( true,  true, false, false,  true);
-    public static final VanillaState X_XX_ = state( true, false,  true,  true, false);
-    public static final VanillaState X_X_X = state( true, false,  true, false,  true);
-    public static final VanillaState X__XX = state( true, false, false,  true,  true);
-    public static final VanillaState _XXX_ = state(false,  true,  true,  true, false);
-    public static final VanillaState _XX_X = state(false,  true,  true, false,  true);
-    public static final VanillaState _X_XX = state(false,  true, false,  true,  true);
-    public static final VanillaState __XXX = state(false, false,  true,  true,  true);
+    public static final VanillaState XXX__ = parse("XXX__");
+    public static final VanillaState XX_X_ = parse("XX_X_");
+    public static final VanillaState XX__X = parse("XX__X");
+    public static final VanillaState X_XX_ = parse("X_XX_");
+    public static final VanillaState X_X_X = parse("X_X_X");
+    public static final VanillaState X__XX = parse("X__XX");
+    public static final VanillaState _XXX_ = parse("_XXX_");
+    public static final VanillaState _XX_X = parse("_XX_X");
+    public static final VanillaState _X_XX = parse("_X_XX");
+    public static final VanillaState __XXX = parse("__XXX");
 
     // 4 ball - Max Throw: 4
-    public static final VanillaState XXX_X      = state( true,  true,  true, false,  true);
-    public static final VanillaState XXXX_      = state( true,  true,  true,  true, false);
+    public static final VanillaState XXX_X = parse("XXX_X");
+    public static final VanillaState XXXX_ = parse("XXXX_");
 
-    // 4 ball - Max Throw: 5
-    public static final VanillaState XXXX__     = state( true,  true,  true,  true, false, false);
-    public static final VanillaState XXX__X_    = state( true,  true,  true, false, false,  true);
-    public static final VanillaState X____X     = state( true, false, false, false, false,  true);
-    public static final VanillaState XXX_X_     = state( true,  true,  true, false,  true, false);
+    public static final VanillaState XX_XX = parse("XX_XX");
+    public static final VanillaState X_XXX = parse("X_XXX");
+    public static final VanillaState _XXXX = parse("_XXXX");
+
+    // 4 ball - Max Throw: 6
+    public static final VanillaState XXXX__ = parse("XXXX__");
+    public static final VanillaState X____X = parse("X____X");
+    public static final VanillaState XXX_X_ = parse("XXX_X_");
+    public static final VanillaState XXX__X = parse("XXX__X");
 
     // 5 ball - Max Throw: 9
-    public static final VanillaState XX_X_X_X_ = state( true,  true, false,  true, false,  true, false,  true, false);
-    public static final VanillaState XXX_X_X__ = state( true,  true,  true, false,  true, false,  true, false, false);
-    public static final VanillaState XXXX_X___ = state( true,  true,  true,  true, false,  true, false, false, false);
-    public static final VanillaState XXXXX____ = state( true,  true,  true,  true,  true, false, false, false, false);
+    public static final VanillaState XX_X_X_X_ = parse("XX_X_X_X_");
+    public static final VanillaState XXX_X_X__ = parse("XXX_X_X__");
+    public static final VanillaState XXXX_X___ = parse("XXXX_X___");
+    public static final VanillaState XXXXX____ = parse("XXXXX____");
 
 
     // 7 ball - Max Throw: 9
-    public static final VanillaState XXXXXXX__  = state(true, true, true, true, true, true, true, false, false);
+    public static final VanillaState XXXXXXX__ = parse("XXXXXXX__");
 
     // 7 ball - Max Throw: 10
-    public static final VanillaState XXXXXXX___  = state(true, true, true, true, true, true, true, false, false, false);
+    public static final VanillaState XXXXXXX___ = parse("XXXXXXX___");
 
     // 8 ball - Max Throw: 10
-    public static final VanillaState XXXXXXXX__ = state(true, true, true, true, true, true, true, true, false, false);
+    public static final VanillaState XXXXXXXX__ = parse("XXXXXXXX__");
 
     // other
-    public static final VanillaState ____X = state(false, false, false, false,  true);
-
-    //@formatter:on
+    public static final VanillaState ____X = parse("____X");
 
 
     private StateTestUtils()
@@ -96,5 +99,19 @@ public final class StateTestUtils
     public static int[] thros(final int... thros)
     {
         return thros;
+    }
+
+    private static VanillaState parse(final String string)
+    {
+        final boolean[] booleans = new boolean[string.length()];
+
+        final char[] charArray = string.toCharArray();
+
+        for (int i = 0; i < charArray.length; i++)
+        {
+            booleans[i] = charArray[i] == 'X';
+        }
+
+        return new VanillaState(booleans);
     }
 }
