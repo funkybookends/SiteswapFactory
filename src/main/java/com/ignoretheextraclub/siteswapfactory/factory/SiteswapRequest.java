@@ -15,6 +15,7 @@ import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingSt
  *
  * @author Caspar Nonclercq
  * @see #SiteswapRequest(Object, boolean, Reducer, StartFinder, StartingStrategy)
+ * @see SiteswapRequestBuilder for a builder that can be used as {@code private static final} fields
  */
 public class SiteswapRequest
 {
