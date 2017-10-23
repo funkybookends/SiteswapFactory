@@ -1,5 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -68,5 +75,22 @@ public class VanillaThroTest
             softly.assertThat(lower.hashCode()).isEqualTo(lower.hashCode());
             softly.assertThat(lower).isEqualTo(lower);
         }
+    }
+
+    @Test
+    public void testCompareTo() throws Exception
+    {
+        final List<VanillaThro> naturallySorted = IntStream.range(0, VanillaThro.MAX_THROW)
+            .boxed()
+            .map(VanillaThro::get)
+            .collect(Collectors.toList());
+
+        final ArrayList<VanillaThro> thros = new ArrayList<>(naturallySorted);
+        Collections.shuffle(thros);
+
+        thros.sort(null);
+
+        Assertions.assertThat(thros).isEqualTo(naturallySorted);
+
     }
 }

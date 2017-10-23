@@ -1,12 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.generator.state;
 
-import java.util.ArrayList;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import org.apache.commons.collections4.iterators.PermutationIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,25 +12,17 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
 /**
- * Created by caspar on 14/09/17.
+ * A generator for finding {@link VanillaState}s.
+ *
+ * @author Caspar Nonclercq
  */
 public class VanillaStateGenerator
 {
     private static final Logger LOG = LoggerFactory.getLogger(VanillaStateGenerator.class);
 
-    public static State getGroundState(final int numObjects,
-                                       final int maxThrow) throws PeriodException, NumObjectsException
+    public static State getGroundState(final int numObjects) throws PeriodException, NumObjectsException
     {
-        if (maxThrow < numObjects)
-        {
-            throw new IllegalArgumentException("maxThrow must not be less than numObjects");
-        }
-        final boolean[] occupied = new boolean[maxThrow];
-        for (int i = 0; i < maxThrow; i++)
-        {
-            occupied[i] = (i < numObjects);
-        }
-        return new VanillaState(occupied);
+        return new VanillaState(getGroundAsLong(numObjects));
     }
 
     public static Stream<VanillaState> getAllStates(final int numObjects, final int maxThro)
@@ -44,34 +32,30 @@ public class VanillaStateGenerator
             throw new IllegalArgumentException("maxThrow must not be less than numObjects");
         }
 
-        final ArrayList<Boolean> groundState = new ArrayList<>();
+        final long ground = getGroundAsLong(numObjects);
+        final long max = ground << (maxThro - numObjects);
 
-        for (int i = 0; i < maxThro; i++)
+        return LongStream.rangeClosed(ground, max)
+            .filter(state -> numBitsSet(state) == numObjects)
+            .boxed()
+            .map(VanillaState::new);
+    }
+
+    private static int numBitsSet(long state)
+    {
+        int count = 0;
+
+        while (state > 0)
         {
-            groundState.add(i < numObjects ? Boolean.TRUE : Boolean.FALSE);
+            count += state & 1;
+            state >>= 1;
         }
 
-        final PermutationIterator<Boolean> permsIterator = new PermutationIterator<>(groundState);
+        return count;
+    }
 
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(permsIterator,
-                Spliterator.ORDERED | Spliterator.DISTINCT | Spliterator.NONNULL), false)
-                            .map(list ->
-                            {
-                                final boolean[] array = new boolean[list.size()];
-
-                                for (int i = 0; i < array.length; i++)
-                                {
-                                    array[i] = list.get(i);
-                                }
-
-                                try
-                                {
-                                    return new VanillaState(array);
-                                }
-                                catch (final NumObjectsException | PeriodException cause)
-                                {
-                                    throw new IllegalArgumentException("Cannot create states", cause);
-                                }
-                            }).distinct(); // TODO improve - currently each combination multiple times - cannot be a recursive solution though.
+    private static int getGroundAsLong(final int numObjects)
+    {
+        return (1 << numObjects) - 1;
     }
 }

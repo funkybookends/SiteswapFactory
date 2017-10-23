@@ -23,7 +23,6 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._XX
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._X_XX;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.__XXX;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Created by caspar on 09/10/17.
@@ -54,10 +53,7 @@ public class VanillaStateGeneratorTest
     @Test
     public void testGroundState() throws Exception
     {
-        assertThat(VanillaStateGenerator.getGroundState(3, 5)).isEqualTo(XXX__);
-        assertThat(VanillaStateGenerator.getGroundState(4, 5)).isEqualTo(XXXX_);
-
-        assertThatThrownBy(() -> VanillaStateGenerator.getGroundState(5, 3))
-            .isInstanceOf(IllegalArgumentException.class);
+        assertThat(VanillaStateGenerator.getGroundState(3)).isEqualTo(XXX__);
+        assertThat(VanillaStateGenerator.getGroundState(4)).isEqualTo(XXXX_);
     }
 }

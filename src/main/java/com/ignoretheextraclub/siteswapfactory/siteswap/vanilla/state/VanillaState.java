@@ -118,7 +118,7 @@ public class VanillaState implements State
 
             for (; position > 0; thro++)
             {
-                position = position >> 1;
+                position >>= 1;
             }
 
             return VanillaThro.get(thro);
@@ -144,13 +144,7 @@ public class VanillaState implements State
     @Override
     public int getNumObjects()
     {
-        int count = 0;
-        long state = this.state;
-        for (; state > 0; state = state >> 1)
-        {
-            count += (state & 1);
-        }
-        return count;
+        return numBitsSet(state);
     }
 
     @Override
@@ -191,7 +185,7 @@ public class VanillaState implements State
         while (state > 0)
         {
             stringBuilder.append(((state & 1) == 1) ? FILLED : EMPTY);
-            state = state >> 1;
+            state >>= 1;
         }
 
         return stringBuilder.toString();
@@ -214,13 +208,26 @@ public class VanillaState implements State
         return (int) state;
     }
 
-    private static boolean isSet(final long on, final int position)
+    static boolean isSet(final long on, final int position)
     {
         return (on & (1 << position)) > 0;
     }
 
-    private static boolean isPowerOfTwo(final long num)
+    static boolean isPowerOfTwo(final long num)
     {
         return (num & (num - 1)) == 0;
+    }
+
+    static int numBitsSet(long state)
+    {
+        int count = 0;
+
+        while (state > 0)
+        {
+            count += state & 1;
+            state >>= 1;
+        }
+
+        return count;
     }
 }

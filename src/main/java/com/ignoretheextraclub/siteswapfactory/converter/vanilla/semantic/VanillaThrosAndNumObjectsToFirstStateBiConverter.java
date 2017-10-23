@@ -68,7 +68,7 @@ public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunct
         {
             final int highestThro = Thro.getHighest(thros).getNumBeats();
 
-            final VanillaStateBuilder stateBuilder = new VanillaStateBuilder(highestThro, numObjects);
+            final VanillaStateBuilder stateBuilder = new VanillaStateBuilder();
 
             final ArrayLoopingIterator<VanillaThro> throsLooper = new ArrayLoopingIterator<>(thros);
 

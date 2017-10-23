@@ -10,11 +10,14 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.StateSearcherBuilder;
 import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
+import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.NoThroHigherThanPredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingNoThroHigherThanPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.result.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StatesToTwoHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
  * Factory for creating generators that generate {@link TwoHandedSiteswap}s
@@ -26,20 +29,22 @@ public class TwoHandedSiteswapGenerator
     /**
      * The base builder which injects the constructor
      * @return
+     * @param maxThro
      */
-    private static StateSearcherBuilder<TwoHandedSiteswap> builder()
+    private static StateSearcherBuilder<TwoHandedSiteswap> builder(final int maxThro)
     {
         return StateSearcherBuilder.<TwoHandedSiteswap>builder()
-            .withSiteswapConstructor(StatesToTwoHandedSiteswapConstructor.get());
+            .withSiteswapConstructor(StatesToTwoHandedSiteswapConstructor.get())
+            .andIntermediatePredicate(new NoThroHigherThanPredicate(VanillaThro.get(maxThro)))
+            .andResultPredicate(new LoopCheckingNoThroHigherThanPredicate(VanillaThro.get(maxThro)));
     }
 
     // region Builders
 
-    public static StateSearcherBuilder<TwoHandedSiteswap> groundBuilder(final int numObjects,
-                                                                        final int maxThro,
-                                                                        final int maxPeriod) throws NumObjectsException, PeriodException
+    public static StateSearcherBuilder<TwoHandedSiteswap> groundBuilder(final int numObjects, final int maxThro, final int maxPeriod) throws NumObjectsException, PeriodException
     {
-        return builder().addStartingState(VanillaStateGenerator.getGroundState(numObjects, maxThro))
+        validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+        return builder(maxThro).addStartingState(VanillaStateGenerator.getGroundState(numObjects))
             .setMaxPeriod(maxPeriod);
     }
 
@@ -47,18 +52,18 @@ public class TwoHandedSiteswapGenerator
                                                                      final int maxThro,
                                                                      final int maxPeriod)
     {
-        return builder()
+        validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+        return builder(maxThro)
             .setStartingStates(VanillaStateGenerator.getAllStates(numObjects, maxThro)
                 .map((VanillaState state) -> (State) state)
                 .collect(Collectors.toSet()))
             .setMaxPeriod(maxPeriod);
     }
 
-    public static StateSearcherBuilder<TwoHandedSiteswap> excitedBuilder(final int numObjects,
-                                                                         final int maxThro,
-                                                                         final int maxPeriod) throws NumObjectsException, PeriodException
+    public static StateSearcherBuilder<TwoHandedSiteswap> excitedBuilder(final int numObjects, final int maxThro, final int maxPeriod) throws NumObjectsException, PeriodException
     {
-        final State groundState = VanillaStateGenerator.getGroundState(numObjects, maxThro);
+        validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+        final State groundState = VanillaStateGenerator.getGroundState(numObjects);
 
         final Predicate<State[]> banGroundState = new StatePredicate(groundState).negate();
 
@@ -67,7 +72,7 @@ public class TwoHandedSiteswapGenerator
             .filter((state) -> !state.equals(banGroundState))
             .collect(Collectors.toSet());
 
-        return builder()
+        return builder(maxThro)
             .setStartingStates(excitedStates)
             .andIntermediatePredicate(banGroundState)
             .setMaxPeriod(maxPeriod);
@@ -97,4 +102,12 @@ public class TwoHandedSiteswapGenerator
     }
 
     // endregion
+
+    private static void validateMaxThroIsNotLessThanNumObjects(final int numObjects, final int maxThro)
+    {
+        if (maxThro < numObjects)
+        {
+            throw new IllegalArgumentException("maxThro cannot be less than numObjects");
+        }
+    }
 }

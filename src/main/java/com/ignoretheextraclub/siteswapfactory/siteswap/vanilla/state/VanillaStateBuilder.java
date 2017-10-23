@@ -5,88 +5,54 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
-import static com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils.drop;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.isSet;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.numBitsSet;
 
 /**
- Created by caspar on 25/07/17.
+ * A {@link VanillaState} builder that accepts throws and builds the state as the throws are made.
+ * New objects are thrown if no existing object is available.
+ *
+ * @author Caspar Nonclercq
  */
 public class VanillaStateBuilder
 {
-    private final int maxThrow;
-    private final int expectedObjects;
-    private boolean[] occupied;
-    private int givenObjects;
+    private int state;
 
-    public VanillaStateBuilder(final int maxThrow, final int expectedObjects) throws PeriodException, NumObjectsException
+    public VanillaStateBuilder() throws PeriodException, NumObjectsException
     {
-        if (expectedObjects > maxThrow)
-        {
-            throw new IllegalArgumentException("expectedObjects cannot be larger than maxThrow");
-        }
-
-        this.maxThrow = maxThrow;
-        this.expectedObjects = expectedObjects;
-        this.occupied = new boolean[maxThrow];
+        this.state = 0;
     }
 
     public VanillaStateBuilder thenThrow(final VanillaThro aThro) throws BadThrowException, NumObjectsException
     {
         final int thro = aThro.getNumBeats();
 
-        // Check Throw
-        if (thro < 0 || thro > maxThrow)
-        {
-            throw new BadThrowException("VanillaThro [" + thro + "] out of bounds [0," + maxThrow + "]");
-        }
-
-        // Record new object
-        if (!occupied[0] && thro != 0)
-        {
-            givenObjects++;
-        }
-
-        // Check num objects
-        if (givenObjects > expectedObjects)
-        {
-            throw new NumObjectsException("Given an unexpected object. Expecting [" + expectedObjects + "]");
-        }
-
-        // Do throw
-        if (thro == maxThrow)
-        {
-            occupied = drop(occupied, true);
-        }
-        else if (occupied[thro])
+        // Check landing
+        if (isSet(state, thro))
         {
             throw new BadThrowException("VanillaThro [" + thro + "] cannot be made: [" + this.toString() + "]");
         }
-        else
-        {
-            occupied[thro] = true;
-            occupied = drop(occupied, false);
-        }
+
+        // Do throw
+        state |= (1 << thro);
+        state >>= 1;
 
         return this;
     }
 
-    public boolean[] getOccupied() throws PeriodException, NumObjectsException
-    {
-        return occupied;
-    }
-
     public int getGivenObjects()
     {
-        return givenObjects;
+        return numBitsSet(state);
     }
 
     @Override
     public String toString()
     {
-        return new VanillaState(occupied).toString();
+        return new VanillaState(state).toString();
     }
 
     public VanillaState getState()
     {
-        return new VanillaState(this.occupied);
+        return new VanillaState(this.state);
     }
 }

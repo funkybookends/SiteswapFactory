@@ -10,13 +10,16 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerator;
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.StateSearcherBuilder;
 import com.ignoretheextraclub.siteswapfactory.generator.state.VanillaStateGenerator;
+import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.NoThroHigherThanPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.ThroCombinationPredicate;
+import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingNoThroHigherThanPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThroCombinationPredicate;
 import com.ignoretheextraclub.siteswapfactory.predicates.result.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StatesToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
  * Factory for creating generators that generate {@link FourHandedSiteswap}s
@@ -48,14 +51,17 @@ public final class FourHandedSiteswapGenerator
      * </ul>
      *
      * @return A builder with the minmum requirements to be an FHS builder.
+     * @param maxThro
      */
-    private static StateSearcherBuilder<FourHandedSiteswap> builder()
+    private static StateSearcherBuilder<FourHandedSiteswap> builder(final int maxThro)
     {
         return StateSearcherBuilder.<FourHandedSiteswap>builder()
             .withSiteswapConstructor(StatesToFourHandedSiteswapConstructor.get())
             .andIntermediatePredicate(ThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()))
             .andResultPredicate(LoopCheckingThroCombinationPredicate.requireAnyOneOf(FourHandedSiteswapThro.getPassThrows()))
-            .andResultPredicate(LoopCheckingThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()));
+            .andResultPredicate(LoopCheckingThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()))
+            .andIntermediatePredicate(new NoThroHigherThanPredicate(VanillaThro.get(maxThro)))
+            .andResultPredicate(new LoopCheckingNoThroHigherThanPredicate(VanillaThro.get(maxThro)));
     }
 
 
@@ -77,14 +83,16 @@ public final class FourHandedSiteswapGenerator
      */
     public static StateSearcherBuilder<FourHandedSiteswap> groundBuilder(final int numObjects, final int maxThro, final int maxPeriod) throws NumObjectsException, PeriodException
     {
-        return builder()
-            .addStartingState(VanillaStateGenerator.getGroundState(numObjects, maxThro))
+        validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+        return builder(maxThro)
+            .addStartingState(VanillaStateGenerator.getGroundState(numObjects))
             .setMaxPeriod(maxPeriod);
     }
 
     public static StateSearcherBuilder<FourHandedSiteswap> excitedBuilder(final int numObjects, final int maxThro, final int maxPeriod) throws NumObjectsException, PeriodException
     {
-        final State groundState = VanillaStateGenerator.getGroundState(numObjects, maxThro);
+        validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+        final State groundState = VanillaStateGenerator.getGroundState(numObjects);
 
         final Predicate<State[]> banGroundState = new StatePredicate(groundState).negate();
 
@@ -93,29 +101,30 @@ public final class FourHandedSiteswapGenerator
             .filter((state) -> !state.equals(banGroundState))
             .collect(Collectors.toSet());
 
-        return builder()
+        return builder(maxThro)
             .setStartingStates(excitedStates)
             .andIntermediatePredicate(banGroundState)
             .setMaxPeriod(maxPeriod);
     }
 
-
     public static StateSearcherBuilder<FourHandedSiteswap> allBuilder(final int numObjects, final int maxThro, final int maxPeriod)
     {
-        return builder()
+        validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+        return builder(maxThro)
             .setStartingStates(VanillaStateGenerator.getAllStates(numObjects, maxThro).collect(Collectors.toSet()))
             .setMaxPeriod(maxPeriod);
     }
+
 
     // endregion
 
     // region Generators
 
-
     public static SiteswapGenerator<FourHandedSiteswap> ground(final int numObjects, final int maxThro, final int maxPeriod) throws InvalidSiteswapException
     {
         return groundBuilder(numObjects, maxThro, maxPeriod).create();
     }
+
 
     public static SiteswapGenerator<FourHandedSiteswap> excited(final int numObjects, final int maxThro, final int maxPeriod) throws NumObjectsException, PeriodException
     {
@@ -128,4 +137,12 @@ public final class FourHandedSiteswapGenerator
     }
 
     // endregion
+
+    private static void validateMaxThroIsNotLessThanNumObjects(final int numObjects, final int maxThro)
+    {
+        if (maxThro < numObjects)
+        {
+            throw new IllegalArgumentException("maxThro cannot be less than numObjects");
+        }
+    }
 }
