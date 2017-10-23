@@ -61,7 +61,7 @@ public class StatesToSequenceConverterTest
     {
         return new Object[]{
             new Object[]{states(XXX__), new IllegalArgumentException("Need at least 2 states")},
-            new Object[]{states(XXX__, XXXX_), new InvalidSiteswapException("XXX__, XXXX_")},
+            new Object[]{states(XXX__, XXXX_), new InvalidSiteswapException("XXX, XXXX")},
             new Object[]{null, new NullPointerException("states")},
             new Object[]{new State[]{}, new IllegalArgumentException("states")},
         };

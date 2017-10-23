@@ -48,7 +48,6 @@ public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunct
      *
      * @param thros      The array of thros
      * @param numObjects The expected number of objects
-     *
      * @return The first state.
      */
     @Override
@@ -69,15 +68,18 @@ public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunct
         {
             final int highestThro = Thro.getHighest(thros).getNumBeats();
 
-            final VanillaStateBuilder stateBuilder = new VanillaStateBuilder(highestThro,numObjects);
+            final VanillaStateBuilder stateBuilder = new VanillaStateBuilder(highestThro, numObjects);
 
             final ArrayLoopingIterator<VanillaThro> throsLooper = new ArrayLoopingIterator<>(thros);
 
             while (stateBuilder.getGivenObjects() != numObjects)
             {
+                if (throStack.size() > VanillaThro.MAX_THROW)
+                {
+                    throw new InvalidSiteswapException("After " + throStack.size() + " throws of " + Arrays.toString(thros) + " still had not thrown " + numObjects + " objects");
+                }
                 throStack.push(throsLooper.peek());
                 stateBuilder.thenThrow(throsLooper.next());
-                VanillaState.validateSize(throStack.size());
             }
 
             VanillaState state = stateBuilder.getState();
@@ -92,12 +94,7 @@ public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunct
         }
         catch (final BadThrowException | NumObjectsException cause)
         {
-            throw new InvalidSiteswapException("Could not determine first state for thros " + Arrays.toString(thros) + ". Expecting [" + numObjects + "] objects.",
-                    cause);
-        }
-        catch (final PeriodException cause)
-        {
-            throw new InvalidSiteswapException("After " + throStack.size() + " throws of " + Arrays.toString(thros) + " still had not thrown " + numObjects + " objects");
+            throw new InvalidSiteswapException("Could not determine first state for thros " + Arrays.toString(thros) + ". Expecting [" + numObjects + "] objects.", cause);
         }
     }
 
@@ -106,7 +103,6 @@ public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunct
      *
      * @param thros      The array of thros, assumed to loop.
      * @param numObjects The number of objects
-     *
      * @return The first state.
      */
     public static VanillaState getFirstState(final VanillaThro[] thros, final Integer numObjects)

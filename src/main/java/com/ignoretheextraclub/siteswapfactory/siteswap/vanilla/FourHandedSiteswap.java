@@ -1,8 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
+import java.util.Arrays;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.GlobalToLocalBiConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToFourHandedSiteswapThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 
@@ -19,6 +22,14 @@ public class FourHandedSiteswap extends VanillaSiteswap
     public FourHandedSiteswap(final VanillaState[] states)
     {
         super(states);
+        try
+        {
+            getThrows();
+        }
+        catch (final InvalidSiteswapException cause)
+        {
+            throw new InvalidSiteswapException("States " + Arrays.toString(states) + " is not a valid " + TYPE);
+        }
     }
 
     @Override

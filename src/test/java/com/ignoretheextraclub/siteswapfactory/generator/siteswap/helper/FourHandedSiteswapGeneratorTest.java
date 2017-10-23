@@ -51,8 +51,7 @@ public class FourHandedSiteswapGeneratorTest
         Predicate<FourHandedSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly())
-            .and(isNotGrounded())
-            .and(highestThroLessThanOrEqualTo(maxThro));
+            .and(isNotGrounded());
 
         assertThat(excited.generate().allMatch(test)).isTrue();
     }
@@ -67,8 +66,7 @@ public class FourHandedSiteswapGeneratorTest
 
         Predicate<FourHandedSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
-            .and(classIsExactly())
-            .and(highestThroLessThanOrEqualTo(maxThro));
+            .and(classIsExactly());
 
         assertThat(all.generate().allMatch(test)).isTrue();
     }
@@ -131,22 +129,6 @@ public class FourHandedSiteswapGeneratorTest
             else
             {
                 LOG.warn("{} failed isGrounded", fourHandedSiteswap);
-                return false;
-            }
-        };
-    }
-
-    private Predicate<FourHandedSiteswap> highestThroLessThanOrEqualTo(final int maxThro)
-    {
-        return fourHandedSiteswap ->
-        {
-            if (fourHandedSiteswap.getHighestThro().getNumBeats() <= maxThro)
-            {
-                return true;
-            }
-            else
-            {
-                LOG.warn("{} failed highestThroLessThanOrEqualTo", fourHandedSiteswap);
                 return false;
             }
         };

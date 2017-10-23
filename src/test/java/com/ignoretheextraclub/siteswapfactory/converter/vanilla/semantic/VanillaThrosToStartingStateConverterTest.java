@@ -13,6 +13,7 @@ import junitparams.Parameters;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXXXXXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +41,7 @@ public class VanillaThrosToStartingStateConverterTest
             new Object[]{thros(get(4), get(2)), XXX_},
             new Object[]{thros(get(8), get(9), get(10), get(6), get(7)), XXXXXXXX__},
             new Object[]{thros(get(9), get(10), get(6), get(7), get(8)), XXXXXXXX__},
+            new Object[]{thros(get(5), get(5), get(0), get(5), get(0)), XX_X_},
         };
         // TODO add more
     }

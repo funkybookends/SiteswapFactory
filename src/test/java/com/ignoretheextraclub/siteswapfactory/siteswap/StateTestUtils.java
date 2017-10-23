@@ -36,6 +36,10 @@ public final class StateTestUtils
     public static final VanillaState _X_XX = parse("_X_XX");
     public static final VanillaState __XXX = parse("__XXX");
 
+    // 3 ball - Max Throw: 6
+    public static final VanillaState _XXX__ = parse("_XXX__");
+    public static final VanillaState XXX___ = parse("XXX___");
+
     // 4 ball - Max Throw: 4
     public static final VanillaState XXX_X = parse("XXX_X");
     public static final VanillaState XXXX_ = parse("XXXX_");
@@ -43,6 +47,9 @@ public final class StateTestUtils
     public static final VanillaState XX_XX = parse("XX_XX");
     public static final VanillaState X_XXX = parse("X_XXX");
     public static final VanillaState _XXXX = parse("_XXXX");
+
+    public static final VanillaState XXXXX_X = parse("XXXXX_X");
+    public static final VanillaState XXXXXX = parse("XXXXXX");
 
     // 4 ball - Max Throw: 6
     public static final VanillaState XXXX__ = parse("XXXX__");

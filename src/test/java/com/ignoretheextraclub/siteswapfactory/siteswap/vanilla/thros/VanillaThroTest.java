@@ -1,10 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 
 /**
  Created by caspar on 29/07/17.
@@ -34,12 +35,12 @@ public class VanillaThroTest
         softly.assertThatThrownBy(() -> VanillaThro.get(-1)).isInstanceOf(BadThrowException.class).hasMessageContaining("-1");
         softly.assertThatThrownBy(() -> VanillaThro.get(-20)).isInstanceOf(BadThrowException.class).hasMessageContaining("-20");
         softly.assertThatThrownBy(() -> VanillaThro.get(500)).isInstanceOf(BadThrowException.class).hasMessageContaining("500");
-        softly.assertThatThrownBy(() -> VanillaThro.get(VanillaThro.MAX_THROW+1)).isInstanceOf(BadThrowException.class).hasMessageContaining("36");
+        softly.assertThatThrownBy(() -> VanillaThro.get(VanillaThro.MAX_THROW+1)).isInstanceOf(BadThrowException.class).hasMessageContaining("31");
 
         softly.assertThatThrownBy(() -> VanillaThro.get(-1)).isInstanceOf(BadThrowException.class).hasMessageContaining("-1");
         softly.assertThatThrownBy(() -> VanillaThro.get(-20)).isInstanceOf(BadThrowException.class).hasMessageContaining("-20");
         softly.assertThatThrownBy(() -> VanillaThro.get(500)).isInstanceOf(BadThrowException.class).hasMessageContaining("500");
-        softly.assertThatThrownBy(() -> VanillaThro.get(VanillaThro.MAX_THROW+1)).isInstanceOf(BadThrowException.class).hasMessageContaining("36");
+        softly.assertThatThrownBy(() -> VanillaThro.get(VanillaThro.MAX_THROW+1)).isInstanceOf(BadThrowException.class).hasMessageContaining("31");
     }
 
     @Test

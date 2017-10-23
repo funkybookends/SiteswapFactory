@@ -65,8 +65,7 @@ public class StatesToThrosConverter implements Function<State[], Thro[]>
         }
         catch (TransitionException cause)
         {
-            throw new InvalidSiteswapException("Cannot transition between all states " + Arrays.toString(states),
-                    cause);
+            throw new InvalidSiteswapException("Cannot transition between all states " + Arrays.toString(states), cause);
         }
     }
 

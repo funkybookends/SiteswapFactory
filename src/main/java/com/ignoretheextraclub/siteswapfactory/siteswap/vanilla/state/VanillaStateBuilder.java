@@ -5,8 +5,6 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.EMPTY;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.FILLED;
 import static com.ignoretheextraclub.siteswapfactory.utils.ArrayUtils.drop;
 
 /**
@@ -21,9 +19,6 @@ public class VanillaStateBuilder
 
     public VanillaStateBuilder(final int maxThrow, final int expectedObjects) throws PeriodException, NumObjectsException
     {
-        VanillaState.validateSize(maxThrow);
-        VanillaState.validateNumObjects(expectedObjects);
-
         if (expectedObjects > maxThrow)
         {
             throw new IllegalArgumentException("expectedObjects cannot be larger than maxThrow");
@@ -87,7 +82,7 @@ public class VanillaStateBuilder
     @Override
     public String toString()
     {
-        return VanillaState.toString(occupied, FILLED, EMPTY);
+        return new VanillaState(occupied).toString();
     }
 
     public VanillaState getState()

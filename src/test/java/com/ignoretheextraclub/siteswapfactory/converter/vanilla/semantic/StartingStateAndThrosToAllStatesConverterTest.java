@@ -20,6 +20,10 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_XX_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_X_X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._XX_X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils._X_XX;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.states;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.thros;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro.get;
@@ -52,6 +56,7 @@ public class StartingStateAndThrosToAllStatesConverterTest
             new Object[]{XXX__, thros(get(3)), states(XXX__)},
             new Object[]{XXX_, thros(get(3)), states(XXX_)},
             new Object[]{XXX, thros(get(3)), states(XXX)},
+            new Object[]{XX_X_, thros(get(5), get(5), get(0), get(5), get(0)), states(XX_X_, X_X_X, _X_XX, X_XX_, _XX_X)},
         };
         // TODO add more
     }
@@ -71,7 +76,7 @@ public class StartingStateAndThrosToAllStatesConverterTest
     {
         return new Object[]{
             new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("[5, 4, 3]")},
-            new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("XXX__")},
+            new Object[]{XXX__, thros(get(5), get(4), get(3)), new InvalidSiteswapException("XXX")},
             new Object[]{XXX__, null, new NullPointerException("thros cannot be null")},
             new Object[]{null, new VanillaThro[]{}, new NullPointerException("startingState cannot be null")},
             new Object[]{XXX__, new VanillaThro[]{}, new IllegalArgumentException("thros must have at least one throw")}
@@ -94,8 +99,8 @@ public class StartingStateAndThrosToAllStatesConverterTest
     private Object parametersForTestEnforcesLoop()
     {
         return new Object[]{
-            new Object[]{XXX__, thros(get(5), get(4)), new InvalidSiteswapException("XXX__")},
-            new Object[]{XXX__, thros(get(5), get(5)), new InvalidSiteswapException("XXX__")},
+            new Object[]{XXX__, thros(get(5), get(4)), new InvalidSiteswapException("XXX")},
+            new Object[]{XXX__, thros(get(5), get(5)), new InvalidSiteswapException("XXX")},
         };
         // TODO add more
     }

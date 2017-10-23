@@ -34,9 +34,9 @@ public class SimpleStateJoiner implements StateJoiner
 
         try
         {
-            final State[] firstToSecondTransition = extractTransitionStates(routeSearcher.findRoute(first[first.length - 1], second[0]));
-            final State[] secondToFirstTransition = extractTransitionStates(routeSearcher.findRoute(second[second.length - 1], first[0]));
-            return (State[]) joinAll(first, firstToSecondTransition, second, secondToFirstTransition);
+            final State[] routeFirstSecond = extractTransitionStates(routeSearcher.findRoute(first[0], second[0]));
+            final State[] routeSecondFirst = extractTransitionStates(routeSearcher.findRoute(second[0], first[0]));
+            return (State[]) joinAll(first, routeFirstSecond, second, routeSecondFirst);
         }
         catch (final TransitionException cause)
         {
@@ -53,16 +53,9 @@ public class SimpleStateJoiner implements StateJoiner
      */
     private State[] extractTransitionStates(final State[] route)
     {
-        if (route.length <= 2) // Then no transitional states are needed.
-        {
-            return new State[0];
-        }
-        else
-        {
-            final State[] states = new State[route.length - 2];
-            System.arraycopy(route, 1, states, 0, states.length);
-            return states;
-        }
+        final State[] states = new State[route.length - 1];
+        System.arraycopy(route, 0, states, 0, states.length);
+        return states;
     }
 
     private Object[] joinAll(final Object[]... arrays)

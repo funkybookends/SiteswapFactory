@@ -31,7 +31,7 @@ public interface State extends Comparable
      *
      * @return excitedness
      */
-    int excitedness();
+    long excitedness();
 
     /**
      * The set of states this state can move to from any throw.

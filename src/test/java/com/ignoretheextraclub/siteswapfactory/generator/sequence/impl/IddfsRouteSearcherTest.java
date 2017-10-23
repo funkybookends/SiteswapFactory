@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @RunWith(JUnitParamsRunner.class)
 public class IddfsRouteSearcherTest
 {
-    private final RouteSearcher routeSearcher = new IddfsRouteSearcher();
+    private final RouteSearcher routeSearcher = new IddfsRouteSearcher(5);
 
     @Test
     @Parameters

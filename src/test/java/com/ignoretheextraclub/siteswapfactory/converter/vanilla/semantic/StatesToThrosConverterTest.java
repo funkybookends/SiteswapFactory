@@ -61,7 +61,7 @@ public class StatesToThrosConverterTest
     {
         return new Object[]{
             new Object[]{new State[]{}, new IllegalArgumentException("No states")},
-            new Object[]{states(XXX__, XXXX_), new InvalidSiteswapException("XXX__, XXXX_")},
+            new Object[]{states(XXX__, XXXX_), new InvalidSiteswapException("XXX, XXXX")},
             new Object[]{null, new NullPointerException("states cannot be null")},
         };
     }

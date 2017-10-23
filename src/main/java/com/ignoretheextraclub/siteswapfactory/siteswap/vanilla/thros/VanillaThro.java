@@ -1,13 +1,14 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.CharToIntConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
-import java.util.Arrays;
-import java.util.Objects;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  * Represents a Vanilla Siteswap Throw
@@ -36,10 +37,9 @@ public class VanillaThro implements Thro
 
     /**
      * The maximum throw. Whilst you can throw higher throws technically, there is little use in reality. If you need
-     * this
-     * functionality, then reimplement this class without this constraint.
+     * this functionality, then reimplement this class without this constraint.
      */
-    public static final int MAX_THROW = 35;
+    public static final int MAX_THROW = 30;
 
     /**
      * Given the small number of throws, we keep them all in an array so we can reuse them.
@@ -186,5 +186,10 @@ public class VanillaThro implements Thro
         }
 
         return sum / thros.length;
+    }
+
+    public static Thro getMaxThro()
+    {
+        return get(MAX_THROW);
     }
 }

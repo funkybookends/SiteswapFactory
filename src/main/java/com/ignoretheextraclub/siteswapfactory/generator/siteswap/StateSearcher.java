@@ -20,7 +20,6 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
 /**
  * The iterator underlying the siteswap generator.
@@ -70,7 +69,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         {
             throw new IllegalArgumentException("siteswapConstructor must accept " + State[].class.getCanonicalName());
         }
-        this.maxPeriod = validatePeriod(maxPeriod);
+        this.maxPeriod = maxPeriod;
         this.intermediatePredicate = intermediatePredicate == null ? acceptAll() : intermediatePredicate;
         this.resultPredicate = resultPredicate == null ? isLegalLoop() : isLegalLoop().and(resultPredicate);
         this.siteswapRequestBuilder = siteswapRequestBuilder == null ? new SiteswapRequestBuilder() : siteswapRequestBuilder;
@@ -224,21 +223,6 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     private static Predicate<State[]> isLegalLoop()
     {
         return (states) -> states.length > 0 && states[states.length - 1].canTransition(states[0]);
-    }
-
-    /**
-     * Internal exception to indicate that there are no more siteswaps available.
-     */
-    private static int validatePeriod(final int maxPeriod)
-    {
-        if (maxPeriod <= 0 || maxPeriod > VanillaState.MAX_SIZE)
-        {
-            throw new IllegalArgumentException("maxPeriod is out of bounds or was not set.");
-        }
-        else
-        {
-            return maxPeriod;
-        }
     }
 
     static Predicate<State[]> acceptAll()
