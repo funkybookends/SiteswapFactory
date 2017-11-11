@@ -192,4 +192,9 @@ public class VanillaThro implements Thro
     {
         return get(MAX_THROW);
     }
+
+    public static VanillaThro[] getAllThros()
+    {
+        return THROWS;
+    }
 }
