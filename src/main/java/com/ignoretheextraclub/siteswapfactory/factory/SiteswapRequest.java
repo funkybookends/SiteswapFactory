@@ -142,4 +142,18 @@ public class SiteswapRequest
     {
         return NO_OP_STARTING_STRATEGY;
     }
+
+    /**
+     * Returns this constructor to an equivalent builder, with the constructor missing of course.
+     *
+     * @return A Builder matching this
+     */
+    public SiteswapRequestBuilder toBuilder()
+    {
+        return new SiteswapRequestBuilder()
+            .withReduce(reduce)
+            .withReducer(reducer)
+            .withStartingStrategy(startingStrategy)
+            .withStartFinder(startFinder);
+    }
 }

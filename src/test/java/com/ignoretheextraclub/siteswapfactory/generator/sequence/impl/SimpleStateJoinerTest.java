@@ -3,7 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.VanillaThrosToStringConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;

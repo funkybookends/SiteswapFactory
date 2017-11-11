@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory;
+package com.ignoretheextraclub.siteswapfactory.factory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +11,7 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapExceptio
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
+import com.ignoretheextraclub.siteswapfactory.impl.DefaultSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 
@@ -68,10 +69,10 @@ public class SiteswapFactoryTest
         when(constructor2.apply(expectedSiteswapRequest)).thenReturn(result);
 
         // Prepare test class
-        final SiteswapFactory factory = new SiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
-        final Siteswap actual = factory.getOne(siteswap);
+        final Siteswap actual = factory.get(siteswap);
 
         assertThat(actual).isSameAs(result);
 
@@ -107,10 +108,10 @@ public class SiteswapFactoryTest
         when(constructor2.apply(providedSiteswapRequest)).thenReturn(result);
 
         // Prepare test class
-        final SiteswapFactory factory = new SiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
-        final Siteswap actual = factory.getOne(providedSiteswapRequest);
+        final Siteswap actual = factory.apply(providedSiteswapRequest);
 
         assertThat(actual).isSameAs(result);
 
@@ -146,10 +147,10 @@ public class SiteswapFactoryTest
         when(constructor2.apply(providedSiteswapRequest)).thenReturn(result);
 
         // Prepare test class
-        final SiteswapFactory factory = new SiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
-        final Siteswap actual = factory.getOne(providedSiteswapRequest);
+        final Siteswap actual = factory.apply(providedSiteswapRequest);
 
         assertThat(actual).isSameAs(result);
 
@@ -187,10 +188,10 @@ public class SiteswapFactoryTest
         when(constructor2.apply(providedSiteswapRequest)).thenThrow(exception2);
 
         // Prepare test class
-        final SiteswapFactory factory = new SiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
-        assertThatThrownBy(() -> factory.getOne(providedSiteswapRequest))
+        assertThatThrownBy(() -> factory.apply(providedSiteswapRequest))
             .isInstanceOf(InvalidSiteswapException.class)
             .hasMessageContaining(siteswap)
             .hasCause(exception1)

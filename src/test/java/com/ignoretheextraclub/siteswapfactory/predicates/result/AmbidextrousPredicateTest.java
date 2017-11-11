@@ -4,7 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 
 /**
  * Created by caspar on 20/09/17.

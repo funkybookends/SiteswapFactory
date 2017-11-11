@@ -6,7 +6,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 

@@ -18,6 +18,7 @@ public interface SiteswapConstructor<T extends Siteswap> extends Function<Sitesw
      *
      * @param siteswapRequest The siteswap request.
      * @return The siteswap.
+     * @throws com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException if not valid
      * @see SiteswapRequest for details on the preferences of the request.
      */
     T apply(SiteswapRequest siteswapRequest);
@@ -33,6 +34,12 @@ public interface SiteswapConstructor<T extends Siteswap> extends Function<Sitesw
      */
     boolean accepts(Object object);
 
+    /**
+     * Calls {@link #apply(SiteswapRequest)} with the object wrapped in the default {@link SiteswapRequest}.
+     * @param object The constructor
+     * @return A siteswap
+     * @see #apply(SiteswapRequest)
+     */
     default T get(final Object object)
     {
         return this.apply(new SiteswapRequest(object));
