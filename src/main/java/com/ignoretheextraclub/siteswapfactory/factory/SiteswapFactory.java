@@ -3,7 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.factory;
 import java.util.Arrays;
 import java.util.List;
 
-import com.ignoretheextraclub.siteswapfactory.impl.DefaultSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.DefaultSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;

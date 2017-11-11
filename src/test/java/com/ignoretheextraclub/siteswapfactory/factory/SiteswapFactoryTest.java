@@ -8,10 +8,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
-import com.ignoretheextraclub.siteswapfactory.impl.DefaultSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.DefaultSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 

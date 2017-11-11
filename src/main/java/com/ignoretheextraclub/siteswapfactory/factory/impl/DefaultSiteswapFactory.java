@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.impl;
+package com.ignoretheextraclub.siteswapfactory.factory.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
