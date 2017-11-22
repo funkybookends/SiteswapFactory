@@ -41,6 +41,38 @@ public class ArrayLoopingIterator<T> implements Iterator<T>
         return array[pointer];
     }
 
+    public T previous()
+    {
+        pointer--;
+        if (pointer < 0)
+        {
+            pointer = array.length -1;
+        }
+        return array[pointer];
+    }
+
+    public T previous(final int positions)
+    {
+        pointer -= positions;
+
+        while (pointer < 0)
+        {
+            pointer =  pointer + array.length -1;
+        }
+
+        if (pointer >= array.length)
+        {
+            pointer %= array.length;
+        }
+
+        return array[pointer];
+    }
+
+    public ArrayLoopingIterator<T> clone()
+    {
+        return new ArrayLoopingIterator<T>(array, pointer);
+    }
+
     @Override
     public void forEachRemaining(final Consumer<? super T> action)
     {

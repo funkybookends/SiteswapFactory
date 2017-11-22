@@ -16,8 +16,8 @@ public class FourHandedSiteswap extends VanillaSiteswap
 {
     private static final String TYPE = "Four Handed Siteswap";
 
-    private static final int NUM_JUGGLERS = 2;
-    private static final int NUM_HANDS = 4;
+    public static final int NUM_JUGGLERS = 2;
+    public static final int NUM_HANDS = 4;
 
     public FourHandedSiteswap(final VanillaState[] states)
     {
@@ -65,7 +65,4 @@ public class FourHandedSiteswap extends VanillaSiteswap
     {
         return TYPE;
     }
-
-
-
 }
