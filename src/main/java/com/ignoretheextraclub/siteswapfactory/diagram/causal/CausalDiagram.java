@@ -1,255 +1,215 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
-
-import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
 public class CausalDiagram
 {
-    private List<JugglerSequence> jugglerSequences;
+	private Set<Site> sites;
 
-    private CausalDiagram(final List<JugglerSequence> jugglerSequences)
-    {
-        this.jugglerSequences = new ArrayList<>(jugglerSequences);
-    }
+	private CausalDiagram(final Set<Site> sites)
+	{
+		this.sites = new LinkedHashSet<>(sites);
+	}
 
-    public List<JugglerSequence> getJugglerSequences()
-    {
-        return new ArrayList<>(jugglerSequences);
-    }
+	public Set<Site> getSites()
+	{
+		return new LinkedHashSet<>(sites);
+	}
 
-    @Override
-    public boolean equals(final Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(final Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-        final CausalDiagram that = (CausalDiagram) o;
+		final CausalDiagram that = (CausalDiagram) o;
 
-        return jugglerSequences.equals(that.jugglerSequences);
-    }
+		return sites.equals(that.sites);
+	}
 
-    @Override
-    public int hashCode()
-    {
-        return jugglerSequences.hashCode();
-    }
+	@Override
+	public int hashCode()
+	{
+		return sites.hashCode();
+	}
 
-    @Override
-    public String toString()
-    {
-        return "CausalDiagram{" +
-            "jugglerSequences=" + jugglerSequences +
-            '}';
-    }
+	@Override
+	public String toString()
+	{
+		return "CausalDiagram{" +
+			"sites=" + sites +
+			'}';
+	}
 
-    public static class JugglerSequence
-    {
-        private Set<Site> sites = new TreeSet<>();
+	public static class Site
+	{
+		private int juggler;
+		private Hand hand;
+		private Set<Site> causes = new HashSet<>();
+		private double causalBeat;
 
-        private void addNode(final Site site)
-        {
-            this.sites.add(site);
-        }
+		Site(final int juggler,
+		     final Hand hand,
+		     final double causalBeat)
+		{
+			this.juggler = juggler;
+			this.hand = hand;
+			this.causalBeat = causalBeat;
+		}
 
-        public Enumeration<Site> enumerate()
-        {
-            return new IteratorEnumeration<>(new TreeSet<>(sites).iterator());
-        }
+		void setCauses(final Set<Site> causes)
+		{
+			this.causes = causes;
+		}
 
-        @Override
-        public boolean equals(final Object o)
-        {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+		void addCauses(final Site cause)
+		{
+			this.causes.add(cause);
+		}
 
-            final JugglerSequence that = (JugglerSequence) o;
+		public boolean isVisible()
+		{
+			return causes != null;
+		}
 
-            return sites.equals(that.sites);
-        }
+		public Set<Site> getCauses()
+		{
+			return causes;
+		}
 
-        @Override
-        public int hashCode()
-        {
-            return sites.hashCode();
-        }
+		public double getCausalBeat()
+		{
+			return causalBeat;
+		}
 
-        @Override
-        public String toString()
-        {
-            return "JugglerSequence{" +
-                "sites=" + sites +
-                '}';
-        }
-    }
+		public Hand getHand()
+		{
+			return hand;
+		}
 
-    public static class Site implements Comparable<Site>
-    {
-        private Hand hand;
-        private Site causes;
-        private double causalBeat;
+		public int getJuggler()
+		{
+			return juggler;
+		}
 
-        private Site(final Hand hand,
-                     final double causalBeat)
-        {
-            this.hand = hand;
-            this.causalBeat = causalBeat;
-        }
+		public boolean sameSite(final Site site)
+		{
+			return juggler == site.juggler &&
+				hand == site.hand &&
+				causalBeat == site.causalBeat;
+		}
 
-        private void setCauses(final Site causes)
-        {
-            this.causes = causes;
-        }
+		public boolean sameLocation(final Site site)
+		{
+			return juggler == site.juggler &&
+				causalBeat == site.causalBeat;
+		}
 
-        public boolean isVisible()
-        {
-            return causes != null;
-        }
+		@Override
+		public boolean equals(final Object o)
+		{
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
 
-        public Optional<Site> getCauses()
-        {
-            return Optional.ofNullable(causes);
-        }
+			final Site site = (Site) o;
 
-        public double getCausalBeat()
-        {
-            return causalBeat;
-        }
+			if (juggler != site.juggler) return false;
+			if (Double.compare(site.causalBeat, causalBeat) != 0) return false;
+			if (hand != site.hand) return false;
+			return true;
+		}
 
-        public Hand getHand()
-        {
-            return hand;
-        }
+		@Override
+		public int hashCode()
+		{
+			int result;
+			long temp;
+			result = juggler;
+			result = 31 * result + (hand != null ? hand.hashCode() : 0);
+			temp = Double.doubleToLongBits(causalBeat);
+			result = 31 * result + (int) (temp ^ (temp >>> 32));
+			return result;
+		}
 
-        @Override
-        public int compareTo(final Site other)
-        {
-            if (causalBeat != other.causalBeat)
-            {
-                return causalBeat < other.causalBeat ? -1 : 1;
-            }
-            if (hand == other.hand)
-            {
-                return 0;
-            }
-            return hand == Hand.RIGHT ? -1 : 1;
-        }
+		@Override
+		public String toString()
+		{
+			final StringBuilder causesStr = new StringBuilder();
 
-        @Override
-        public boolean equals(final Object o)
-        {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+			causesStr.append("Site{" + "juggler=").append(juggler)
+				.append(", hand=").append(hand)
+				.append(", causalBeat=").append(causalBeat);
 
-            final Site site = (Site) o;
+			for (final Site cause : causes)
+			{
+				causesStr.append(", causes={juggler=").append(cause.juggler)
+					.append(", hand=").append(cause.hand)
+					.append(", causalBeat=").append(cause.causalBeat)
+					.append("}");
+			}
 
-            if (Double.compare(site.causalBeat, causalBeat) != 0) return false;
-            return hand == site.hand;
-        }
+			return causesStr.append('}')
+				.toString();
+		}
+	}
 
-        @Override
-        public int hashCode()
-        {
-            int result;
-            long temp;
-            result = hand.hashCode();
-            temp = Double.doubleToLongBits(causalBeat);
-            result = 31 * result + (int) (temp ^ (temp >>> 32));
-            return result;
-        }
+	public enum Hand
+	{
+		RIGHT,
+		LEFT;
 
-        @Override
-        public String toString()
-        {
-            final String causesStr;
+		public static Hand other(final Hand hand)
+		{
+			return hand == RIGHT ? LEFT : RIGHT;
+		}
+	}
 
-            if (causes == null)
-            {
-                causesStr = "";
-            }
-            else
-            {
-                causesStr = ", causes={hand=" + causes.hand + ", causalBeat=" + causes.causalBeat + "}";
-            }
+	public static class Builder
+	{
+		private List<Site> sites = new ArrayList<>();
 
-            return "Site{" +
-                "hand=" + hand +
-                ", causalBeat=" + causalBeat +
-                causesStr +
-                '}';
-        }
-    }
+		public Builder()
+		{
+		}
 
-    public enum Hand
-    {
-        RIGHT,
-        LEFT;
+		public Builder addCause(final int fromJuggler,
+		                        final int toJuggler,
+		                        final double fromCausalBeat,
+		                        final double toCausalBeat,
+		                        final Hand fromHand,
+		                        final Hand toHand)
+		{
+			final Site source = getNode(fromJuggler, fromCausalBeat, fromHand);
+			final Site causes = getNode(toJuggler, toCausalBeat, toHand);
+			source.addCauses(causes);
+			return this;
+		}
 
-        public static Hand other(final Hand hand)
-        {
-            return hand == RIGHT ? LEFT : RIGHT;
-        }
-    }
+		public CausalDiagram build()
+		{
+			return new CausalDiagram(new LinkedHashSet<>(sites));
+		}
 
-    public static class Builder
-    {
-        private List<JugglerSequence> jugglerSequenceList = new ArrayList<>();
+		private Site getNode(final int juggler, final double beat, final Hand hand)
+		{
+			final Site newSite = new Site(juggler, hand, beat);
 
-        public Builder()
-        {
-        }
+			for (final Site site : sites)
+			{
+				if (site.sameSite(newSite))
+				{
+					return site;
+				}
+			}
 
-        public Builder addCause(final int fromJuggler,
-                                final int toJuggler,
-                                final double fromCausalBeat,
-                                final double toCausalBeat,
-                                final Hand fromHand,
-                                final Hand toHand)
-        {
-            final Site source = getNode(fromJuggler, fromCausalBeat, fromHand);
-            final Site causes = getNode(toJuggler, toCausalBeat, toHand);
-            source.setCauses(causes);
-            return this;
-        }
+			sites.add(newSite);
 
-        public CausalDiagram build()
-        {
-            return new CausalDiagram(jugglerSequenceList);
-        }
+			return newSite;
+		}
 
-        private Site getNode(final int juggler, final double beat, final Hand hand)
-        {
-            final JugglerSequence sequence = getCausalSequence(juggler);
-
-            final Site newSite = new Site(hand, beat);
-
-            for (final Site site : sequence.sites)
-            {
-                if (site.equals(newSite))
-                {
-                    return site;
-                }
-            }
-
-            sequence.addNode(newSite);
-            return newSite;
-        }
-
-        private JugglerSequence getCausalSequence(final int juggler)
-        {
-            while (jugglerSequenceList.size() < juggler + 1)
-            {
-                jugglerSequenceList.add(new JugglerSequence());
-            }
-            return jugglerSequenceList.get(juggler);
-        }
-
-    }
+	}
 }

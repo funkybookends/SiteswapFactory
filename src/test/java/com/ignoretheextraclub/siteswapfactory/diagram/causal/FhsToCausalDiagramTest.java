@@ -1,12 +1,17 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal;
 
 import org.assertj.core.api.Assertions;
+import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 
 public class FhsToCausalDiagramTest
 {
+    private static final Logger LOG = LoggerFactory.getLogger(FhsToCausalDiagramTest.class);
+
     private FhsToCausalDiagram fhsToCausalDiagram = new FhsToCausalDiagram(new CausalDiagramProperties());
 
     @Test
@@ -49,5 +54,22 @@ public class FhsToCausalDiagramTest
             .build();
 
         Assertions.assertThat(result).isEqualTo(expected);
+
+        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg();
+        final SVGGraphics2D convert = causalDiagramToSvg.convert(result);
+
+        LOG.info("\n\n{}\n\n", convert.getSVGElement());
+    }
+
+    @Test
+    public void name() throws Exception
+    {
+
+        final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("9689962"));
+
+        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg();
+        final SVGGraphics2D convert = causalDiagramToSvg.convert(result);
+
+        LOG.info("\n\n{}\n\n", convert.getSVGElement());
     }
 }

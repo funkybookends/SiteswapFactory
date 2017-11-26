@@ -25,7 +25,8 @@ public class CausalDiagramProperties
                                     final int minNumRepititions,
                                     final int preferredNumThrows,
                                     final int pixelsPerBeat,
-                                    final int pixelsPerJuggler, final int lineWidth,
+                                    final int pixelsPerJuggler,
+                                    final int lineWidth,
                                     final boolean arrowAlways,
                                     final boolean circle,
                                     final boolean handAlways)
@@ -110,7 +111,9 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
@@ -122,7 +125,9 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
@@ -134,7 +139,9 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
@@ -146,7 +153,9 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
@@ -158,7 +167,9 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
@@ -170,7 +181,9 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
@@ -182,19 +195,23 @@ public class CausalDiagramProperties
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
     }
 
-    public CausalDiagramProperties setandAlways(final boolean handAlways)
+    public CausalDiagramProperties setHandAlways(final boolean handAlways)
     {
         return new CausalDiagramProperties(minNumThrowsDisplayed,
             maxMunThrowsDisplayed,
             minNumRepititions,
             preferredNumThrows,
-            pixelsPerBeat, pixelsPerJuggler, lineWidth,
+            pixelsPerBeat,
+            pixelsPerJuggler,
+            lineWidth,
             arrowAlways,
             circle,
             handAlways);
