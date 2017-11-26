@@ -19,6 +19,13 @@ import static org.apache.commons.lang3.math.NumberUtils.max;
 
 public class CausalDiagramToSvg
 {
+	private final CausalDiagramProperties cdp;
+
+	public CausalDiagramToSvg(final CausalDiagramProperties causalDiagramProperties)
+	{
+		this.cdp = causalDiagramProperties;
+	}
+
 	public SVGGraphics2D convert(final CausalDiagram causalDiagram)
 	{
 		final Map<CausalDiagram.Site, SwapGraphic> swaps = getSiteToSwapMap(causalDiagram);
@@ -54,9 +61,9 @@ public class CausalDiagramToSvg
 				final ArrowGraphic arrowGraphic = new ArrowGraphic.ArrowGraphicBuilder()
 					.withStart(swaps.get(origin))
 					.withFinish(swaps.get(causes))
-					.withStroke(getArrowStroke())
-					.withArrowHeadLength(getArrowHeadLength())
-					.withArrowHeadPointyness(getArrowHeadPointyness())
+					.withStroke(new BasicStroke(cdp.getLineWidth()))
+					.withArrowHeadLength(cdp.getArrowHeadLength())
+					.withArrowHeadPointyness(cdp.getArrowHeadPointyness())
 					.withDisplayArrowHead(getDisplayArrowHead(origin, causes))
 					.createArrowGraphic();
 
@@ -69,11 +76,6 @@ public class CausalDiagramToSvg
 			}
 		}
 		return arrows;
-	}
-
-	private BasicStroke getArrowStroke()
-	{
-		return new BasicStroke(1);
 	}
 
 	private Map<CausalDiagram.Site, SwapGraphic> getSiteToSwapMap(final CausalDiagram causalDiagram)
@@ -89,8 +91,9 @@ public class CausalDiagramToSvg
 			if (mappedSiteOptional.isPresent())
 			{
 				final SwapGraphic mappedSite = swaps.get(mappedSiteOptional.get());
-				mappedSite.translate(0, getSwapSeperation(unmappedSite, mappedSiteOptional.get()));
-				mappedSite.translate(0, -getSwapSeperation(unmappedSite, mappedSiteOptional.get()));
+
+				mappedSite.translate(0, cdp.getSwapSeperation());
+				mappedSite.translate(0, -cdp.getSwapSeperation());
 			}
 
 			swaps.put(unmappedSite, newSwap);
@@ -101,14 +104,14 @@ public class CausalDiagramToSvg
 	private SwapGraphic mapToSwap(final CausalDiagram.Site site)
 	{
 		return new SwapGraphic.SwapBuilder()
-			.withxCenter((int) (site.getCausalBeat() * getBeatSeperation() + getLeftBorder()))
-			.withyCenter(site.getJuggler() * getJugglerSeperation() + getTopBorder())
+			.withxCenter((int) (site.getCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder()))
+			.withyCenter(site.getJuggler() * cdp.getPixelsPerJuggler() + cdp.getTopBorder())
 			.withLabel(site.getHand() == CausalDiagram.Hand.RIGHT ? 'R' : 'L')
-			.withLabelFont(getLabelFont())
-			.withCircleStroke(getSwapStroke())
-			.withBuffer(getSwapBuffer())
-			.withDrawCircle(getSwapDrawCircle())
-			.withDrawLabel(getDrawLabel())
+			.withLabelFont(cdp.getLabelFont())
+			.withCircleStroke(new BasicStroke(cdp.getLineWidth()))
+			.withBuffer(cdp.getSwapCircleBuffer())
+			.withDrawCircle(cdp.getSwapDrawCircle())
+			.withDrawLabel(cdp.isDrawLabel())
 			.createSwap();
 	}
 
@@ -131,72 +134,11 @@ public class CausalDiagramToSvg
 
 	private int getArrowBend(final CausalDiagram.Site origin, final CausalDiagram.Site causes)
 	{
-		return 75 * (origin.getJuggler() == 1 ? 1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
+		return cdp.getGetArrowBend() * (origin.getJuggler() == 1 ? 1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
 	}
 
 	private boolean getDisplayArrowHead(final CausalDiagram.Site origin, final CausalDiagram.Site causes)
 	{
-		// return origin.getCausalBeat() >= causes.getCausalBeat();
-		return true;
-	}
-
-	private boolean getSwapDrawCircle()
-	{
-		return true;
-	}
-
-	private double getArrowHeadPointyness()
-	{
-		return 9.0;
-	}
-
-	private int getArrowHeadLength()
-	{
-		return 20;
-	}
-
-	private boolean getDrawLabel()
-	{
-		return true;
-	}
-
-	private int getSwapSeperation(final CausalDiagram.Site unmappedSite, final CausalDiagram.Site site)
-	{
-		return 10;
-	}
-
-	private int getSwapBuffer()
-	{
-		return 0;
-	}
-
-	private BasicStroke getSwapStroke()
-	{
-		return new BasicStroke(1);
-	}
-
-	private Font getLabelFont()
-	{
-		return new Font("Arial", Font.PLAIN, 12);
-	}
-
-	private int getTopBorder()
-	{
-		return 50;
-	}
-
-	private int getJugglerSeperation()
-	{
-		return 100;
-	}
-
-	private int getBeatSeperation()
-	{
-		return 100;
-	}
-
-	private int getLeftBorder()
-	{
-		return 50;
+		return cdp.getArrowStyle().test(origin, causes);
 	}
 }

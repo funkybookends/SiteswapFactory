@@ -55,7 +55,7 @@ public class FhsToCausalDiagramTest
 
         Assertions.assertThat(result).isEqualTo(expected);
 
-        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg();
+        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg(new CausalDiagramProperties());
         final SVGGraphics2D convert = causalDiagramToSvg.convert(result);
 
         LOG.info("\n\n{}\n\n", convert.getSVGElement());
@@ -67,7 +67,7 @@ public class FhsToCausalDiagramTest
 
         final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("78a5a8042"));
 
-        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg();
+        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg(new CausalDiagramProperties());
         final SVGGraphics2D convert = causalDiagramToSvg.convert(result);
 
         LOG.info("\n\n{}\n\n", convert.getSVGElement());

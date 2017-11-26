@@ -1,219 +1,603 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal;
 
+import java.awt.*;
+import java.util.function.BiPredicate;
+
 public class CausalDiagramProperties
 {
-    // Length Properties
-    private final int minNumThrowsDisplayed;
-    private final int maxMunThrowsDisplayed;
-    private final int minNumRepititions;
-    private final int preferredNumThrows;
+	// Length Properties
+	private final int minNumThrowsDisplayed;
+	private final int maxMunThrowsDisplayed;
+	private final int minNumRepititions;
+	private final int preferredNumThrows;
+	private final int getArrowBend;
 
-    // Seperation Properties
-    private final int pixelsPerBeat;
-    private final int pixelsPerJuggler;
+	// Seperation Properties
+	private final int pixelsPerBeat;
+	private final int pixelsPerJuggler;
+	private final int swapSeperation;
 
-    // Line Style
-    private final int lineWidth;
-    private final boolean arrowAlways;
+	// Line Style
+	private final int lineWidth;
+	private final ArrowStyle arrowStyle;
+	private final int arrowHeadLength;
+	private double arrowHeadPointyness;
 
-    // Landing Style
-    private final boolean circle;
-    private final boolean handAlways;
+	// Landing Style
+	private boolean swapDrawCircle;
+	private final int swapCircleBuffer;
+	private final boolean drawLabel;
+	private final Font labelFont;
 
-    private CausalDiagramProperties(final int minNumThrowsDisplayed,
-                                    final int maxMunThrowsDisplayed,
-                                    final int minNumRepititions,
-                                    final int preferredNumThrows,
-                                    final int pixelsPerBeat,
-                                    final int pixelsPerJuggler,
-                                    final int lineWidth,
-                                    final boolean arrowAlways,
-                                    final boolean circle,
-                                    final boolean handAlways)
-    {
-        this.minNumThrowsDisplayed = minNumThrowsDisplayed;
-        this.maxMunThrowsDisplayed = maxMunThrowsDisplayed;
-        this.minNumRepititions = minNumRepititions;
-        this.preferredNumThrows = preferredNumThrows;
-        this.pixelsPerBeat = pixelsPerBeat;
-        this.pixelsPerJuggler = pixelsPerJuggler;
-        this.lineWidth = lineWidth;
-        this.arrowAlways = arrowAlways;
-        this.circle = circle;
-        this.handAlways = handAlways;
-    }
+	// Border Style
+	private final int leftBorder;
+	private final int topBorder;
 
-    public CausalDiagramProperties()
-    {
-        this
-            (
-                8,
-                22,
-                2,
-                15,
-                15,
-                10,
-                1,
-                false,
-                false,
-                false
-            );
-    }
+	public CausalDiagramProperties()
+	{
+		this(12,
+			24,
+			2,
+			16,
+			60,
+			100,
+			80,
+			10,
+			1,
+			ArrowStyle.BACKWARDS_ONLY,
+			17,
+			8.0,
+			true,
+			0,
+			true,
+			new Font("Arial", Font.PLAIN, 12),
+			50,
+			50);
+	}
 
-    public int getPixelsPerBeat()
-    {
-        return pixelsPerBeat;
-    }
+	private CausalDiagramProperties(final int minNumThrowsDisplayed,
+	                                final int maxMunThrowsDisplayed,
+	                                final int minNumRepititions,
+	                                final int preferredNumThrows,
+	                                final int getArrowBend,
+	                                final int pixelsPerBeat,
+	                                final int pixelsPerJuggler,
+	                                final int swapSeperation,
+	                                final int lineWidth,
+	                                final ArrowStyle arrowStyle,
+	                                final int arrowHeadLength,
+	                                final double arrowHeadPointyness,
+	                                final boolean swapDrawCircle,
+	                                final int swapCircleBuffer,
+	                                final boolean drawLabel,
+	                                final Font labelFont,
+	                                final int leftBorder,
+	                                final int topBorder)
+	{
+		this.minNumThrowsDisplayed = minNumThrowsDisplayed;
+		this.maxMunThrowsDisplayed = maxMunThrowsDisplayed;
+		this.minNumRepititions = minNumRepititions;
+		this.preferredNumThrows = preferredNumThrows;
+		this.getArrowBend = getArrowBend;
+		this.pixelsPerBeat = pixelsPerBeat;
+		this.pixelsPerJuggler = pixelsPerJuggler;
+		this.swapSeperation = swapSeperation;
+		this.lineWidth = lineWidth;
+		this.arrowStyle = arrowStyle;
+		this.arrowHeadLength = arrowHeadLength;
+		this.arrowHeadPointyness = arrowHeadPointyness;
+		this.swapDrawCircle = swapDrawCircle;
+		this.swapCircleBuffer = swapCircleBuffer;
+		this.drawLabel = drawLabel;
+		this.labelFont = labelFont;
+		this.leftBorder = leftBorder;
+		this.topBorder = topBorder;
+	}
 
-    public int getMinNumThrowsDisplayed()
-    {
-        return minNumThrowsDisplayed;
-    }
+	public enum ArrowStyle
+	{
+		ALWAYS((CausalDiagram.Site origin, CausalDiagram.Site causes) -> true),
+		BACKWARDS_ONLY((CausalDiagram.Site origin, CausalDiagram.Site causes) -> origin.getCausalBeat() >= causes.getCausalBeat());
 
-    public int getMaxMunThrowsDisplayed()
-    {
-        return maxMunThrowsDisplayed;
-    }
+		private final BiPredicate<CausalDiagram.Site, CausalDiagram.Site> drawArrow;
 
-    public int getMinNumRepititions()
-    {
-        return minNumRepititions;
-    }
 
-    public int getPreferredNumThrows()
-    {
-        return preferredNumThrows;
-    }
+		ArrowStyle(final BiPredicate<CausalDiagram.Site, CausalDiagram.Site> drawArrow)
+		{
+			this.drawArrow = drawArrow;
+		}
 
-    public int getLineWidth()
-    {
-        return lineWidth;
-    }
+		public boolean test(final CausalDiagram.Site origin,
+		                    final CausalDiagram.Site cause)
+		{
+			return drawArrow.test(origin, cause);
+		}
+	}
 
-    public boolean isArrowAlways()
-    {
-        return arrowAlways;
-    }
+	public boolean getSwapDrawCircle()
+	{
+		return swapDrawCircle;
+	}
 
-    public boolean isCircle()
-    {
-        return circle;
-    }
+	public double getArrowHeadPointyness()
+	{
+		return arrowHeadPointyness;
+	}
 
-    public boolean isHandAlways()
-    {
-        return handAlways;
-    }
+	public int getArrowHeadLength()
+	{
+		return arrowHeadLength;
+	}
 
-    public CausalDiagramProperties setMinNumThrowsDisplayed(final int minNumThrowsDisplayed)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getMinNumThrowsDisplayed()
+	{
+		return minNumThrowsDisplayed;
+	}
 
-    public CausalDiagramProperties setMaxMunThrowsDisplayed(final int maxMunThrowsDisplayed)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getMaxMunThrowsDisplayed()
+	{
+		return maxMunThrowsDisplayed;
+	}
 
-    public CausalDiagramProperties setMinNumRepititions(final int minNumRepititions)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getMinNumRepititions()
+	{
+		return minNumRepititions;
+	}
 
-    public CausalDiagramProperties setPreferredNumThrows(final int preferredNumThrows)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getPreferredNumThrows()
+	{
+		return preferredNumThrows;
+	}
 
-    public CausalDiagramProperties setLineWidth(final int lineWidth)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getGetArrowBend()
+	{
+		return getArrowBend;
+	}
 
-    public CausalDiagramProperties setArrowAlways(final boolean arrowAlways)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getPixelsPerBeat()
+	{
+		return pixelsPerBeat;
+	}
 
-    public CausalDiagramProperties setAircle(final boolean circle)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getPixelsPerJuggler()
+	{
+		return pixelsPerJuggler;
+	}
 
-    public CausalDiagramProperties setHandAlways(final boolean handAlways)
-    {
-        return new CausalDiagramProperties(minNumThrowsDisplayed,
-            maxMunThrowsDisplayed,
-            minNumRepititions,
-            preferredNumThrows,
-            pixelsPerBeat,
-            pixelsPerJuggler,
-            lineWidth,
-            arrowAlways,
-            circle,
-            handAlways);
-    }
+	public int getSwapSeperation()
+	{
+		return swapSeperation;
+	}
+
+	public int getLineWidth()
+	{
+		return lineWidth;
+	}
+
+	public ArrowStyle getArrowStyle()
+	{
+		return arrowStyle;
+	}
+
+	public int getSwapCircleBuffer()
+	{
+		return swapCircleBuffer;
+	}
+
+	public boolean isDrawLabel()
+	{
+		return drawLabel;
+	}
+
+	public Font getLabelFont()
+	{
+		return labelFont;
+	}
+
+	public int getLeftBorder()
+	{
+		return leftBorder;
+	}
+
+	public int getTopBorder()
+	{
+		return topBorder;
+	}
+
+	public CausalDiagramProperties withSwapDrawCircle(final boolean swapDrawCircle)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withArrowHeadPointyness(final double arrowHeadPointyness)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withArrowHeadLength(final int arrowHeadLength)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withMinNumThrowsDisplayed(final int minNumThrowsDisplayed)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withMaxMunThrowsDisplayed(final int maxMunThrowsDisplayed)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withMinNumRepititions(final int minNumRepititions)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withPreferredNumThrows(final int preferredNumThrows)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withGetArrowBend(final int withArrowBend)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withPixelsPerBeat(final int pixelsPerBeat)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withPixelsPerJuggler(final int pixelsPerJuggler)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withSwapSeperation(final int swapSeperation)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withLineWidth(final int lineWidth)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withArrowStyle(final ArrowStyle arrowStyle)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withSwapCircleBuffer(final int swapCircleBuffer)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties setIsDrawLabel(final boolean drawLabel)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withLabelFont(final Font labelFont)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withLeftBorder(final int leftBorder)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
+	public CausalDiagramProperties withTopBorder(final int topBorder)
+	{
+		return new CausalDiagramProperties(minNumThrowsDisplayed,
+			maxMunThrowsDisplayed,
+			minNumRepititions,
+			preferredNumThrows,
+			getArrowBend,
+			pixelsPerBeat,
+			pixelsPerJuggler,
+			swapSeperation,
+			lineWidth,
+			arrowStyle,
+			arrowHeadLength,
+			arrowHeadPointyness,
+			swapDrawCircle,
+			swapCircleBuffer,
+			drawLabel,
+			labelFont,
+			leftBorder,
+			topBorder);
+	}
+
 }
