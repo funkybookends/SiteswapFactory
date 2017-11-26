@@ -21,6 +21,7 @@ public class SwapGraphic implements Graphic
 	private BasicStroke circleStroke;
 	private int buffer;
 	private boolean drawCircle;
+	private boolean drawLabel;
 
 	public SwapGraphic(final int xCenter,
 	                   final int yCenter,
@@ -28,7 +29,8 @@ public class SwapGraphic implements Graphic
 	                   final Font labelFont,
 	                   final BasicStroke circleStroke,
 	                   final int buffer,
-	                   final boolean drawCircle)
+	                   final boolean drawCircle,
+	                   final boolean drawLabel)
 	{
 		this.xCenter = xCenter;
 		this.yCenter = yCenter;
@@ -37,19 +39,21 @@ public class SwapGraphic implements Graphic
 		this.circleStroke = circleStroke;
 		this.buffer = buffer;
 		this.drawCircle = drawCircle;
+		this.drawLabel = drawLabel;
 	}
 
 	@Override
 	public void draw(final Graphics2D graphics)
 	{
-		// Set styles
-		graphics.setFont(labelFont);
+		if (drawLabel)
+		{
+			graphics.setFont(labelFont);
 
-		// Draw label
-		final Point labelPosition = getLabelPosition();
-		graphics.drawString(String.valueOf(label), labelPosition.x, labelPosition.y);
+			final Point labelPosition = getLabelPosition();
+			graphics.drawString(String.valueOf(label), labelPosition.x, labelPosition.y);
+		}
 
-		if (drawCircle)
+		if (drawCircle || !drawLabel)
 		{
 			graphics.setStroke(circleStroke);
 			final Rectangle circleBox = getBounds();
@@ -71,7 +75,14 @@ public class SwapGraphic implements Graphic
 
 	private int getLabelWidth()
 	{
-		return labelFont.getSize();
+		if (drawLabel)
+		{
+			return labelFont.getSize();
+		}
+		else
+		{
+			return 1;
+		}
 	}
 
 	private Point getLabelPosition()
@@ -132,6 +143,7 @@ public class SwapGraphic implements Graphic
 		private BasicStroke circleStroke = DEFAULT_STROKE;
 		private int buffer = DEFUALT_BUFFER_BETWEEN_LABEL_AND_CIRCLE;
 		private boolean drawCircle = true;
+		private boolean drawLabel = true;
 
 		public SwapBuilder withxCenter(final int xCenter)
 		{
@@ -175,9 +187,15 @@ public class SwapGraphic implements Graphic
 			return this;
 		}
 
+		public SwapBuilder withDrawLabel(final boolean drawLabel)
+		{
+			this.drawLabel = drawLabel;
+			return this;
+		}
+
 		public SwapGraphic createSwap()
 		{
-			return new SwapGraphic(xCenter, yCenter, label, labelFont, circleStroke, buffer, drawCircle);
+			return new SwapGraphic(xCenter, yCenter, label, labelFont, circleStroke, buffer, drawCircle, drawLabel);
 		}
 	}
 }

@@ -65,7 +65,7 @@ public class FhsToCausalDiagramTest
     public void name() throws Exception
     {
 
-        final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("9689962"));
+        final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("78a5a8042"));
 
         final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg();
         final SVGGraphics2D convert = causalDiagramToSvg.convert(result);

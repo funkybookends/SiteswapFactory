@@ -24,7 +24,7 @@ public class ArrowGraphicTest
 
 	@Test
 	@Ignore("visual test")
-	public void name() throws Exception
+	public void visualTest() throws Exception
 	{
 		final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(200, 200);
 

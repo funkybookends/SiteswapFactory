@@ -57,28 +57,18 @@ public class CausalDiagramToSvg
 					.withStroke(getArrowStroke())
 					.withArrowHeadLength(getArrowHeadLength())
 					.withArrowHeadPointyness(getArrowHeadPointyness())
-					.withDisplayArrowHead(origin.getCausalBeat() <= causes.getCausalBeat())
+					.withDisplayArrowHead(getDisplayArrowHead(origin, causes))
 					.createArrowGraphic();
 
 				arrows.add(arrowGraphic);
 
 				if (origin.getJuggler() == causes.getJuggler() && (moreThanABeatApart(origin.getCausalBeat(), causes.getCausalBeat())))
 				{
-					arrowGraphic.translateControl(0, getArrowBend() * (origin.getJuggler() == 1 ? 1 : -1));
+					arrowGraphic.translateControl(0, getArrowBend(origin, causes));
 				}
 			}
 		}
 		return arrows;
-	}
-
-	private boolean moreThanABeatApart(final double causalBeat, final double causalBeat1)
-	{
-		return Math.abs(causalBeat - causalBeat1) > 1.1;
-	}
-
-	private int getArrowBend()
-	{
-		return 75;
 	}
 
 	private BasicStroke getArrowStroke()
@@ -90,32 +80,22 @@ public class CausalDiagramToSvg
 	{
 		final Map<CausalDiagram.Site, SwapGraphic> swaps = new HashMap<>();
 
-		for (final CausalDiagram.Site site : causalDiagram.getSites())
+		for (final CausalDiagram.Site unmappedSite : causalDiagram.getSites())
 		{
-			final SwapGraphic newSwap = mapToSwap(site);
+			final SwapGraphic newSwap = mapToSwap(unmappedSite);
 
-			final Optional<SwapGraphic> sameSiteOptional = containsSameSite(swaps, site);
+			final Optional<CausalDiagram.Site> mappedSiteOptional = containsSameSite(swaps, unmappedSite);
 
-			if (sameSiteOptional.isPresent())
+			if (mappedSiteOptional.isPresent())
 			{
-				final SwapGraphic oldSwap = sameSiteOptional.get();
-				oldSwap.translate(0, getSwapSeperation());
-				oldSwap.translate(0, -getSwapSeperation());
+				final SwapGraphic mappedSite = swaps.get(mappedSiteOptional.get());
+				mappedSite.translate(0, getSwapSeperation(unmappedSite, mappedSiteOptional.get()));
+				mappedSite.translate(0, -getSwapSeperation(unmappedSite, mappedSiteOptional.get()));
 			}
 
-			swaps.put(site, newSwap);
+			swaps.put(unmappedSite, newSwap);
 		}
 		return swaps;
-	}
-
-	private double getArrowHeadPointyness()
-	{
-		return 9.0;
-	}
-
-	private int getArrowHeadLength()
-	{
-		return 20;
 	}
 
 	private SwapGraphic mapToSwap(final CausalDiagram.Site site)
@@ -128,19 +108,36 @@ public class CausalDiagramToSvg
 			.withCircleStroke(getSwapStroke())
 			.withBuffer(getSwapBuffer())
 			.withDrawCircle(getSwapDrawCircle())
+			.withDrawLabel(getDrawLabel())
 			.createSwap();
 	}
 
-	private Optional<SwapGraphic> containsSameSite(final Map<CausalDiagram.Site, SwapGraphic> swaps, final CausalDiagram.Site newSite)
+	private Optional<CausalDiagram.Site> containsSameSite(final Map<CausalDiagram.Site, SwapGraphic> swaps, final CausalDiagram.Site newSite)
 	{
-		for (final CausalDiagram.Site containedSite : swaps.keySet())
+		for (final CausalDiagram.Site mappedSite : swaps.keySet())
 		{
-			if (containedSite.sameLocation(newSite))
+			if (mappedSite.sameLocation(newSite))
 			{
-				return Optional.of(swaps.get(containedSite));
+				return Optional.of(mappedSite);
 			}
 		}
 		return Optional.empty();
+	}
+
+	private boolean moreThanABeatApart(final double causalBeat, final double causalBeat1)
+	{
+		return Math.abs(causalBeat - causalBeat1) > 1.1;
+	}
+
+	private int getArrowBend(final CausalDiagram.Site origin, final CausalDiagram.Site causes)
+	{
+		return 75 * (origin.getJuggler() == 1 ? 1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
+	}
+
+	private boolean getDisplayArrowHead(final CausalDiagram.Site origin, final CausalDiagram.Site causes)
+	{
+		// return origin.getCausalBeat() >= causes.getCausalBeat();
+		return true;
 	}
 
 	private boolean getSwapDrawCircle()
@@ -148,7 +145,22 @@ public class CausalDiagramToSvg
 		return true;
 	}
 
-	private int getSwapSeperation()
+	private double getArrowHeadPointyness()
+	{
+		return 9.0;
+	}
+
+	private int getArrowHeadLength()
+	{
+		return 20;
+	}
+
+	private boolean getDrawLabel()
+	{
+		return true;
+	}
+
+	private int getSwapSeperation(final CausalDiagram.Site unmappedSite, final CausalDiagram.Site site)
 	{
 		return 10;
 	}

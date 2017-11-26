@@ -2,14 +2,14 @@ package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
 
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
-
-import static org.apache.commons.lang3.math.NumberUtils.max;
-import static org.apache.commons.lang3.math.NumberUtils.min;
+import java.util.function.Function;
 
 /**
- * Draws a quadratic line if a control is provided, otherwise a straight line.
- * Draws an arrow if configured to.
+ * Draws a line (with an optional arrow head) between two {@link SwapGraphic}s. An optional {@link #control} allows
+ * for a curve to be used instead of a line.
  * https://stackoverflow.com/questions/27778951/drawing-an-arrow-on-an-html5-canvas-quadratic-curve
  *
  * @author Caspar Nonclercq
@@ -34,6 +34,17 @@ public class ArrowGraphic implements Graphic
 	 */
 	private double arrowHeadPointyness;
 
+	/**
+	 * Creates an arrow.
+	 *
+	 * @param start               The start point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point)}
+	 * @param finish              The end point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point)}
+	 * @param control             An optional control, will cause a {@link QuadCurve2D} to be drawn instead of a line.
+	 * @param stroke              The stroke to use.
+	 * @param displayArrowHead    If the arrow head should be drawn or not.
+	 * @param arrowHeadLength     The length of the arrow head.
+	 * @param arrowHeadPointyness The pointyness of the arrowhead, greater than 0.
+	 */
 	public ArrowGraphic(final SwapGraphic start,
 	                    final SwapGraphic finish,
 	                    final Point control,
@@ -52,73 +63,91 @@ public class ArrowGraphic implements Graphic
 		this.displayArrowHead = displayArrowHead;
 		this.arrowHeadLength = arrowHeadLength;
 		this.arrowHeadPointyness = arrowHeadPointyness;
+
+		if (arrowHeadPointyness <= 0)
+		{
+			throw new IllegalArgumentException("arrowHeadPointyness must be > than 0");
+		}
 	}
 
 	@Override
 	public void draw(final Graphics2D graphics)
 	{
-		graphics.setStroke(stroke);
-
-		final Point shaftStartingPoint = getShaftStartingPoint();
-		final Point shaftEndingPoint = getShaftEndingPoint();
-
-		if (control == null)
+		if (start != finish)
 		{
-			drawLine(graphics, shaftStartingPoint, shaftEndingPoint, stroke);
-		}
-		else
-		{
-			final Shape curve = new QuadCurve2D.Double(shaftStartingPoint.x, shaftStartingPoint.y,
-				control.x, control.y,
-				shaftEndingPoint.x, shaftEndingPoint.y);
+			graphics.setStroke(stroke);
 
-			graphics.draw(curve);
-		}
+			final Point shaftStartingPoint = getShaftStartingPoint();
+			final Point shaftEndingPoint = getShaftEndingPoint();
 
-		if (displayArrowHead)
-		{
-			final Point firstArrowHeadPoint = getFirstArrowHeadPoint(shaftEndingPoint);
-			final Point secondArrowHeadPoint = getSecondArrowHeadPoint(shaftEndingPoint);
+			if (control == null)
+			{
+				drawLine(graphics, shaftStartingPoint, shaftEndingPoint, stroke);
+			}
+			else
+			{
+				final Shape curve = new QuadCurve2D.Double(shaftStartingPoint.x, shaftStartingPoint.y, control.x, control.y, shaftEndingPoint.x, shaftEndingPoint.y);
+				graphics.draw(curve);
+			}
 
-			drawLine(graphics, firstArrowHeadPoint, shaftEndingPoint, stroke);
-			drawLine(graphics, secondArrowHeadPoint, shaftEndingPoint, stroke);
+			if (displayArrowHead)
+			{
+				final Point firstArrowHeadPoint = getFirstArrowHeadPoint(shaftEndingPoint);
+				final Point secondArrowHeadPoint = getSecondArrowHeadPoint(shaftEndingPoint);
+
+				drawLine(graphics, firstArrowHeadPoint, shaftEndingPoint, stroke);
+				drawLine(graphics, secondArrowHeadPoint, shaftEndingPoint, stroke);
+			}
 		}
 	}
 
 	@Override
 	public Rectangle getBounds()
 	{
-		final Point shaftStartingPoint = getShaftStartingPoint();
+		if (start != finish)
+		{
+			final List<Point> extremePoints = getAllPoints();
+
+			final int left = min((point) -> point.x, extremePoints);
+			final int top = min((point) -> point.y, extremePoints);
+			final int right = max((point) -> point.x, extremePoints);
+			final int bottom = max((point) -> point.y, extremePoints);
+
+			return new Rectangle(left, top, right - left, bottom - top);
+		}
+		else
+		{
+			return start.getBounds();
+		}
+	}
+
+	private int min(Function<Point, Integer> extractor, final List<Point> points)
+	{
+		return points.stream()
+			.filter(Objects::nonNull)
+			.map(extractor)
+			.reduce((first, second) -> first < second ? first : second)
+			.orElseThrow(IllegalArgumentException::new);
+	}
+
+	private int max(Function<Point, Integer> extractor, final List<Point> points)
+	{
+		return points.stream()
+			.filter(Objects::nonNull)
+			.map(extractor)
+			.reduce((first, second) -> first > second ? first : second)
+			.orElseThrow(IllegalArgumentException::new);
+	}
+
+	private List<Point> getAllPoints()
+	{
 		final Point shaftEndingPoint = getShaftEndingPoint();
-		final Point firstArrowHeadPoint = getFirstArrowHeadPoint(shaftEndingPoint);
-		final Point secondArrowHeadPoint = getSecondArrowHeadPoint(shaftEndingPoint);
 
-		final int left = min(shaftStartingPoint.x,
-			shaftEndingPoint.x,
-			firstArrowHeadPoint.x,
-			secondArrowHeadPoint.x,
-			((control == null) ? shaftStartingPoint.x : control.x));
-
-		final int top = min(shaftStartingPoint.y,
-			shaftEndingPoint.y,
-			firstArrowHeadPoint.y,
-			secondArrowHeadPoint.y,
-			((control == null) ? shaftStartingPoint.y : control.y));
-
-		final int right = max(shaftStartingPoint.x,
-			shaftEndingPoint.x,
-			firstArrowHeadPoint.x,
-			secondArrowHeadPoint.x,
-			((control == null) ? shaftStartingPoint.x : control.x));
-
-		final int bottom = max(shaftStartingPoint.y,
-			shaftEndingPoint.y,
-			firstArrowHeadPoint.y,
-			secondArrowHeadPoint.y,
-			((control == null) ? shaftStartingPoint.y : control.y));
-
-
-		return new Rectangle(left, top,right - left, bottom - top);
+		return Arrays.asList(getShaftStartingPoint(),
+			shaftEndingPoint,
+			getFirstArrowHeadPoint(shaftEndingPoint),
+			getSecondArrowHeadPoint(shaftEndingPoint),
+			control);
 	}
 
 	private Point getShaftEndingPoint()
@@ -153,17 +182,7 @@ public class ArrowGraphic implements Graphic
 
 	private double getArrowAngle()
 	{
-		final Point entry;
-
-		if (control != null)
-		{
-			entry = control;
-		}
-		else
-		{
-			entry = start.getCenter();
-		}
-
+		final Point entry = control == null ? start.getCenter() : control;
 		return Math.atan2(entry.x - finish.getCenter().getX(), entry.y - finish.getCenter().getY()) + Math.PI;
 	}
 
