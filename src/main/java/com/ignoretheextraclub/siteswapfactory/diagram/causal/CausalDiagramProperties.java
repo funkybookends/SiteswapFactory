@@ -5,6 +5,7 @@ import java.util.function.BiPredicate;
 
 public class CausalDiagramProperties
 {
+	private static final int FACTOR = 5;
 	// Length Properties
 	private final int minNumThrowsDisplayed;
 	private final int maxMunThrowsDisplayed;
@@ -35,14 +36,14 @@ public class CausalDiagramProperties
 
 	public CausalDiagramProperties()
 	{
-		this(12,
+		this(8,
 			24,
 			2,
 			16,
-			60,
-			100,
-			80,
-			10,
+			6 * FACTOR,
+			10 * FACTOR,
+			8 *FACTOR,
+			FACTOR,
 			1,
 			ArrowStyle.BACKWARDS_ONLY,
 			17,
@@ -51,8 +52,8 @@ public class CausalDiagramProperties
 			0,
 			true,
 			new Font("Arial", Font.PLAIN, 12),
-			50,
-			50);
+			5 * FACTOR,
+			5 * FACTOR);
 	}
 
 	private CausalDiagramProperties(final int minNumThrowsDisplayed,
@@ -96,19 +97,19 @@ public class CausalDiagramProperties
 
 	public enum ArrowStyle
 	{
-		ALWAYS((CausalDiagram.Site origin, CausalDiagram.Site causes) -> true),
-		BACKWARDS_ONLY((CausalDiagram.Site origin, CausalDiagram.Site causes) -> origin.getCausalBeat() >= causes.getCausalBeat());
+		ALWAYS((Site origin, Site causes) -> true),
+		BACKWARDS_ONLY((Site origin, Site causes) -> origin.getCausalBeat() >= causes.getCausalBeat());
 
-		private final BiPredicate<CausalDiagram.Site, CausalDiagram.Site> drawArrow;
+		private final BiPredicate<Site, Site> drawArrow;
 
 
-		ArrowStyle(final BiPredicate<CausalDiagram.Site, CausalDiagram.Site> drawArrow)
+		ArrowStyle(final BiPredicate<Site, Site> drawArrow)
 		{
 			this.drawArrow = drawArrow;
 		}
 
-		public boolean test(final CausalDiagram.Site origin,
-		                    final CausalDiagram.Site cause)
+		public boolean test(final Site origin,
+		                    final Site cause)
 		{
 			return drawArrow.test(origin, cause);
 		}

@@ -5,11 +5,14 @@ import java.awt.geom.QuadCurve2D;
 
 import org.assertj.core.api.Assertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.ignoretheextraclub.siteswapfactory.diagram.VisualTestRule;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -18,36 +21,48 @@ public class ArrowGraphicTest
 {
 	private static final Logger LOG = LoggerFactory.getLogger(ArrowGraphicTest.class);
 
+	@Rule
+	public VisualTestRule visualTestRule = new VisualTestRule();
+
+	@Rule
+	public TestName testName = new TestName();
+
 	private BasicStroke stroke = new BasicStroke(1);
-	private SwapGraphic finish = new SwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
-	private SwapGraphic start = new SwapGraphic.SwapBuilder().withxCenter(150).withyCenter(100).withLabel('L').createSwap();
+	private DefaultSwapGraphic finish = new DefaultSwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
+	private DefaultSwapGraphic start = new DefaultSwapGraphic.SwapBuilder().withxCenter(150).withyCenter(100).withLabel('L').createSwap();
 
 	@Test
-	@Ignore("visual test")
-	public void visualTest() throws Exception
+	public void testArrowWithArrowHead() throws Exception
 	{
 		final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(200, 200);
 
-		final ArrowGraphic arrow = new ArrowGraphic.ArrowGraphicBuilder().withStart(start).withFinish(finish).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
+		final PointToPointArrowGraphic arrow = new PointToPointArrowGraphic.ArrowGraphicBuilder()
+			.withStart(start)
+			.withFinish(finish)
+			.withControl(null)
+			.withStroke(stroke)
+			.withDisplayArrowHead(true)
+			.withArrowHeadLength(20)
+			.withArrowHeadPointyness(9.0)
+			.createArrowGraphic();
 
 		arrow.draw(svgGraphics2D);
 		start.draw(svgGraphics2D);
 		finish.draw(svgGraphics2D);
 
-		LOG.info("\n\n{}\n\n", svgGraphics2D.getSVGElement());
+		visualTestRule.save(getClass(), testName, svgGraphics2D);
 	}
 
 	@Test
-	@Ignore("visual test")
 	public void testTranslateControl() throws Exception
 	{
-		final SwapGraphic first = new SwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
-		final SwapGraphic second = new SwapGraphic.SwapBuilder().withxCenter(150).withyCenter(100).withLabel('L').createSwap();
-		final SwapGraphic third = new SwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
+		final DefaultSwapGraphic first = new DefaultSwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
+		final DefaultSwapGraphic second = new DefaultSwapGraphic.SwapBuilder().withxCenter(150).withyCenter(100).withLabel('L').createSwap();
+		final DefaultSwapGraphic third = new DefaultSwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
 
 		final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(300, 200);
 
-		final ArrowGraphic arrow = new ArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
+		final PointToPointArrowGraphic arrow = new PointToPointArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
 		arrow.translateControl(0, -75);
 
 		first.draw(svgGraphics2D);
@@ -55,18 +70,18 @@ public class ArrowGraphicTest
 		third.draw(svgGraphics2D);
 		arrow.draw(svgGraphics2D);
 
-		LOG.info("\n\n{}\n\n", svgGraphics2D.getSVGElement());
+		LOG.info("\n\n{}\n\n", svgGraphics2D.getSVGDocument());
 	}
 
 	@Test
 	public void verifyDrawsCurveAndArrowHead() throws Exception
 	{
-		final SwapGraphic first = new SwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
-		final SwapGraphic third = new SwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
+		final DefaultSwapGraphic first = new DefaultSwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
+		final DefaultSwapGraphic third = new DefaultSwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
 
 		final Graphics2D svgGraphics2D = mock(Graphics2D.class);
 
-		final ArrowGraphic arrow = new ArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
+		final PointToPointArrowGraphic arrow = new PointToPointArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
 		arrow.translateControl(0, -75);
 		arrow.draw(svgGraphics2D);
 
@@ -85,12 +100,12 @@ public class ArrowGraphicTest
 	@Test
 	public void verifyDrawsLineAndArrowHead() throws Exception
 	{
-		final SwapGraphic first = new SwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
-		final SwapGraphic third = new SwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
+		final DefaultSwapGraphic first = new DefaultSwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
+		final DefaultSwapGraphic third = new DefaultSwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
 
 		final Graphics2D svgGraphics2D = mock(Graphics2D.class);
 
-		final ArrowGraphic arrow = new ArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
+		final PointToPointArrowGraphic arrow = new PointToPointArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
 		arrow.draw(svgGraphics2D);
 
 		verify(svgGraphics2D).drawLine(60, 100, 240, 100);
@@ -101,12 +116,12 @@ public class ArrowGraphicTest
 	@Test
 	public void testGetBounds() throws Exception
 	{
-		final SwapGraphic first = new SwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
-		final SwapGraphic third = new SwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
+		final DefaultSwapGraphic first = new DefaultSwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();
+		final DefaultSwapGraphic third = new DefaultSwapGraphic.SwapBuilder().withxCenter(250).withyCenter(100).withLabel('L').createSwap();
 
 		final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(300, 200);
 
-		final ArrowGraphic arrow = new ArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
+		final PointToPointArrowGraphic arrow = new PointToPointArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
 		arrow.translateControl(0, -75);
 
 		final Rectangle bounds = arrow.getBounds();

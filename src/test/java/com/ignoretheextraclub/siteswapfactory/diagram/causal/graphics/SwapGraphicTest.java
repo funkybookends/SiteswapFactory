@@ -5,9 +5,13 @@ import java.awt.*;
 import org.assertj.core.api.Assertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.ignoretheextraclub.siteswapfactory.diagram.VisualTestRule;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -18,11 +22,16 @@ public class SwapGraphicTest
 	private static final Logger LOG = LoggerFactory.getLogger(SwapGraphicTest.class);
 	private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 
+	@Rule
+	public VisualTestRule visualTestRule = new VisualTestRule();
+
+	@Rule
+	public TestName testName = new TestName();
+
 	@Test
-	@Ignore("Code outputs the svg for visual inspection")
 	public void visualTest() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(50)
 			.withyCenter(50)
 			.withLabel('L')
@@ -33,13 +42,14 @@ public class SwapGraphicTest
 		final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(500, 500);
 		swap.draw(svgGraphics2D);
 		final String svgElement = svgGraphics2D.getSVGElement();
-		LOG.info("\n\n{}\n\n", svgElement);
+
+		visualTestRule.save(getClass(), testName, svgGraphics2D);
 	}
 
 	@Test
 	public void GIVEN_swap_WHEN_getBoundingBox_EXPECT_correctBoundingBox() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('L')
@@ -56,7 +66,7 @@ public class SwapGraphicTest
 	@Test
 	public void GIVEN_swap_WHEN_getMinDocumentSize_EXPECT_correctPoint() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('L')
@@ -74,7 +84,7 @@ public class SwapGraphicTest
 		final Font font = FONT;
 		final BasicStroke stroke = mock(BasicStroke.class);
 
-		final SwapGraphic l = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic l = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(10)
 			.withyCenter(10)
 			.withLabel('l')
@@ -92,7 +102,7 @@ public class SwapGraphicTest
 	public void verifyStrokeIsSet() throws Exception
 	{
 		final BasicStroke stroke = mock(BasicStroke.class);
-		final SwapGraphic l = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic l = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(10)
 			.withyCenter(10)
 			.withLabel('l')
@@ -109,7 +119,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToLeft() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -122,7 +132,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToRight() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -135,7 +145,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToTop() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -148,7 +158,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToBottom() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -161,7 +171,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToNorthWest() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -174,7 +184,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToNorthEast() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -187,7 +197,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToSouthEast() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
@@ -200,7 +210,7 @@ public class SwapGraphicTest
 	@Test
 	public void testGetEdgePointClosestToSouthWest() throws Exception
 	{
-		final SwapGraphic swap = new SwapGraphic.SwapBuilder()
+		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')

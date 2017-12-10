@@ -2,22 +2,27 @@ package com.ignoretheextraclub.siteswapfactory.diagram.causal;
 
 import java.awt.*;
 
-import org.assertj.core.api.JUnitSoftAssertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.ignoretheextraclub.siteswapfactory.diagram.VisualTestRule;
 
 public class CausalDiagramToSvgTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(CausalDiagramToSvgTest.class);
 
     @Rule
-    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
+    public VisualTestRule visualTestRule = new VisualTestRule();
+
+    @Rule
+    public TestName testName = new TestName();
 
     @Test
-    public void name() throws Exception
+    public void testSimpleDiagramDraws() throws Exception
     {
         final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(175, 125);
         svgGraphics2D.setZeroStrokeWidth(2.0);
@@ -33,6 +38,6 @@ public class CausalDiagramToSvgTest
 
         final String svgDocument = svgGraphics2D.getSVGElement();
 
-        LOG.info("\n\n\n{}\n\n\n", svgDocument);
+        visualTestRule.save(getClass(), testName, svgGraphics2D);
     }
 }

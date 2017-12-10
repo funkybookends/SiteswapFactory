@@ -27,6 +27,8 @@ allprojects {
         testCompile 'junit:junit:4.12'
         testCompile 'pl.pragmatists:JUnitParams:1.1.0'
         testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+        testCompile group: 'commons-io', name: 'commons-io', version: '2.5'
+
     }
 }
 

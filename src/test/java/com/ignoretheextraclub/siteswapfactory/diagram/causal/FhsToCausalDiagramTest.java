@@ -2,28 +2,66 @@ package com.ignoretheextraclub.siteswapfactory.diagram.causal;
 
 import org.assertj.core.api.Assertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.VisualTestRule;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.ArrowFactory;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.DefaultGraphicFactory;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 
 public class FhsToCausalDiagramTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(FhsToCausalDiagramTest.class);
 
-    private FhsToCausalDiagram fhsToCausalDiagram = new FhsToCausalDiagram(new CausalDiagramProperties());
+    private CausalDiagramProperties causalDiagramProperties;
+    private FhsToCausalDiagram fhsToCausalDiagram;
+    private ArrowFactory arrowFactory;
+    private SwapFactory swapFactory;
+
+    @Rule
+    public VisualTestRule visualTestRule = new VisualTestRule();
+    @Rule
+    public TestName testName = new TestName();
+
+    @Before
+    public void setUp() throws Exception
+    {
+        causalDiagramProperties = new CausalDiagramProperties()
+            .withPreferredNumThrows(6)
+            .withMinNumRepititions(2)
+            .withMinNumThrowsDisplayed(4)
+            .withMaxMunThrowsDisplayed(10);
+
+        fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties);
+        arrowFactory = new DefaultGraphicFactory(causalDiagramProperties);
+        swapFactory = new DefaultGraphicFactory(causalDiagramProperties);
+    }
 
     @Test
     public void fhs5() throws Exception
     {
         final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("5"));
 
-        final CausalDiagram expected = new CausalDiagram.Builder()
-            .addCause(0, 1, 0, 0.5, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.RIGHT)
-            .addCause(0, 1, 1, 1.5, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.LEFT)
-            .addCause(1, 0, 0.5, 1, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.LEFT)
-            .addCause(1, 0, 1.5, 2, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.RIGHT)
+        final CausalDiagram expected = new DefaultCausalDiagram.Builder()
+            .addCause(0, 1, 0, 0.5, Hand.RIGHT, Hand.RIGHT) // J1
+            .addCause(0, 1, 1, 1.5, Hand.LEFT, Hand.LEFT)   // J1
+            .addCause(0, 1, 2, 2.5, Hand.RIGHT, Hand.RIGHT) // J1
+            .addCause(0, 1, 3, 3.5, Hand.LEFT, Hand.LEFT)   // J1
+            .addCause(0, 1, 4, 4.5, Hand.RIGHT, Hand.RIGHT) // J1
+            .addCause(0, 1, 5, 5.5, Hand.LEFT, Hand.LEFT)   // J1
+
+            .addCause(1, 0, 0.5, 1, Hand.RIGHT, Hand.LEFT)  // J2
+            .addCause(1, 0, 1.5, 2, Hand.LEFT, Hand.RIGHT)  // J2
+            .addCause(1, 0, 2.5, 3, Hand.RIGHT, Hand.LEFT)  // J2
+            .addCause(1, 0, 3.5, 4, Hand.LEFT, Hand.RIGHT)  // J2
+            .addCause(1, 0, 4.5, 5, Hand.RIGHT, Hand.LEFT)  // J2
+            .addCause(1, 0, 5.5, 6, Hand.LEFT, Hand.RIGHT)  // J2
             .build();
 
         Assertions.assertThat(result).isEqualTo(expected);
@@ -34,42 +72,39 @@ public class FhsToCausalDiagramTest
     {
         final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("756"));
 
-        final CausalDiagram expected = new CausalDiagram.Builder()
-            .addCause(0, 1, 0, 1.5, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.LEFT) //   7
-            .addCause(0, 0, 1, 2, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.RIGHT) //     6
-            .addCause(0, 1, 2, 2.5, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.RIGHT) //  5
+        final CausalDiagram expected = new DefaultCausalDiagram.Builder()
+            .addCause(0, 1, 0, 1.5, Hand.RIGHT, Hand.LEFT) //   7
+            .addCause(0, 0, 1, 2, Hand.LEFT, Hand.RIGHT) //     6
+            .addCause(0, 1, 2, 2.5, Hand.RIGHT, Hand.RIGHT) //  5
 
-            .addCause(0, 1, 3, 4.5, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.RIGHT) //   7
-            .addCause(0, 0, 4, 5, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.LEFT) //     6
-            .addCause(0, 1, 5, 5.5, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.LEFT) //    5
+            .addCause(0, 1, 3, 4.5, Hand.LEFT, Hand.RIGHT) //   7
+            .addCause(0, 0, 4, 5, Hand.RIGHT, Hand.LEFT) //     6
+            .addCause(0, 1, 5, 5.5, Hand.LEFT, Hand.LEFT) //    5
 
-            .addCause(1, 0, 0.5, 1, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.LEFT) //   5
-            .addCause(1, 0, 1.5, 3, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.LEFT) //    7
-            .addCause(1, 1, 2.5, 3.5, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.LEFT) // 6
+            .addCause(1, 0, 0.5, 1, Hand.RIGHT, Hand.LEFT) //   5
+            .addCause(1, 0, 1.5, 3, Hand.LEFT, Hand.LEFT) //    7
+            .addCause(1, 1, 2.5, 3.5, Hand.RIGHT, Hand.LEFT) // 6
 
-            .addCause(1, 0, 3.5, 4, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.RIGHT) //   5
-            .addCause(1, 0, 4.5, 6, CausalDiagram.Hand.RIGHT, CausalDiagram.Hand.RIGHT) //  7
-            .addCause(1, 1, 5.5, 6.5, CausalDiagram.Hand.LEFT, CausalDiagram.Hand.RIGHT) // 6
+            .addCause(1, 0, 3.5, 4, Hand.LEFT, Hand.RIGHT) //   5
+            .addCause(1, 0, 4.5, 6, Hand.RIGHT, Hand.RIGHT) //  7
+            .addCause(1, 1, 5.5, 6.5, Hand.LEFT, Hand.RIGHT) // 6
 
             .build();
 
         Assertions.assertThat(result).isEqualTo(expected);
 
-        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg(new CausalDiagramProperties());
+        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg(new CausalDiagramProperties(), arrowFactory, swapFactory);
         final SVGGraphics2D convert = causalDiagramToSvg.convert(result);
-
-        LOG.info("\n\n{}\n\n", convert.getSVGElement());
     }
 
     @Test
-    public void name() throws Exception
+    public void test756() throws Exception
     {
+        final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("756"));
 
-        final CausalDiagram result = fhsToCausalDiagram.convert(SiteswapFactory.getFourHandedSiteswap("78a5a8042"));
+        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg(causalDiagramProperties, arrowFactory, swapFactory);
+        final SVGGraphics2D svgGraphics2D = causalDiagramToSvg.convert(result);
 
-        final CausalDiagramToSvg causalDiagramToSvg = new CausalDiagramToSvg(new CausalDiagramProperties());
-        final SVGGraphics2D convert = causalDiagramToSvg.convert(result);
-
-        LOG.info("\n\n{}\n\n", convert.getSVGElement());
+        visualTestRule.save(getClass(), testName, svgGraphics2D);
     }
 }
