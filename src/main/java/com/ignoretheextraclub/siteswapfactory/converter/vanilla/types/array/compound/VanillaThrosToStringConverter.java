@@ -53,7 +53,7 @@ public class VanillaThrosToStringConverter implements Function<VanillaThro[], St
     }
 
     /**
-     * Convenient static method to convert thros to a string
+     * Convenient static method to apply thros to a string
      *
      * @param thros The throws
      *

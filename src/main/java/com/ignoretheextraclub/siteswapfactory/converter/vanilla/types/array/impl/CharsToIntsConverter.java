@@ -53,7 +53,7 @@ public class CharsToIntsConverter implements Function<char[], int[]>
     }
 
     /**
-     * Convenient static method to convert chars to ints
+     * Convenient static method to apply chars to ints
      *
      * @param chars
      *

@@ -33,7 +33,7 @@ public class CharsToFourHandedSiteswapThrosConverter implements Function<char[],
     /**
      * Converts a char[] to a FourHandedSiteswapThro[]
      *
-     * @param thros the thros to convert
+     * @param thros the thros to apply
      *
      * @return the converted thros
      */
@@ -60,9 +60,9 @@ public class CharsToFourHandedSiteswapThrosConverter implements Function<char[],
     }
 
     /**
-     * Convenient static method to convert thros
+     * Convenient static method to apply thros
      *
-     * @param thros the thros to convert
+     * @param thros the thros to apply
      *
      * @return the converted thros
      */

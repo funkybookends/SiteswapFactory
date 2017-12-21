@@ -28,7 +28,7 @@ public class IntsToStringConverter implements Function<int[], String>
     /**
      * Converts an int[] to a string
      *
-     * @param ints ints to convert
+     * @param ints ints to apply
      *
      * @return a string
      */
@@ -39,9 +39,9 @@ public class IntsToStringConverter implements Function<int[], String>
     }
 
     /**
-     * Convenient static method to convert ints to string
+     * Convenient static method to apply ints to string
      *
-     * @param ints the ints to convert
+     * @param ints the ints to apply
      *
      * @return the string
      */

@@ -57,7 +57,7 @@ public class DefaultGraphicFactory implements ArrowFactory, SwapFactory
 
 	private int getArrowBend(final Site origin, final Site causes)
 	{
-		return cdp.getGetArrowBend() * (origin.getJuggler() == 1 ? 1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
+		return cdp.getGetArrowBend() * (origin.getJuggler() == 1 ? -1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
 	}
 
 	private boolean getDisplayArrowHead(final Site origin, final Site causes)

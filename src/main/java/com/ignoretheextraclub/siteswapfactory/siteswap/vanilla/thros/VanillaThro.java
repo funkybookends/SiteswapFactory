@@ -109,7 +109,7 @@ public class VanillaThro implements Thro
     }
 
     /**
-     * An alternative to {@link #get(int)} which will convert to an int for you.
+     * An alternative to {@link #get(int)} which will apply to an int for you.
      * <p>
      *
      * @param thro

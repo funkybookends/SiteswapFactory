@@ -58,7 +58,7 @@ public class CharsToVanillaThrosConverter implements Function<char[], VanillaThr
     }
 
     /**
-     * Convenient static method to convert chars to a VanillaThro array
+     * Convenient static method to apply chars to a VanillaThro array
      * @param chars the chars
      * @return the vanilla throw array
      */

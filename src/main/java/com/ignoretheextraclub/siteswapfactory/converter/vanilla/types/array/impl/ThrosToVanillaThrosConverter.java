@@ -52,7 +52,7 @@ public class ThrosToVanillaThrosConverter implements Function<Thro[], VanillaThr
     }
 
     /**
-     * Convenient static method to convert an array of throws to an array of VanillaThros
+     * Convenient static method to apply an array of throws to an array of VanillaThros
      *
      * @param thros the thros array
      *

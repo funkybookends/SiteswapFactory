@@ -1,11 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
@@ -14,7 +14,7 @@ import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.LEFT;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.RIGHT;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap.NUM_HANDS;
 
-public class FhsToCausalDiagram
+public class FhsToCausalDiagram implements Function<FourHandedSiteswap, CausalDiagram>
 {
 	private static final Logger LOG = LoggerFactory.getLogger(FhsToCausalDiagram.class);
 
@@ -45,7 +45,7 @@ public class FhsToCausalDiagram
         this.handThrowingOrder = handThrowingOrder;
     }
 
-    public CausalDiagram convert(final FourHandedSiteswap fhs)
+    public CausalDiagram apply(final FourHandedSiteswap fhs)
     {
         final DefaultCausalDiagram.Builder builder = new DefaultCausalDiagram.Builder();
 
@@ -73,12 +73,12 @@ public class FhsToCausalDiagram
     {
         if (currentBeat < properties.getMinNumThrowsDisplayed() * 2)
         {
-        	LOG.debug("Minimum number of throws not reached: currentBeat={}, period={}, MinNumThrowsDisplayed={}", currentBeat, period, properties.getMinNumThrowsDisplayed());
+        	LOG.trace("Minimum number of throws not reached: currentBeat={}, period={}, MinNumThrowsDisplayed={}", currentBeat, period, properties.getMinNumThrowsDisplayed());
             return true;
         }
         if (currentBeat < period * properties.getMinNumRepititions())
         {
-        	LOG.debug("Minimum number of repititions not reached: currentBeat={}, period={}, MinNumRepititions={}", currentBeat, period, properties.getMinNumRepititions());
+        	LOG.trace("Minimum number of repititions not reached: currentBeat={}, period={}, MinNumRepititions={}", currentBeat, period, properties.getMinNumRepititions());
             return true;
         }
         if (currentBeat > properties.getMaxMunThrowsDisplayed() * 2)
@@ -88,10 +88,10 @@ public class FhsToCausalDiagram
         }
         if (currentBeat < properties.getPreferredNumThrows() * 2)
         {
-        	LOG.debug("Preferred number of throws not reached: currentBeat={}, period={}, PreferredNumThrows={}", currentBeat, period, properties.getPreferredNumThrows());
+        	LOG.trace("Preferred number of throws not reached: currentBeat={}, period={}, PreferredNumThrows={}", currentBeat, period, properties.getPreferredNumThrows());
             return true;
         }
-        LOG.debug("Preferred number of throws reached: currentBeat={}, period={}, PreferredNumThrows={}", currentBeat, period, properties.getPreferredNumThrows());
+        LOG.trace("Preferred number of throws reached: currentBeat={}, period={}, PreferredNumThrows={}", currentBeat, period, properties.getPreferredNumThrows());
         return false;
     }
 

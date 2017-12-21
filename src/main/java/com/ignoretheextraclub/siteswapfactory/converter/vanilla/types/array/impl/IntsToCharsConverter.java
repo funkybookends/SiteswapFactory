@@ -31,7 +31,7 @@ public class IntsToCharsConverter implements Function<int[], char[]>
     /**
      * Converts an array of ints to an array of chars. Guaranteed to not throw an exception
      *
-     * @param thros the thros to convert
+     * @param thros the thros to apply
      *
      * @return the chars
      */
@@ -53,9 +53,9 @@ public class IntsToCharsConverter implements Function<int[], char[]>
     }
 
     /**
-     * Convenient static method to convert throws to chars
+     * Convenient static method to apply throws to chars
      *
-     * @param thros the throws to convert
+     * @param thros the throws to apply
      *
      * @return the converted chars
      */

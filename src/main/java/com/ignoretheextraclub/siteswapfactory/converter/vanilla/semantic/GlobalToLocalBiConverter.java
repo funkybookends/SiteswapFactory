@@ -61,7 +61,7 @@ public class GlobalToLocalBiConverter<T> implements BiFunction<T[], Integer, T[]
     }
 
     /**
-     * Convenient static method to convert to local representation.
+     * Convenient static method to apply to local representation.
      *
      * @param global The global representation
      * @param start  The starting position, i.e. the juggler, zero indexed, must not be negative
@@ -77,7 +77,7 @@ public class GlobalToLocalBiConverter<T> implements BiFunction<T[], Integer, T[]
     }
 
     /**
-     * Convenient static method to convert an {@code int[]} to local representation.
+     * Convenient static method to apply an {@code int[]} to local representation.
      *
      * @param global The global representation
      * @param start  The starting position, i.e. the juggler, zero indexed, must not be negative

@@ -31,7 +31,7 @@ public class IntsToVanillaThrosConverter implements Function<int[], VanillaThro[
     /**
      * Converts an int[] to a VanillaThro[]
      *
-     * @param thros the ints to convert
+     * @param thros the ints to apply
      *
      * @return an array of VanillaThros
      */
@@ -50,7 +50,7 @@ public class IntsToVanillaThrosConverter implements Function<int[], VanillaThro[
     }
 
     /**
-     * Convenient static method to convert ints to VanillaThros
+     * Convenient static method to apply ints to VanillaThros
      *
      * @param thros the ints to conver
      *

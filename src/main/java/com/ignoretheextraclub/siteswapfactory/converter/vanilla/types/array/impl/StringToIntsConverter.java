@@ -29,7 +29,7 @@ public class StringToIntsConverter implements Function<String, int[]>
     /**
      * Converts a string to an int[]
      *
-     * @param thros a string to convert
+     * @param thros a string to apply
      *
      * @return an array of ints
      */
@@ -44,7 +44,7 @@ public class StringToIntsConverter implements Function<String, int[]>
     /**
      * Convenient static method to conver string to ints
      *
-     * @param thros the string to convert
+     * @param thros the string to apply
      *
      * @return the ints
      */

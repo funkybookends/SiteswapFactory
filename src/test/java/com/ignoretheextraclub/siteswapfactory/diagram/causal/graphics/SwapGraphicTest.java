@@ -4,7 +4,6 @@ import java.awt.*;
 
 import org.assertj.core.api.Assertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -43,7 +42,7 @@ public class SwapGraphicTest
 		swap.draw(svgGraphics2D);
 		final String svgElement = svgGraphics2D.getSVGElement();
 
-		visualTestRule.save(getClass(), testName, svgGraphics2D);
+		visualTestRule.test(getClass(), testName, svgGraphics2D);
 	}
 
 	@Test

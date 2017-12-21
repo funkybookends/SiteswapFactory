@@ -67,7 +67,7 @@ public class StringToVanillaThrosConverter implements Function<String, VanillaTh
     }
 
     /**
-     * Convenient static method to convert a string to an array of vanilla thros
+     * Convenient static method to apply a string to an array of vanilla thros
      *
      * @param string A string of ints
      *

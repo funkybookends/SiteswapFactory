@@ -51,7 +51,7 @@ public class IntsToFourHandedSiteswapThrosConverter implements Function<int[], F
     }
 
     /**
-     * Convenient static method to convert ints to {@link FourHandedSiteswapThro}s
+     * Convenient static method to apply ints to {@link FourHandedSiteswapThro}s
      *
      * @param thros ints
      *

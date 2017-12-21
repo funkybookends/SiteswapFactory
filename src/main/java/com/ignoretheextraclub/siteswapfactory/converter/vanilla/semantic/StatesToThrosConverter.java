@@ -70,7 +70,7 @@ public class StatesToThrosConverter implements Function<State[], Thro[]>
     }
 
     /**
-     * Convenient static method to convert states to thros.
+     * Convenient static method to apply states to thros.
      *
      * @param states The set of states.
      *

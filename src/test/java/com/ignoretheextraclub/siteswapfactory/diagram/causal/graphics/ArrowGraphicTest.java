@@ -50,7 +50,7 @@ public class ArrowGraphicTest
 		start.draw(svgGraphics2D);
 		finish.draw(svgGraphics2D);
 
-		visualTestRule.save(getClass(), testName, svgGraphics2D);
+		visualTestRule.test(getClass(), testName, svgGraphics2D);
 	}
 
 	@Test

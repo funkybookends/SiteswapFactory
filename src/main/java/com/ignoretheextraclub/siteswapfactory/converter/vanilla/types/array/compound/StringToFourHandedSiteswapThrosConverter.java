@@ -70,7 +70,7 @@ public class StringToFourHandedSiteswapThrosConverter implements Function<String
     }
 
     /**
-     * Convenient static method to convert a string
+     * Convenient static method to apply a string
      *
      * @param siteswap a string of numbers.
      *

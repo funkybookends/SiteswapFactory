@@ -51,7 +51,7 @@ public class VanillaThrosToIntsConverter implements Function<VanillaThro[], int[
     }
 
     /**
-     * Convenient static method to convert an array of vanilla thros to ints
+     * Convenient static method to apply an array of vanilla thros to ints
      *
      * @param thros the vanilla thros
      *

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
@@ -19,7 +20,7 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphi
 
 import static org.apache.commons.lang3.math.NumberUtils.max;
 
-public class CausalDiagramToSvg
+public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D>
 {
 	private final CausalDiagramProperties cdp;
 	private final ArrowFactory arrowFactory;
@@ -34,7 +35,7 @@ public class CausalDiagramToSvg
 		this.swapFactory = swapFactory;
 	}
 
-	public SVGGraphics2D convert(final CausalDiagram causalDiagram)
+	public SVGGraphics2D apply(final CausalDiagram causalDiagram)
 	{
 		final Map<Site, SwapGraphic> swaps = getSiteToSwapMap(causalDiagram);
 		final List<ArrowGraphic> arrows = getArrowGraphics(causalDiagram, swaps);
