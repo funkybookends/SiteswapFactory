@@ -30,13 +30,21 @@ public class SimpleFourHandedSiteswapDescriberTest
     @Test
     public void test7() throws Exception
     {
-        final FourHandedSiteswap seven = SiteswapFactory.getFourHandedSiteswap("7");
-        builder = new SimpleDescription.Builder<>(seven);
-        builder.addSiteswapName("Seven");
-        describer.contribute(seven, LOCALE, builder);
+        final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("975");
+        builder = new SimpleDescription.Builder<>(siteswap);
+        builder.addSiteswapName("Holy Grail");
+        builder.withLocale(LOCALE);
+        describer.contribute(siteswap, LOCALE, builder);
         final SimpleDescription<FourHandedSiteswap> simpleDescription = builder.createSimpleDescription();
 
         assertThat(simpleDescription.getDescription()).isEqualTo("");
-        assertThat(simpleDescription.getLongDescription()).isEqualTo("");
+        assertThat(simpleDescription.getLongDescription()).isEqualTo(
+            "Holy Grail is a period 3 pattern with 7 clubs for 2 jugglers. " +
+                "Aidan has 2 clubs in their right hand and 2 clubs in the left hand. " +
+                "Aidan begins with the right hand and his sequence is " +
+                "Double, Zap, Pass. " +
+                "Becky has 2 clubs in her right hand, one club in the left hand and begins half a beat later. " +
+                "Becky begins with the right hand and her sequence is " +
+                "Pass, Double, Zap.");
     }
 }
