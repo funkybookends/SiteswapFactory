@@ -29,7 +29,7 @@ public class LocaleIntersectioningDelegatingDescriber<T extends Siteswap> extend
         contributors.stream()
             .skip(1)
             .map(DescriptionContributor::getAvailableLocales)
-            .forEach(availe -> locales.retainAll(availe));
+            .forEach(locales::retainAll);
 
         return locales;
     }

@@ -28,7 +28,7 @@ public class SimpleFourHandedSiteswapDescriberTest
     }
 
     @Test
-    public void test7() throws Exception
+    public void test975() throws Exception
     {
         final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("975");
         builder = new SimpleDescription.Builder<>(siteswap);
