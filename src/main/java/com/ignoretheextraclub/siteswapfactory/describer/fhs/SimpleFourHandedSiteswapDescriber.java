@@ -13,14 +13,10 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.text.StrSubstitutor;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.VanillaThrosToHefflishConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.FourHandedSiteswapToHefflishSequence;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor<FourHandedSiteswap>
 {
@@ -49,22 +45,17 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
         FOLLOWER_LEFT_HAND_CLUBS};
 
     // TODO move to class
-    private static final BiFunction<Siteswap,Integer,String> DEFAULT_SEQUENCE_MAPPER = (siteswap, integer) ->
-    {
-        final Thro[] throwsForJuggler = siteswap.getThrowsForJuggler(integer);
-        final VanillaThro[] thros = ThrosToVanillaThrosConverter.convert(throwsForJuggler);
-        return VanillaThrosToHefflishConverter.get().apply(thros);
-    };
+    private static final BiFunction<FourHandedSiteswap,Integer,String> DEFAULT_SEQUENCE_MAPPER = FourHandedSiteswapToHefflishSequence.get();
 
     private final Map<Locale, ResourceBundle> resourceBundles;
     private final String leaderName;
     private final String followerName;
-    private final BiFunction<Siteswap, Integer, String> sequenceMapper;
+    private final BiFunction<FourHandedSiteswap, Integer, String> sequenceMapper;
 
     public SimpleFourHandedSiteswapDescriber(final String baseName,
                                              final String leaderName,
                                              final String followerName,
-                                             final BiFunction<Siteswap, Integer, String> sequenceMapper,
+                                             final BiFunction<FourHandedSiteswap, Integer, String> sequenceMapper,
                                              final Locale... locales)
     {
         this.leaderName = leaderName;
@@ -88,17 +79,20 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
     @Override
     public void contribute(final FourHandedSiteswap siteswap, final Locale locale, final SimpleDescription.Builder<FourHandedSiteswap> builder)
     {
-        final Map<String, String> features = getFeatures(siteswap, builder);
-        populateClubs(siteswap, features, locale);
+        final Map<String, String> features = getFeatures(siteswap, builder, locale);
 
-        final String description = new StrSubstitutor(features, "{", "}")
+        final String longDescription = new StrSubstitutor(features, "{", "}")
             .replace(resourceBundles.get(locale).getString("longDescription"));
 
-        builder.withLongDescription(description);
+        final String shortDescrption = new StrSubstitutor(features, "{", "}")
+            .replace(resourceBundles.get(locale).getString("shortDescription"));
+
+        builder.withLongDescription(longDescription);
+        builder.withDescription(shortDescrption);
     }
 
     private Map<String, String> getFeatures(final FourHandedSiteswap siteswap,
-                                            final SimpleDescription.Builder<FourHandedSiteswap> builder)
+                                            final SimpleDescription.Builder<FourHandedSiteswap> builder, final Locale locale)
     {
         final Map<String, String> features = new HashMap<>();
 
@@ -110,6 +104,8 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
         features.put(FOLLOWER_NAME, this.followerName);
         features.put(LEADER_SEQUENCE, this.sequenceMapper.apply(siteswap, 0));
         features.put(FOLLOWER_SEQUENCE, this.sequenceMapper.apply(siteswap, 1));
+
+        populateClubs(siteswap, features, locale);
 
         return features;
     }

@@ -2,7 +2,6 @@ package com.ignoretheextraclub.siteswapfactory.describer.fhs;
 
 import java.util.Locale;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
@@ -11,8 +10,6 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class SimpleFourHandedSiteswapDescriberTest
 {
@@ -37,7 +34,11 @@ public class SimpleFourHandedSiteswapDescriberTest
         describer.contribute(siteswap, LOCALE, builder);
         final SimpleDescription<FourHandedSiteswap> simpleDescription = builder.createSimpleDescription();
 
-        assertThat(simpleDescription.getDescription()).isEqualTo("");
+        assertThat(simpleDescription.getDescription()).isEqualTo(
+            "Holy Grail is a period 3 pattern with 7 clubs for 2 jugglers. " +
+                "Aidan begins with Double, Zap, Pass, " +
+                "and Becky responds with Pass, Double, Zap.");
+
         assertThat(simpleDescription.getLongDescription()).isEqualTo(
             "Holy Grail is a period 3 pattern with 7 clubs for 2 jugglers. " +
                 "Aidan has 2 clubs in their right hand and 2 clubs in the left hand. " +
