@@ -1,8 +1,9 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
 
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.DefaultCausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
 
 /**
  * A position on a {@link DefaultCausalDiagram}.
@@ -20,7 +21,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 
 	private Character label;
 	private Font labelFont;
-	private BasicStroke circleStroke;
+	private Stroke circleStroke;
 	private int buffer;
 	private boolean drawCircle;
 	private boolean drawLabel;
@@ -29,7 +30,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 	                          final int yCenter,
 	                          final Character label,
 	                          final Font labelFont,
-	                          final BasicStroke circleStroke,
+	                          final Stroke circleStroke,
 	                          final int buffer,
 	                          final boolean drawCircle,
 	                          final boolean drawLabel)
@@ -55,7 +56,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 			graphics.drawString(String.valueOf(label), labelPosition.x, labelPosition.y);
 		}
 
-		if (drawCircle || !drawLabel)
+		if (drawCircle)
 		{
 			graphics.setStroke(circleStroke);
 			final Rectangle circleBox = getBounds();
@@ -67,9 +68,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 	public Rectangle getBounds()
 	{
 		final int labelWidth = getLabelWidth();
-		final int diameterOfCircleBoundingLabel = 2 * (getRadiusOfCircleBoundingBox(labelWidth) +
-			(int) circleStroke.getLineWidth() +
-			this.buffer);
+
+		final int diameterOfCircleBoundingLabel = 2 * (getRadiusOfCircleBoundingBox(labelWidth) + this.buffer);
 
 		return getBoxCenteredOnPoint(xCenter, yCenter,
 			diameterOfCircleBoundingLabel, diameterOfCircleBoundingLabel);
@@ -77,14 +77,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 
 	private int getLabelWidth()
 	{
-		if (drawLabel)
-		{
-			return labelFont.getSize();
-		}
-		else
-		{
-			return 1;
-		}
+		return labelFont.getSize();
 	}
 
 	private Point getLabelPosition()
@@ -142,7 +135,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 		private int yCenter;
 		private Character label;
 		private Font labelFont = DEFAULT_FONT;
-		private BasicStroke circleStroke = DEFAULT_STROKE;
+		private Stroke circleStroke = DEFAULT_STROKE;
 		private int buffer = DEFUALT_BUFFER_BETWEEN_LABEL_AND_CIRCLE;
 		private boolean drawCircle = true;
 		private boolean drawLabel = true;
@@ -171,7 +164,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 			return this;
 		}
 
-		public SwapBuilder withCircleStroke(final BasicStroke circleStroke)
+		public SwapBuilder withCircleStroke(final Stroke circleStroke)
 		{
 			this.circleStroke = circleStroke;
 			return this;

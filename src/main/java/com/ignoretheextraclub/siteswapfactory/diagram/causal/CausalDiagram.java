@@ -6,4 +6,10 @@ public interface CausalDiagram
 {
 	Set<Site> getSites();
 
+	double getFullRotationBeat();
+
+	default int getNumJugglers()
+	{
+		return getSites().stream().mapToInt(Site::getJuggler).max().orElse(0);
+	}
 }

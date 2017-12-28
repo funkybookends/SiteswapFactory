@@ -1,23 +1,35 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.impl;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Site;
+
 public class DefaultCausalDiagram implements CausalDiagram
 {
 	private Set<Site> sites;
+	private double fullRotationBeat;
 
-	private DefaultCausalDiagram(final Set<Site> sites)
+	private DefaultCausalDiagram(final Set<Site> sites, final double fullRotationBeat)
 	{
 		this.sites = new LinkedHashSet<>(sites);
+		this.fullRotationBeat = fullRotationBeat;
 	}
 
 	@Override
 	public Set<Site> getSites()
 	{
 		return new LinkedHashSet<>(sites);
+	}
+
+	@Override
+	public double getFullRotationBeat()
+	{
+		return fullRotationBeat;
 	}
 
 	@Override
@@ -48,6 +60,7 @@ public class DefaultCausalDiagram implements CausalDiagram
 	public static class Builder
 	{
 		private List<Site> sites = new ArrayList<>();
+		private double fullRotationBeat;
 
 		public Builder()
 		{
@@ -66,14 +79,20 @@ public class DefaultCausalDiagram implements CausalDiagram
 			return this;
 		}
 
+		public Builder setFullRotationBeat(final double fullRotationBeat)
+		{
+			this.fullRotationBeat = fullRotationBeat;
+			return this;
+		}
+
 		public CausalDiagram build()
 		{
-			return new DefaultCausalDiagram(new LinkedHashSet<>(sites));
+			return new DefaultCausalDiagram(new LinkedHashSet<>(sites), fullRotationBeat);
 		}
 
 		private Site getNode(final int juggler, final double beat, final Hand hand)
 		{
-			final Site newSite = new Site(juggler, hand, beat);
+			final DefaultSite newSite = new DefaultSite(juggler, hand, beat);
 
 			for (final Site site : sites)
 			{

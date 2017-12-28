@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.converter;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -6,6 +6,10 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
@@ -66,6 +70,8 @@ public class FhsToCausalDiagram implements Function<FourHandedSiteswap, CausalDi
                 );
         }
 
+        builder.setFullRotationBeat(fhs.getPeriod() * 2);
+
         return builder.build();
     }
 
@@ -76,14 +82,14 @@ public class FhsToCausalDiagram implements Function<FourHandedSiteswap, CausalDi
         	LOG.trace("Minimum number of throws not reached: currentBeat={}, period={}, MinNumThrowsDisplayed={}", currentBeat, period, properties.getMinNumThrowsDisplayed());
             return true;
         }
-        if (currentBeat < period * properties.getMinNumRepititions())
+        if (currentBeat < (2 * period * properties.getMinNumRepititions()))
         {
         	LOG.trace("Minimum number of repititions not reached: currentBeat={}, period={}, MinNumRepititions={}", currentBeat, period, properties.getMinNumRepititions());
             return true;
         }
-        if (currentBeat > properties.getMaxMunThrowsDisplayed() * 2)
+        if (currentBeat > properties.getMaxNumThrowsDisplayed() * 2)
         {
-        	LOG.debug("Maximum number of throws reached: currentBeat={}, period={}, MaxMunThrowsDisplayed={}", currentBeat, period, properties.getMaxMunThrowsDisplayed());
+        	LOG.trace("Maximum number of throws reached: currentBeat={}, period={}, MaxMunThrowsDisplayed={}", currentBeat, period, properties.getMaxNumThrowsDisplayed());
             return false;
         }
         if (currentBeat < properties.getPreferredNumThrows() * 2)

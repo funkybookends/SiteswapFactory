@@ -4,6 +4,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultSite;
+
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.LEFT;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.RIGHT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,8 +16,8 @@ public class CausalDiagramTest
     @Test
     public void testSingleNode() throws Exception
     {
-        final Site start = new Site(0, RIGHT, 0);
-        final Site finish = new Site(0, LEFT, 1);
+        final DefaultSite start = new DefaultSite(0, RIGHT, 0);
+        final Site finish = new DefaultSite(0, LEFT, 1);
         start.addCauses(finish);
 
         final CausalDiagram diagram = new DefaultCausalDiagram.Builder()
@@ -29,8 +32,8 @@ public class CausalDiagramTest
     @Test
     public void test31() throws Exception
     {
-        final Site first = new Site(0, RIGHT, 0);
-        final Site second = new Site(0, LEFT, 1);
+        final DefaultSite first = new DefaultSite(0, RIGHT, 0);
+        final DefaultSite second = new DefaultSite(0, LEFT, 1);
 
         first.addCauses(second);
         second.addCauses(first);
@@ -46,9 +49,9 @@ public class CausalDiagramTest
     @Test
     public void testFhs633() throws Exception
     {
-        final Site six = new Site(0, RIGHT, 0.0);
-        final Site firstThree = new Site(1, RIGHT, 0.5);
-        final Site secondThree = new Site(0, LEFT, 1.0);
+        final DefaultSite six = new DefaultSite(0, RIGHT, 0.0);
+        final DefaultSite firstThree = new DefaultSite(1, RIGHT, 0.5);
+        final DefaultSite secondThree = new DefaultSite(0, LEFT, 1.0);
 
         six.addCauses(secondThree);
         secondThree.addCauses(firstThree);

@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.ArrowGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
+
 /**
  * Draws a line (with an optional arrow head) between two {@link SwapGraphic}s. An optional {@link #control} allows
  * for a curve to be used instead of a line.
@@ -14,17 +17,19 @@ import java.util.function.Function;
  *
  * @author Caspar Nonclercq
  */
-public class PointToPointArrowGraphic implements ArrowGraphic
+public class SwapToSwapArrowGraphic implements ArrowGraphic
 {
 	private static final double DEFAULT_ARROW_HEAD_POINTYNESS = 9.0;
 	private static final int DEFAULT_ARROW_HEAD_LENGTH = 20;
 	private static final BasicStroke DEFAULT_STROKE = new BasicStroke(1);
+	private static final Color DEFAULT_PAINT = new Color(80, 80, 80);
 
 	private SwapGraphic start;
 	private SwapGraphic finish;
 
 	private Point control;
-	private BasicStroke stroke;
+	private Stroke stroke;
+	private Paint paint;
 	private boolean displayArrowHead;
 	private int arrowHeadLength;
 
@@ -36,27 +41,28 @@ public class PointToPointArrowGraphic implements ArrowGraphic
 
 	/**
 	 * Creates an arrow.
-	 *
 	 * @param start               The start point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point)}
 	 * @param finish              The end point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point)}
 	 * @param control             An optional control, will cause a {@link QuadCurve2D} to be drawn instead of a line.
 	 * @param stroke              The stroke to use.
+	 * @param paint
 	 * @param displayArrowHead    If the arrow head should be drawn or not.
 	 * @param arrowHeadLength     The length of the arrow head.
 	 * @param arrowHeadPointyness The pointyness of the arrowhead, greater than 0.
 	 */
-	public PointToPointArrowGraphic(final SwapGraphic start,
-	                                final SwapGraphic finish,
-	                                final Point control,
-	                                final BasicStroke stroke,
-	                                final boolean displayArrowHead,
-	                                final int arrowHeadLength,
-	                                final double arrowHeadPointyness)
+	public SwapToSwapArrowGraphic(final SwapGraphic start,
+	                              final SwapGraphic finish,
+	                              final Point control,
+	                              final Stroke stroke,
+	                              final Paint paint, final boolean displayArrowHead,
+	                              final int arrowHeadLength,
+	                              final double arrowHeadPointyness)
 	{
 		Objects.requireNonNull(start, "start cannot be null");
 		Objects.requireNonNull(finish, "finish cannot be null");
 
 		this.start = start;
+		this.paint = paint;
 		this.finish = finish;
 		this.control = control;
 		this.stroke = stroke;
@@ -76,6 +82,7 @@ public class PointToPointArrowGraphic implements ArrowGraphic
 		if (start != finish)
 		{
 			graphics.setStroke(stroke);
+			graphics.setPaint(paint);
 
 			final Point shaftStartingPoint = getShaftStartingPoint();
 			final Point shaftEndingPoint = getShaftEndingPoint();
@@ -211,7 +218,8 @@ public class PointToPointArrowGraphic implements ArrowGraphic
 		private SwapGraphic start;
 		private SwapGraphic finish;
 		private Point control;
-		private BasicStroke stroke = DEFAULT_STROKE;
+		private Stroke stroke = DEFAULT_STROKE;
+		private Paint paint = DEFAULT_PAINT;
 		private boolean displayArrowHead = true;
 		private int arrowHeadLength = DEFAULT_ARROW_HEAD_LENGTH;
 		private double arrowHeadPointyness = DEFAULT_ARROW_HEAD_POINTYNESS;
@@ -234,9 +242,15 @@ public class PointToPointArrowGraphic implements ArrowGraphic
 			return this;
 		}
 
-		public ArrowGraphicBuilder withStroke(final BasicStroke stroke)
+		public ArrowGraphicBuilder withStroke(final Stroke stroke)
 		{
 			this.stroke = stroke;
+			return this;
+		}
+
+		public ArrowGraphicBuilder withPaint(final Paint paint)
+		{
+			this.paint = paint;
 			return this;
 		}
 
@@ -258,9 +272,9 @@ public class PointToPointArrowGraphic implements ArrowGraphic
 			return this;
 		}
 
-		public PointToPointArrowGraphic createArrowGraphic()
+		public SwapToSwapArrowGraphic createArrowGraphic()
 		{
-			return new PointToPointArrowGraphic(start, finish, control, stroke, displayArrowHead, arrowHeadLength, arrowHeadPointyness);
+			return new SwapToSwapArrowGraphic(start, finish, control, stroke, paint, displayArrowHead, arrowHeadLength, arrowHeadPointyness);
 		}
 	}
 }

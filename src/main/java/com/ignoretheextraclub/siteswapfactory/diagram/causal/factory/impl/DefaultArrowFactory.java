@@ -1,42 +1,29 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl;
 
-import java.awt.*;
-
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagramProperties;
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.Site;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.ArrowFactory;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.ArrowGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.SwapToSwapArrowGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
-public class DefaultGraphicFactory implements ArrowFactory, SwapFactory
+public class DefaultArrowFactory implements ArrowFactory
 {
 	private final CausalDiagramProperties cdp;
 
-	public DefaultGraphicFactory(final CausalDiagramProperties causalDiagramProperties)
+	public DefaultArrowFactory(final CausalDiagramProperties cdp)
 	{
-		this.cdp = causalDiagramProperties;
-	}
-
-	@Override
-	public SwapGraphic getSwap(final Site site)
-	{
-		return new DefaultSwapGraphic.SwapBuilder()
-			.withxCenter((int) (site.getCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder()))
-			.withyCenter(site.getJuggler() * cdp.getPixelsPerJuggler() + cdp.getTopBorder())
-			.withLabel(site.getHand() == Hand.RIGHT ? 'R' : 'L')
-			.withLabelFont(cdp.getLabelFont())
-			.withCircleStroke(new BasicStroke(cdp.getLineWidth()))
-			.withBuffer(cdp.getSwapCircleBuffer())
-			.withDrawCircle(cdp.getSwapDrawCircle())
-			.withDrawLabel(cdp.isDrawLabel())
-			.createSwap();
+		this.cdp = cdp;
 	}
 
 	@Override
 	public ArrowGraphic getArrow(final Site originSite, final SwapGraphic originGraphic, final Site causesSite, final SwapGraphic causesGraphic)
 	{
-		final PointToPointArrowGraphic arrowGraphic = new PointToPointArrowGraphic.ArrowGraphicBuilder()
+		final SwapToSwapArrowGraphic arrowGraphic = new SwapToSwapArrowGraphic.ArrowGraphicBuilder()
 			.withStart(originGraphic)
 			.withFinish(causesGraphic)
-			.withStroke(new BasicStroke(cdp.getLineWidth()))
+			.withStroke(cdp.getArrowStroke().apply(originSite, causesSite))
+			.withPaint(cdp.getArrowPaintStyle().apply(originSite, causesSite))
 			.withArrowHeadLength(cdp.getArrowHeadLength())
 			.withArrowHeadPointyness(cdp.getArrowHeadPointyness())
 			.withDisplayArrowHead(getDisplayArrowHead(originSite, causesSite))
@@ -64,4 +51,5 @@ public class DefaultGraphicFactory implements ArrowFactory, SwapFactory
 	{
 		return cdp.getArrowStyle().test(origin, causes);
 	}
+
 }
