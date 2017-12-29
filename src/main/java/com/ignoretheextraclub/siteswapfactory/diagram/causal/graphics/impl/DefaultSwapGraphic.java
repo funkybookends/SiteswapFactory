@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.util.Objects;
 
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
@@ -15,6 +16,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 	private static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 12);
 	private static final BasicStroke DEFAULT_STROKE = new BasicStroke(1);
 	private static final int DEFUALT_BUFFER_BETWEEN_LABEL_AND_CIRCLE = 0;
+	private static final Paint DEFAULT_PAINT = Color.DARK_GRAY;
 
 	private int xCenter;
 	private int yCenter;
@@ -25,24 +27,33 @@ public class DefaultSwapGraphic implements SwapGraphic
 	private int buffer;
 	private boolean drawCircle;
 	private boolean drawLabel;
+	private Paint labelPaint;
+	private Stroke labelStroke;
+	private Paint circlePaint;
 
 	public DefaultSwapGraphic(final int xCenter,
 	                          final int yCenter,
+	                          final boolean drawLabel,
 	                          final Character label,
 	                          final Font labelFont,
-	                          final Stroke circleStroke,
-	                          final int buffer,
+	                          final Paint labelPaint,
+	                          final Stroke labelStroke,
 	                          final boolean drawCircle,
-	                          final boolean drawLabel)
+	                          final Stroke circleStroke,
+	                          final Paint circlePaint,
+	                          final int buffer)
 	{
 		this.xCenter = xCenter;
 		this.yCenter = yCenter;
-		this.label = label;
-		this.labelFont = labelFont;
-		this.circleStroke = circleStroke;
+		this.label = Objects.requireNonNull(label, "label cannot be null");
+		this.labelFont = Objects.requireNonNull(labelFont, "labelFont cannot be null");
+		this.circleStroke = Objects.requireNonNull(circleStroke, "circleStroke cannot be null");
 		this.buffer = buffer;
 		this.drawCircle = drawCircle;
 		this.drawLabel = drawLabel;
+		this.labelPaint = Objects.requireNonNull(labelPaint, "labelPaint cannot be null");
+		this.labelStroke = Objects.requireNonNull(labelStroke, "labelStroke cannot be null");
+		this.circlePaint = Objects.requireNonNull(circlePaint, "circlePaint cannot be null");
 	}
 
 	@Override
@@ -50,6 +61,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 	{
 		if (drawLabel)
 		{
+			graphics.setPaint(labelPaint);
+			graphics.setStroke(labelStroke);
 			graphics.setFont(labelFont);
 
 			final Point labelPosition = getLabelPosition();
@@ -59,6 +72,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 		if (drawCircle)
 		{
 			graphics.setStroke(circleStroke);
+			graphics.setPaint(circlePaint);
+
 			final Rectangle circleBox = getBounds();
 			graphics.drawOval(circleBox.x, circleBox.y, circleBox.width, circleBox.height);
 		}
@@ -139,6 +154,9 @@ public class DefaultSwapGraphic implements SwapGraphic
 		private int buffer = DEFUALT_BUFFER_BETWEEN_LABEL_AND_CIRCLE;
 		private boolean drawCircle = true;
 		private boolean drawLabel = true;
+		private Paint labelPaint = DEFAULT_PAINT;
+		private Stroke labelStroke = DEFAULT_STROKE;
+		private Paint circlePaint = DEFAULT_PAINT;
 
 		public SwapBuilder withxCenter(final int xCenter)
 		{
@@ -188,9 +206,27 @@ public class DefaultSwapGraphic implements SwapGraphic
 			return this;
 		}
 
+		public SwapBuilder withLabelPaint(final Paint labelPaint)
+		{
+			this.labelPaint = labelPaint;
+			return this;
+		}
+
+		public SwapBuilder withLabelStroke(final Stroke labelStroke)
+		{
+			this.labelStroke = labelStroke;
+			return this;
+		}
+
+		public SwapBuilder withCirclePaint(final Paint circlePaint)
+		{
+			this.circlePaint = circlePaint;
+			return this;
+		}
+
 		public DefaultSwapGraphic createSwap()
 		{
-			return new DefaultSwapGraphic(xCenter, yCenter, label, labelFont, circleStroke, buffer, drawCircle, drawLabel);
+			return new DefaultSwapGraphic(xCenter, yCenter, drawLabel, label, labelFont, labelPaint, labelStroke, drawCircle, circleStroke, circlePaint, buffer);
 		}
 	}
 }

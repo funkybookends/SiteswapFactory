@@ -12,4 +12,9 @@ public interface CausalDiagram
 	{
 		return getSites().stream().mapToInt(Site::getJuggler).max().orElse(0);
 	}
+
+	default double getMaxCausalBeat()
+	{
+		return getSites().stream().mapToDouble(Site::getCausalBeat).max().orElse(0);
+	}
 }

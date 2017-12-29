@@ -54,7 +54,8 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	                              final SwapGraphic finish,
 	                              final Point control,
 	                              final Stroke stroke,
-	                              final Paint paint, final boolean displayArrowHead,
+	                              final Paint paint,
+	                              final boolean displayArrowHead,
 	                              final int arrowHeadLength,
 	                              final double arrowHeadPointyness)
 	{
@@ -62,10 +63,10 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 		Objects.requireNonNull(finish, "finish cannot be null");
 
 		this.start = start;
-		this.paint = paint;
+		this.paint = Objects.requireNonNull(paint, "paint cannot be null");
 		this.finish = finish;
 		this.control = control;
-		this.stroke = stroke;
+		this.stroke = Objects.requireNonNull(stroke, "stroke cannot be null");
 		this.displayArrowHead = displayArrowHead;
 		this.arrowHeadLength = arrowHeadLength;
 		this.arrowHeadPointyness = arrowHeadPointyness;

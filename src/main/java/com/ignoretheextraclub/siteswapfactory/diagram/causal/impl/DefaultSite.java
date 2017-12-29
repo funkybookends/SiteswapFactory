@@ -29,12 +29,6 @@ public class DefaultSite implements Site
 	}
 
 	@Override
-	public boolean isVisible()
-	{
-		return !causes.isEmpty();
-	}
-
-	@Override
 	public Set<Site> getCauses()
 	{
 		return causes;

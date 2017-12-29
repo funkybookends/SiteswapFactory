@@ -4,7 +4,10 @@ import java.util.Set;
 
 public interface Site
 {
-	boolean isVisible();
+	default boolean hasAnyCauses()
+	{
+		return !getCauses().isEmpty();
+	}
 
 	Set<Site> getCauses();
 

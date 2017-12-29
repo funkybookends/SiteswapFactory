@@ -11,7 +11,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.RotationMarkerFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.DefaultArrowFactory;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.DefaultRotationMarkerFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.CausalDiagramToSvg;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.FhsToCausalDiagram;
@@ -33,16 +36,18 @@ public class VisualTests
 	private SwapFactory swapFactory;
 	private CausalDiagramToSvg causalDiagramToSvg;
 	private Function<String, SVGGraphics2D> siteswapToCausalDiagramGraphic;
+	private RotationMarkerFactory rotationMarkerFactor;
 
 	@Before
 	public void setUp() throws Exception
 	{
 		causalDiagramProperties = new CausalDiagramProperties();
 
-		fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties);
+		fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties, new Hand[]{Hand.RIGHT, Hand.LEFT, Hand.LEFT, Hand.RIGHT});
 		arrowFactory = new DefaultArrowFactory(causalDiagramProperties);
 		swapFactory = new DefaultSwapFactory(causalDiagramProperties);
-		causalDiagramToSvg = new CausalDiagramToSvg(causalDiagramProperties, arrowFactory, swapFactory);
+		rotationMarkerFactor = new DefaultRotationMarkerFactory(causalDiagramProperties);
+		causalDiagramToSvg = new CausalDiagramToSvg(causalDiagramProperties, arrowFactory, swapFactory, rotationMarkerFactor);
 
 		siteswapToCausalDiagramGraphic = ((Function<String, FourHandedSiteswap>) SiteswapFactory::getFourHandedSiteswap)
 			.andThen(fhsToCausalDiagram)
@@ -52,7 +57,7 @@ public class VisualTests
 	@Test
 	public void visualTest() throws Exception
 	{
-		final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("72786");
+		final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("975777777");
 		// final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("7278672786");
 
 		final String svgDocument = graphic.getSVGDocument();

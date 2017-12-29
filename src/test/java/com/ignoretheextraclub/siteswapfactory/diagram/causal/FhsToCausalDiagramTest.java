@@ -23,8 +23,7 @@ public class FhsToCausalDiagramTest
     {
         causalDiagramProperties = new CausalDiagramProperties();
         causalDiagramProperties.setPreferredNumThrows(6);
-        causalDiagramProperties.setMinNumRepititions(2);
-        causalDiagramProperties.setMinNumThrowsDisplayed(4);
+        causalDiagramProperties.setMinNumHalfRotations(2);
         causalDiagramProperties.setMaxNumThrowsDisplayed(10);
 
         fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties);
