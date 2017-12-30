@@ -14,8 +14,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**
  * A describer who delegates building the {@link Description}, using a {@link SimpleDescription.Builder} to
- * the injected {@link DescriptionContributor}s. The {@link #getAvailableLocales()} is the union of all locales
- * provided by the {@code DescriptionContributor}s, but can be overridden by subclasses
+ * the injected {@link DescriptionContributor}s.
  *
  * @author Caspar Nonclercq
  */
