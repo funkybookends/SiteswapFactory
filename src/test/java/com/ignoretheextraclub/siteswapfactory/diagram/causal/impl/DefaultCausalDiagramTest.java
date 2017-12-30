@@ -1,9 +1,11 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.impl;
 
 import java.util.Set;
 
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Site;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultSite;
 
@@ -11,7 +13,7 @@ import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.LEFT;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.RIGHT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CausalDiagramTest
+public class DefaultCausalDiagramTest
 {
     @Test
     public void testSingleNode() throws Exception

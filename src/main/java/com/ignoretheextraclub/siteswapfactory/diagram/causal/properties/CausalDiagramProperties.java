@@ -15,7 +15,7 @@ public class CausalDiagramProperties
 
 	// Seperation Properties
 	private int pixelsPerBeat = 15 * FACTOR;
-	private int pixelsPerJuggler = 13 * FACTOR;
+	private int pixelsPerJuggler = 12 * FACTOR;
 	private int swapSeparation = FACTOR;
 
 	// Line Style

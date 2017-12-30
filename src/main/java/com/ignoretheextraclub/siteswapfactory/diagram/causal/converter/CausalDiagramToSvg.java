@@ -17,25 +17,35 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.Site;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.ArrowFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.RotationMarkerFactory;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.SwapFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.ArrowGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.Graphic;
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.SwapFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.RotationMarkerGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
 import static org.apache.commons.lang3.math.NumberUtils.max;
 
+/**
+ * Converts a causal diagram to an {@link SVGGraphics2D}
+ */
 public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D>
 {
 	private final CausalDiagramProperties cdp;
 	private final ArrowFactory arrowFactory;
 	private final SwapFactory swapFactory;
-	private RotationMarkerFactory rotationMarkerFactor;
+	private final RotationMarkerFactory rotationMarkerFactor;
 
+	/**
+	 * Creates a new CasualDiagramToSvg Converter
+	 *  @param causalDiagramProperties The properties for the causal diagram
+	 * @param swapFactory             A factory for creating the swaps
+	 * @param arrowFactory            A factory for creating the arrows
+	 * @param rotationMarkerFactor    A factory for creating the rotation markers
+	 */
 	public CausalDiagramToSvg(final CausalDiagramProperties causalDiagramProperties,
-	                          final ArrowFactory arrowFactory,
 	                          final SwapFactory swapFactory,
+	                          final ArrowFactory arrowFactory,
 	                          final RotationMarkerFactory rotationMarkerFactor)
 	{
 		this.cdp = causalDiagramProperties;
@@ -113,11 +123,6 @@ public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D
 		return svgGraphics2D;
 	}
 
-	private void drawRotationMarkers(final SVGGraphics2D svgGraphics2D, final CausalDiagramProperties cdp, final CausalDiagram causalDiagram)
-	{
-
-	}
-
 	private Optional<Site> containsSameSite(final Map<Site, SwapGraphic> swaps, final Site newSite)
 	{
 		for (final Site mappedSite : swaps.keySet())
@@ -135,11 +140,15 @@ public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D
 	                                 final Collection<RotationMarkerGraphic> rotationMarkers,
 	                                 final CausalDiagram causalDiagram)
 	{
-		final Point maxJugglerPlusBorder = new Point(0, causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder() * 2);
+
+		final int maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder() * 2;
+		final int maxBeatPlusBorder = (int) (causalDiagram.getMaxCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder() * 2);
+
+		final Point causalMax = new Point(maxBeatPlusBorder, maxJugglerPlusBorder);
 
 		return Stream.of(swaps, arrows, rotationMarkers)
 			.flatMap(Collection::stream)
 			.map(Graphic::getMinDocumentSize)
-			.reduce(maxJugglerPlusBorder, (first, second) -> new Point(max(first.x, second.x), max(first.y, second.y)));
+			.reduce(causalMax, (first, second) -> new Point(max(first.x, second.x), max(first.y, second.y)));
 	}
 }

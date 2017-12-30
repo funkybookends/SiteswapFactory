@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
 
@@ -8,15 +8,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.DefaultSwapGraphic;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class SwapGraphicTest
+public class DefaultSwapGraphicTest
 {
-	private static final Logger LOG = LoggerFactory.getLogger(SwapGraphicTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultSwapGraphicTest.class);
 	private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 	private static final int MAX_X = 106;
 	private static final int MIN_Y = 94;

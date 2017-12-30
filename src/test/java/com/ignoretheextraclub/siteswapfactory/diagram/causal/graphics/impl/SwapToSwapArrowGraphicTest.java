@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
@@ -10,15 +10,12 @@ import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.DefaultSwapGraphic;
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.SwapToSwapArrowGraphic;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ArrowGraphicTest
+public class SwapToSwapArrowGraphicTest
 {
-	private static final Logger LOG = LoggerFactory.getLogger(ArrowGraphicTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SwapToSwapArrowGraphicTest.class);
 
 	private BasicStroke stroke = new BasicStroke(1);
 	private DefaultSwapGraphic finish = new DefaultSwapGraphic.SwapBuilder().withxCenter(50).withyCenter(100).withLabel('R').createSwap();

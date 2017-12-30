@@ -30,7 +30,7 @@ public class DefaultArrowFactory implements ArrowFactory
 			.withStart(originGraphic)
 			.withFinish(causesGraphic)
 			.withStroke(getArrowStroke(originSite, causesSite))
-			.withPaint(getArrowPaint(originSite, causesSite))
+			.withPaint(getArrowPaint(originSite, originGraphic, causesSite, causesGraphic))
 			.withArrowHeadLength(getArrowHeadLength())
 			.withArrowHeadPointyness(getArrowHeadPointyness())
 			.withDisplayArrowHead(getDisplayArrowHead(originSite, causesSite))
@@ -56,19 +56,23 @@ public class DefaultArrowFactory implements ArrowFactory
 
 	protected Stroke getArrowStroke(final Site originSite, final Site causesSite)
 	{
-		if (!causesSite.hasAnyCauses())
-		{
-			return DASHED_STROKE;
-		}
+		// if (!causesSite.hasAnyCauses())
+		// {
+		// 	return DASHED_STROKE;
+		// }
 		return SOLID_STROKE;
 	}
 
-	protected Paint getArrowPaint(final Site origin, final Site causes)
+	protected Paint getArrowPaint(final Site origin, final SwapGraphic originGraphic, final Site causes, final SwapGraphic causesGraphic)
 	{
-		if (origin.getHand() == causes.getHand() && origin.getJuggler() != causes.getJuggler())
+		if (!causes.hasAnyCauses())
 		{
-			return CROSSING_PASS_COLOR;
+			return new GradientPaint(originGraphic.getCenter(), NORMAL_THROW_COLOR, causesGraphic.getCenter(), Color.WHITE);
 		}
+		// if (origin.getHand() == causes.getHand() && origin.getJuggler() != causes.getJuggler())
+		// {
+		// 	return CROSSING_PASS_COLOR;
+		// }
 		return NORMAL_THROW_COLOR;
 	}
 

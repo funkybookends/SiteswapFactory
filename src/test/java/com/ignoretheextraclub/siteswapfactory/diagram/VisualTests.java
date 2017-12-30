@@ -47,7 +47,7 @@ public class VisualTests
 		arrowFactory = new DefaultArrowFactory(causalDiagramProperties);
 		swapFactory = new DefaultSwapFactory(causalDiagramProperties);
 		rotationMarkerFactor = new DefaultRotationMarkerFactory(causalDiagramProperties);
-		causalDiagramToSvg = new CausalDiagramToSvg(causalDiagramProperties, arrowFactory, swapFactory, rotationMarkerFactor);
+		causalDiagramToSvg = new CausalDiagramToSvg(causalDiagramProperties, swapFactory, arrowFactory, rotationMarkerFactor);
 
 		siteswapToCausalDiagramGraphic = ((Function<String, FourHandedSiteswap>) SiteswapFactory::getFourHandedSiteswap)
 			.andThen(fhsToCausalDiagram)
@@ -57,7 +57,7 @@ public class VisualTests
 	@Test
 	public void visualTest() throws Exception
 	{
-		final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("975777777");
+		final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("975");
 		// final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("7278672786");
 
 		final String svgDocument = graphic.getSVGDocument();

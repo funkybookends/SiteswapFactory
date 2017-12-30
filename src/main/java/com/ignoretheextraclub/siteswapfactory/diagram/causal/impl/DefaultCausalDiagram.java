@@ -40,20 +40,27 @@ public class DefaultCausalDiagram implements CausalDiagram
 
 		final DefaultCausalDiagram that = (DefaultCausalDiagram) o;
 
+		if (Double.compare(that.fullRotationBeat, fullRotationBeat) != 0) return false;
 		return sites.equals(that.sites);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return sites.hashCode();
+		int result;
+		long temp;
+		result = sites.hashCode();
+		temp = Double.doubleToLongBits(fullRotationBeat);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		return result;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "CausalDiagram{" +
+		return "DefaultCausalDiagram{" +
 			"sites=" + sites +
+			", fullRotationBeat=" + fullRotationBeat +
 			'}';
 	}
 
@@ -79,17 +86,6 @@ public class DefaultCausalDiagram implements CausalDiagram
 			return this;
 		}
 
-		public Builder setFullRotationBeat(final double fullRotationBeat)
-		{
-			this.fullRotationBeat = fullRotationBeat;
-			return this;
-		}
-
-		public CausalDiagram build()
-		{
-			return new DefaultCausalDiagram(new LinkedHashSet<>(sites), fullRotationBeat);
-		}
-
 		private Site getNode(final int juggler, final double beat, final Hand hand)
 		{
 			final DefaultSite newSite = new DefaultSite(juggler, hand, beat);
@@ -105,6 +101,17 @@ public class DefaultCausalDiagram implements CausalDiagram
 			sites.add(newSite);
 
 			return newSite;
+		}
+
+		public Builder setFullRotationBeat(final double fullRotationBeat)
+		{
+			this.fullRotationBeat = fullRotationBeat;
+			return this;
+		}
+
+		public CausalDiagram build()
+		{
+			return new DefaultCausalDiagram(new LinkedHashSet<>(sites), fullRotationBeat);
 		}
 
 	}

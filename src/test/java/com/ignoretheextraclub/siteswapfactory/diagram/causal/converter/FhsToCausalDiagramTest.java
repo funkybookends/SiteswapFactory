@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.diagram.causal;
+package com.ignoretheextraclub.siteswapfactory.diagram.causal.converter;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -6,7 +6,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.FhsToCausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
@@ -48,6 +49,9 @@ public class FhsToCausalDiagramTest
             .addCause(1, 0, 3.5, 4, Hand.LEFT, Hand.RIGHT)  // J2
             .addCause(1, 0, 4.5, 5, Hand.RIGHT, Hand.LEFT)  // J2
             .addCause(1, 0, 5.5, 6, Hand.LEFT, Hand.RIGHT)  // J2
+
+            .setFullRotationBeat(2.0)
+
             .build();
 
         Assertions.assertThat(result).isEqualTo(expected);
@@ -74,6 +78,35 @@ public class FhsToCausalDiagramTest
             .addCause(1, 0, 3.5, 4, Hand.LEFT, Hand.RIGHT) //   5
             .addCause(1, 0, 4.5, 6, Hand.RIGHT, Hand.RIGHT) //  7
             .addCause(1, 1, 5.5, 6.5, Hand.LEFT, Hand.RIGHT) // 6
+
+            .setFullRotationBeat(6.0)
+
+            .build();
+
+        Assertions.assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void fhs75() throws Exception
+    {
+        final CausalDiagram result = fhsToCausalDiagram.apply(SiteswapFactory.getFourHandedSiteswap("75"));
+
+        final CausalDiagram expected = new DefaultCausalDiagram.Builder()
+            .addCause(0, 1, 0, 1.5, Hand.RIGHT, Hand.LEFT) //   7
+            .addCause(0, 1, 1, 2.5, Hand.LEFT, Hand.RIGHT) //   7
+            .addCause(0, 1, 2, 3.5, Hand.RIGHT, Hand.LEFT) //   7
+            .addCause(0, 1, 3, 4.5, Hand.LEFT, Hand.RIGHT) //   7
+            .addCause(0, 1, 4, 5.5, Hand.RIGHT, Hand.LEFT) //   7
+            .addCause(0, 1, 5, 6.5, Hand.LEFT, Hand.RIGHT) //   7
+
+            .addCause(1, 0, 0.5, 1, Hand.RIGHT, Hand.LEFT) //   5
+            .addCause(1, 0, 1.5, 2, Hand.LEFT, Hand.RIGHT) //   5
+            .addCause(1, 0, 2.5, 3, Hand.RIGHT, Hand.LEFT) //   5
+            .addCause(1, 0, 3.5, 4, Hand.LEFT, Hand.RIGHT) //   5
+            .addCause(1, 0, 4.5, 5, Hand.RIGHT, Hand.LEFT) //   5
+            .addCause(1, 0, 5.5, 6, Hand.LEFT, Hand.RIGHT) //   5
+
+            .setFullRotationBeat(2.0)
 
             .build();
 
