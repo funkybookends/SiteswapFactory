@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.FourHandedSiteswapToHefflishSequence;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.RotationMarkerFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.DefaultArrowFactory;
@@ -27,7 +28,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswa
 public class VisualTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(VisualTests.class);
-	private static final String PREFIX = "src/test/resources/visualtests";
+	private static final String PREFIX = "visualtests";
 	private static final String XML_EXTENSION = ".html";
 
 	private CausalDiagramProperties causalDiagramProperties;
@@ -35,7 +36,7 @@ public class VisualTests
 	private ArrowFactory arrowFactory;
 	private SwapFactory swapFactory;
 	private CausalDiagramToSvg causalDiagramToSvg;
-	private Function<String, SVGGraphics2D> siteswapToCausalDiagramGraphic;
+	private Function<FourHandedSiteswap, SVGGraphics2D> siteswapToCausalDiagramGraphic;
 	private RotationMarkerFactory rotationMarkerFactor;
 
 	@Before
@@ -43,27 +44,30 @@ public class VisualTests
 	{
 		causalDiagramProperties = new CausalDiagramProperties();
 
-		fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties, new Hand[]{Hand.RIGHT, Hand.LEFT, Hand.LEFT, Hand.RIGHT});
+		fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties, new Hand[]{Hand.RIGHT, Hand.RIGHT, Hand.LEFT, Hand.LEFT});
 		arrowFactory = new DefaultArrowFactory(causalDiagramProperties);
 		swapFactory = new DefaultSwapFactory(causalDiagramProperties);
 		rotationMarkerFactor = new DefaultRotationMarkerFactory(causalDiagramProperties);
 		causalDiagramToSvg = new CausalDiagramToSvg(causalDiagramProperties, swapFactory, arrowFactory, rotationMarkerFactor);
 
-		siteswapToCausalDiagramGraphic = ((Function<String, FourHandedSiteswap>) SiteswapFactory::getFourHandedSiteswap)
-			.andThen(fhsToCausalDiagram)
-			.andThen(causalDiagramToSvg);
+		siteswapToCausalDiagramGraphic = fhsToCausalDiagram.andThen(causalDiagramToSvg);
 	}
 
 	@Test
 	public void visualTest() throws Exception
 	{
-		final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("975");
-		// final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply("7278672786");
+		// final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("88522");
+		final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("9968926");
+		// final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("975");
+		final SVGGraphics2D graphic = siteswapToCausalDiagramGraphic.apply(siteswap);
 
 		final String svgDocument = graphic.getSVGDocument();
 
 		final File file = getFile("visualTest");
 		FileUtils.writeStringToFile(file, svgDocument, StandardCharsets.UTF_8);
+
+		LOG.info("{}", FourHandedSiteswapToHefflishSequence.get().apply(siteswap, 0));
+		LOG.info("{}", FourHandedSiteswapToHefflishSequence.get().apply(siteswap, 1));
 
 		LOG.info("{}",file.toURI().toURL());
 	}
