@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
+import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 

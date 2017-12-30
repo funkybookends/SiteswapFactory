@@ -11,8 +11,8 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDi
 
 public class DefaultArrowFactory implements ArrowFactory
 {
-	private static final BasicStroke DASHED_STROKE = new BasicStroke(1.3f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, new float[]{6f, 6f}, 0.0f);
-	private static final BasicStroke SOLID_STROKE = new BasicStroke(1.3f);
+	private static final Stroke DASHED_STROKE = new BasicStroke(1.3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10.0f, new float[]{6f, 6f}, 0.0f);
+	private static final Stroke SOLID_STROKE = new BasicStroke(1.3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
 	private static final Color CROSSING_PASS_COLOR = new Color(0, 0, 200);
 	private static final Color NORMAL_THROW_COLOR = new Color(85, 42, 0);
 

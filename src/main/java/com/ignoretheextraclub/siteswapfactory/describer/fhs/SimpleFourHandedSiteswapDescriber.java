@@ -15,7 +15,7 @@ import org.apache.commons.lang.text.StrSubstitutor;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.FourHandedSiteswapToHefflishSequence;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
+import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
 public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor<FourHandedSiteswap>

@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 
 import static org.mockito.Mockito.mock;

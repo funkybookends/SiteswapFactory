@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.describer;
+package com.ignoretheextraclub.siteswapfactory.describer.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import com.ignoretheextraclub.siteswapfactory.describer.Description;
+import com.ignoretheextraclub.siteswapfactory.describer.SiteswapDescriber;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**

@@ -12,9 +12,9 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDi
 
 public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 {
-	private static final Color FULL_ROTATION_MARKER_COLOR = new Color(162, 162, 162);
-	private static final BasicStroke DASHED_STROKE = new BasicStroke(1.3f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10f, new float[]{6f, 6f}, 0f);
-	private static final Color HALF_ROTATION_MARKER_COLOR = new Color(190, 190, 190);
+	private static final Paint FULL_ROTATION_MARKER_COLOR = new Color(162, 162, 162);
+	private static final Stroke DASHED_STROKE = new BasicStroke(1.3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f, new float[]{6f, 6f}, 0f);
+	private static final Paint HALF_ROTATION_MARKER_COLOR = new Color(190, 190, 190);
 
 	private final CausalDiagramProperties cdp;
 

@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Locale;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**

@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 import static org.mockito.Mockito.mock;

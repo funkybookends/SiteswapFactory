@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.describer.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.VanillaSiteswap;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.StreamingMappingReducingStartFinder;

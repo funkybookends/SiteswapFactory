@@ -3,6 +3,7 @@ package com.ignoretheextraclub.siteswapfactory.describer;
 import java.util.Collection;
 import java.util.Locale;
 
+import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**
