@@ -35,6 +35,30 @@ public class CausalDiagramProperties
 	private boolean drawFullRotationMarker = true;
 	private boolean drawHalfRotationMarker = true;
 
+	public CausalDiagramProperties(final int maxNumThrowsDisplayed, final int minNumHalfRotations, final int preferredNumThrows, final int getArrowBend, final int pixelsPerBeat, final int pixelsPerJuggler, final int swapSeparation, final int arrowHeadLength, final double arrowHeadPointyness, final boolean swapDrawCircle, final int swapCircleBuffer, final Font labelFont, final int leftBorder, final int topBorder, final boolean drawFullRotationMarker, final boolean drawHalfRotationMarker)
+	{
+		this.maxNumThrowsDisplayed = maxNumThrowsDisplayed;
+		this.minNumHalfRotations = minNumHalfRotations;
+		this.preferredNumThrows = preferredNumThrows;
+		this.getArrowBend = getArrowBend;
+		this.pixelsPerBeat = pixelsPerBeat;
+		this.pixelsPerJuggler = pixelsPerJuggler;
+		this.swapSeparation = swapSeparation;
+		this.arrowHeadLength = arrowHeadLength;
+		this.arrowHeadPointyness = arrowHeadPointyness;
+		this.swapDrawCircle = swapDrawCircle;
+		this.swapCircleBuffer = swapCircleBuffer;
+		this.labelFont = labelFont;
+		this.leftBorder = leftBorder;
+		this.topBorder = topBorder;
+		this.drawFullRotationMarker = drawFullRotationMarker;
+		this.drawHalfRotationMarker = drawHalfRotationMarker;
+	}
+
+	public CausalDiagramProperties()
+	{
+	}
+
 	public int getMaxNumThrowsDisplayed()
 	{
 		return maxNumThrowsDisplayed;
