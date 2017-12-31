@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
@@ -29,7 +28,7 @@ import static org.apache.commons.lang3.math.NumberUtils.max;
 /**
  * Converts a causal diagram to an {@link SVGGraphics2D}
  */
-public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D>
+public class CausalDiagramToSvg implements CausalDiagramDrawer
 {
 	private final CausalDiagramProperties cdp;
 	private final ArrowFactory arrowFactory;
@@ -38,7 +37,8 @@ public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D
 
 	/**
 	 * Creates a new CasualDiagramToSvg Converter
-	 *  @param causalDiagramProperties The properties for the causal diagram
+	 *
+	 * @param causalDiagramProperties The properties for the causal diagram
 	 * @param swapFactory             A factory for creating the swaps
 	 * @param arrowFactory            A factory for creating the arrows
 	 * @param rotationMarkerFactor    A factory for creating the rotation markers
@@ -54,15 +54,17 @@ public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D
 		this.rotationMarkerFactor = rotationMarkerFactor;
 	}
 
-	public SVGGraphics2D apply(final CausalDiagram causalDiagram)
+	@Override
+	public <T extends Graphics2D> T apply(final CausalDiagram causalDiagram, final GraphicsSupplier<T> graphicsSupplier)
 	{
 		final Map<Site, SwapGraphic> swaps = getSiteToSwapMap(causalDiagram);
 		final List<ArrowGraphic> arrows = getArrowGraphics(causalDiagram, swaps);
 		final Set<RotationMarkerGraphic> rotationMarkers = getRotationMarkers(causalDiagram);
 
 		final Point minDocumentSize = getMinDocumentSize(swaps.values(), arrows, rotationMarkers, causalDiagram);
+		final T graphics2d = graphicsSupplier.apply(minDocumentSize);
 
-		return drawSvgDiagram(minDocumentSize, swaps, arrows, rotationMarkers);
+		return drawSvgDiagram(graphics2d, swaps, arrows, rotationMarkers);
 	}
 
 	private Set<RotationMarkerGraphic> getRotationMarkers(final CausalDiagram causalDiagram)
@@ -109,18 +111,16 @@ public class CausalDiagramToSvg implements Function<CausalDiagram, SVGGraphics2D
 		return arrows;
 	}
 
-	private SVGGraphics2D drawSvgDiagram(final Point minDocumentSize,
-	                                     final Map<Site, SwapGraphic> swaps,
-	                                     final List<ArrowGraphic> arrows,
-	                                     final Set<RotationMarkerGraphic> rotationMarkers)
+	private <T extends Graphics2D> T drawSvgDiagram(final T graphics2D,
+	                                                final Map<Site, SwapGraphic> swaps,
+	                                                final List<ArrowGraphic> arrows,
+	                                                final Set<RotationMarkerGraphic> rotationMarkers)
 	{
-		final SVGGraphics2D svgGraphics2D = new SVGGraphics2D(minDocumentSize.x, minDocumentSize.y);
+		swaps.values().forEach(graphic -> graphic.draw(graphics2D));
+		arrows.forEach(graphic -> graphic.draw(graphics2D));
+		rotationMarkers.forEach(marker -> marker.draw(graphics2D));
 
-		swaps.values().forEach(graphic -> graphic.draw(svgGraphics2D));
-		arrows.forEach(graphic -> graphic.draw(svgGraphics2D));
-		rotationMarkers.forEach(marker -> marker.draw(svgGraphics2D));
-
-		return svgGraphics2D;
+		return graphics2D;
 	}
 
 	private Optional<Site> containsSameSite(final Map<Site, SwapGraphic> swaps, final Site newSite)
