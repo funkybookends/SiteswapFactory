@@ -13,6 +13,7 @@ public class DefaultSwapFactory implements SwapFactory
 {
 	private static final Color DEFAULT_FONT_COLOR = new Color(60, 60, 60);
 	private static final Color FADING_FONT_COLOR = new Color(200, 200, 200);
+
 	private final CausalDiagramProperties cdp;
 
 	public DefaultSwapFactory(final CausalDiagramProperties causalDiagramProperties)

@@ -18,6 +18,7 @@ public class CausalDiagramProperties
 	private double swapSeparation = FACTOR;
 
 	// Line Style
+	private double lineWidth = 1.3;
 	private double arrowHeadLength = 2 * FACTOR;
 	private double arrowHeadPointyness = 8.0;
 
@@ -41,6 +42,7 @@ public class CausalDiagramProperties
 	                               final double pixelsPerBeat,
 	                               final double pixelsPerJuggler,
 	                               final double swapSeparation,
+	                               final double lineWidth,
 	                               final double arrowHeadLength,
 	                               final double arrowHeadPointyness,
 	                               final boolean swapDrawCircle,
@@ -58,6 +60,7 @@ public class CausalDiagramProperties
 		this.pixelsPerBeat = pixelsPerBeat;
 		this.pixelsPerJuggler = pixelsPerJuggler;
 		this.swapSeparation = swapSeparation;
+		this.lineWidth = lineWidth;
 		this.arrowHeadLength = arrowHeadLength;
 		this.arrowHeadPointyness = arrowHeadPointyness;
 		this.swapDrawCircle = swapDrawCircle;
@@ -233,4 +236,13 @@ public class CausalDiagramProperties
 		this.drawHalfRotationMarker = drawHalfRotationMarker;
 	}
 
+	public double getLineWidth()
+	{
+		return lineWidth;
+	}
+
+	public void setLineWidth(final double lineWidth)
+	{
+		this.lineWidth = lineWidth;
+	}
 }
