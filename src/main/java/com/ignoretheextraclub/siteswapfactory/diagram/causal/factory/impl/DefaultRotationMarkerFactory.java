@@ -63,12 +63,12 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected double getMaxY(final CausalDiagram causalDiagram)
 	{
-		return (causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder()) + 20;
+		return (causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder()) + cdp.getGetArrowBend() / 2;
 	}
 
 	protected double getMinY(final CausalDiagram causalDiagram)
 	{
-		return cdp.getTopBorder() - 20;
+		return cdp.getTopBorder() - cdp.getGetArrowBend() / 2;
 	}
 
 	protected Stroke getFullRotationMarkerStroke()
