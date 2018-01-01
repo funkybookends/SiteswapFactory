@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Percentage.withPercentage;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class SwapToSwapArrowGraphicTest
@@ -75,15 +77,15 @@ public class SwapToSwapArrowGraphicTest
 		arrow.translateControl(0, -75);
 		arrow.draw(svgGraphics2D);
 
-		final ArgumentCaptor<QuadCurve2D.Double> curveCaptor = ArgumentCaptor.forClass(QuadCurve2D.Double.class);
+		final ArgumentCaptor<Shape> curveCaptor = ArgumentCaptor.forClass(Shape.class);
 
 		final QuadCurve2D.Double expectedCurve = new QuadCurve2D.Double(57.2, 94.6, 150.0, 25.0, 242.8, 94.6);
 
-		verify(svgGraphics2D).draw(curveCaptor.capture());
-		verify(svgGraphics2D).drawLine(231, 77, 242, 94);
-		verify(svgGraphics2D).drawLine(223, 88, 242, 94);
+		verify(svgGraphics2D, times(3)).draw(curveCaptor.capture());
+		assertThat(curveCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(new Line2D.Double(231.8691597873335, 77.85136625735839, 242.8, 94.6));
+		assertThat(curveCaptor.getAllValues().get(2)).isEqualToComparingFieldByField(new Line2D.Double(223, 88, 242.8, 94.6));
 
-		final QuadCurve2D.Double actual = curveCaptor.getValue();
+		final Shape actual = curveCaptor.getAllValues().get(0);
 		assertThat(actual).isEqualToComparingFieldByField(expectedCurve);
 	}
 
@@ -98,9 +100,13 @@ public class SwapToSwapArrowGraphicTest
 		final SwapToSwapArrowGraphic arrow = new SwapToSwapArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
 		arrow.draw(svgGraphics2D);
 
-		verify(svgGraphics2D).drawLine(59, 100, 241, 100);
-		verify(svgGraphics2D).drawLine(222, 93, 241, 100);
-		verify(svgGraphics2D).drawLine(222, 106, 241, 100);
+		final ArgumentCaptor<Line2D.Double> lineArgCaptor = ArgumentCaptor.forClass(Line2D.Double.class);
+
+		verify(svgGraphics2D, times(3)).draw(lineArgCaptor.capture());
+
+		assertThat(lineArgCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(new Line2D.Double(59, 100, 241, 100));
+		assertThat(lineArgCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(new Line2D.Double(222.20614758428184, 93.15959713348663, 241, 100));
+		assertThat(lineArgCaptor.getAllValues().get(2)).isEqualToComparingFieldByField(new Line2D.Double(222.0, 106, 241, 100));
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
@@ -199,7 +200,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	private void drawLine(final Graphics2D graphics2D, final Point2D start, final Point2D end, final Stroke stroke)
 	{
 		graphics2D.setStroke(stroke);
-		graphics2D.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
+		graphics2D.draw(new Line2D.Double(start, end));
 	}
 
 	public void translateControl(final double dx, final double dy)

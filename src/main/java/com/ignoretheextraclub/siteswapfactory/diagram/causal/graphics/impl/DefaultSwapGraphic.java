@@ -68,8 +68,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 			graphics.setStroke(labelStroke);
 			graphics.setFont(labelFont);
 
-			final Point labelPosition = getLabelPosition();
-			graphics.drawString(String.valueOf(label), labelPosition.x, labelPosition.y);
+			final Point2D labelPosition = getLabelPosition();
+			graphics.drawString(String.valueOf(label), (float) labelPosition.getX(), (float) labelPosition.getY());
 		}
 
 		if (drawCircle)
@@ -97,14 +97,14 @@ public class DefaultSwapGraphic implements SwapGraphic
 		return labelFont.getSize();
 	}
 
-	private Point getLabelPosition()
+	private Point2D getLabelPosition()
 	{
 		final int stringWidth = getLabelWidth();
 
 		int labelX = (int) (xCenter - stringWidth * 0.3); // TODO magic numbers, they seem to work though!
 		int labelY = (int) (yCenter + stringWidth * 0.4);
 
-		return new Point(labelX, labelY);
+		return new Point2D.Double(labelX, labelY);
 	}
 
 	private Rectangle2D getBoxCenteredOnPoint(final double xCenter,
