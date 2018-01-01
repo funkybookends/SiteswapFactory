@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.converter;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 		final List<ArrowGraphic> arrows = getArrowGraphics(causalDiagram, swaps);
 		final Set<RotationMarkerGraphic> rotationMarkers = getRotationMarkers(causalDiagram);
 
-		final Point minDocumentSize = getMinDocumentSize(swaps.values(), arrows, rotationMarkers, causalDiagram);
+		final Point2D minDocumentSize = getMinDocumentSize(swaps.values(), arrows, rotationMarkers, causalDiagram);
 		final T graphics2d = graphicsSupplier.apply(minDocumentSize);
 
 		return drawSvgDiagram(graphics2d, swaps, arrows, rotationMarkers);
@@ -135,20 +136,20 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 		return Optional.empty();
 	}
 
-	private Point getMinDocumentSize(final Collection<SwapGraphic> swaps,
-	                                 final Collection<ArrowGraphic> arrows,
-	                                 final Collection<RotationMarkerGraphic> rotationMarkers,
-	                                 final CausalDiagram causalDiagram)
+	private Point2D getMinDocumentSize(final Collection<SwapGraphic> swaps,
+	                                   final Collection<ArrowGraphic> arrows,
+	                                   final Collection<RotationMarkerGraphic> rotationMarkers,
+	                                   final CausalDiagram causalDiagram)
 	{
 
-		final int maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder() * 2;
-		final int maxBeatPlusBorder = (int) (causalDiagram.getMaxCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder() * 2);
+		final double maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder() * 2;
+		final double maxBeatPlusBorder = (int) (causalDiagram.getMaxCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder() * 2);
 
-		final Point causalMax = new Point(maxBeatPlusBorder, maxJugglerPlusBorder);
+		final Point2D causalMax = new Point2D.Double(maxBeatPlusBorder, maxJugglerPlusBorder);
 
 		return Stream.of(swaps, arrows, rotationMarkers)
 			.flatMap(Collection::stream)
 			.map(Graphic::getMinDocumentSize)
-			.reduce(causalMax, (first, second) -> new Point(max(first.x, second.x), max(first.y, second.y)));
+			.reduce(causalMax, (first, second) -> new Point2D.Double(max(first.getX(), second.getX()), max(first.getY(), second.getY())));
 	}
 }

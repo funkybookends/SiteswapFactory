@@ -1,22 +1,23 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.RotationMarkerGraphic;
 
 public class DefaultRotationMarkerGraphic implements RotationMarkerGraphic
 {
-	private int minY;
-	private int maxY;
-	private int x;
+	private double minY;
+	private double maxY;
+	private double x;
 
 	private Stroke stroke;
 	private Paint paint;
 
-	public DefaultRotationMarkerGraphic(final int minY,
-	                                    final int maxY,
-	                                    final int x,
+	public DefaultRotationMarkerGraphic(final double minY,
+	                                    final double maxY,
+	                                    final double x,
 	                                    final Stroke stroke,
 	                                    final Paint paint)
 	{
@@ -32,36 +33,36 @@ public class DefaultRotationMarkerGraphic implements RotationMarkerGraphic
 	{
 		graphics.setPaint(paint);
 		graphics.setStroke(stroke);
-		graphics.drawLine(x, minY, x, maxY);
+		graphics.drawLine((int) x, (int) minY, (int) x, (int) maxY);
 	}
 
 	@Override
-	public Rectangle getBounds()
+	public Rectangle2D getBounds()
 	{
-		return new Rectangle(x, minY, 0, maxY - minY);
+		return new Rectangle2D.Double(x, minY, 0, maxY - minY);
 	}
 
 	public static class Builder
 	{
-		private int minY;
-		private int maxY;
-		private int x;
+		private double minY;
+		private double maxY;
+		private double x;
 		private Stroke stroke;
 		private Paint paint;
 
-		public Builder withMinY(final int minY)
+		public Builder withMinY(final double minY)
 		{
 			this.minY = minY;
 			return this;
 		}
 
-		public Builder withMaxY(final int maxY)
+		public Builder withMaxY(final double maxY)
 		{
 			this.maxY = maxY;
 			return this;
 		}
 
-		public Builder withX(final int x)
+		public Builder withX(final double x)
 		{
 			this.x = x;
 			return this;

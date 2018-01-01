@@ -58,7 +58,7 @@ public class VisualTests
 		final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("9968926");
 		// final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("975");
 		final CausalDiagram causalDiagram = fhsToCausalDiagram.apply(siteswap);
-		final SVGGraphics2D graphics2D = causalDiagramToSvg.apply(causalDiagram, point -> new SVGGraphics2D(point.x, point.y));
+		final SVGGraphics2D graphics2D = causalDiagramToSvg.apply(causalDiagram, point -> new SVGGraphics2D((int) point.getX(), (int) point.getY()));
 		final String svgDocument = graphics2D.getSVGDocument();
 
 		final File file = getFile("visualTest");

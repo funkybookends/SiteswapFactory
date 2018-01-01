@@ -1,7 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -27,11 +29,11 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	private SwapGraphic start;
 	private SwapGraphic finish;
 
-	private Point control;
+	private Point2D control;
 	private Stroke stroke;
 	private Paint paint;
 	private boolean displayArrowHead;
-	private int arrowHeadLength;
+	private double arrowHeadLength;
 
 	/**
 	 * Draws an arrow head like a section of cake cut into this many pieces.
@@ -41,8 +43,8 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 
 	/**
 	 * Creates an arrow.
-	 * @param start               The start point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point)}
-	 * @param finish              The end point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point)}
+	 * @param start               The start point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point2D)}
+	 * @param finish              The end point of the arrow, found using {@link SwapGraphic#getConnectionPointFor(Point2D)}
 	 * @param control             An optional control, will cause a {@link QuadCurve2D} to be drawn instead of a line.
 	 * @param stroke              The stroke to use.
 	 * @param paint
@@ -56,7 +58,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	                              final Stroke stroke,
 	                              final Paint paint,
 	                              final boolean displayArrowHead,
-	                              final int arrowHeadLength,
+	                              final double arrowHeadLength,
 	                              final double arrowHeadPointyness)
 	{
 		Objects.requireNonNull(start, "start cannot be null");
@@ -85,8 +87,8 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			graphics.setStroke(stroke);
 			graphics.setPaint(paint);
 
-			final Point shaftStartingPoint = getShaftStartingPoint();
-			final Point shaftEndingPoint = getShaftEndingPoint();
+			final Point2D shaftStartingPoint = getShaftStartingPoint();
+			final Point2D shaftEndingPoint = getShaftEndingPoint();
 
 			if (control == null)
 			{
@@ -94,14 +96,14 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			}
 			else
 			{
-				final Shape curve = new QuadCurve2D.Double(shaftStartingPoint.x, shaftStartingPoint.y, control.x, control.y, shaftEndingPoint.x, shaftEndingPoint.y);
+				final Shape curve = new QuadCurve2D.Double(shaftStartingPoint.getX(), shaftStartingPoint.getY(), control.getX(), control.getY(), shaftEndingPoint.getX(), shaftEndingPoint.getY());
 				graphics.draw(curve);
 			}
 
 			if (displayArrowHead)
 			{
-				final Point firstArrowHeadPoint = getFirstArrowHeadPoint(shaftEndingPoint);
-				final Point secondArrowHeadPoint = getSecondArrowHeadPoint(shaftEndingPoint);
+				final Point2D firstArrowHeadPoint = getFirstArrowHeadPoint(shaftEndingPoint);
+				final Point2D secondArrowHeadPoint = getSecondArrowHeadPoint(shaftEndingPoint);
 
 				drawLine(graphics, firstArrowHeadPoint, shaftEndingPoint, stroke);
 				drawLine(graphics, secondArrowHeadPoint, shaftEndingPoint, stroke);
@@ -110,18 +112,18 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	}
 
 	@Override
-	public Rectangle getBounds()
+	public Rectangle2D getBounds()
 	{
 		if (start != finish)
 		{
-			final List<Point> extremePoints = getAllPoints();
+			final List<Point2D> extremePoints = getAllPoints();
 
-			final int left = min((point) -> point.x, extremePoints);
-			final int top = min((point) -> point.y, extremePoints);
-			final int right = max((point) -> point.x, extremePoints);
-			final int bottom = max((point) -> point.y, extremePoints);
+			final double left = min((point) -> point.getX(), extremePoints);
+			final double top = min((point) -> point.getY(), extremePoints);
+			final double right = max((point) -> point.getX(), extremePoints);
+			final double bottom = max((point) -> point.getY(), extremePoints);
 
-			return new Rectangle(left, top, right - left, bottom - top);
+			return new Rectangle2D.Double(left, top, right - left, bottom - top);
 		}
 		else
 		{
@@ -129,7 +131,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 		}
 	}
 
-	private int min(Function<Point, Integer> extractor, final List<Point> points)
+	private double min(Function<Point2D, Double> extractor, final List<Point2D> points)
 	{
 		return points.stream()
 			.filter(Objects::nonNull)
@@ -138,7 +140,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			.orElseThrow(IllegalArgumentException::new);
 	}
 
-	private int max(Function<Point, Integer> extractor, final List<Point> points)
+	private double max(Function<Point2D, Double> extractor, final List<Point2D> points)
 	{
 		return points.stream()
 			.filter(Objects::nonNull)
@@ -147,9 +149,9 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			.orElseThrow(IllegalArgumentException::new);
 	}
 
-	private List<Point> getAllPoints()
+	private List<Point2D> getAllPoints()
 	{
-		final Point shaftEndingPoint = getShaftEndingPoint();
+		final Point2D shaftEndingPoint = getShaftEndingPoint();
 
 		return Arrays.asList(getShaftStartingPoint(),
 			shaftEndingPoint,
@@ -158,60 +160,60 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			control);
 	}
 
-	private Point getShaftEndingPoint()
+	private Point2D getShaftEndingPoint()
 	{
 		return finish.getConnectionPointFor(control == null ? start.getCenter() : control);
 	}
 
-	private Point getShaftStartingPoint()
+	private Point2D getShaftStartingPoint()
 	{
 		return start.getConnectionPointFor(control == null ? finish.getCenter() : control);
 	}
 
-	private Point getFirstArrowHeadPoint(final Point connectingPoint)
+	private Point2D getFirstArrowHeadPoint(final Point2D connectingPoint)
 	{
 		final double arrowAngle = getArrowAngle();
 
-		return new Point(
-			(int) (connectingPoint.x - (arrowHeadLength * Math.sin(arrowAngle - Math.PI / arrowHeadPointyness))),
-			(int) (connectingPoint.y - (arrowHeadLength * Math.cos(arrowAngle - Math.PI / arrowHeadPointyness)))
+		return new Point2D.Double(
+			connectingPoint.getX() - (arrowHeadLength * Math.sin(arrowAngle - Math.PI / arrowHeadPointyness)),
+			connectingPoint.getY() - (arrowHeadLength * Math.cos(arrowAngle - Math.PI / arrowHeadPointyness))
 		);
 	}
 
-	private Point getSecondArrowHeadPoint(final Point connectingPoint)
+	private Point2D getSecondArrowHeadPoint(final Point2D connectingPoint)
 	{
 		final double arrowAngle = getArrowAngle();
 
 		return new Point(
-			(int) (connectingPoint.x - (arrowHeadLength * Math.sin(arrowAngle + Math.PI / arrowHeadPointyness))),
-			(int) (connectingPoint.y - (arrowHeadLength * Math.cos(arrowAngle + Math.PI / arrowHeadPointyness)))
+			(int) (connectingPoint.getX() - (arrowHeadLength * Math.sin(arrowAngle + Math.PI / arrowHeadPointyness))),
+			(int) (connectingPoint.getY() - (arrowHeadLength * Math.cos(arrowAngle + Math.PI / arrowHeadPointyness)))
 		);
 	}
 
 	private double getArrowAngle()
 	{
-		final Point entry = control == null ? start.getCenter() : control;
-		return Math.atan2(entry.x - finish.getCenter().getX(), entry.y - finish.getCenter().getY()) + Math.PI;
+		final Point2D entry = control == null ? start.getCenter() : control;
+		return Math.atan2(entry.getX() - finish.getCenter().getX(), entry.getY() - finish.getCenter().getY()) + Math.PI;
 	}
 
-	private void drawLine(final Graphics2D graphics2D, final Point start, final Point end, final Stroke stroke)
+	private void drawLine(final Graphics2D graphics2D, final Point2D start, final Point2D end, final Stroke stroke)
 	{
 		graphics2D.setStroke(stroke);
-		graphics2D.drawLine(start.x, start.y, end.x, end.y);
+		graphics2D.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
 	}
 
-	public void translateControl(final int dx, final int dy)
+	public void translateControl(final double dx, final double dy)
 	{
 		if (control == null)
 		{
 			control = getCenterPoint(start.getCenter(), finish.getCenter());
 		}
-		control.translate(dx, dy);
+		control.setLocation(control.getX() + dx, control.getY() + dy);
 	}
 
-	private Point getCenterPoint(final Point first, final Point second)
+	private Point2D getCenterPoint(final Point2D first, final Point2D second)
 	{
-		return new Point((first.x + second.x) / 2, (first.y + second.y) / 2);
+		return new Point2D.Double((first.getX() + second.getX()) / 2, (first.getY() + second.getY()) / 2);
 	}
 
 	public static class ArrowGraphicBuilder
@@ -222,7 +224,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 		private Stroke stroke = DEFAULT_STROKE;
 		private Paint paint = DEFAULT_PAINT;
 		private boolean displayArrowHead = true;
-		private int arrowHeadLength = DEFAULT_ARROW_HEAD_LENGTH;
+		private double arrowHeadLength = DEFAULT_ARROW_HEAD_LENGTH;
 		private double arrowHeadPointyness = DEFAULT_ARROW_HEAD_POINTYNESS;
 
 		public ArrowGraphicBuilder withStart(final SwapGraphic start)
@@ -261,7 +263,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			return this;
 		}
 
-		public ArrowGraphicBuilder withArrowHeadLength(final int arrowHeadLength)
+		public ArrowGraphicBuilder withArrowHeadLength(final double arrowHeadLength)
 		{
 			this.arrowHeadLength = arrowHeadLength;
 			return this;

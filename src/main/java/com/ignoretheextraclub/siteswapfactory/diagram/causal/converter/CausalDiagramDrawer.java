@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.converter;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
 
@@ -10,6 +11,6 @@ public interface CausalDiagramDrawer
 
 	interface  GraphicsSupplier<T extends Graphics2D>
 	{
-		T apply(Point point);
+		T apply(Point2D point);
 	}
 }

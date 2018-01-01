@@ -28,8 +28,8 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 	{
 		final Set<RotationMarkerGraphic> rotationMarkers = new HashSet<>();
 
-		final int maxY = getMaxY(causalDiagram);
-		final int minY = getMinY(causalDiagram);
+		final double maxY = getMaxY(causalDiagram);
+		final double minY = getMinY(causalDiagram);
 
 		if (cdp.isDrawFullRotationMarker() && causalDiagram.getFullRotationBeat() <= causalDiagram.getMaxCausalBeat())
 		{
@@ -62,12 +62,12 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 		return rotationMarkers;
 	}
 
-	protected int getMaxY(final CausalDiagram causalDiagram)
+	protected double getMaxY(final CausalDiagram causalDiagram)
 	{
 		return (causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder()) + 20;
 	}
 
-	protected int getMinY(final CausalDiagram causalDiagram)
+	protected double getMinY(final CausalDiagram causalDiagram)
 	{
 		return cdp.getTopBorder() - 20;
 	}

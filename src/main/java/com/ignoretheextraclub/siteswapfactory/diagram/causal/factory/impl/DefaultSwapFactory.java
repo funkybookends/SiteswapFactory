@@ -68,7 +68,7 @@ public class DefaultSwapFactory implements SwapFactory
 		return new BasicStroke(0.8f);
 	}
 
-	protected int getBuffer()
+	protected double getBuffer()
 	{
 		return cdp.getSwapCircleBuffer();
 	}

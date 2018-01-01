@@ -4,38 +4,52 @@ import java.awt.*;
 
 public class CausalDiagramProperties
 {
-	private static final int FACTOR = 5;
+	private static final double FACTOR = 5;
 
 	// Length Properties
-
 	private int maxNumThrowsDisplayed = 15;
 	private int minNumHalfRotations = 2;
 	private int preferredNumThrows = 10;
-	private int getArrowBend = 8 * FACTOR;
 
 	// Seperation Properties
-	private int pixelsPerBeat = 15 * FACTOR;
-	private int pixelsPerJuggler = 12 * FACTOR;
-	private int swapSeparation = FACTOR;
+	private double pixelsPerBeat = 15 * FACTOR;
+	private double pixelsPerJuggler = 12 * FACTOR;
+	private double getArrowBend = 8 * FACTOR;
+	private double swapSeparation = FACTOR;
 
 	// Line Style
-	private int arrowHeadLength = 2 * FACTOR;
+	private double arrowHeadLength = 2 * FACTOR;
 	private double arrowHeadPointyness = 8.0;
 
 	// Site Style
 	private boolean swapDrawCircle = false;
-	private int swapCircleBuffer = 3;
-	private Font labelFont = new Font("Arial", Font.PLAIN, 16);
+	private double swapCircleBuffer = 0.5 * FACTOR;
+	private Font labelFont = new Font("Arial", Font.PLAIN, (int) (3 * FACTOR));
 
 	// Border Style
-	private int leftBorder = 8 * FACTOR;
-	private int topBorder = 8 * FACTOR;
+	private double leftBorder = 8 * FACTOR;
+	private double topBorder = 8 * FACTOR;
 
 	// Markers
 	private boolean drawFullRotationMarker = true;
 	private boolean drawHalfRotationMarker = true;
 
-	public CausalDiagramProperties(final int maxNumThrowsDisplayed, final int minNumHalfRotations, final int preferredNumThrows, final int getArrowBend, final int pixelsPerBeat, final int pixelsPerJuggler, final int swapSeparation, final int arrowHeadLength, final double arrowHeadPointyness, final boolean swapDrawCircle, final int swapCircleBuffer, final Font labelFont, final int leftBorder, final int topBorder, final boolean drawFullRotationMarker, final boolean drawHalfRotationMarker)
+	public CausalDiagramProperties(final int maxNumThrowsDisplayed,
+	                               final int minNumHalfRotations,
+	                               final int preferredNumThrows,
+	                               final double getArrowBend,
+	                               final double pixelsPerBeat,
+	                               final double pixelsPerJuggler,
+	                               final double swapSeparation,
+	                               final double arrowHeadLength,
+	                               final double arrowHeadPointyness,
+	                               final boolean swapDrawCircle,
+	                               final double swapCircleBuffer,
+	                               final Font labelFont,
+	                               final double leftBorder,
+	                               final double topBorder,
+	                               final boolean drawFullRotationMarker,
+	                               final boolean drawHalfRotationMarker)
 	{
 		this.maxNumThrowsDisplayed = maxNumThrowsDisplayed;
 		this.minNumHalfRotations = minNumHalfRotations;
@@ -89,7 +103,7 @@ public class CausalDiagramProperties
 		this.preferredNumThrows = preferredNumThrows;
 	}
 
-	public int getGetArrowBend()
+	public double getGetArrowBend()
 	{
 		return getArrowBend;
 	}
@@ -99,7 +113,7 @@ public class CausalDiagramProperties
 		this.getArrowBend = getArrowBend;
 	}
 
-	public int getPixelsPerBeat()
+	public double getPixelsPerBeat()
 	{
 		return pixelsPerBeat;
 	}
@@ -109,7 +123,7 @@ public class CausalDiagramProperties
 		this.pixelsPerBeat = pixelsPerBeat;
 	}
 
-	public int getPixelsPerJuggler()
+	public double getPixelsPerJuggler()
 	{
 		return pixelsPerJuggler;
 	}
@@ -119,7 +133,7 @@ public class CausalDiagramProperties
 		this.pixelsPerJuggler = pixelsPerJuggler;
 	}
 
-	public int getSwapSeparation()
+	public double getSwapSeparation()
 	{
 		return swapSeparation;
 	}
@@ -129,7 +143,7 @@ public class CausalDiagramProperties
 		this.swapSeparation = swapSeparation;
 	}
 
-	public int getArrowHeadLength()
+	public double getArrowHeadLength()
 	{
 		return arrowHeadLength;
 	}
@@ -159,7 +173,7 @@ public class CausalDiagramProperties
 		this.swapDrawCircle = swapDrawCircle;
 	}
 
-	public int getSwapCircleBuffer()
+	public double getSwapCircleBuffer()
 	{
 		return swapCircleBuffer;
 	}
@@ -179,7 +193,7 @@ public class CausalDiagramProperties
 		this.labelFont = labelFont;
 	}
 
-	public int getLeftBorder()
+	public double getLeftBorder()
 	{
 		return leftBorder;
 	}
@@ -189,7 +203,7 @@ public class CausalDiagramProperties
 		this.leftBorder = leftBorder;
 	}
 
-	public int getTopBorder()
+	public double getTopBorder()
 	{
 		return topBorder;
 	}

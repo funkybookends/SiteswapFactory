@@ -76,7 +76,7 @@ public class DefaultArrowFactory implements ArrowFactory
 		return NORMAL_THROW_COLOR;
 	}
 
-	protected int getArrowHeadLength()
+	protected double getArrowHeadLength()
 	{
 		return cdp.getArrowHeadLength();
 	}
@@ -91,7 +91,7 @@ public class DefaultArrowFactory implements ArrowFactory
 		return Math.abs(causalBeat - causalBeat1) > 1.1;
 	}
 
-	protected int getArrowBend(final Site origin, final Site causes)
+	protected double getArrowBend(final Site origin, final Site causes)
 	{
 		return cdp.getGetArrowBend() * (origin.getJuggler() % 2 == 1 ? -1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
 	}

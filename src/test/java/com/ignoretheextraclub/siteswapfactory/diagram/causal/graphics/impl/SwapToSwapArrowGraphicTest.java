@@ -2,14 +2,16 @@ package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
+import java.awt.geom.Rectangle2D;
 
-import org.assertj.core.api.Assertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Percentage.withPercentage;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -75,14 +77,14 @@ public class SwapToSwapArrowGraphicTest
 
 		final ArgumentCaptor<QuadCurve2D.Double> curveCaptor = ArgumentCaptor.forClass(QuadCurve2D.Double.class);
 
-		final QuadCurve2D.Double expectedCurve = new QuadCurve2D.Double(57.0, 95.0, 150.0, 25.0, 243.0, 95.0);
+		final QuadCurve2D.Double expectedCurve = new QuadCurve2D.Double(57.2, 94.6, 150.0, 25.0, 242.8, 94.6);
 
 		verify(svgGraphics2D).draw(curveCaptor.capture());
-		verify(svgGraphics2D).drawLine(232, 78, 243, 95);
-		verify(svgGraphics2D).drawLine(223, 89, 243, 95);
+		verify(svgGraphics2D).drawLine(231, 77, 242, 94);
+		verify(svgGraphics2D).drawLine(223, 88, 242, 94);
 
 		final QuadCurve2D.Double actual = curveCaptor.getValue();
-		Assertions.assertThat(actual).isEqualToComparingFieldByField(expectedCurve);
+		assertThat(actual).isEqualToComparingFieldByField(expectedCurve);
 	}
 
 	@Test
@@ -110,9 +112,11 @@ public class SwapToSwapArrowGraphicTest
 		final SwapToSwapArrowGraphic arrow = new SwapToSwapArrowGraphic.ArrowGraphicBuilder().withStart(first).withFinish(third).withControl(null).withStroke(stroke).withDisplayArrowHead(true).withArrowHeadLength(20).withArrowHeadPointyness(9.0).createArrowGraphic();
 		arrow.translateControl(0, -75);
 
-		final Rectangle bounds = arrow.getBounds();
-		final Rectangle expected = new Rectangle(57, 25, 186, 70);
+		final Rectangle2D bounds = arrow.getBounds();
 
-		Assertions.assertThat(bounds).isEqualTo(expected);
+		assertThat(bounds.getX()).isCloseTo(57, withPercentage(1));
+		assertThat(bounds.getY()).isCloseTo(25, withPercentage(1));
+		assertThat(bounds.getWidth()).isCloseTo(186, withPercentage(1));
+		assertThat(bounds.getHeight()).isCloseTo(70, withPercentage(1));
 	}
 }

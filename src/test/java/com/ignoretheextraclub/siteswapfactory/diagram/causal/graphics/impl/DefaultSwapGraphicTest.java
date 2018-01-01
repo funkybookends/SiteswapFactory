@@ -1,6 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import org.assertj.core.api.Assertions;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
@@ -16,10 +18,10 @@ public class DefaultSwapGraphicTest
 {
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultSwapGraphicTest.class);
 	private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
-	private static final int MAX_X = 106;
-	private static final int MIN_Y = 94;
-	private static final int MIN_Y_VERTICAL = 91;
-	private static final int MAX_Y_VERTICAL = 109;
+	private static final double MAX_X = 106.36396103067892;
+	private static final double MIN_Y = 93.63603896932108;
+	private static final double MIN_Y_VERTICAL = 91;
+	private static final double MAX_Y_VERTICAL = 109;
 
 	@Test
 	public void visualTest() throws Exception
@@ -47,8 +49,8 @@ public class DefaultSwapGraphicTest
 			.withCircleStroke(new BasicStroke(1))
 			.createSwap();
 
-		final Rectangle bounds = swap.getBounds();
-		final Rectangle expected = new Rectangle(MIN_Y_VERTICAL, MIN_Y_VERTICAL, 18, 18);
+		final Rectangle2D bounds = swap.getBounds();
+		final Rectangle2D expected = new Rectangle2D.Double(MIN_Y_VERTICAL, MIN_Y_VERTICAL, 18, 18);
 
 		Assertions.assertThat(bounds).isEqualTo(expected);
 	}
@@ -62,8 +64,8 @@ public class DefaultSwapGraphicTest
 			.withLabel('L')
 			.createSwap();
 
-		final Point bounds = swap.getMinDocumentSize();
-		final Point expected = new Point(MAX_Y_VERTICAL, MAX_Y_VERTICAL);
+		final Point2D bounds = swap.getMinDocumentSize();
+		final Point2D expected = new Point2D.Double(MAX_Y_VERTICAL, MAX_Y_VERTICAL);
 
 		Assertions.assertThat(bounds).isEqualTo(expected);
 	}
@@ -116,7 +118,7 @@ public class DefaultSwapGraphicTest
 			.createSwap();
 
 		final Point left = new Point(50, 100);
-		Assertions.assertThat(swap.getConnectionPointFor(left)).isEqualTo(new Point(MIN_Y_VERTICAL, 100));
+		Assertions.assertThat(swap.getConnectionPointFor(left)).isEqualTo(new Point2D.Double(MIN_Y_VERTICAL, 100.0));
 	}
 
 	@Test
@@ -129,7 +131,7 @@ public class DefaultSwapGraphicTest
 			.createSwap();
 
 		final Point right = new Point(150, 100);
-		Assertions.assertThat(swap.getConnectionPointFor(right)).isEqualTo(new Point(MAX_Y_VERTICAL, 100));
+		Assertions.assertThat(swap.getConnectionPointFor(right)).isEqualTo(new Point2D.Double(MAX_Y_VERTICAL, 100));
 	}
 
 	@Test
@@ -142,7 +144,7 @@ public class DefaultSwapGraphicTest
 			.createSwap();
 
 		final Point top = new Point(100, 50);
-		Assertions.assertThat(swap.getConnectionPointFor(top)).isEqualTo(new Point(100, MIN_Y_VERTICAL));
+		Assertions.assertThat(swap.getConnectionPointFor(top)).isEqualTo(new Point2D.Double(100, MIN_Y_VERTICAL));
 	}
 
 	@Test
@@ -155,7 +157,7 @@ public class DefaultSwapGraphicTest
 			.createSwap();
 
 		final Point bottom = new Point(100, 150);
-		Assertions.assertThat(swap.getConnectionPointFor(bottom)).isEqualTo(new Point(100, MAX_Y_VERTICAL));
+		Assertions.assertThat(swap.getConnectionPointFor(bottom)).isEqualTo(new Point2D.Double(100, MAX_Y_VERTICAL));
 	}
 
 	@Test
@@ -167,8 +169,8 @@ public class DefaultSwapGraphicTest
 			.withLabel('l')
 			.createSwap();
 
-		final Point left = new Point(50, 50);
-		Assertions.assertThat(swap.getConnectionPointFor(left)).isEqualTo(new Point(MIN_Y, MIN_Y));
+		final Point2D left = new Point2D.Double(50, 50);
+		Assertions.assertThat(swap.getConnectionPointFor(left)).isEqualTo(new Point2D.Double(MIN_Y, MIN_Y));
 	}
 
 	@Test
@@ -180,8 +182,8 @@ public class DefaultSwapGraphicTest
 			.withLabel('l')
 			.createSwap();
 
-		final Point right = new Point(150, 50);
-		Assertions.assertThat(swap.getConnectionPointFor(right)).isEqualTo(new Point(MAX_X, MIN_Y));
+		final Point2D right = new Point2D.Double(150, 50);
+		Assertions.assertThat(swap.getConnectionPointFor(right)).isEqualTo(new Point2D.Double(MAX_X, MIN_Y));
 	}
 
 	@Test
@@ -193,8 +195,8 @@ public class DefaultSwapGraphicTest
 			.withLabel('l')
 			.createSwap();
 
-		final Point top = new Point(150, 150);
-		Assertions.assertThat(swap.getConnectionPointFor(top)).isEqualTo(new Point(MAX_X, MAX_X));
+		final Point2D top = new Point2D.Double(150, 150);
+		Assertions.assertThat(swap.getConnectionPointFor(top)).isEqualTo(new Point2D.Double(MAX_X, MAX_X));
 	}
 
 	@Test
@@ -206,7 +208,7 @@ public class DefaultSwapGraphicTest
 			.withLabel('l')
 			.createSwap();
 
-		final Point bottom = new Point(50, 150);
-		Assertions.assertThat(swap.getConnectionPointFor(bottom)).isEqualTo(new Point(MIN_Y, MAX_X));
+		final Point2D bottom = new Point2D.Double(50, 150);
+		Assertions.assertThat(swap.getConnectionPointFor(bottom)).isEqualTo(new Point2D.Double(MIN_Y, MAX_X));
 	}
 }

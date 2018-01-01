@@ -1,6 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public interface Graphic
 {
@@ -14,18 +16,19 @@ public interface Graphic
 	 * @see java.awt.Shape#getBounds()
 	 * @return an integer <code>Rectangle</code> that completely encloses the <code>SvgGraphic</code>.
 	 */
-	Rectangle getBounds();
+	Rectangle2D getBounds();
 
 	/**
 	 * Returns the max x, max y coordinate of the {@link Rectangle} in {@link #getBounds()}
 	 * @return a point
 	 */
-	default Point getMinDocumentSize()
+	default Point2D getMinDocumentSize()
 	{
-		final Rectangle bounds = getBounds();
-		return new Point(
-			(int) Math.ceil(bounds.getX() + bounds.getWidth()),
-			(int) Math.ceil(bounds.getY() + bounds.getHeight())
+		final Rectangle2D bounds = getBounds();
+
+		return new Point2D.Double(
+			bounds.getX() + bounds.getWidth(),
+			bounds.getY() + bounds.getHeight()
 		);
 	}
 }

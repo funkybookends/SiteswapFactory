@@ -18,6 +18,7 @@ import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.LEFT;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand.RIGHT;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap.NUM_HANDS;
 
+
 /**
  * Converts a {@link FourHandedSiteswap} to a {@link CausalDiagram}
  */

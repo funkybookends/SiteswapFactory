@@ -1,12 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics;
 
-import java.awt.*;
+import java.awt.geom.Point2D;
 
 public interface SwapGraphic extends Graphic
 {
-	Point getConnectionPointFor(Point point);
+	Point2D getConnectionPointFor(Point2D point);
 
-	Point getCenter();
+	Point2D getCenter();
 
-	void translate(int dx, int dy);
+	void translate(double dx, double dy);
 }
