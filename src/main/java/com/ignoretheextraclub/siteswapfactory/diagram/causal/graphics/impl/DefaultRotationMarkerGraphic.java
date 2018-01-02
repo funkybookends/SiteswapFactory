@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class DefaultRotationMarkerGraphic implements RotationMarkerGraphic
 	{
 		graphics.setPaint(paint);
 		graphics.setStroke(stroke);
-		graphics.drawLine((int) x, (int) minY, (int) x, (int) maxY);
+		graphics.draw(new Line2D.Double(x, minY, x, maxY));
 	}
 
 	@Override

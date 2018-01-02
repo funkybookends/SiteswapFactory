@@ -83,7 +83,7 @@ public class SwapToSwapArrowGraphicTest
 
 		verify(svgGraphics2D, times(3)).draw(curveCaptor.capture());
 		assertThat(curveCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(new Line2D.Double(239.0691597873335, 83.2513662573584, 250.0, 100.0));
-		assertThat(curveCaptor.getAllValues().get(2)).isEqualToComparingFieldByField(new Line2D.Double(230.0, 94.0, 250.0, 100.0));
+		assertThat(curveCaptor.getAllValues().get(2)).isEqualToComparingFieldByField(new Line2D.Double(230.86067634751743, 94.1960108437798, 250.0, 100.0));
 
 		final Shape actual = curveCaptor.getAllValues().get(0);
 		assertThat(actual).isEqualToComparingFieldByField(expectedCurve);
@@ -106,7 +106,7 @@ public class SwapToSwapArrowGraphicTest
 
 		assertThat(lineArgCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(new Line2D.Double(50.0, 100, 250.0, 100));
 		assertThat(lineArgCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(new Line2D.Double(231.20614758428184, 93.15959713348663, 250.0, 100));
-		assertThat(lineArgCaptor.getAllValues().get(2)).isEqualToComparingFieldByField(new Line2D.Double(231.0, 106, 250.0, 100));
+		assertThat(lineArgCaptor.getAllValues().get(2)).isEqualToComparingFieldByField(new Line2D.Double(231.20614758428184, 106.84040286651337, 250.0, 100));
 	}
 
 	@Test

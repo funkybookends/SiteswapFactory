@@ -1,9 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -26,6 +29,10 @@ public class DefaultRotationMarkerGraphicTest
 
 		verify(graphics2D).setPaint(PAINT);
 		verify(graphics2D).setStroke(STROKE);
-		verify(graphics2D).drawLine(X, MIN_Y, X, MAX_Y);
+		final Line2D.Double expected = new Line2D.Double(X, MIN_Y, X, MAX_Y);
+		final ArgumentCaptor<Line2D.Double> captor = ArgumentCaptor.forClass(Line2D.Double.class);
+		verify(graphics2D).draw(captor.capture());
+
+		assertThat(captor.getValue()).isEqualToComparingFieldByFieldRecursively(expected);
 	}
 }

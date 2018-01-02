@@ -12,10 +12,10 @@ public class CausalDiagramProperties
 	private int preferredNumThrows = 10;
 
 	// Seperation Properties
-	private double pixelsPerBeat = 15 * FACTOR;
-	private double pixelsPerJuggler = 12 * FACTOR;
-	private double getArrowBend = 8 * FACTOR;
-	private double swapSeparation = FACTOR;
+	private double distanceBetweenBeats = 15 * FACTOR;
+	private double distanceBetweenJugglers = 12 * FACTOR;
+	private double distanceForArrowBend = 8 * FACTOR;
+	private double distanceBetweenOverlappingSwaps = FACTOR;
 
 	// Line Style
 	private double lineWidth = 0.25 * FACTOR;
@@ -24,36 +24,36 @@ public class CausalDiagramProperties
 
 	// Site Style
 	private boolean swapDrawCircle = false;
-	private double arrowConnectionPointDistanceFromSwapCenter = 2 * FACTOR;
+	private double distanceBetweenArrowAndSwapCenter = 2 * FACTOR;
 	private Font labelFont = new Font("Arial", Font.PLAIN, (int) (3 * FACTOR));
 
 	// Border Style
-	private double leftBorder = 8 * FACTOR;
-	private double topBorder = 8 * FACTOR;
+	private double leftBorderDistance = 8 * FACTOR;
+	private double topBorderDistance = 8 * FACTOR;
 
 	// Markers
 	private boolean drawFullRotationMarker = true;
 	private boolean drawHalfRotationMarker = true;
 
-	public CausalDiagramProperties(final double defaultsScaledBy)
+	public CausalDiagramProperties(final double distanceBetweenBeatsAndScaled)
 	{
 		this
 			(
 				15,
 				2,
 				10,
-				15 * defaultsScaledBy,
-				12 * defaultsScaledBy,
-				8 * defaultsScaledBy,
-				1 * defaultsScaledBy,
-				0.25 * defaultsScaledBy,
-				2 * defaultsScaledBy,
+				15 * distanceBetweenBeatsAndScaled / 12,
+				distanceBetweenBeatsAndScaled,
+				8 * distanceBetweenBeatsAndScaled / 12,
+				1 * distanceBetweenBeatsAndScaled / 12,
+				0.25 * distanceBetweenBeatsAndScaled / 12,
+				2 * distanceBetweenBeatsAndScaled / 12,
 				8.0,
 				false,
-				2 * defaultsScaledBy,
-				new Font("Arial", Font.PLAIN, (int) (3 * defaultsScaledBy)),
-				8 * defaultsScaledBy,
-				8 * defaultsScaledBy,
+				2 * distanceBetweenBeatsAndScaled / 12,
+				new Font("Arial", Font.PLAIN, (int) (3 * distanceBetweenBeatsAndScaled / 12)),
+				8 * distanceBetweenBeatsAndScaled / 12,
+				8 * distanceBetweenBeatsAndScaled / 13,
 				true,
 				true
 			);
@@ -62,10 +62,10 @@ public class CausalDiagramProperties
 	public CausalDiagramProperties(final int maxNumThrowsDisplayed,
 	                               final int minNumHalfRotations,
 	                               final int preferredNumThrows,
-	                               final double getArrowBend,
-	                               final double pixelsPerBeat,
-	                               final double pixelsPerJuggler,
-	                               final double swapSeparation,
+	                               final double distanceForArrowBend,
+	                               final double distanceBetweenBeats,
+	                               final double distanceBetweenJugglers,
+	                               final double distanceBetweenOverlappingSwaps,
 	                               final double lineWidth,
 	                               final double arrowHeadLength,
 	                               final double arrowHeadPointyness,
@@ -73,25 +73,25 @@ public class CausalDiagramProperties
 	                               final double swapCircleBuffer,
 	                               final Font labelFont,
 	                               final double leftBorder,
-	                               final double topBorder,
+	                               final double topBorderDistance,
 	                               final boolean drawFullRotationMarker,
 	                               final boolean drawHalfRotationMarker)
 	{
 		this.maxNumThrowsDisplayed = maxNumThrowsDisplayed;
 		this.minNumHalfRotations = minNumHalfRotations;
 		this.preferredNumThrows = preferredNumThrows;
-		this.getArrowBend = getArrowBend;
-		this.pixelsPerBeat = pixelsPerBeat;
-		this.pixelsPerJuggler = pixelsPerJuggler;
-		this.swapSeparation = swapSeparation;
+		this.distanceForArrowBend = distanceForArrowBend;
+		this.distanceBetweenBeats = distanceBetweenBeats;
+		this.distanceBetweenJugglers = distanceBetweenJugglers;
+		this.distanceBetweenOverlappingSwaps = distanceBetweenOverlappingSwaps;
 		this.lineWidth = lineWidth;
 		this.arrowHeadLength = arrowHeadLength;
 		this.arrowHeadPointyness = arrowHeadPointyness;
 		this.swapDrawCircle = swapDrawCircle;
-		this.arrowConnectionPointDistanceFromSwapCenter = swapCircleBuffer;
+		this.distanceBetweenArrowAndSwapCenter = swapCircleBuffer;
 		this.labelFont = labelFont;
-		this.leftBorder = leftBorder;
-		this.topBorder = topBorder;
+		this.leftBorderDistance = leftBorder;
+		this.topBorderDistance = topBorderDistance;
 		this.drawFullRotationMarker = drawFullRotationMarker;
 		this.drawHalfRotationMarker = drawHalfRotationMarker;
 	}
@@ -130,44 +130,44 @@ public class CausalDiagramProperties
 		this.preferredNumThrows = preferredNumThrows;
 	}
 
-	public double getGetArrowBend()
+	public double getDistanceForArrowBend()
 	{
-		return getArrowBend;
+		return distanceForArrowBend;
 	}
 
-	public void setGetArrowBend(final int getArrowBend)
+	public void setDistanceForArrowBend(final double distanceForArrowBend)
 	{
-		this.getArrowBend = getArrowBend;
+		this.distanceForArrowBend = distanceForArrowBend;
 	}
 
-	public double getPixelsPerBeat()
+	public double getDistanceBetweenBeats()
 	{
-		return pixelsPerBeat;
+		return distanceBetweenBeats;
 	}
 
-	public void setPixelsPerBeat(final int pixelsPerBeat)
+	public void setDistanceBetweenBeats(final double distanceBetweenBeats)
 	{
-		this.pixelsPerBeat = pixelsPerBeat;
+		this.distanceBetweenBeats = distanceBetweenBeats;
 	}
 
-	public double getPixelsPerJuggler()
+	public double getDistanceBetweenJugglers()
 	{
-		return pixelsPerJuggler;
+		return distanceBetweenJugglers;
 	}
 
-	public void setPixelsPerJuggler(final int pixelsPerJuggler)
+	public void setDistanceBetweenJugglers(final double distanceBetweenJugglers)
 	{
-		this.pixelsPerJuggler = pixelsPerJuggler;
+		this.distanceBetweenJugglers = distanceBetweenJugglers;
 	}
 
-	public double getSwapSeparation()
+	public double getDistanceBetweenOverlappingSwaps()
 	{
-		return swapSeparation;
+		return distanceBetweenOverlappingSwaps;
 	}
 
-	public void setSwapSeparation(final int swapSeparation)
+	public void setDistanceBetweenOverlappingSwaps(final double distanceBetweenOverlappingSwaps)
 	{
-		this.swapSeparation = swapSeparation;
+		this.distanceBetweenOverlappingSwaps = distanceBetweenOverlappingSwaps;
 	}
 
 	public double getArrowHeadLength()
@@ -175,7 +175,7 @@ public class CausalDiagramProperties
 		return arrowHeadLength;
 	}
 
-	public void setArrowHeadLength(final int arrowHeadLength)
+	public void setArrowHeadLength(final double arrowHeadLength)
 	{
 		this.arrowHeadLength = arrowHeadLength;
 	}
@@ -200,14 +200,14 @@ public class CausalDiagramProperties
 		this.swapDrawCircle = swapDrawCircle;
 	}
 
-	public double getArrowConnectionPointDistanceFromSwapCenter()
+	public double getDistanceBetweenArrowAndSwapCenter()
 	{
-		return arrowConnectionPointDistanceFromSwapCenter;
+		return distanceBetweenArrowAndSwapCenter;
 	}
 
-	public void setArrowConnectionPointDistanceFromSwapCenter(final int arrowConnectionPointDistanceFromSwapCenter)
+	public void setDistanceBetweenArrowAndSwapCenter(final double distanceBetweenArrowAndSwapCenter)
 	{
-		this.arrowConnectionPointDistanceFromSwapCenter = arrowConnectionPointDistanceFromSwapCenter;
+		this.distanceBetweenArrowAndSwapCenter = distanceBetweenArrowAndSwapCenter;
 	}
 
 	public Font getLabelFont()
@@ -220,24 +220,24 @@ public class CausalDiagramProperties
 		this.labelFont = labelFont;
 	}
 
-	public double getLeftBorder()
+	public double getLeftBorderDistance()
 	{
-		return leftBorder;
+		return leftBorderDistance;
 	}
 
-	public void setLeftBorder(final int leftBorder)
+	public void setLeftBorderDistance(final double leftBorderDistance)
 	{
-		this.leftBorder = leftBorder;
+		this.leftBorderDistance = leftBorderDistance;
 	}
 
-	public double getTopBorder()
+	public double getTopBorderDistance()
 	{
-		return topBorder;
+		return topBorderDistance;
 	}
 
-	public void setTopBorder(final int topBorder)
+	public void setTopBorderDistance(final double topBorderDistance)
 	{
-		this.topBorder = topBorder;
+		this.topBorderDistance = topBorderDistance;
 	}
 
 	public boolean isDrawFullRotationMarker()

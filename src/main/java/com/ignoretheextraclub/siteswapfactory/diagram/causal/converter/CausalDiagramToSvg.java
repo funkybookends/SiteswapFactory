@@ -87,8 +87,8 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 			{
 				final SwapGraphic overlapping = swaps.get(overlappingSite.get());
 
-				overlapping.translate(0, cdp.getSwapSeparation());
-				newSwap.translate(0, -cdp.getSwapSeparation());
+				overlapping.translate(0, cdp.getDistanceBetweenOverlappingSwaps());
+				newSwap.translate(0, -cdp.getDistanceBetweenOverlappingSwaps());
 			}
 
 			swaps.put(unmappedSite, newSwap);
@@ -142,8 +142,8 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 	                                   final CausalDiagram causalDiagram)
 	{
 
-		final double maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder() * 2;
-		final double maxBeatPlusBorder = (int) (causalDiagram.getMaxCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder() * 2);
+		final double maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getDistanceBetweenJugglers() + cdp.getTopBorderDistance() * 2;
+		final double maxBeatPlusBorder = causalDiagram.getMaxCausalBeat() * cdp.getDistanceBetweenBeats() + cdp.getLeftBorderDistance() * 2;
 
 		final Point2D causalMax = new Point2D.Double(maxBeatPlusBorder, maxJugglerPlusBorder);
 

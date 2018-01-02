@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
@@ -78,7 +79,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 			graphics.setPaint(circlePaint);
 
 			final Rectangle2D circleBox = getBounds();
-			graphics.drawOval((int) circleBox.getX(), (int) circleBox.getY(), (int) circleBox.getWidth(), (int) circleBox.getHeight());
+
+			graphics.draw(new Ellipse2D.Double(circleBox.getX(), circleBox.getY(), circleBox.getWidth(), circleBox.getHeight()));
 		}
 	}
 
@@ -101,8 +103,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 	{
 		final int stringWidth = getLabelWidth();
 
-		int labelX = (int) (xCenter - stringWidth * 0.3); // TODO magic numbers, they seem to work though!
-		int labelY = (int) (yCenter + stringWidth * 0.4);
+		double labelX = xCenter - stringWidth * 0.3; // TODO magic numbers, they seem to work though!
+		double labelY = yCenter + stringWidth * 0.4;
 
 		return new Point2D.Double(labelX, labelY);
 	}

@@ -83,7 +83,7 @@ public class DefaultArrowFactory implements ArrowFactory
 
 	protected double getArrowBend(final Site origin, final Site causes)
 	{
-		return cdp.getGetArrowBend() * (origin.getJuggler() % 2 == 1 ? -1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
+		return cdp.getDistanceForArrowBend() * (origin.getJuggler() % 2 == 1 ? -1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
 	}
 
 	protected boolean getDisplayArrowHead(final Site origin, final Site causes)

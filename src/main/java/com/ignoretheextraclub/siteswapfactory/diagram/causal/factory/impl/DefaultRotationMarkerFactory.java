@@ -32,7 +32,7 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 		if (cdp.isDrawFullRotationMarker() && causalDiagram.getFullRotationBeat() <= causalDiagram.getMaxCausalBeat())
 		{
-			final int xPosition = (int) (cdp.getPixelsPerBeat() * causalDiagram.getFullRotationBeat() + cdp.getLeftBorder());
+			final double xPosition = cdp.getDistanceBetweenBeats() * causalDiagram.getFullRotationBeat() + cdp.getLeftBorderDistance();
 
 			rotationMarkers.add(new DefaultRotationMarkerGraphic.Builder()
 				.withMinY(minY)
@@ -46,7 +46,7 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 		if (cdp.isDrawHalfRotationMarker())
 		{
-			final int xPosition = (int) (cdp.getPixelsPerBeat() * causalDiagram.getFullRotationBeat() / 2 + cdp.getLeftBorder());
+			final double xPosition = cdp.getDistanceBetweenBeats() * causalDiagram.getFullRotationBeat() / 2 + cdp.getLeftBorderDistance();
 
 			rotationMarkers.add(new DefaultRotationMarkerGraphic.Builder()
 				.withMinY(minY)
@@ -63,12 +63,12 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected double getMaxY(final CausalDiagram causalDiagram)
 	{
-		return (causalDiagram.getNumJugglers() * cdp.getPixelsPerJuggler() + cdp.getTopBorder()) + cdp.getGetArrowBend() / 2;
+		return (causalDiagram.getNumJugglers() * cdp.getDistanceBetweenJugglers() + cdp.getTopBorderDistance()) + cdp.getDistanceForArrowBend() / 2;
 	}
 
 	protected double getMinY(final CausalDiagram causalDiagram)
 	{
-		return cdp.getTopBorder() - cdp.getGetArrowBend() / 2;
+		return cdp.getTopBorderDistance() - cdp.getDistanceForArrowBend() / 2;
 	}
 
 	protected Stroke getFullRotationMarkerStroke()

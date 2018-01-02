@@ -55,7 +55,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	 */
 	public SwapToSwapArrowGraphic(final SwapGraphic start,
 	                              final SwapGraphic finish,
-	                              final Point control,
+	                              final Point2D control,
 	                              final Stroke stroke,
 	                              final Paint paint,
 	                              final boolean displayArrowHead,
@@ -185,9 +185,9 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	{
 		final double arrowAngle = getArrowAngle();
 
-		return new Point(
-			(int) (connectingPoint.getX() - (arrowHeadLength * Math.sin(arrowAngle + Math.PI / arrowHeadPointyness))),
-			(int) (connectingPoint.getY() - (arrowHeadLength * Math.cos(arrowAngle + Math.PI / arrowHeadPointyness)))
+		return new Point2D.Double(
+			connectingPoint.getX() - (arrowHeadLength * Math.sin(arrowAngle + Math.PI / arrowHeadPointyness)),
+			connectingPoint.getY() - (arrowHeadLength * Math.cos(arrowAngle + Math.PI / arrowHeadPointyness))
 		);
 	}
 
@@ -221,7 +221,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 	{
 		private SwapGraphic start;
 		private SwapGraphic finish;
-		private Point control;
+		private Point2D control;
 		private Stroke stroke = DEFAULT_STROKE;
 		private Paint paint = DEFAULT_PAINT;
 		private boolean displayArrowHead = true;
@@ -240,7 +240,7 @@ public class SwapToSwapArrowGraphic implements ArrowGraphic
 			return this;
 		}
 
-		public ArrowGraphicBuilder withControl(final Point control)
+		public ArrowGraphicBuilder withControl(final Point2D control)
 		{
 			this.control = control;
 			return this;
