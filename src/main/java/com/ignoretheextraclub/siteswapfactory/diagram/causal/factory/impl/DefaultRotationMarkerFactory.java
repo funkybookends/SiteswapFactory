@@ -73,7 +73,7 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected Stroke getFullRotationMarkerStroke()
 	{
-		return new BasicStroke(1.3f);
+		return new BasicStroke((float) cdp.getLineWidth());
 	}
 
 	protected Paint getFullRotationMarkerPaint()

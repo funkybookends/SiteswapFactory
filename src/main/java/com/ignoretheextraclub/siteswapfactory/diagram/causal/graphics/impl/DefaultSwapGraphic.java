@@ -27,7 +27,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 	private Character label;
 	private Font labelFont;
 	private Stroke circleStroke;
-	private double buffer;
+	private double connectionPointDistanceFromCenter;
 	private boolean drawCircle;
 	private boolean drawLabel;
 	private Paint labelPaint;
@@ -44,14 +44,14 @@ public class DefaultSwapGraphic implements SwapGraphic
 	                          final boolean drawCircle,
 	                          final Stroke circleStroke,
 	                          final Paint circlePaint,
-	                          final double buffer)
+	                          final double connectionPointDistanceFromCenter)
 	{
 		this.xCenter = xCenter;
 		this.yCenter = yCenter;
 		this.label = Objects.requireNonNull(label, "label cannot be null");
 		this.labelFont = Objects.requireNonNull(labelFont, "labelFont cannot be null");
 		this.circleStroke = Objects.requireNonNull(circleStroke, "circleStroke cannot be null");
-		this.buffer = buffer;
+		this.connectionPointDistanceFromCenter = connectionPointDistanceFromCenter;
 		this.drawCircle = drawCircle;
 		this.drawLabel = drawLabel;
 		this.labelPaint = Objects.requireNonNull(labelPaint, "labelPaint cannot be null");
@@ -87,7 +87,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 	{
 		final double labelWidth = getLabelWidth();
 
-		final double diameterOfCircleBoundingLabel = 2 * (getRadiusOfCircleBoundingBox(labelWidth) + this.buffer);
+		final double diameterOfCircleBoundingLabel = 2 * (getRadiusOfCircleBoundingBox(labelWidth) + this.connectionPointDistanceFromCenter);
 
 		return getBoxCenteredOnPoint(xCenter, yCenter, diameterOfCircleBoundingLabel, diameterOfCircleBoundingLabel);
 	}
@@ -133,7 +133,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 		final double opposite = point.getY() - this.yCenter;
 
 		final double theta = Math.atan(opposite / adjacent);
-		final double radius = getBounds().getWidth() / 2;
+		final double radius = this.connectionPointDistanceFromCenter;
 
 		final double xdist = Math.cos(theta) * radius * (adjacent < 0 ? -1 : 1);
 		final double ydist = Math.sin(theta) * radius * (adjacent < 0 ? -1 : 1);

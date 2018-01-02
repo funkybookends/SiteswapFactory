@@ -25,7 +25,7 @@ public class DefaultSwapFactory implements SwapFactory
 	public SwapGraphic getSwap(final Site site)
 	{
 		return new DefaultSwapGraphic.SwapBuilder()
-			.withxCenter((int) (site.getCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder()))
+			.withxCenter(site.getCausalBeat() * cdp.getPixelsPerBeat() + cdp.getLeftBorder())
 			.withyCenter(site.getJuggler() * cdp.getPixelsPerJuggler() + cdp.getTopBorder())
 			.withLabel(getLabel(site))
 			.withLabelFont(getCircleFont())
@@ -46,7 +46,7 @@ public class DefaultSwapFactory implements SwapFactory
 
 	protected Stroke getLabelStroke(final Site site)
 	{
-		return new BasicStroke(1.f);
+		return new BasicStroke((float) cdp.getLineWidth());
 	}
 
 	protected Paint getLabelPaint(final Site site)
@@ -66,12 +66,12 @@ public class DefaultSwapFactory implements SwapFactory
 
 	protected Stroke getCircleStroke(final Site site)
 	{
-		return new BasicStroke(0.8f);
+		return new BasicStroke((float) cdp.getLineWidth());
 	}
 
 	protected double getBuffer()
 	{
-		return cdp.getSwapCircleBuffer();
+		return cdp.getArrowConnectionPointDistanceFromSwapCenter();
 	}
 
 	protected boolean getDrawCircle()

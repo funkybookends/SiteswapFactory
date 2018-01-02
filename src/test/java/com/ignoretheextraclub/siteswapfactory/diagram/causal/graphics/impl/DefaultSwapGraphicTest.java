@@ -114,6 +114,7 @@ public class DefaultSwapGraphicTest
 		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
+			.withBuffer(9)
 			.withLabel('l')
 			.createSwap();
 
@@ -127,6 +128,7 @@ public class DefaultSwapGraphicTest
 		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
+			.withBuffer(9)
 			.withLabel('l')
 			.createSwap();
 
@@ -140,6 +142,7 @@ public class DefaultSwapGraphicTest
 		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
+			.withBuffer(9)
 			.withLabel('l')
 			.createSwap();
 
@@ -154,6 +157,7 @@ public class DefaultSwapGraphicTest
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
+			.withBuffer(9)
 			.createSwap();
 
 		final Point bottom = new Point(100, 150);
@@ -166,6 +170,7 @@ public class DefaultSwapGraphicTest
 		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
+			.withBuffer(9)
 			.withLabel('l')
 			.createSwap();
 
@@ -178,6 +183,7 @@ public class DefaultSwapGraphicTest
 	{
 		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
+			.withBuffer(9)
 			.withyCenter(100)
 			.withLabel('l')
 			.createSwap();
@@ -193,6 +199,7 @@ public class DefaultSwapGraphicTest
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
+			.withBuffer(9)
 			.createSwap();
 
 		final Point2D top = new Point2D.Double(150, 150);
@@ -206,6 +213,7 @@ public class DefaultSwapGraphicTest
 			.withxCenter(100)
 			.withyCenter(100)
 			.withLabel('l')
+			.withBuffer(9)
 			.createSwap();
 
 		final Point2D bottom = new Point2D.Double(50, 150);

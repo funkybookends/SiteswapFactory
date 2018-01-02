@@ -18,13 +18,13 @@ public class CausalDiagramProperties
 	private double swapSeparation = FACTOR;
 
 	// Line Style
-	private double lineWidth = 1.3;
+	private double lineWidth = 0.25 * FACTOR;
 	private double arrowHeadLength = 2 * FACTOR;
 	private double arrowHeadPointyness = 8.0;
 
 	// Site Style
 	private boolean swapDrawCircle = false;
-	private double swapCircleBuffer = 0.5 * FACTOR;
+	private double arrowConnectionPointDistanceFromSwapCenter = 2 * FACTOR;
 	private Font labelFont = new Font("Arial", Font.PLAIN, (int) (3 * FACTOR));
 
 	// Border Style
@@ -34,6 +34,30 @@ public class CausalDiagramProperties
 	// Markers
 	private boolean drawFullRotationMarker = true;
 	private boolean drawHalfRotationMarker = true;
+
+	public CausalDiagramProperties(final double defaultsScaledBy)
+	{
+		this
+			(
+				15,
+				2,
+				10,
+				15 * defaultsScaledBy,
+				12 * defaultsScaledBy,
+				8 * defaultsScaledBy,
+				1 * defaultsScaledBy,
+				0.25 * defaultsScaledBy,
+				2 * defaultsScaledBy,
+				8.0,
+				false,
+				2 * defaultsScaledBy,
+				new Font("Arial", Font.PLAIN, (int) (3 * defaultsScaledBy)),
+				8 * defaultsScaledBy,
+				8 * defaultsScaledBy,
+				true,
+				true
+			);
+	}
 
 	public CausalDiagramProperties(final int maxNumThrowsDisplayed,
 	                               final int minNumHalfRotations,
@@ -64,7 +88,7 @@ public class CausalDiagramProperties
 		this.arrowHeadLength = arrowHeadLength;
 		this.arrowHeadPointyness = arrowHeadPointyness;
 		this.swapDrawCircle = swapDrawCircle;
-		this.swapCircleBuffer = swapCircleBuffer;
+		this.arrowConnectionPointDistanceFromSwapCenter = swapCircleBuffer;
 		this.labelFont = labelFont;
 		this.leftBorder = leftBorder;
 		this.topBorder = topBorder;
@@ -176,14 +200,14 @@ public class CausalDiagramProperties
 		this.swapDrawCircle = swapDrawCircle;
 	}
 
-	public double getSwapCircleBuffer()
+	public double getArrowConnectionPointDistanceFromSwapCenter()
 	{
-		return swapCircleBuffer;
+		return arrowConnectionPointDistanceFromSwapCenter;
 	}
 
-	public void setSwapCircleBuffer(final int swapCircleBuffer)
+	public void setArrowConnectionPointDistanceFromSwapCenter(final int arrowConnectionPointDistanceFromSwapCenter)
 	{
-		this.swapCircleBuffer = swapCircleBuffer;
+		this.arrowConnectionPointDistanceFromSwapCenter = arrowConnectionPointDistanceFromSwapCenter;
 	}
 
 	public Font getLabelFont()
