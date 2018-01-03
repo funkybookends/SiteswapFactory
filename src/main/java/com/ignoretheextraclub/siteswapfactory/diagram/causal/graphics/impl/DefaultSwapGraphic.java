@@ -34,6 +34,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 	private Paint labelPaint;
 	private Stroke labelStroke;
 	private Paint circlePaint;
+	private double labelXOffsetDistance;
+	private double labelYOffsetDistance;
 
 	public DefaultSwapGraphic(final double xCenter,
 	                          final double yCenter,
@@ -45,7 +47,9 @@ public class DefaultSwapGraphic implements SwapGraphic
 	                          final boolean drawCircle,
 	                          final Stroke circleStroke,
 	                          final Paint circlePaint,
-	                          final double connectionPointDistanceFromCenter)
+	                          final double connectionPointDistanceFromCenter,
+	                          final double labelXOffsetDistance,
+	                          final double labelYOffsetDistance)
 	{
 		this.xCenter = xCenter;
 		this.yCenter = yCenter;
@@ -58,6 +62,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 		this.labelPaint = Objects.requireNonNull(labelPaint, "labelPaint cannot be null");
 		this.labelStroke = Objects.requireNonNull(labelStroke, "labelStroke cannot be null");
 		this.circlePaint = Objects.requireNonNull(circlePaint, "circlePaint cannot be null");
+		this.labelXOffsetDistance = labelXOffsetDistance;
+		this.labelYOffsetDistance = labelYOffsetDistance;
 	}
 
 	@Override
@@ -70,6 +76,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 			graphics.setFont(labelFont);
 
 			final Point2D labelPosition = getLabelPosition();
+
 			graphics.drawString(String.valueOf(label), (float) labelPosition.getX(), (float) labelPosition.getY());
 		}
 
@@ -89,7 +96,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 	{
 		final double labelWidth = getLabelWidth();
 
-		final double diameterOfCircleBoundingLabel = 2 * (getRadiusOfCircleBoundingBox(labelWidth) + this.connectionPointDistanceFromCenter);
+		final double diameterOfCircleBoundingLabel = 2 * (this.connectionPointDistanceFromCenter);
 
 		return getBoxCenteredOnPoint(xCenter, yCenter, diameterOfCircleBoundingLabel, diameterOfCircleBoundingLabel);
 	}
@@ -101,18 +108,13 @@ public class DefaultSwapGraphic implements SwapGraphic
 
 	private Point2D getLabelPosition()
 	{
-		final int stringWidth = getLabelWidth();
-
-		double labelX = xCenter - stringWidth * 0.3; // TODO magic numbers, they seem to work though!
-		double labelY = yCenter + stringWidth * 0.4;
-
-		return new Point2D.Double(labelX, labelY);
+		return new Point2D.Double(this.xCenter + this.labelXOffsetDistance, this.yCenter + this.labelYOffsetDistance);
 	}
 
 	private Rectangle2D getBoxCenteredOnPoint(final double xCenter,
-	                                        final double yCenter,
-	                                        final double width,
-	                                        final double height)
+	                                          final double yCenter,
+	                                          final double width,
+	                                          final double height)
 	{
 		return new Rectangle2D.Double(xCenter - width / 2, yCenter - height / 2, width, height);
 	}
@@ -161,6 +163,8 @@ public class DefaultSwapGraphic implements SwapGraphic
 		private Paint labelPaint = DEFAULT_PAINT;
 		private Stroke labelStroke = DEFAULT_STROKE;
 		private Paint circlePaint = DEFAULT_PAINT;
+		private double labelXOffsetDistance;
+		private double labelYOffsetDistance;
 
 		public SwapBuilder withxCenter(final double xCenter)
 		{
@@ -198,6 +202,18 @@ public class DefaultSwapGraphic implements SwapGraphic
 			return this;
 		}
 
+		public SwapBuilder withlabelXOffsetDistance(final double labelXOffsetDistance)
+		{
+			this.labelXOffsetDistance = labelXOffsetDistance;
+			return this;
+		}
+
+		public SwapBuilder withlabelYOffsetDistance(final double labelYOffsetDistance)
+		{
+			this.labelYOffsetDistance = labelYOffsetDistance;
+			return this;
+		}
+
 		public SwapBuilder withDrawCircle(final boolean drawCircle)
 		{
 			this.drawCircle = drawCircle;
@@ -230,7 +246,7 @@ public class DefaultSwapGraphic implements SwapGraphic
 
 		public DefaultSwapGraphic createSwap()
 		{
-			return new DefaultSwapGraphic(xCenter, yCenter, drawLabel, label, labelFont, labelPaint, labelStroke, drawCircle, circleStroke, circlePaint, buffer);
+			return new DefaultSwapGraphic(xCenter, yCenter, drawLabel, label, labelFont, labelPaint, labelStroke, drawCircle, circleStroke, circlePaint, buffer, labelXOffsetDistance, labelYOffsetDistance);
 		}
 	}
 }

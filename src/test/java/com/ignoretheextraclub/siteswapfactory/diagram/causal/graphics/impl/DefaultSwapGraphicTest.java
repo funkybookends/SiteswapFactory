@@ -47,6 +47,7 @@ public class DefaultSwapGraphicTest
 			.withLabel('L')
 			.withLabelFont(new Font("Arial", Font.PLAIN, 12))
 			.withCircleStroke(new BasicStroke(1))
+			.withBuffer(9)
 			.createSwap();
 
 		final Rectangle2D bounds = swap.getBounds();
@@ -61,6 +62,7 @@ public class DefaultSwapGraphicTest
 		final DefaultSwapGraphic swap = new DefaultSwapGraphic.SwapBuilder()
 			.withxCenter(100)
 			.withyCenter(100)
+			.withBuffer(9)
 			.withLabel('L')
 			.createSwap();
 

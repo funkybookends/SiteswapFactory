@@ -23,9 +23,11 @@ public class CausalDiagramProperties
 	private double arrowHeadPointyness = 8.0;
 
 	// Site Style
-	private boolean swapDrawCircle = false;
+	private boolean swapDrawCircle = true;
 	private double distanceBetweenArrowAndSwapCenter = 2 * FACTOR;
 	private Font labelFont = new Font("Arial", Font.PLAIN, (int) (3 * FACTOR));
+	private double labelYOffsetDistance = 1 * FACTOR;
+	private double labelXOffsetDistance = -1.1 * FACTOR;
 
 	// Border Style
 	private double leftBorderDistance = 8 * FACTOR;
@@ -52,6 +54,8 @@ public class CausalDiagramProperties
 				false,
 				2 * distanceBetweenBeatsAndScaled / 12,
 				new Font("Arial", Font.PLAIN, (int) (3 * distanceBetweenBeatsAndScaled / 12)),
+				-1 * distanceBetweenBeatsAndScaled / 12,
+				-1.1 * distanceBetweenBeatsAndScaled / 12,
 				8 * distanceBetweenBeatsAndScaled / 12,
 				8 * distanceBetweenBeatsAndScaled / 13,
 				true,
@@ -72,6 +76,8 @@ public class CausalDiagramProperties
 	                               final boolean swapDrawCircle,
 	                               final double swapCircleBuffer,
 	                               final Font labelFont,
+	                               final double labelYOffsetDistance,
+	                               final double labelXOffsetDistance,
 	                               final double leftBorder,
 	                               final double topBorderDistance,
 	                               final boolean drawFullRotationMarker,
@@ -90,6 +96,8 @@ public class CausalDiagramProperties
 		this.swapDrawCircle = swapDrawCircle;
 		this.distanceBetweenArrowAndSwapCenter = swapCircleBuffer;
 		this.labelFont = labelFont;
+		this.labelYOffsetDistance = labelYOffsetDistance;
+		this.labelXOffsetDistance = labelXOffsetDistance;
 		this.leftBorderDistance = leftBorder;
 		this.topBorderDistance = topBorderDistance;
 		this.drawFullRotationMarker = drawFullRotationMarker;
@@ -268,5 +276,15 @@ public class CausalDiagramProperties
 	public void setLineWidth(final double lineWidth)
 	{
 		this.lineWidth = lineWidth;
+	}
+
+	public double getLabelYOffsetDistance()
+	{
+		return labelYOffsetDistance;
+	}
+
+	public double getLabelXOffsetDistance()
+	{
+		return labelXOffsetDistance;
 	}
 }

@@ -36,12 +36,24 @@ public class DefaultSwapFactory implements SwapFactory
 			.withLabelPaint(getLabelPaint(site))
 			.withLabelStroke(getLabelStroke(site))
 			.withCirclePaint(getCirclePaint(site))
+			.withlabelXOffsetDistance(getLabelXOffsetDistance())
+			.withlabelYOffsetDistance(getLabelYOffsetDistance())
 			.createSwap();
+	}
+
+	protected double getLabelYOffsetDistance()
+	{
+		return cdp.getLabelYOffsetDistance();
+	}
+
+	protected double getLabelXOffsetDistance()
+	{
+		return cdp.getLabelXOffsetDistance();
 	}
 
 	protected Paint getCirclePaint(final Site site)
 	{
-		return Color.DARK_GRAY;
+		return getLabelPaint(site);
 	}
 
 	protected Stroke getLabelStroke(final Site site)
