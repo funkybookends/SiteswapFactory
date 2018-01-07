@@ -153,7 +153,6 @@ public class VanillaState implements State
         return isPowerOfTwo(state + 1);
     }
 
-    @Override
     public VanillaState undo(final VanillaThro thro) throws UnsupportedOperationException
     {
         return new VanillaState((this.state << 1 & ~(1 << thro.getNumBeats())) | (thro.getNumBeats() == 0 ? 0 : 1));

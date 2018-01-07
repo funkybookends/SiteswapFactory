@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
@@ -38,7 +39,12 @@ public interface State extends Comparable
      *
      * @return the set of states
      */
-    Set<State> getNextStates();
+    default Set<State> getNextStates()
+    {
+        return getAvailableThrows().stream()
+            .map(this::thro)
+            .collect(Collectors.toSet());
+    }
 
     /**
      * Get the set of available throws to this state.
@@ -55,7 +61,13 @@ public interface State extends Comparable
      * @return the throw
      * @throws TransitionException if no throw exists
      */
-    Thro getThrow(State toNextState) throws TransitionException;
+    default Thro getThrow(State toNextState) throws TransitionException
+    {
+        return getAvailableThrows().stream()
+            .filter(thro -> this.thro(thro).equals(toNextState))
+            .findFirst()
+            .orElseThrow(() -> new TransitionException("Thro to next state could not be found"));
+    }
 
     /**
      * Similar to {@link #getThrow(State)} however may be optimized.
@@ -65,7 +77,10 @@ public interface State extends Comparable
      * @param toNextState
      * @return
      */
-    boolean canTransition(State toNextState);
+    default boolean canTransition(State toNextState)
+    {
+        return getNextStates().contains(toNextState);
+    }
 
     /**
      * Returns the next state if this throw were to be thrown.
@@ -90,13 +105,4 @@ public interface State extends Comparable
      * @return true if this is the ground state.
      */
     boolean isGroundState();
-
-    /**
-     * returns the state that prior to the given throw
-     *
-     * @param thro
-     * @return the prior state
-     * @throws UnsupportedOperationException if it cannot be determined.
-     */
-    VanillaState undo(VanillaThro thro) throws UnsupportedOperationException;
 }
