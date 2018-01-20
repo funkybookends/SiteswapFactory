@@ -32,193 +32,223 @@ import static java.util.Collections.emptyIterator;
  */
 public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapGenerator<T>
 {
-    private static final Logger LOG = LoggerFactory.getLogger(StateSearcher.class);
+	private static final Logger LOG = LoggerFactory.getLogger(StateSearcher.class);
 
-    /**
-     * Configuration
-     */
-    private final Iterator<State> startingStates;
-    private final int maxPeriod;
-    private final Predicate<GeneralPath> intermediatePredicate;
-    private final Predicate<GeneralCircuit> resultPredicate;
-    private final SiteswapRequestBuilder siteswapRequestBuilder;
-    private final SiteswapConstructor<T> siteswapConstructor;
+	/**
+	 * Configuration
+	 */
+	private final Iterator<State> startingStates;
+	private final int maxPeriod;
+	private final Predicate<GeneralPath> intermediatePredicate;
+	private final Predicate<GeneralCircuit> resultPredicate;
+	private final SiteswapRequestBuilder siteswapRequestBuilder;
+	private final SiteswapConstructor<T> siteswapConstructor;
 
-    /**
-     * Internal state
-     */
-    private GeneralPath generalPath;
-    private Stack<Iterator<Thro>> iteratorStack = new Stack<>();
-    private T next;
+	/**
+	 * Internal state
+	 */
+	private GeneralPathBuilder builder;
+	private T next;
 
-    /**
-     * Creates a {@link StateSearcher} which will find successive {@link Siteswap}s based on the provided configuration.
-     *
-     * @param startingStates        The list of starting states which are acceptable.
-     * @param maxPeriod             The maximum period of {@link Siteswap}. To restrict to a specific period, include an {@code resultPredicate} requiring this period. This should be set accurately to ensure good performance.
-     * @param intermediatePredicate A predicate that will be tested after each addition of a new {@link State} to the internal State[]. If the intermediate state fails, then the last state will be removed, and the next state will be found.
-     * @param resultPredicate       A predicate that will be tested prior to attempting to construct a {@link Siteswap}. If it fails then the {@code siteswapConstructor} will not be invoked.
-     * @param siteswapConstructor   A function which takes a {@link State}[] and returns a {@link Siteswap}.
-     */
-    public StateSearcher(final Set<State> startingStates,
-                         final int maxPeriod,
-                         final Predicate<GeneralPath> intermediatePredicate,
-                         final Predicate<GeneralCircuit> resultPredicate,
-                         final SiteswapConstructor<T> siteswapConstructor,
-                         final SiteswapRequestBuilder siteswapRequestBuilder)
-    {
-        this.startingStates = startingStates != null ? startingStates.iterator() : emptyIterator();
-        this.siteswapConstructor = Objects.requireNonNull(siteswapConstructor);
-        this.maxPeriod = maxPeriod;
-        this.intermediatePredicate = intermediatePredicate == null ? acceptAll() : intermediatePredicate;
-        this.resultPredicate = resultPredicate == null ? acceptAll() : resultPredicate;
-        this.siteswapRequestBuilder = siteswapRequestBuilder == null ? new SiteswapRequestBuilder() : siteswapRequestBuilder;
-    }
+	/**
+	 * Creates a {@link StateSearcher} which will find successive {@link Siteswap}s based on the provided configuration.
+	 *
+	 * @param startingStates        The list of starting states which are acceptable.
+	 * @param maxPeriod             The maximum period of {@link Siteswap}. To restrict to a specific period, include an {@code resultPredicate} requiring this period. This should be set accurately to ensure good performance.
+	 * @param intermediatePredicate A predicate that will be tested after each addition of a new {@link State} to the internal State[]. If the intermediate state fails, then the last state will be removed, and the next state will be found.
+	 * @param resultPredicate       A predicate that will be tested prior to attempting to construct a {@link Siteswap}. If it fails then the {@code siteswapConstructor} will not be invoked.
+	 * @param siteswapConstructor   A function which takes a {@link State}[] and returns a {@link Siteswap}.
+	 */
+	public StateSearcher(final Set<State> startingStates,
+	                     final int maxPeriod,
+	                     final Predicate<GeneralPath> intermediatePredicate,
+	                     final Predicate<GeneralCircuit> resultPredicate,
+	                     final SiteswapConstructor<T> siteswapConstructor,
+	                     final SiteswapRequestBuilder siteswapRequestBuilder)
+	{
+		this.startingStates = startingStates != null ? startingStates.iterator() : emptyIterator();
+		this.siteswapConstructor = Objects.requireNonNull(siteswapConstructor);
+		this.maxPeriod = maxPeriod;
+		this.intermediatePredicate = intermediatePredicate == null ? acceptAll() : intermediatePredicate;
+		this.resultPredicate = resultPredicate == null ? acceptAll() : resultPredicate;
+		this.siteswapRequestBuilder = siteswapRequestBuilder == null ? new SiteswapRequestBuilder() : siteswapRequestBuilder;
+	}
 
-    @Override
-    public boolean hasNext()
-    {
-        try
-        {
-            this.next = get();
-            return true;
-        }
-        catch (final NoMoreSiteswapsException noMoreSiteswapsException)
-        {
-            LOG.trace("No more elements");
-            this.next = null;
-            return false;
-        }
-    }
+	@Override
+	public boolean hasNext()
+	{
+		try
+		{
+			this.next = get();
+			return true;
+		}
+		catch (final NoMoreSiteswapsException noMoreSiteswapsException)
+		{
+			LOG.trace("No more elements");
+			this.next = null;
+			return false;
+		}
+	}
 
-    @Override
-    public T next()
-    {
-        if (next == null)
-        {
-            throw new NoSuchElementException("No call to next(), or call to next() after hasNext() returned false.");
-        }
-        return next;
-    }
+	@Override
+	public T next()
+	{
+		if (next == null)
+		{
+			throw new NoSuchElementException("No call to next(), or call to next() after hasNext() returned false.");
+		}
+		return next;
+	}
 
-    public T get() throws NoMoreSiteswapsException
-    {
-        while (true)
-        {
-            LOG.trace("get(): Getting next element");
-            do
-            {
-                getNextState();
-            }
-            while (!canBeReturned());
+	public T get() throws NoMoreSiteswapsException
+	{
+		while (true)
+		{
+			LOG.trace("get(): Getting next element");
 
-            try
-            {
-                return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(generalPath.toGeneralCircuit()));
-            }
-            catch (final Throwable ignored)
-            {
-                // Probably an illegal siteswap. Just return the next one we find.
-                LOG.debug("SiteswapConstructor {} rejected. {}. See stack trace at trace level.", siteswapConstructor, ignored);
-                LOG.trace("Stack Trace: ", ignored);
-            }
-        }
-    }
+			do
+			{
+				getNextState();
+			}
+			while (!canBeReturned());
 
-    private boolean canBeReturned()
-    {
-        return generalPath.isGeneralCircuit() && resultPredicate.test(generalPath.toGeneralCircuit());
-    }
+			try
+			{
+				return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(builder.path.toGeneralCircuit()));
+			}
+			catch (final Throwable ignored)
+			{
+				// Probably an illegal siteswap. Just return the next one we find.
+				LOG.debug("SiteswapConstructor {} rejected. {}. See stack trace at trace level.", siteswapConstructor, ignored);
+				LOG.trace("Stack Trace: ", ignored);
+			}
+		}
+	}
 
-    private boolean isLegalSequence()
-    {
-        final boolean isLegalIntermediateState = intermediatePredicate.test(generalPath);
-        if (!isLegalIntermediateState)
-        {
-            LOG.trace("Intermediate State was rejected: {}", Arrays.toString(generalPath.getStates()));
-        }
-        return isLegalIntermediateState;
-    }
+	private boolean canBeReturned()
+	{
+		return builder.path.isGeneralCircuit() && resultPredicate.test(builder.path.toGeneralCircuit());
+	}
 
-    private void getNextState() throws NoMoreSiteswapsException
-    {
-        LOG.trace("getNextState(): Getting next State");
+	private boolean isLegalSequence()
+	{
+		final boolean isLegalIntermediateState = intermediatePredicate.test(builder.path);
+		if (!isLegalIntermediateState)
+		{
+			LOG.trace("Intermediate State was rejected: {}", Arrays.toString(builder.path.getStates()));
+		}
+		return isLegalIntermediateState;
+	}
 
-        do
-        {
-            if (generalPath.size() < maxPeriod)
-            {
-                LOG.trace("getNextState(): Not at max period, so building stack");
-                buildStack();
-            }
-            else
-            {
-                LOG.trace("getNextState(): Reached max period, so moving on last iterator");
-                moveIteratorOnToNextState();
-            }
-        }
-        while (!isLegalSequence());
-    }
+	private void getNextState() throws NoMoreSiteswapsException
+	{
+		LOG.trace("getNextState(): Getting next State");
 
-    private void buildStack() throws NoMoreSiteswapsException
-    {
-        if (generalPath.size() < maxPeriod)
-        {
-            LOG.trace("buildStack(): pushing next iterator onto stack.");
-            if (iteratorStack.isEmpty())
-            {
-                final State nextStartingState = startingStates.next();
-                generalPath = new GeneralPath(nextStartingState);
-                iteratorStack.push(nextStartingState.getAvailableThrows().iterator());
-            }
-            else
-            {
-                iteratorStack.push(generalPath.getLastState().getAvailableThrows().iterator());
-            }
-            moveIteratorOnToNextState();
-        }
-        else
-        {
-            LOG.warn("buildStack(): stack size {} >= {} maxPeriod. Not building.", generalPath.size(), maxPeriod);
-        }
-    }
+		do
+		{
+			if (builder == null)
+			{
+				LOG.trace("getNextState(): Not at max period, so building stack");
+				builder = new GeneralPathBuilder(startingStates.next());
+			}
 
-    private void moveIteratorOnToNextState() throws NoMoreSiteswapsException
-    {
-        LOG.trace("moveIteratorOnToNextState(): Moving last stack iterator onto next element.");
-        if (iteratorStack.lastElement().hasNext())
-        {
-            LOG.trace("moveIteratorOnToNextState(): getting next for iterator at {}", iteratorStack.size());
-            final Thro nextThro = iteratorStack.lastElement().next();
-            generalPath.pop();
-            generalPath.push(generalPath.push(nextThro));
-        }
-        else
-        {
-            iteratorStack.pop();
-            if (iteratorStack.isEmpty())
-            {
-                throw new NoMoreSiteswapsException();
-            }
-            generalPath.pop();
-            moveIteratorOnToNextState();
-        }
-    }
+			if (builder.path.size() < maxPeriod)
+			{
+				try
+				{
+					builder.buildStack();
+				}
+				catch (NoMoreStatesException e)
+				{
+					builder = null;
 
-    public Stream<T> generate()
-    {
-        final Spliterator<T> siteswapSpliterator = Spliterators.spliteratorUnknownSize(this,
-            Spliterator.ORDERED | Spliterator.NONNULL);
+				}
+			}
+			else
+			{
+				LOG.trace("getNextState(): Reached max period, so moving on last iterator");
+				try
+				{
+					builder.nextState();
+				}
+				catch (NoMoreStatesException e)
+				{
+					builder = null;
+				}
+			}
+		}
+		while (!isLegalSequence());
+	}
 
-        return StreamSupport.stream(siteswapSpliterator, false).unordered();
-    }
+	public Stream<T> generate()
+	{
+		final Spliterator<T> siteswapSpliterator = Spliterators.spliteratorUnknownSize(this,
+			Spliterator.ORDERED | Spliterator.NONNULL);
 
-    static <T> Predicate<T> acceptAll()
-    {
-        return (any) -> true;
-    }
+		return StreamSupport.stream(siteswapSpliterator, false).unordered();
+	}
 
-    private static class NoMoreSiteswapsException extends Exception
-    {
-    }
+	static <T> Predicate<T> acceptAll()
+	{
+		return (any) -> true;
+	}
+
+	private static class NoMoreSiteswapsException extends Exception
+	{
+	}
+
+	private static class GeneralPathBuilder
+	{
+		private final GeneralPath path;
+		private final Stack<Iterator<Thro>> iterators = new Stack<>();
+
+		private GeneralPathBuilder(final State startingState)
+		{
+			this.path = new GeneralPath(startingState);
+			this.iterators.push(startingState.getAvailableThrows().iterator());
+		}
+
+		private void buildStack() throws NoMoreStatesException
+		{
+			if (iterators.isEmpty())
+			{
+				throw new NoMoreStatesException();
+			}
+
+			if (!iterators.lastElement().hasNext())
+			{
+				path.pop();
+				iterators.pop();
+			}
+			else
+			{
+				path.push(iterators.lastElement().next());
+				iterators.push(path.getLastState().getAvailableThrows().iterator());
+			}
+		}
+
+		private void nextState() throws NoMoreStatesException
+		{
+			if (iterators.isEmpty())
+			{
+				throw new NoMoreStatesException();
+			}
+
+			if (iterators.lastElement().hasNext())
+			{
+				path.pop();
+				path.push(iterators.lastElement().next());
+			}
+			else
+			{
+				path.pop();
+				iterators.pop();
+				nextState();
+			}
+		}
+	}
+
+	private static class NoMoreStatesException extends Exception
+	{
+	}
 }

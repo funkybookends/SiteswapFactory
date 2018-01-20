@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.graph;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
@@ -51,5 +52,14 @@ public class GeneralPath extends Stack<Thro>
 	public State[] getStates()
 	{
 		return states.toArray(new State[states.size()]);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "GeneralPath{" +
+			"startingState=" + states.get(0) +
+			",thros=" + Arrays.toString(this.elementData) +
+			'}';
 	}
 }
