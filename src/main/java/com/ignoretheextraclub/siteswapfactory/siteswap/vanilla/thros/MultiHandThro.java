@@ -15,7 +15,7 @@ public class MultiHandThro implements Thro
 
 	public MultiHandThro(final HandSpecificThro[] thros)
 	{
-		if (thros.length < 1)
+		if (thros == null || thros.length < 1)
 		{
 			throw new IllegalArgumentException("Must contain at least one throw");
 		}
@@ -61,9 +61,20 @@ public class MultiHandThro implements Thro
 	@Override
 	public String toString()
 	{
-		return Arrays.stream(thros)
-			.map(thro -> "" + thro.getNumBeats() + ":" + thro.toHand)
-			.collect(Collectors.joining(",","(",")"));
+		if (thros.length == 1)
+		{
+			return String.valueOf(thros[0].getNumBeats());
+		}
+		else if (thros.length == 2)
+		{
+			return String.format("(%s%s,%s%s)", thros[0].numBeats, thros[0].getToHand() == 0 ? "" : "x", thros[1].numBeats, thros[1].getToHand() == 1 ? "" : "x");
+		}
+		else
+		{
+			return Arrays.stream(thros)
+				.map(thro -> "" + thro.getNumBeats() + ":" + thro.toHand)
+				.collect(Collectors.joining(",", "(", ")"));
+		}
 	}
 
 	public int getNumHands()

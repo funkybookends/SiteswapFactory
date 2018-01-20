@@ -1,5 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -16,7 +17,7 @@ import java.util.function.Predicate;
  *
  * @author Caspar Nonclercq
  */
-public class PrimePredicate implements Predicate<State[]>
+public class PrimePredicate implements Predicate<GeneralPath>
 {
     private static PrimePredicate instance;
 
@@ -26,6 +27,11 @@ public class PrimePredicate implements Predicate<State[]>
     }
 
     @Override
+    public boolean test(final GeneralPath generalPath)
+    {
+        return test(generalPath.getStates());
+    }
+
     public boolean test(final State[] stateArray)
     {
         final HashSet<Object> states = new HashSet<>();

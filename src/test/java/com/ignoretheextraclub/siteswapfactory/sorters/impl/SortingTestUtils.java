@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
+package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 /**
  Created by caspar on 12/08/17.

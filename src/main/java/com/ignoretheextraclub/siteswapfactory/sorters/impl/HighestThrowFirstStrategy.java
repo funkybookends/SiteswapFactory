@@ -1,12 +1,13 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
+package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import java.util.Locale;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 
 /**
  Created by caspar on 10/12/16.
@@ -38,14 +39,15 @@ public class HighestThrowFirstStrategy implements StartingStrategy
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean test(State[] first, State[] second) throws InvalidSiteswapException
+    public boolean test(GeneralCircuit firstCircuit, GeneralCircuit secondCircuit) throws InvalidSiteswapException
     {
         try
         {
-            for (int i = 0; i < first.length; i++)
+            for (int i = 0; i < firstCircuit.size(); i++)
             {
-                Thro ftran = first[i].getThrow(first[(i + 1) % first.length]);
-                Thro stran = second[i].getThrow(second[(i + 1) % second.length]);
+                Thro ftran = firstCircuit.getThros()[i];
+                Thro stran = secondCircuit.getThros()[i];
+
                 if (ftran.compareTo(stran) < 0)
                 {
                     return false;
@@ -55,6 +57,7 @@ public class HighestThrowFirstStrategy implements StartingStrategy
                     return true;
                 }
             }
+
             return true; //they are equivalent
         }
         catch (TransitionException e)

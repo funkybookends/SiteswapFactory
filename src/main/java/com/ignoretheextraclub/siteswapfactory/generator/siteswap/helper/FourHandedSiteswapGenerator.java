@@ -17,7 +17,7 @@ import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingThro
 import com.ignoretheextraclub.siteswapfactory.predicates.result.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StatesToFourHandedSiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
@@ -44,7 +44,6 @@ public final class FourHandedSiteswapGenerator
      * <p>
      * Injects:
      * <ul>
-     * <li>{@link StatesToFourHandedSiteswapConstructor}</li>
      * <li>An intermediate predicate banning all non FHS throws</li>
      * <li>A result predicate banning all non FHS throws</li>
      * <li>A result predicate requiring a pass</li>
@@ -56,7 +55,7 @@ public final class FourHandedSiteswapGenerator
     private static StateSearcherBuilder<FourHandedSiteswap> builder(final int maxThro)
     {
         return StateSearcherBuilder.<FourHandedSiteswap>builder()
-            .withSiteswapConstructor(StatesToFourHandedSiteswapConstructor.get())
+            .withSiteswapConstructor(GeneralCircuitToFourHandedSiteswapConstructor.get())
             .andIntermediatePredicate(ThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()))
             .andResultPredicate(LoopCheckingThroCombinationPredicate.requireAnyOneOf(FourHandedSiteswapThro.getPassThrows()))
             .andResultPredicate(LoopCheckingThroCombinationPredicate.banAllSingleThros(FourHandedSiteswapThro.getIllegalThrows()))
@@ -103,7 +102,8 @@ public final class FourHandedSiteswapGenerator
 
         return builder(maxThro)
             .setStartingStates(excitedStates)
-            .andIntermediatePredicate(banGroundState)
+            .andIntermediatePredicate(generalPath -> banGroundState.test(generalPath.getStates()))
+            .andResultPredicate(generalCircuit -> banGroundState.test(generalCircuit.getAllStates()))
             .setMaxPeriod(maxPeriod);
     }
 

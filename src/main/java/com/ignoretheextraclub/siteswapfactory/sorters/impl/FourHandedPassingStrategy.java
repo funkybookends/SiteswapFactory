@@ -1,10 +1,11 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
+package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import java.util.Locale;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 
 /**
  Created by caspar on 10/12/16.
@@ -41,10 +42,10 @@ public class FourHandedPassingStrategy implements StartingStrategy
     }
 
     @Override
-    public boolean test(final State[] first, final State[] second) throws InvalidSiteswapException
+    public boolean test(final GeneralCircuit first, final GeneralCircuit second) throws InvalidSiteswapException
     {
-        final int firstScore = scoreRotation(first);
-        final int secondScore = scoreRotation(second);
+        final int firstScore = scoreRotation(first.getAllStates());
+        final int secondScore = scoreRotation(second.getAllStates());
 
         if (firstScore == secondScore)
         {

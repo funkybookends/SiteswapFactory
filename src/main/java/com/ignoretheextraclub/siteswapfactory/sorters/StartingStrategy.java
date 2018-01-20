@@ -1,10 +1,11 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy;
+package com.ignoretheextraclub.siteswapfactory.sorters;
 
 import java.util.Locale;
-import java.util.function.BiPredicate;
+import java.util.NoSuchElementException;
+import java.util.function.UnaryOperator;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 
 /**
  * Starting strategies must be able to tell which of two rotations are better. It must return {@code true} if the first
@@ -12,14 +13,8 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
  *
  * @author Caspar Nonclercq
  */
-public interface StartingStrategy extends BiPredicate<State[], State[]>
+public interface StartingStrategy extends UnaryOperator<GeneralCircuit>
 {
-    /**
-     * Returns the simple name for this sorting strategy.
-     *
-     * @return the name.
-     */
-    String getName();
 
     /**
      * The main method that needs to be implemented. When sorting, the state sorter will be asked which two state sequences is preferred.
@@ -34,7 +29,14 @@ public interface StartingStrategy extends BiPredicate<State[], State[]>
      * @throws InvalidSiteswapException      if the sorter does not think the siteswap is valid
      * @throws UnsupportedOperationException if the sorter is unable to sort for this siteswap type.
      */
-    boolean test(State[] first, State[] second) throws InvalidSiteswapException, UnsupportedOperationException;
+    boolean test(GeneralCircuit first, GeneralCircuit second) throws InvalidSiteswapException, UnsupportedOperationException;
+
+    /**
+     * Returns the simple name for this sorting strategy.
+     *
+     * @return the name.
+     */
+    String getName();
 
     /**
      * A human friendly description of how this sorter sorts.
@@ -42,4 +44,12 @@ public interface StartingStrategy extends BiPredicate<State[], State[]>
      * @return a description.
      */
     String getDescription(Locale locale);
+
+    @Override
+    default GeneralCircuit apply(GeneralCircuit generalCircuit)
+    {
+        return generalCircuit.getRotationStream()
+            .reduce((first, second) -> this.test(first, second) ? first : second)
+            .orElseThrow(NoSuchElementException::new);
+    }
 }

@@ -22,6 +22,7 @@ public class FourHandedSiteswap extends VanillaSiteswap
     public FourHandedSiteswap(final VanillaState[] states)
     {
         super(states);
+
         try
         {
             getThrows();
@@ -50,7 +51,6 @@ public class FourHandedSiteswap extends VanillaSiteswap
         return StatesToThrosConverter.get().andThen(ThrosToFourHandedSiteswapThrosConverter.get()).apply(getStates());
     }
 
-    @Override
     public FourHandedSiteswapThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
     {
         if (forJuggler >= 0 && forJuggler < getNumJugglers())

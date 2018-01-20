@@ -9,11 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.FourHandedPassingStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.FourHandedPassingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
 import com.ignoretheextraclub.siteswapfactory.testutils.Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,9 +45,9 @@ public class ValidFourHandedSiteswapsTest
    @Test
    public void testCreateWithNoSortingStrategy() throws Exception
    {
-       final FourHandedSiteswap unsorted = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(stringSiteswap, true, null, null, NoStartingStrategy.get()));
+       final FourHandedSiteswap unsorted = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), NoStartingStrategy.get()));
        assertThat(unsorted.toString()).isEqualTo(stringSiteswap.toUpperCase());
-       final FourHandedSiteswap hfsSorted = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(stringSiteswap, true, null, null, HighestThrowFirstStrategy.get()));
+       final FourHandedSiteswap hfsSorted = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
        assertThat(hfsSorted.toString()).isEqualTo(stringSiteswap.toUpperCase());
        assertThat(hfsSorted.same(unsorted)).isTrue();
        assertThat(unsorted.same(hfsSorted)).isTrue();
@@ -57,6 +58,6 @@ public class ValidFourHandedSiteswapsTest
    @Test
    public void testCreateWithFourHandedPassingStrategy() throws Exception
    {
-       SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(stringSiteswap, true, null, null, FourHandedPassingStrategy.get()));
+       SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), FourHandedPassingStrategy.get()));
    }
 }

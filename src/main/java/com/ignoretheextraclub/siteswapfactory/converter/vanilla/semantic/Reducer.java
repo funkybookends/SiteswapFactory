@@ -1,5 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
+import java.util.function.UnaryOperator;
+
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
+
 /**
  * Returns the shortest repeating unit that when repeated n times would return the input array.
  * <p>
@@ -12,7 +17,7 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
  * @author Caspar Nonclercq
  * @see StreamingFilteringReducer.IntReducer A primitive int version
  */
-public interface Reducer
+public interface Reducer extends UnaryOperator<GeneralCircuit>
 {
     /**
      * Returns the reduced version of an array.
@@ -43,5 +48,16 @@ public interface Reducer
                 return duplicated;
             }
         };
+    }
+
+    @Override
+    default GeneralCircuit apply(GeneralCircuit generalCircuit)
+    {
+        return new GeneralCircuit(generalCircuit.getStartingState(), reduce(generalCircuit.getThros()));
+    }
+
+    default <T> UnaryOperator<T[]> asOp()
+    {
+        return this::reduce;
     }
 }

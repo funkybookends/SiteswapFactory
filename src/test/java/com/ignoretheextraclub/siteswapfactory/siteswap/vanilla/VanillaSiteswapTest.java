@@ -4,6 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumJugglersException;
 
@@ -24,9 +25,9 @@ public class VanillaSiteswapTest
    public void test534() throws Exception
    {
        //todo construct vanilla siteswap
-       final VanillaSiteswap vanillaSiteswap = new VanillaSiteswap(SiteswapFactory.getTwoHandedSiteswap("534").getStates());
-       final VanillaSiteswap same = new VanillaSiteswap(SiteswapFactory.getTwoHandedSiteswap("453").getStates());
-       final VanillaSiteswap different = new VanillaSiteswap(SiteswapFactory.getTwoHandedSiteswap("441").getStates());
+       final VanillaSiteswap vanillaSiteswap = new VanillaSiteswap(StatesToVanillaStatesConverter.convert(SiteswapFactory.getTwoHandedSiteswap("534").getStates()));
+       final VanillaSiteswap same = new VanillaSiteswap(StatesToVanillaStatesConverter.convert(SiteswapFactory.getTwoHandedSiteswap("453").getStates()));
+       final VanillaSiteswap different = new VanillaSiteswap(StatesToVanillaStatesConverter.convert(SiteswapFactory.getTwoHandedSiteswap("441").getStates()));
 
        softly.assertThatThrownBy(vanillaSiteswap::getNumJugglers).isInstanceOf(NumJugglersException.class);
        softly.assertThatThrownBy(vanillaSiteswap::getNumHands).isInstanceOf(NumJugglersException.class);

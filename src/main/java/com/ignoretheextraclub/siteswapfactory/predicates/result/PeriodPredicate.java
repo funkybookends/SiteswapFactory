@@ -2,6 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
 import java.util.function.Predicate;
 
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -12,7 +13,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
  *
  * @author Caspar Nonclercq
  */
-public class PeriodPredicate implements Predicate<State[]>
+public class PeriodPredicate implements Predicate<GeneralCircuit>
 {
     private final int period;
 
@@ -26,6 +27,11 @@ public class PeriodPredicate implements Predicate<State[]>
     }
 
     @Override
+    public boolean test(final GeneralCircuit generalCircuit)
+    {
+        return generalCircuit.size() == period;
+    }
+
     public boolean test(final State[] states)
     {
         return states.length == period;
@@ -37,19 +43,19 @@ public class PeriodPredicate implements Predicate<State[]>
     }
 
     /**
-     * Creates a {@link Predicate<State[]>} that will return true if the given {@code State[]} is any of the provided
+     * Creates a {@link Predicate<GeneralCircuit>} that will return true if the given {@code State[]} is any of the provided
      * periods.
      * @param periods The allowed periods.
      * @return A predicate that will allow any of the periods.
      */
-    public static Predicate<State[]> anyOf(final int... periods)
+    public static Predicate<GeneralCircuit> anyOf(final int... periods)
     {
         if (periods.length == 0)
         {
             throw new IllegalArgumentException("No periods provided");
         }
 
-        Predicate<State[]> predicate = new PeriodPredicate(periods[0]);
+        Predicate<GeneralCircuit> predicate = new PeriodPredicate(periods[0]);
 
         if (periods.length > 1)
         {
@@ -62,7 +68,7 @@ public class PeriodPredicate implements Predicate<State[]>
         return predicate;
     }
 
-    public static Predicate<State[]> noneOf(final int... periods)
+    public static Predicate<GeneralCircuit> noneOf(final int... periods)
     {
         return anyOf(periods).negate();
     }

@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
+package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
@@ -35,7 +36,7 @@ public class HighestThrowFirstStrategyTest
        {
            for (String constructor : correctToRotations.get(expected))
            {
-               final TwoHandedSiteswap twoHandedSiteswap = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(constructor, false, null, null, HighestThrowFirstStrategy.get()));
+               final TwoHandedSiteswap twoHandedSiteswap = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(constructor, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
                assertThat(twoHandedSiteswap.toString()).isEqualTo(expected);
            }
        }

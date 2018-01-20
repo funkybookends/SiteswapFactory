@@ -10,7 +10,7 @@ import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -31,7 +31,7 @@ public class FourHandedSiteswapTest
    public void test534() throws Exception
    {
        final FourHandedSiteswap vanillaSiteswap = SiteswapFactory.getFourHandedSiteswap("786");
-       final FourHandedSiteswap same = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest("867", true, null, null, NoStartingStrategy.get()));
+       final FourHandedSiteswap same = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest("867"));
        final FourHandedSiteswap different = SiteswapFactory.getFourHandedSiteswap("975");
        softly.assertThat(vanillaSiteswap.getNumJugglers()).isEqualTo(2);
        softly.assertThat(vanillaSiteswap.getNumHands()).isEqualTo(4);

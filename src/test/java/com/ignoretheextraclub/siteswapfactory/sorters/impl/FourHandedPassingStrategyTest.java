@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
+package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,10 +15,11 @@ import org.junit.runners.Parameterized;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
-import static com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.SortingTestUtils.getRotations;
+import static com.ignoretheextraclub.siteswapfactory.sorters.impl.SortingTestUtils.getRotations;
 
 /**
 Created by caspar on 15/01/17.
@@ -179,17 +180,17 @@ public class FourHandedPassingStrategyTest
    @Test
    public void isSameAsExpected() throws Exception
    {
-       final FourHandedSiteswap expectedFhs = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(expected, false, null, null, NoStartingStrategy.get()));
+       final FourHandedSiteswap expectedFhs = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(expected));
 
        for (final String constructor : getRotations(expected))
        {
-           final FourHandedSiteswap result = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(constructor, false, null, null, HighestThrowFirstStrategy.get()));
+           final FourHandedSiteswap result = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(constructor));
            softly.assertThat(result.toString()).as(//
              "Constructed with: " + constructor + ". " +
-             "\nPreferred ex : " + Arrays.stream(expectedFhs.getStates()).map(VanillaState::excitedness).map(Object::toString).collect(Collectors.joining(", ")) +
+             "\nPreferred ex : " + Arrays.stream(expectedFhs.getStates()).map(State::excitedness).map(Object::toString).collect(Collectors.joining(", ")) +
              "\nPreferred Seq: " + Arrays.toString(expectedFhs.getStates()) +
              "\nActual Seq   : " + Arrays.toString(result.getStates()) +
-             "\nActual ex    : " + Arrays.stream(result.getStates()).map(VanillaState::excitedness).map(Object::toString).collect(Collectors.joining(", "))//
+             "\nActual ex    : " + Arrays.stream(result.getStates()).map(State::excitedness).map(Object::toString).collect(Collectors.joining(", "))//
            ).isEqualTo(expected);
        }
    }

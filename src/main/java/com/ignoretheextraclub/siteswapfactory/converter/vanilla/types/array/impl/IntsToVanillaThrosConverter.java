@@ -56,7 +56,7 @@ public class IntsToVanillaThrosConverter implements Function<int[], VanillaThro[
      *
      * @return the VanillaThros
      */
-    public static VanillaThro[] convert(final int[] thros)
+    public static VanillaThro[] intsToVanillaThros(final int... thros)
     {
         return get().apply(thros);
     }

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
@@ -18,7 +19,7 @@ import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
  *
  * @author Caspar Nonclercq
  */
-public class ThroCombinationPredicate implements Predicate<State[]>
+public class ThroCombinationPredicate implements Predicate<GeneralPath>
 {
     private static final Logger LOG = LoggerFactory.getLogger(ThroCombinationPredicate.class);
 
@@ -51,10 +52,9 @@ public class ThroCombinationPredicate implements Predicate<State[]>
     }
 
     @Override
-    public boolean test(final State[] states)
+    public boolean test(final GeneralPath generalPath)
     {
-        final Thro[] thros = getThros(new ArrayLoopingIterator<>(states), states.length - 1);
-        return test(thros);
+        return test(generalPath.toArray(new Thro[generalPath.size()]));
     }
 
     /**
@@ -85,7 +85,7 @@ public class ThroCombinationPredicate implements Predicate<State[]>
      * @param throCombination The throw combination to match against
      * @return true if the {@code thros} matches the {@code throCombination}
      */
-    protected static boolean testCombination(final Thro[] thros, final Thro[] throCombination)
+    public static boolean testCombination(final Thro[] thros, final Thro[] throCombination)
     {
         if (throCombination.length != thros.length)
         {
@@ -128,39 +128,20 @@ public class ThroCombinationPredicate implements Predicate<State[]>
         return false;
     }
 
-    protected Thro[] getThros(final ArrayLoopingIterator<State> states, final int length)
-    {
-        final Thro[] thros = new Thro[length];
-
-        for (int i = 0; i < length; i++)
-        {
-            try
-            {
-                thros[i] = states.next().getThrow(states.peek());
-            }
-            catch (final TransitionException cause)
-            {
-                throw new RuntimeException(cause);
-            }
-        }
-
-        return thros;
-    }
-
     /**
      * Returns a predicate than bans all of these single throws.
      *
      * @param thros the throws to ban. Not a combination, but all individually.
      * @return a predicate.
      */
-    public static Predicate<State[]> banAllSingleThros(final Thro... thros)
+    public static Predicate<GeneralPath> banAllSingleThros(final Thro... thros)
     {
         if (thros.length == 0)
         {
             throw new IllegalArgumentException("No thros provided");
         }
 
-        Predicate<State[]> predicate = new ThroCombinationPredicate(thros[0]).negate();
+        Predicate<GeneralPath> predicate = new ThroCombinationPredicate(thros[0]).negate();
 
         if (thros.length > 1)
         {

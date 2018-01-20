@@ -1,8 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.factory;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
-import com.ignoretheextraclub.siteswapfactory.sorters.StartFinder;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 
 /**
  * A builder for the SiteswapRequest that is thread safe and therefor suitable to use as
@@ -10,51 +9,31 @@ import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
  * the existing properties and the new field overridden.
  *
  * @author Caspar Nonclercq
- * @see SiteswapRequest#SiteswapRequest(Object, boolean, Reducer, StartFinder, StartingStrategy)
  */
 public class SiteswapRequestBuilder
 {
-    private final boolean reduce;
     private final Reducer reducer;
     private final StartingStrategy startingStrategy;
-    private final StartFinder startFinder;
 
     /**
      * A new {@link SiteswapRequestBuilder} with the default values.
      */
     public SiteswapRequestBuilder()
     {
-        reduce = false;
         reducer = null;
         startingStrategy = null;
-        startFinder = null;
     }
 
     /**
      * A new {@link SiteswapRequestBuilder} with the provided values.
      *
-     * @param reduce           The value for the {@link SiteswapRequest}.
      * @param reducer          The value for the {@link SiteswapRequest}.
      * @param startingStrategy The value for the {@link SiteswapRequest}.
-     * @param startFinder      The value for the {@link SiteswapRequest}.
      */
-    public SiteswapRequestBuilder(final boolean reduce, final Reducer reducer, final StartingStrategy startingStrategy, final StartFinder startFinder)
+    public SiteswapRequestBuilder(final Reducer reducer, final StartingStrategy startingStrategy)
     {
-        this.reduce = reduce;
         this.reducer = reducer;
         this.startingStrategy = startingStrategy;
-        this.startFinder = startFinder;
-    }
-
-    /**
-     * A new {@link SiteswapRequestBuilder} with the field overridden with the provided value.
-     *
-     * @param reduce The field for the {@link SiteswapRequest}
-     * @return A new {@link SiteswapRequestBuilder}.
-     */
-    public SiteswapRequestBuilder withReduce(final boolean reduce)
-    {
-        return new SiteswapRequestBuilder(reduce, reducer, startingStrategy, startFinder);
     }
 
     /**
@@ -65,7 +44,7 @@ public class SiteswapRequestBuilder
      */
     public SiteswapRequestBuilder withReducer(final Reducer reducer)
     {
-        return new SiteswapRequestBuilder(reduce, reducer, startingStrategy, startFinder);
+        return new SiteswapRequestBuilder(reducer, startingStrategy);
     }
 
     /**
@@ -76,18 +55,7 @@ public class SiteswapRequestBuilder
      */
     public SiteswapRequestBuilder withStartingStrategy(final StartingStrategy startingStrategy)
     {
-        return new SiteswapRequestBuilder(reduce, reducer, startingStrategy, startFinder);
-    }
-
-    /**
-     * A new {@link SiteswapRequestBuilder} with the field overridden with the provided value.
-     *
-     * @param startFinder The field for the {@link SiteswapRequest}
-     * @return A new {@link SiteswapRequestBuilder}.
-     */
-    public SiteswapRequestBuilder withStartFinder(final StartFinder startFinder)
-    {
-        return new SiteswapRequestBuilder(reduce, reducer, startingStrategy, startFinder);
+        return new SiteswapRequestBuilder(reducer, startingStrategy);
     }
 
     /**
@@ -98,6 +66,6 @@ public class SiteswapRequestBuilder
      */
     public SiteswapRequest createSiteswapRequest(final Object constructor)
     {
-        return new SiteswapRequest(constructor, reduce, reducer, startFinder, startingStrategy);
+        return new SiteswapRequest(constructor, reducer, startingStrategy);
     }
 }

@@ -23,7 +23,7 @@ public class IntsToVanillaThrosConverterTest
     public void testApply(final int[] ints, final VanillaThro[] thros) throws Exception
     {
         assertThat(IntsToVanillaThrosConverter.get().apply(ints)).isEqualTo(thros);
-        assertThat(IntsToVanillaThrosConverter.convert(ints)).isEqualTo(thros);
+        assertThat(IntsToVanillaThrosConverter.intsToVanillaThros(ints)).isEqualTo(thros);
     }
 
     public Object parametersForTestApply()

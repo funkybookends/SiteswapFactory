@@ -2,15 +2,14 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import java.util.Arrays;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToGeneralPathConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.VanillaThrosToStringConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;
-import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumJugglersException;
-import com.ignoretheextraclub.siteswapfactory.predicates.validation.LoopsPredicate;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
@@ -22,15 +21,11 @@ public class VanillaSiteswap implements Siteswap
 {
     private static final String TYPE = "Vanilla Siteswap";
 
-    protected final VanillaState[] states;
+    protected final GeneralCircuit states;
 
     public VanillaSiteswap(final VanillaState[] states)
     {
-        if (!LoopsPredicate.loops(states))
-        {
-            throw new InvalidSiteswapException("States " + Arrays.toString(states) + " is not a valid state loop.");
-        }
-        this.states = states;
+        this.states = StartingStateAndThrosToGeneralPathConverter.getSequence(states[0], StatesToThrosConverter.getThros(states)).toGeneralCircuit();
     }
 
     @Override
@@ -46,31 +41,7 @@ public class VanillaSiteswap implements Siteswap
     }
 
     @Override
-    public VanillaThro[] getThrows()
-    {
-        return StatesToThrosConverter.get().andThen(ThrosToVanillaThrosConverter.get()).apply(getStates());
-    }
-
-    @Override
-    public Thro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException
-    {
-        if (forJuggler >= 0 && forJuggler < getNumJugglers())
-        {
-            return getThrows();
-        }
-
-        if (getNumJugglers() == 1)
-        {
-            throw new IndexOutOfBoundsException("There is only 1 juggler. Juggler 0");
-        }
-        else
-        {
-            throw new IndexOutOfBoundsException("There are only " + getNumJugglers() + " jugglers, 0 indexed");
-        }
-    }
-
-    @Override
-    public VanillaState[] getStates()
+    public GeneralCircuit getGeneralCircuit()
     {
         return states;
     }
@@ -87,7 +58,7 @@ public class VanillaSiteswap implements Siteswap
 
         final boolean[] landings = new boolean[getPeriod() + getHighestThro().getNumBeats()];
 
-        final ArrayLoopingIterator<VanillaThro> looper = new ArrayLoopingIterator<>(getThrows());
+        final ArrayLoopingIterator<VanillaThro> looper = new ArrayLoopingIterator<>(ThrosToVanillaThrosConverter.convert(getThrows()));
 
         for (int i = 0; i < landings.length; i++)
         {
@@ -137,7 +108,7 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public int hashCode()
     {
-        return Arrays.hashCode(states);
+        return states.hashCode();
     }
 
     @Override
@@ -182,6 +153,6 @@ public class VanillaSiteswap implements Siteswap
     @Override
     public String toString()
     {
-        return VanillaThrosToStringConverter.get().apply(getThrows());
+        return VanillaThrosToStringConverter.get().apply(ThrosToVanillaThrosConverter.convert(getThrows()));
     }
 }

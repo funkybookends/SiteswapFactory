@@ -2,8 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
 import java.util.function.Predicate;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToSequenceConverter;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 /**
@@ -12,7 +11,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
  *
  * @author Caspar Nonclercq
  */
-public class NoThroHigherThanPredicate implements Predicate<State[]>
+public class NoThroHigherThanPredicate implements Predicate<GeneralPath>
 {
     private final Thro maxThro;
 
@@ -22,11 +21,9 @@ public class NoThroHigherThanPredicate implements Predicate<State[]>
     }
 
     @Override
-    public boolean test(final State[] states)
+    public boolean test(final GeneralPath generalPath)
     {
-        final Thro[] sequence = getThros(states);
-
-        for (final Thro thro : sequence)
+        for (final Thro thro : generalPath)
         {
             if (thro.compareTo(maxThro) > 0)
             {
@@ -35,14 +32,5 @@ public class NoThroHigherThanPredicate implements Predicate<State[]>
         }
 
         return true;
-    }
-
-    protected Thro[] getThros(final State[] states)
-    {
-        if (states.length > 1)
-        {
-            return StatesToSequenceConverter.getSequence(states);
-        }
-        return new Thro[0];
     }
 }

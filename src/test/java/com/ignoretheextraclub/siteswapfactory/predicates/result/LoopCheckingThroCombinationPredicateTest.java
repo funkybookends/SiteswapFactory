@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -50,12 +51,12 @@ public class LoopCheckingThroCombinationPredicateTest
     @Parameters
     public void testSequenceSimple(final String sequence, final Thro[] predicate, final boolean contains)
     {
-        final State[] states = SiteswapFactory.getTwoHandedSiteswap(sequence).getStates();
+        final GeneralCircuit states = SiteswapFactory.getTwoHandedSiteswap(sequence).getGeneralCircuit();
 
         final LoopCheckingThroCombinationPredicate throCombinationPredicate = new LoopCheckingThroCombinationPredicate(predicate);
 
         final String description = new StringBuilder().append("Sequence: ").append(sequence)
-            .append(". Converted to states: ").append(Arrays.toString(states))
+            .append(". Converted to states: ").append(Arrays.toString(states.getAllStates()))
             .append(". Predicate: ").append(throCombinationPredicate)
             .append(". Expected: ").append(contains)
             .toString();

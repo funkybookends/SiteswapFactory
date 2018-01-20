@@ -18,7 +18,7 @@ import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.Vani
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
-public class StartingStateAndThrosToSequenceConverterTest
+public class StartingStateAndThrosToGeneralPathConverterTest
 {
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
@@ -27,7 +27,7 @@ public class StartingStateAndThrosToSequenceConverterTest
     @Parameters
     public void test(final State start, final Thro[] thros, final State[] expected) throws Exception
     {
-        assertThat(StartingStateAndThrosToSequenceConverter.getSequence(start, thros)).isEqualTo(expected);
+        assertThat(StartingStateAndThrosToGeneralPathConverter.getSequence(start, thros).getStates()).isEqualTo(expected);
     }
 
     public Object parametersForTest()
@@ -44,15 +44,11 @@ public class StartingStateAndThrosToSequenceConverterTest
     @Test
     public void testExceptions() throws Exception
     {
-        softly.assertThatThrownBy(() -> StartingStateAndThrosToSequenceConverter.getSequence(null, new Thro[]{}))
+        softly.assertThatThrownBy(() -> StartingStateAndThrosToGeneralPathConverter.getSequence(null, new Thro[]{}))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("startingState");
 
-        softly.assertThatThrownBy(() -> StartingStateAndThrosToSequenceConverter.getSequence(XXX__, null))
-            .isInstanceOf(NullPointerException.class)
-            .hasMessageContaining("thros");
-
-        softly.assertThatThrownBy(() -> StartingStateAndThrosToSequenceConverter.getSequence(XXX__, new Thro[]{get(0)}))
+        softly.assertThatThrownBy(() -> StartingStateAndThrosToGeneralPathConverter.getSequence(XXX__, new Thro[]{get(0)}))
             .isInstanceOf(BadThrowException.class)
             .hasMessageContaining("[0]");
     }

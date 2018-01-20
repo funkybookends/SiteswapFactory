@@ -4,7 +4,11 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils;
+
+import static com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToVanillaThrosConverter.intsToVanillaThros;
 
 /**
  * Created by caspar on 24/09/17.
@@ -26,19 +30,19 @@ public class PeriodPredicateTest
     @Test
     public void testAnyOf() throws Exception
     {
-        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new State[1])).isTrue();
-        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new State[2])).isTrue();
-        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new State[0])).isFalse();
-        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new State[3])).isFalse();
+        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros(3)))).isTrue();
+        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros(3, 3)))).isTrue();
+        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros()))).isFalse();
+        softly.assertThat(PeriodPredicate.anyOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros(3, 3, 3)))).isFalse();
     }
 
     @Test
     public void testNoneOf() throws Exception
     {
-        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new State[1])).isFalse();
-        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new State[2])).isFalse();
-        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new State[0])).isTrue();
-        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new State[3])).isTrue();
+        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros(3)))).isFalse();
+        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros(3, 3)))).isFalse();
+        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros()))).isTrue();
+        softly.assertThat(PeriodPredicate.noneOf(1,2).test(new GeneralCircuit(StateTestUtils.XXX, intsToVanillaThros(3, 3, 3)))).isTrue();
     }
 
     // TODO add more

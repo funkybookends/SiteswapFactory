@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -17,7 +19,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
  *
  * @author Caspar Nonclercq
  */
-public class GroundedPredicate implements Predicate<State[]>
+public class GroundedPredicate implements Predicate<GeneralPath>
 {
     private static GroundedPredicate instance;
 
@@ -27,6 +29,11 @@ public class GroundedPredicate implements Predicate<State[]>
     }
 
     @Override
+    public boolean test(final GeneralPath generalPath)
+    {
+        return test(generalPath.getStates());
+    }
+
     public boolean test(final State[] states)
     {
         Objects.requireNonNull(states, "states cannot be null");
@@ -50,5 +57,15 @@ public class GroundedPredicate implements Predicate<State[]>
     public static boolean isGround(final Siteswap siteswap)
     {
         return get().test(siteswap.getStates());
+    }
+
+    public static boolean isGround(final GeneralCircuit generalCircuit)
+    {
+        return get().test(generalCircuit.getAllStates());
+    }
+
+    public static boolean isGround(final GeneralPath generalPath)
+    {
+        return get().test(generalPath.getStates());
     }
 }

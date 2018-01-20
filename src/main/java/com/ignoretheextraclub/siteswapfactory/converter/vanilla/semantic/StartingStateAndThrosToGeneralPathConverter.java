@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
@@ -13,20 +14,20 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
  *
  * @author Caspar Nonclercq
  */
-public class StartingStateAndThrosToSequenceConverter implements BiFunction<State, Thro[], State[]>
+public class StartingStateAndThrosToGeneralPathConverter implements BiFunction<State, Thro[], GeneralPath>
 {
-    public static StartingStateAndThrosToSequenceConverter INSTANCE;
+    public static StartingStateAndThrosToGeneralPathConverter INSTANCE;
 
-    private StartingStateAndThrosToSequenceConverter()
+    private StartingStateAndThrosToGeneralPathConverter()
     {
         // Singleton
     }
 
-    public static StartingStateAndThrosToSequenceConverter get()
+    public static StartingStateAndThrosToGeneralPathConverter get()
     {
         if (INSTANCE == null)
         {
-            INSTANCE = new StartingStateAndThrosToSequenceConverter();
+            INSTANCE = new StartingStateAndThrosToGeneralPathConverter();
         }
         return INSTANCE;
     }
@@ -39,28 +40,19 @@ public class StartingStateAndThrosToSequenceConverter implements BiFunction<Stat
      * @return The array of states
      */
     @Override
-    public State[] apply(final State startingState, final Thro[] thros)
+    public GeneralPath apply(final State startingState, final Thro[] thros)
     {
         Objects.requireNonNull(startingState, "startingState cannot be null");
         Objects.requireNonNull(thros, "thros cannot be null");
 
-        final State[] states = new State[thros.length + 1];
+        final GeneralPath generalPath = new GeneralPath(startingState);
 
-        states[0] = startingState;
-
-        try
+        for (final Thro thro : thros)
         {
-            for (int i = 0; i < thros.length; i++)
-            {
-                states[i + 1] = states[i].thro(thros[i]);
-            }
-        }
-        catch (final BadThrowException cause)
-        {
-            throw new BadThrowException("Sequence " + Arrays.toString(thros) + " was not valid from " + startingState, cause);
+            generalPath.push(thro);
         }
 
-        return states;
+        return generalPath;
     }
 
     /**
@@ -70,7 +62,7 @@ public class StartingStateAndThrosToSequenceConverter implements BiFunction<Stat
      * @param thros         The sequence of throws
      * @return The sequence of states
      */
-    public static State[] getSequence(final State startingState, final Thro[] thros)
+    public static GeneralPath getSequence(final State startingState, final Thro... thros)
     {
         return get().apply(startingState, thros);
     }

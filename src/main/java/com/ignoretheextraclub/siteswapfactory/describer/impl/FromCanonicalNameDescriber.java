@@ -10,12 +10,17 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.VanillaSiteswap;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.StreamingMappingReducingStartFinder;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
 
 /**
  * Adds the configured names to for the siteswap.
@@ -72,15 +77,13 @@ public class FromCanonicalNameDescriber<T extends Siteswap> implements Descripti
     /**
      * A canonical name mapper suitable for {@link VanillaSiteswap}s.
      *
-     * Uses {@link HighestThrowFirstStrategy} and {@link StreamingMappingReducingStartFinder} to find the canonical name.
-     *
      * @param <T>
      * @return A canonical name of a siteswap.
      */
     public static <T extends VanillaSiteswap> Function<T, String> vanillaSiteswapToCanonicalNameMapper()
     {
-        return (siteswap) -> StreamingMappingReducingStartFinder.get()
-            .sort(siteswap, HighestThrowFirstStrategy.get(), StatesToVanillaStatesConverter.get().andThen(VanillaSiteswap::new))
-            .toString();
+        return (siteswap) -> GeneralCircuitToTwoHandedSiteswapConstructor.get()
+                .apply(new SiteswapRequest(siteswap.getGeneralCircuit(), StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()))
+                .toString();
     }
 }

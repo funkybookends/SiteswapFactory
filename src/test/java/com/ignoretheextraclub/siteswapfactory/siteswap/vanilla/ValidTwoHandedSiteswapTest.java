@@ -9,10 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.HighestThrowFirstStrategy;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
 import com.ignoretheextraclub.siteswapfactory.testutils.Utils;
 
 /**
@@ -41,9 +43,9 @@ public class ValidTwoHandedSiteswapTest
    @Test
    public void testCreateWithNoSortingStrategy() throws Exception
    {
-       final TwoHandedSiteswap unsorted = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, true, null, null, NoStartingStrategy.get()));
+       final TwoHandedSiteswap unsorted = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), NoStartingStrategy.get()));
        softly.assertThat(unsorted.toString()).as("unsorted toString").isEqualTo(stringSiteswap.toUpperCase());
-       final TwoHandedSiteswap hfsSorted = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, true, null, null, HighestThrowFirstStrategy.get()));
+       final TwoHandedSiteswap hfsSorted = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
 //        softly.assertThat(hfsSorted.toString()).as("hfsSorted toString").isEqualTo(stringSiteswap.toUpperCase()); // TODO sort all siteswaps in list so we can assert.
 
        softly.assertThat(unsorted.same(hfsSorted)).as("unsorted.same(hfsSorted)").isTrue();

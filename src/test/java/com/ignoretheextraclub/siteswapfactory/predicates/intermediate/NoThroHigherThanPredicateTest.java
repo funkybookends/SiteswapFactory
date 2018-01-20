@@ -4,6 +4,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToGeneralPathConverter;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -20,7 +22,7 @@ public class NoThroHigherThanPredicateTest
 {
     @Test
     @Parameters
-    public void testApply(final Thro maxThro, final State[] states, final boolean expected) throws Exception
+    public void testApply(final Thro maxThro, final GeneralPath states, final boolean expected) throws Exception
     {
         final NoThroHigherThanPredicate noThroHigherThanPredicate = new NoThroHigherThanPredicate(maxThro);
 
@@ -30,9 +32,9 @@ public class NoThroHigherThanPredicateTest
     public Object parametersForTestApply()
     {
         return new Object[]{
-            new Object[]{VanillaThro.get(3), new State[]{XXX__, XXX__}, true},
-            new Object[]{VanillaThro.get(3), new State[]{XXX__, XX_X_}, false},
-            new Object[]{VanillaThro.get(3), new State[]{XX_X, XXX__}, true},
+            new Object[]{VanillaThro.get(3), StartingStateAndThrosToGeneralPathConverter.getSequence(XXX__, VanillaThro.get(3)), true},
+            new Object[]{VanillaThro.get(3), StartingStateAndThrosToGeneralPathConverter.getSequence(XXX__, VanillaThro.get(4)), false},
+            new Object[]{VanillaThro.get(3), StartingStateAndThrosToGeneralPathConverter.getSequence(XX_X, VanillaThro.get(2)), true},
             // TODO add more
         };
     }

@@ -15,7 +15,7 @@ import com.ignoretheextraclub.siteswapfactory.predicates.result.LoopCheckingNoTh
 import com.ignoretheextraclub.siteswapfactory.predicates.result.StatePredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StatesToTwoHandedSiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
@@ -34,7 +34,7 @@ public class TwoHandedSiteswapGenerator
     private static StateSearcherBuilder<TwoHandedSiteswap> builder(final int maxThro)
     {
         return StateSearcherBuilder.<TwoHandedSiteswap>builder()
-            .withSiteswapConstructor(StatesToTwoHandedSiteswapConstructor.get())
+            .withSiteswapConstructor(GeneralCircuitToTwoHandedSiteswapConstructor.get())
             .andIntermediatePredicate(new NoThroHigherThanPredicate(VanillaThro.get(maxThro)))
             .andResultPredicate(new LoopCheckingNoThroHigherThanPredicate(VanillaThro.get(maxThro)));
     }
@@ -53,6 +53,7 @@ public class TwoHandedSiteswapGenerator
                                                                      final int maxPeriod)
     {
         validateMaxThroIsNotLessThanNumObjects(numObjects, maxThro);
+
         return builder(maxThro)
             .setStartingStates(VanillaStateGenerator.getAllStates(numObjects, maxThro)
                 .map((VanillaState state) -> (State) state)
@@ -74,7 +75,8 @@ public class TwoHandedSiteswapGenerator
 
         return builder(maxThro)
             .setStartingStates(excitedStates)
-            .andIntermediatePredicate(banGroundState)
+            .andIntermediatePredicate(generalPath -> banGroundState.test(generalPath.getStates()))
+            .andResultPredicate(generalCircuit -> banGroundState.test(generalCircuit.getAllStates()))
             .setMaxPeriod(maxPeriod);
     }
 

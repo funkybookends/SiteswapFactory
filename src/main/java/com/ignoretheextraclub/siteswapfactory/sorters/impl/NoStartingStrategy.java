@@ -1,10 +1,9 @@
-package com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl;
+package com.ignoretheextraclub.siteswapfactory.sorters.impl;
 
 import java.util.Locale;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.StartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 
 /**
  Created by caspar on 25/06/17.
@@ -21,20 +20,26 @@ public class NoStartingStrategy implements StartingStrategy
     private NoStartingStrategy(){};
 
     @Override
+    public boolean test(final GeneralCircuit first, final GeneralCircuit second)
+    {
+        return true;
+    }
+
+    @Override
     public String getName()
     {
         return "No Sorting strategy";
     }
 
     @Override
-    public boolean test(final State[] first, final State[] second) throws InvalidSiteswapException
-    {
-        return true;
-    }
-
-    @Override
     public String getDescription(final Locale locale)
     {
         return "The siteswap as given.";
+    }
+
+    @Override
+    public GeneralCircuit apply(final GeneralCircuit generalCircuit)
+    {
+        return generalCircuit;
     }
 }

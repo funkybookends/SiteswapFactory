@@ -6,6 +6,8 @@ import java.util.function.Predicate;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
@@ -19,8 +21,8 @@ public class StateSearcherBuilder<T extends Siteswap>
 {
     private Set<State> startingStates = new HashSet<>();
     private int maxPeriod = -1;
-    private Predicate<State[]> intermediatePredicate = StateSearcher.acceptAll();
-    private Predicate<State[]> resultPredicate = StateSearcher.acceptAll();
+    private Predicate<GeneralPath> intermediatePredicate = StateSearcher.acceptAll();
+    private Predicate<GeneralCircuit> resultPredicate = StateSearcher.acceptAll();
     private SiteswapConstructor<T> siteswapConstructor;
     private SiteswapRequestBuilder siteswapRequestBuilder = new SiteswapRequestBuilder();
 
@@ -80,7 +82,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      *
      * @return this.
      */
-    public StateSearcherBuilder<T> setIntermediatePredicate(final Predicate<State[]> intermediatePredicate)
+    public StateSearcherBuilder<T> setIntermediatePredicate(final Predicate<GeneralPath> intermediatePredicate)
     {
         this.intermediatePredicate = intermediatePredicate;
         return this;
@@ -92,7 +94,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      * @param intermediatePredicate a new intermediate predicate
      * @return this
      */
-    public StateSearcherBuilder<T> andIntermediatePredicate(final Predicate<State[]> intermediatePredicate)
+    public StateSearcherBuilder<T> andIntermediatePredicate(final Predicate<GeneralPath> intermediatePredicate)
     {
         this.intermediatePredicate = this.intermediatePredicate.and(intermediatePredicate);
         return this;
@@ -103,7 +105,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      *
      * @return the current intermediatePredicate
      */
-    public Predicate<State[]> getIntermediatePredicate()
+    public Predicate<GeneralPath> getIntermediatePredicate()
     {
         return intermediatePredicate;
     }
@@ -115,7 +117,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      *
      * @return this.
      */
-    public StateSearcherBuilder<T> setResultPredicate(final Predicate<State[]> resultPredicate)
+    public StateSearcherBuilder<T> setResultPredicate(final Predicate<GeneralCircuit> resultPredicate)
     {
         this.resultPredicate = resultPredicate;
         return this;
@@ -127,7 +129,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      * @param resultPredicate a new result predicate
      * @return this
      */
-    public StateSearcherBuilder<T> andResultPredicate(final Predicate<State[]> resultPredicate)
+    public StateSearcherBuilder<T> andResultPredicate(final Predicate<GeneralCircuit> resultPredicate)
     {
         this.resultPredicate = this.resultPredicate.and(resultPredicate);
         return this;
@@ -138,7 +140,7 @@ public class StateSearcherBuilder<T extends Siteswap>
      *
      * @return the current resultPredicate
      */
-    public Predicate<State[]> getResultPredicate()
+    public Predicate<GeneralCircuit> getResultPredicate()
     {
         return resultPredicate;
     }

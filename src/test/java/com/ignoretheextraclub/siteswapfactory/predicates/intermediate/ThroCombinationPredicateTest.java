@@ -7,8 +7,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToSequenceConverter;
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToGeneralPathConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.StringToVanillaThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -52,12 +53,12 @@ public class ThroCombinationPredicateTest
     public void testSequenceSimple(final State start, final String sequence, final Thro[] predicate, final boolean contains)
     {
         final VanillaThro[] thros = StringToVanillaThrosConverter.convert(sequence);
-        final State[] states = StartingStateAndThrosToSequenceConverter.getSequence(start, thros);
+        final GeneralPath states = StartingStateAndThrosToGeneralPathConverter.getSequence(start, thros);
 
         final ThroCombinationPredicate throCombinationPredicate = new ThroCombinationPredicate(predicate);
 
         final String description = new StringBuilder().append("Sequence: ").append(sequence)
-            .append(". Converted to states: ").append(Arrays.toString(states))
+            .append(". Converted to states: ").append(Arrays.toString(states.getStates()))
             .append(". Predicate: ").append(predicate)
             .append(". Expected: ").append(contains)
             .toString();

@@ -4,9 +4,10 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.sorters.strategy.impl.NoStartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X_;
@@ -26,15 +27,14 @@ public class TwoHandedVanillaSiteswapTest
    public void test534() throws Exception
    {
        final TwoHandedSiteswap vanillaSiteswap = SiteswapFactory.getTwoHandedSiteswap("534");
-       final TwoHandedSiteswap same = SiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest("453", true, null, null, NoStartingStrategy.get()));
+       final TwoHandedSiteswap same = SiteswapFactory.getTwoHandedSiteswap("453");
        final TwoHandedSiteswap different = SiteswapFactory.getTwoHandedSiteswap("441");
+
        softly.assertThat(vanillaSiteswap.getNumJugglers()).isEqualTo(1);
        softly.assertThat(vanillaSiteswap.getNumHands()).isEqualTo(2);
        softly.assertThat(vanillaSiteswap.getNumObjects()).isEqualTo(4);
        softly.assertThat(vanillaSiteswap.getPeriod()).isEqualTo(3);
        softly.assertThat(vanillaSiteswap.getThrows()).isEqualTo(thros(get(5), get(3), get(4)));
-       softly.assertThat(vanillaSiteswap.getThrowsForJuggler(0)).isEqualTo(thros(get(5), get(3), get(4)));
-       softly.assertThatThrownBy(() -> vanillaSiteswap.getThrowsForJuggler(1)).isInstanceOf(IndexOutOfBoundsException.class);
        softly.assertThat(vanillaSiteswap.getStates()).isEqualTo(states(XXXX_, XXX_X_, XXXX_));
        softly.assertThat(vanillaSiteswap.isGrounded()).isEqualTo(true);
        softly.assertThat(vanillaSiteswap.isPrime()).isEqualTo(false);

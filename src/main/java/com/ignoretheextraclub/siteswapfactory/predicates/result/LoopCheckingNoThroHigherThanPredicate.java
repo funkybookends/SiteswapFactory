@@ -1,8 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
+import java.util.function.Predicate;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.NoThroHigherThanPredicate;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 /**
@@ -11,16 +13,26 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
  *
  * @author Caspar Nonclercq
  */
-public class LoopCheckingNoThroHigherThanPredicate extends NoThroHigherThanPredicate
+public class LoopCheckingNoThroHigherThanPredicate implements Predicate<GeneralCircuit>
 {
+    private final Thro maxThro;
+
     public LoopCheckingNoThroHigherThanPredicate(final Thro maxThro)
     {
-        super(maxThro);
+        this.maxThro = maxThro;
     }
 
     @Override
-    protected Thro[] getThros(final State[] states)
+    public boolean test(final GeneralCircuit generalPath)
     {
-        return StatesToThrosConverter.getThros(states);
+        for (final Thro thro : generalPath.getThros())
+        {
+            if (thro.compareTo(maxThro) > 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
