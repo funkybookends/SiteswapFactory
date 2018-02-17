@@ -1,6 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.RouteSearcher;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 /**
  * An Iterative Deepening Depth First Searcher.
@@ -45,18 +46,28 @@ public class IddfsRouteSearcher implements RouteSearcher
     }
 
     @Override
-    public State[] findRoute(final State source, final State goal) throws TransitionException
+    public GeneralPath findRoute(final State source, final State goal) throws TransitionException
     {
         Objects.requireNonNull(source, "source cannot be null");
         Objects.requireNonNull(goal, "goal cannot be null");
-        final List<State> result = iterativeDeepeningDepthFirstSearch(source, goal);
+        if (source.equals(goal))
+        {
+            throw new IllegalArgumentException("source and goal are equal");
+        }
+
+        final List<Thro> result = iterativeDeepeningDepthFirstSearch(source, goal);
 
         if (result == null)
         {
             throw new TransitionException("A route could not be found between [" + source + "] and [" + goal + "]");
         }
 
-        return result.toArray(new State[result.size()]);
+        final GeneralPath generalPath = new GeneralPath(source);
+
+        result.forEach(generalPath::push);
+
+        return generalPath;
+
     }
 
     /**
@@ -68,17 +79,19 @@ public class IddfsRouteSearcher implements RouteSearcher
      * @see #getStartingDepth() to manually set the first depth to search for
      * @see #getMaxDepth()  to override the {@link #MAX_DEPTH} value
      */
-    protected List<State> iterativeDeepeningDepthFirstSearch(final State source, final State goal)
+    protected List<Thro> iterativeDeepeningDepthFirstSearch(final State source, final State goal)
     {
-        int maxDepth = getStartingDepth();
-        List<State> route;
+        int currentMaxDepth = getStartingDepth();
+
+        List<Thro> route;
+
         do
         {
-            LOG.debug("DLS to depth: {}", maxDepth);
-            route = depthLimitedSearch(source, goal, maxDepth);
-            maxDepth++;
+            LOG.trace("DLS to depth: {}", currentMaxDepth);
+            route = depthLimitedSearch(source, goal, currentMaxDepth);
+            currentMaxDepth++;
         }
-        while (route == null && maxDepth < getMaxDepth());
+        while (route == null && currentMaxDepth < getMaxDepth());
 
         return route;
     }
@@ -91,31 +104,34 @@ public class IddfsRouteSearcher implements RouteSearcher
      * @param goal   The goal.
      * @param depth  The current depth.
      * @return A path from source to goal.
-     * @see #getDescendants(State) to modofy the searching behaviour
+     * @see #getTransitions(State) to modofy the searching behaviour
      * @see #isAcceptable(List) to block intermedate results and continue searching
      */
-    protected List<State> depthLimitedSearch(final State source, final State goal, final int depth)
+    protected List<Thro> depthLimitedSearch(final State source, final State goal, final int depth)
     {
-        if (depth == 0 && source.equals(goal))
+        if (depth > 0)
         {
-            LOG.debug("Source is goal at depth 0");
-            final LinkedList<State> result = new LinkedList<>();
-            result.add(source);
-            return result;
-        }
-        else if (depth > 0)
-        {
-            LOG.debug("Looking at depth {}", depth);
-            for (final State descendant : getDescendants(source))
+            LOG.trace("Looking at depth {}", depth);
+            for (final Thro transition : getTransitions(source))
             {
-                LOG.debug("Looking at {} -> {}", source, descendant);
+                LOG.trace("Looking at {} -> {}", source, transition);
 
-                final List<State> result = depthLimitedSearch(descendant, goal, depth - 1);
+                final State nextState = source.thro(transition);
+
+                if (nextState.equals(goal))
+                {
+                    final LinkedList<Thro> result = new LinkedList<>();
+                    result.add(transition);
+                    return result;
+                }
+
+                final List<Thro> result = depthLimitedSearch(nextState, goal, depth - 1);
+
                 if (result != null)
                 {
                     if (isAcceptable(result))
                     {
-                        result.add(0, source);
+                        result.add(0, transition);
                         return result;
                     }
                     else
@@ -137,7 +153,7 @@ public class IddfsRouteSearcher implements RouteSearcher
      * @param subPath the path from some state to the goal.
      * @return true if this subPath can be part of the result route, otherwise false.
      */
-    protected boolean isAcceptable(final List<State> subPath)
+    protected boolean isAcceptable(final List<Thro> subPath)
     {
         return true;
     }
@@ -148,11 +164,9 @@ public class IddfsRouteSearcher implements RouteSearcher
      * @param source The source
      * @return An iterator of descendants.
      */
-    private Iterable<State> getDescendants(final State source)
+    private Iterable<Thro> getTransitions(final State source)
     {
-        final ArrayList<State> states = new ArrayList<>(source.getNextStates());
-        states.sort(null);
-        return states;
+        return source.getAvailableThrows();
     }
 
     /**

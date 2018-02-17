@@ -11,7 +11,6 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
  */
 public class FourHandedSiteswapToHefflishSequenceTest
 {
-
 	@Rule
 	public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 

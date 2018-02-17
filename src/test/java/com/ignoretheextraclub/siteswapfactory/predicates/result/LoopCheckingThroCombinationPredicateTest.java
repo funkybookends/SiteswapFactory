@@ -56,7 +56,7 @@ public class LoopCheckingThroCombinationPredicateTest
         final LoopCheckingThroCombinationPredicate throCombinationPredicate = new LoopCheckingThroCombinationPredicate(predicate);
 
         final String description = new StringBuilder().append("Sequence: ").append(sequence)
-            .append(". Converted to states: ").append(Arrays.toString(states.getAllStates()))
+            .append(". Converted to states: ").append(Arrays.toString(states.getThros()))
             .append(". Predicate: ").append(throCombinationPredicate)
             .append(". Expected: ").append(contains)
             .toString();

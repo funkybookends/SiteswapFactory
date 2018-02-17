@@ -1,7 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.factory;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
 import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;

@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.Stack;
+import java.util.Vector;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -22,6 +22,8 @@ import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
+
+import javafx.scene.shape.PathBuilder;
 
 import static java.util.Collections.emptyIterator;
 
@@ -47,9 +49,8 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     /**
      * Internal state
      */
-    private GeneralPath generalPath;
-    private Stack<Iterator<Thro>> iteratorStack = new Stack<>();
     private T next;
+    private PathBuilder builder;
 
     /**
      * Creates a {@link StateSearcher} which will find successive {@link Siteswap}s based on the provided configuration.
@@ -114,7 +115,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
 
             try
             {
-                return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(generalPath.toGeneralCircuit()));
+                return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(builder.toGeneralPath().toGeneralCircuit()));
             }
             catch (final Throwable ignored)
             {
@@ -125,84 +126,47 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         }
     }
 
-    private boolean canBeReturned()
-    {
-        return generalPath.isGeneralCircuit() && resultPredicate.test(generalPath.toGeneralCircuit());
-    }
-
-    private boolean isLegalSequence()
-    {
-        final boolean isLegalIntermediateState = intermediatePredicate.test(generalPath);
-        if (!isLegalIntermediateState)
-        {
-            LOG.trace("Intermediate State was rejected: {}", Arrays.toString(generalPath.getStates()));
-        }
-        return isLegalIntermediateState;
-    }
-
     private void getNextState() throws NoMoreSiteswapsException
     {
-        LOG.trace("getNextState(): Getting next State");
-
         do
         {
-            if (generalPath.size() < maxPeriod)
+            if (builder == null && startingStates.hasNext())
             {
-                LOG.trace("getNextState(): Not at max period, so building stack");
-                buildStack();
+                builder = new PathBuilder(startingStates.next(), maxPeriod);
+                builder.buildStack();
+            }
+            else if (builder == null && !startingStates.hasNext())
+            {
+                throw new NoMoreSiteswapsException();
+            }
+            else if (builder.size() < maxPeriod)
+            {
+                builder.buildStack();
             }
             else
             {
-                LOG.trace("getNextState(): Reached max period, so moving on last iterator");
-                moveIteratorOnToNextState();
+                try
+                {
+                    builder.moveLastIterator();
+                }
+                catch (PathBuilder.StartingStateFinishedException e)
+                {
+                    builder = null;
+                }
             }
         }
         while (!isLegalSequence());
     }
 
-    private void buildStack() throws NoMoreSiteswapsException
+    private boolean canBeReturned()
     {
-        if (generalPath.size() < maxPeriod)
-        {
-            LOG.trace("buildStack(): pushing next iterator onto stack.");
-            if (iteratorStack.isEmpty())
-            {
-                final State nextStartingState = startingStates.next();
-                generalPath = new GeneralPath(nextStartingState);
-                iteratorStack.push(nextStartingState.getAvailableThrows().iterator());
-            }
-            else
-            {
-                iteratorStack.push(generalPath.getLastState().getAvailableThrows().iterator());
-            }
-            moveIteratorOnToNextState();
-        }
-        else
-        {
-            LOG.warn("buildStack(): stack size {} >= {} maxPeriod. Not building.", generalPath.size(), maxPeriod);
-        }
+        final GeneralPath generalPath = builder.toGeneralPath();
+        return generalPath.isGeneralCircuit() && resultPredicate.test(generalPath.toGeneralCircuit());
     }
 
-    private void moveIteratorOnToNextState() throws NoMoreSiteswapsException
+    private boolean isLegalSequence()
     {
-        LOG.trace("moveIteratorOnToNextState(): Moving last stack iterator onto next element.");
-        if (iteratorStack.lastElement().hasNext())
-        {
-            LOG.trace("moveIteratorOnToNextState(): getting next for iterator at {}", iteratorStack.size());
-            final Thro nextThro = iteratorStack.lastElement().next();
-            generalPath.pop();
-            generalPath.push(generalPath.push(nextThro));
-        }
-        else
-        {
-            iteratorStack.pop();
-            if (iteratorStack.isEmpty())
-            {
-                throw new NoMoreSiteswapsException();
-            }
-            generalPath.pop();
-            moveIteratorOnToNextState();
-        }
+        return builder != null && intermediatePredicate.test(builder.toGeneralPath());
     }
 
     public Stream<T> generate()
@@ -220,5 +184,101 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
 
     private static class NoMoreSiteswapsException extends Exception
     {
+    }
+
+    private static class PathBuilder
+    {
+        private Vector<PathNode> path;
+
+        private PathBuilder(final State startingState, final int maxLength)
+        {
+            path = new Vector<>(maxLength, 1);
+            path.add(new PathNode(startingState));
+        }
+
+        private void buildStack()
+        {
+            final PathNode lastNode = path.lastElement();
+
+            if (lastNode.hasNextThro())
+            {
+                path.add(new PathNode(lastNode.state.thro(lastNode.nextThro())));
+            }
+        }
+
+        private void moveLastIterator() throws StartingStateFinishedException
+        {
+            if (path.isEmpty())
+            {
+                throw new StartingStateFinishedException();
+            }
+            if (path.lastElement().hasNextThro())
+            {
+                path.lastElement().nextThro();
+            }
+            else
+            {
+                path.remove(path.size() - 1);
+                moveLastIterator();
+            }
+        }
+
+        private int size()
+        {
+            return path.size();
+        }
+
+        private GeneralPath toGeneralPath()
+        {
+            final GeneralPath generalPath = new GeneralPath(path.firstElement().state);
+
+            for (final PathNode pathNode : path)
+            {
+                if (pathNode.currentThro != null)
+                {
+                    generalPath.push(pathNode.currentThro);
+                }
+            }
+
+            return generalPath;
+        }
+
+        private static class PathNode
+        {
+            private final State state;
+            private final Iterator<Thro> throIterator;
+            private Thro currentThro;
+
+            public PathNode(final State state)
+            {
+                this.state = state;
+                this.throIterator = state.getAvailableThrows().iterator();
+            }
+
+            public State getState()
+            {
+                return state;
+            }
+
+            public Thro getCurrentThro()
+            {
+                return currentThro;
+            }
+
+            public boolean hasNextThro()
+            {
+                return this.throIterator.hasNext();
+            }
+
+            public Thro nextThro()
+            {
+                this.currentThro = this.throIterator.next();
+                return currentThro;
+            }
+        }
+
+        private class StartingStateFinishedException extends Exception
+        {
+        }
     }
 }

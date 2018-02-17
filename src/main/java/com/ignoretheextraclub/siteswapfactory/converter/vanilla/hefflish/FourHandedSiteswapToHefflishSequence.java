@@ -14,8 +14,6 @@ public class FourHandedSiteswapToHefflishSequence implements BiFunction<FourHand
 {
 	public static FourHandedSiteswapToHefflishSequence INSTANCE;
 
-	private static final String DELIMETER = ", ";
-
 	private FourHandedSiteswapToHefflishSequence()
 	{
 		// Singleton

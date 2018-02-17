@@ -1,25 +1,18 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
 
-import java.util.Optional;
-
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXXXXXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by caspar on 09/10/17.
@@ -33,7 +26,7 @@ public class StringToFourHandedSiteswapConstructorTest
         final VanillaState[] states = {XXXXXXXX__};
 
         final FourHandedSiteswap result = StringToFourHandedSiteswapConstructor.get().apply(siteswapRequest);
-        final FourHandedSiteswap expected = new FourHandedSiteswap(states);
+        final FourHandedSiteswap expected = new FourHandedSiteswap(GeneralPath.from(XXXXXXXX__, FourHandedSiteswapThro.get(8)).toGeneralCircuit());
 
         Assertions.assertThat(result).isEqualTo(expected);
     }
@@ -45,7 +38,7 @@ public class StringToFourHandedSiteswapConstructorTest
         final VanillaState[] unsorted = {XXXXXXXX__};
 
         final FourHandedSiteswap result = StringToFourHandedSiteswapConstructor.get().apply(siteswapRequest);
-        final FourHandedSiteswap expected = new FourHandedSiteswap(unsorted);
+        final FourHandedSiteswap expected = new FourHandedSiteswap(GeneralPath.from(XXXXXXXX__, FourHandedSiteswapThro.get(8)).toGeneralCircuit());
 
         Assertions.assertThat(result).isEqualTo(expected);
     }
@@ -55,7 +48,7 @@ public class StringToFourHandedSiteswapConstructorTest
     {
         final SiteswapRequest siteswapRequest = new SiteswapRequest("88", StreamingFilteringReducer.get(), null);
         final FourHandedSiteswap result = StringToFourHandedSiteswapConstructor.get().apply(siteswapRequest);
-        final FourHandedSiteswap expected = new FourHandedSiteswap(new VanillaState[]{XXXXXXXX__});
+        final FourHandedSiteswap expected = new FourHandedSiteswap(GeneralPath.from(XXXXXXXX__, FourHandedSiteswapThro.get(8)).toGeneralCircuit());
 
         Assertions.assertThat(result).isEqualTo(expected);
     }

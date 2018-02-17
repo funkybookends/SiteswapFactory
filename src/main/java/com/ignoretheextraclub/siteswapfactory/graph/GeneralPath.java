@@ -52,4 +52,36 @@ public class GeneralPath extends Stack<Thro>
 	{
 		return states.toArray(new State[states.size()]);
 	}
+
+	public static GeneralPath from(final State startingState, final Thro... thros)
+	{
+		final GeneralPath generalPath = new GeneralPath(startingState);
+
+		for (final Thro thro : thros)
+		{
+			generalPath.push(thro);
+		}
+
+		return generalPath;
+	}
+
+	@Override
+	public boolean equals(final Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+
+		final GeneralPath that = (GeneralPath) o;
+
+		return states.equals(that.states);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = super.hashCode();
+		result = 31 * result + states.hashCode();
+		return result;
+	}
 }

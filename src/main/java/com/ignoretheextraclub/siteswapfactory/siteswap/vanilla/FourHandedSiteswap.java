@@ -3,9 +3,10 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 import java.util.Arrays;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.GlobalToLocalBiConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToFourHandedSiteswapThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 
@@ -19,17 +20,16 @@ public class FourHandedSiteswap extends VanillaSiteswap
     public static final int NUM_JUGGLERS = 2;
     public static final int NUM_HANDS = 4;
 
-    public FourHandedSiteswap(final VanillaState[] states)
+    public FourHandedSiteswap(final GeneralCircuit states)
     {
         super(states);
 
-        try
+        for (final Thro thro : states.getThros())
         {
-            getThrows();
-        }
-        catch (final InvalidSiteswapException cause)
-        {
-            throw new InvalidSiteswapException("States " + Arrays.toString(states) + " is not a valid " + TYPE);
+            if (!(thro instanceof FourHandedSiteswapThro))
+            {
+                throw new IllegalArgumentException("GeneralCircuit must be a circuit of " + FourHandedSiteswapThro.class.getCanonicalName() + "s");
+            }
         }
     }
 
@@ -48,7 +48,7 @@ public class FourHandedSiteswap extends VanillaSiteswap
     @Override
     public FourHandedSiteswapThro[] getThrows()
     {
-        return StatesToThrosConverter.get().andThen(ThrosToFourHandedSiteswapThrosConverter.get()).apply(getStates());
+        return ThrosToFourHandedSiteswapThrosConverter.convert(states.getThros());
     }
 
     public FourHandedSiteswapThro[] getThrowsForJuggler(final int forJuggler) throws IndexOutOfBoundsException

@@ -3,7 +3,6 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.prechac;
 import java.util.Objects;
 import java.util.function.Function;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**

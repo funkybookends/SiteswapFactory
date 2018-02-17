@@ -2,7 +2,6 @@ package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
 import java.util.function.Predicate;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.NoThroHigherThanPredicate;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;

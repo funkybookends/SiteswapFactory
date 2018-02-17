@@ -1,14 +1,16 @@
 package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
+import java.util.Objects;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.RouteSearcher;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.StateJoiner;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 /**
  * This implementation uses the injected {@link RouteSearcher} to find the routes between the state arrays.
@@ -17,49 +19,90 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.State;
  */
 public class SimpleStateJoiner implements StateJoiner
 {
-    private final RouteSearcher routeSearcher;
+	private static final Logger LOG = LoggerFactory.getLogger(SimpleStateJoiner.class);
 
-    public SimpleStateJoiner(final RouteSearcher routeSearcher)
-    {
-        this.routeSearcher = routeSearcher;
-    }
+	private final RouteSearcher routeSearcher;
 
-    @Override
-    public State[] join(final State[] first, final State[] second) throws TransitionException
-    {
-        if (ArrayUtils.isEmpty(first) || ArrayUtils.isEmpty(second))
-        {
-            throw new IllegalArgumentException("first and second cannot be empty");
-        }
+	public SimpleStateJoiner(final RouteSearcher routeSearcher)
+	{
+		this.routeSearcher = routeSearcher;
+	}
 
-        try
-        {
-            final State[] routeFirstSecond = extractTransitionStates(routeSearcher.findRoute(first[0], second[0]));
-            final State[] routeSecondFirst = extractTransitionStates(routeSearcher.findRoute(second[0], first[0]));
-            return (State[]) joinAll(first, routeFirstSecond, second, routeSecondFirst);
-        }
-        catch (final TransitionException cause)
-        {
-            throw new TransitionException("Could not join " + Arrays.toString(first) + " and " + Arrays.toString(second), cause);
-        }
+	@Override
+	public GeneralPath connectPath(final GeneralPath first, final GeneralPath second) throws TransitionException
+	{
+		Objects.requireNonNull(first, "first cannot be null");
+		Objects.requireNonNull(second, "second cannot be null");
 
-    }
+		final GeneralPath result = copy(first);
+		addJoin(first, second, result);
+		second.forEach(result::push);
 
-    /**
-     * Returns just the required transitional states.
-     *
-     * @param route of the route
-     * @return the transitional states
-     */
-    private State[] extractTransitionStates(final State[] route)
-    {
-        final State[] states = new State[route.length - 1];
-        System.arraycopy(route, 0, states, 0, states.length);
-        return states;
-    }
+		return result;
+	}
 
-    private Object[] joinAll(final Object[]... arrays)
-    {
-        return Stream.of(arrays).reduce(ArrayUtils::addAll).orElse(new Object[0]);
-    }
+	@Override
+	public GeneralCircuit joinToCircuit(final GeneralPath first, final GeneralPath second) throws TransitionException
+	{
+		Objects.requireNonNull(first, "first cannot be null");
+		Objects.requireNonNull(second, "second cannot be null");
+
+		final GeneralPath result = copy(first);
+		addJoin(first, second, result);
+		second.forEach(result::push);
+		addJoin(second, first, result);
+
+		return result.toGeneralCircuit();
+	}
+
+	@Override
+	public GeneralCircuit joinShortest(final GeneralCircuit first, final GeneralCircuit second)
+	{
+		Objects.requireNonNull(first, "first cannot be null");
+		Objects.requireNonNull(second, "second cannot be null");
+
+		GeneralCircuit best = null;
+
+
+		for (final GeneralCircuit firstRotation : first.getRotationsArray())
+		{
+			for (final GeneralCircuit secondRotation : second.getRotationsArray())
+			{
+				final GeneralCircuit current = joinExactly(firstRotation, secondRotation);
+				if (best == null || current.size() < best.size())
+				{
+					best = current;
+				}
+			}
+		}
+
+		return best;
+
+		// return first.getRotationStream()
+		// 	.flatMap(firstRotation -> second.getRotationStream()
+		// 		.map(secondRotation -> joinExactly(firstRotation, secondRotation)))
+		// 	.reduce((alpha, beta) -> alpha.size() < beta.size() ? alpha : beta)
+		// 	.orElseThrow(() -> new TransitionException("Could not find transition"));
+	}
+
+	private void addJoin(final GeneralPath from, final GeneralPath to, final GeneralPath result)
+	{
+		if (!from.getLastState().equals(to.getStartingState()))
+		{
+			try
+			{
+				routeSearcher.findRoute(from.getLastState(), to.getStartingState())
+					.forEach(result::push);
+			}
+			catch (final TransitionException cause)
+			{
+				throw new TransitionException("Could not join " + from.getLastState() + " to " + to.getStartingState(), cause);
+			}
+		}
+	}
+
+	private GeneralPath copy(final GeneralPath path)
+	{
+		return GeneralPath.from(path.getStartingState(), path.toArray(new Thro[path.size()]));
+	}
 }

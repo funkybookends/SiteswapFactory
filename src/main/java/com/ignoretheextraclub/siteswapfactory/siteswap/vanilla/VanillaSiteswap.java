@@ -2,14 +2,13 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import java.util.Arrays;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToGeneralPathConverter;
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StatesToThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.VanillaThrosToStringConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.ThrosToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumJugglersException;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
@@ -23,9 +22,22 @@ public class VanillaSiteswap implements Siteswap
 
     protected final GeneralCircuit states;
 
-    public VanillaSiteswap(final VanillaState[] states)
+    public VanillaSiteswap(final GeneralCircuit generalCircuit)
     {
-        this.states = StartingStateAndThrosToGeneralPathConverter.getSequence(states[0], StatesToThrosConverter.getThros(states)).toGeneralCircuit();
+        if (!(generalCircuit.getStartingState() instanceof VanillaState))
+        {
+            throw new IllegalArgumentException("GeneralCircuit must be a circuit of " + VanillaState.class.getCanonicalName() + "s");
+        }
+
+        for (final Thro thro : generalCircuit.getThros())
+        {
+            if (!(thro instanceof VanillaThro))
+            {
+                throw new IllegalArgumentException("GeneralCircuit must be a ciruit of " + VanillaThro.class.getCanonicalName() + "s");
+            }
+        }
+
+        this.states = generalCircuit;
     }
 
     @Override

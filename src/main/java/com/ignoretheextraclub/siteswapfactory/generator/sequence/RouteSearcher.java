@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.generator.sequence;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
@@ -20,5 +21,5 @@ public interface RouteSearcher
      * @return A path, whos properties are defined by the implementation.
      * @throws TransitionException If there is no path, or a path could not be found.
      */
-    State[] findRoute(State source, State destination) throws TransitionException;
+    GeneralPath findRoute(State source, State destination) throws TransitionException;
 }

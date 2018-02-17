@@ -29,8 +29,6 @@ public class GeneralCircuitToFourHandedSiteswapConstructor implements SiteswapCo
 	{
 		return siteswapRequest.getReducer()
 			.andThen(siteswapRequest.getStartingStrategy())
-			.andThen(GeneralCircuit::getAllStates)
-			.andThen(StatesToVanillaStatesConverter.get())
 			.andThen(FourHandedSiteswap::new)
 			.apply((GeneralCircuit) siteswapRequest.getConstructor());
 	}

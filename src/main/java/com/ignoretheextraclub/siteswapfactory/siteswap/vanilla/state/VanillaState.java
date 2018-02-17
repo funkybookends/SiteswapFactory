@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -134,10 +135,13 @@ public class VanillaState implements State
     @Override
     public State thro(final Thro thro) throws BadThrowException
     {
+        Objects.requireNonNull(thro, "thro cannot be null");
+
         if (canThrow() ^ thro.getNumBeats() == 0)
         {
             return new VanillaState((this.state | (1 << thro.getNumBeats())) >> 1);
         }
+
         throw new BadThrowException("Throw [" + thro + "] cannot be thrown from [" + this.toString() + "]");
     }
 

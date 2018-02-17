@@ -56,7 +56,7 @@ public class StartingStateAndThrosToGeneralPathConverter implements BiFunction<S
     }
 
     /**
-     * Conveneint static method to get a state sequence.
+     * Convenient static method to get a state sequence.
      *
      * @param startingState The first state
      * @param thros         The sequence of throws

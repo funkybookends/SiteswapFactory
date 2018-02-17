@@ -98,6 +98,11 @@ public class GeneralCircuit
 		return Stream.of(getRotationsArray());
 	}
 
+	public GeneralPath toGeneralPath()
+	{
+		return GeneralPath.from(startingState, thros);
+	}
+
 	@Override
 	public boolean equals(final Object o)
 	{
@@ -117,5 +122,11 @@ public class GeneralCircuit
 		int result = startingState.hashCode();
 		result = 31 * result + Arrays.hashCode(thros);
 		return result;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "GeneralCircuit{" + startingState +", " + Arrays.toString(thros) + '}';
 	}
 }

@@ -1,6 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToAllStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.VanillaThrosToStartingStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound.StringToVanillaThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
@@ -39,20 +38,10 @@ public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor
     public TwoHandedSiteswap apply(final SiteswapRequest siteswapRequest)
     {
         final String siteswap = siteswapRequest.getConstructor().toString();
-        VanillaThro[] vanillaThros = StringToVanillaThrosConverter.convert(siteswap);
-
+        final VanillaThro[] vanillaThros = siteswapRequest.getReducer().reduce(StringToVanillaThrosConverter.convert(siteswap));
         final VanillaState startingState = VanillaThrosToStartingStateConverter.getFirstState(vanillaThros);
-        State[] allStates = StartingStateAndThrosToAllStatesConverter.getAllStates(startingState, vanillaThros);
-
-        final GeneralPath generalPath = new GeneralPath(startingState);
-
-        for (final VanillaThro vanillaThro : vanillaThros)
-        {
-            generalPath.push(vanillaThro);
-        }
-
+        final GeneralPath generalPath = GeneralPath.from(startingState, vanillaThros);
         final GeneralCircuit generalCircuit = generalPath.toGeneralCircuit();
-
         return GeneralCircuitToTwoHandedSiteswapConstructor.get().apply(siteswapRequest.toBuilder().createSiteswapRequest(generalCircuit));
     }
 

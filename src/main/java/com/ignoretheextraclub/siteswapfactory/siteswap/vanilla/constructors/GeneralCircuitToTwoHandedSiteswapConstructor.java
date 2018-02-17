@@ -29,8 +29,6 @@ public class GeneralCircuitToTwoHandedSiteswapConstructor implements SiteswapCon
 	{
 		return siteswapRequest.getReducer()
 			.andThen(siteswapRequest.getStartingStrategy())
-			.andThen(GeneralCircuit::getAllStates)
-			.andThen(StatesToVanillaStatesConverter.get())
 			.andThen(TwoHandedSiteswap::new)
 			.apply((GeneralCircuit) siteswapRequest.getConstructor());
 	}

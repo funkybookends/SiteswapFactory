@@ -1,6 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.describer.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -108,6 +109,18 @@ public class SimpleDescription<T extends Siteswap> implements Description<T>
         public Builder<T> addSiteswapName(final String siteswapName)
         {
             this.siteswapNames.add(siteswapName);
+            return this;
+        }
+
+        public Builder<T> addAllSiteswapNames(final Collection<String> siteswapNames)
+        {
+            this.siteswapNames.addAll(siteswapNames);
+            return this;
+        }
+
+        public Builder<T> clearSiteswapNames()
+        {
+            this.siteswapNames.clear();
             return this;
         }
 

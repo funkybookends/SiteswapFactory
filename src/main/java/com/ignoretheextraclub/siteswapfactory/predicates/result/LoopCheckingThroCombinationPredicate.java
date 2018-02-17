@@ -1,8 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.result;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
+import org.apache.commons.collections4.iterators.ArrayIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,29 +40,37 @@ public class LoopCheckingThroCombinationPredicate implements Predicate<GeneralCi
     @Override
     public boolean test(final GeneralCircuit generalCircuit)
     {
-        for (int i = 0; i < generalCircuit.size(); i++)
-        {
-            final ArrayLoopingIterator<Thro> throArrayLoopingIterator = new ArrayLoopingIterator<>(generalCircuit.getThros());
-            final Thro[] thros = getThros(throArrayLoopingIterator, throCombination.length);
+        final Iterator<GeneralCircuit> rotationIteator = generalCircuit.getRotationIteator();
 
-            if (ThroCombinationPredicate.testCombination(thros, throCombination))
+        while (rotationIteator.hasNext())
+        {
+            final GeneralCircuit circuit = rotationIteator.next();
+            if (innerTest(circuit))
             {
                 return true;
             }
         }
+
         return false;
     }
 
-    private Thro[] getThros(final ArrayLoopingIterator<Thro> throArrayLoopingIterator, final int length)
+    private boolean innerTest(final GeneralCircuit circuit)
     {
-        final Thro[] thros = new Thro[length];
+        final ArrayLoopingIterator<Thro> throArrayLoopingIterator = new ArrayLoopingIterator<>(circuit.getThros());
+        final ArrayIterator<Thro> combinationIterator = new ArrayIterator<>(throCombination);
 
-        for (int i = 0; i < thros.length; i++)
+        while (combinationIterator.hasNext())
         {
-            thros[i] = throArrayLoopingIterator.next();
+            final Thro next = combinationIterator.next();
+            final Thro actual = throArrayLoopingIterator.next();
+
+            if (next != null && !next.equals(actual))
+            {
+                return false;
+            }
         }
 
-        return thros;
+        return true;
     }
 
     /**

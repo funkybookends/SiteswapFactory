@@ -1,26 +1,18 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
 
-import java.util.Optional;
-import java.util.function.Function;
-
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by caspar on 09/10/17.
@@ -34,7 +26,7 @@ public class StringToTwoHandedSiteswapConstructorTest
         final VanillaState[] states = {XXX};
 
         final TwoHandedSiteswap result = StringToTwoHandedSiteswapConstructor.get().apply(siteswapRequest);
-        final TwoHandedSiteswap expected = new TwoHandedSiteswap(states);
+        final TwoHandedSiteswap expected = new TwoHandedSiteswap(GeneralPath.from(XXX, VanillaThro.get(3)).toGeneralCircuit());
 
         Assertions.assertThat(result).isEqualTo(expected);
     }
@@ -46,7 +38,7 @@ public class StringToTwoHandedSiteswapConstructorTest
         final VanillaState[] unsorted = {XXX};
 
         final TwoHandedSiteswap result = StringToTwoHandedSiteswapConstructor.get().apply(siteswapRequest);
-        final TwoHandedSiteswap expected = new TwoHandedSiteswap(unsorted);
+        final TwoHandedSiteswap expected = new TwoHandedSiteswap(GeneralPath.from(XXX, VanillaThro.get(3)).toGeneralCircuit());
 
         Assertions.assertThat(result).isEqualTo(expected);
     }
@@ -57,7 +49,7 @@ public class StringToTwoHandedSiteswapConstructorTest
         final SiteswapRequest siteswapRequest = new SiteswapRequest("33", StreamingFilteringReducer.get(), null);
 
         final TwoHandedSiteswap result = StringToTwoHandedSiteswapConstructor.get().apply(siteswapRequest);
-        final TwoHandedSiteswap expected = new TwoHandedSiteswap(new VanillaState[]{XXX});
+        final TwoHandedSiteswap expected = new TwoHandedSiteswap(GeneralPath.from(XXX, VanillaThro.get(3)).toGeneralCircuit());
 
         Assertions.assertThat(result).isEqualTo(expected);
     }
