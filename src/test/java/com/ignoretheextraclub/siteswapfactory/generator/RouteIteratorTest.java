@@ -22,7 +22,7 @@ public class RouteIteratorTest
 
 		final Iterator<GeneralPath> routeIterator = new RouteIterator(XXX__, new NoThroHigherThanPredicate(VanillaThro.get(5)), 15, 1);
 
-		final int count = 707;
+		final int count = 1000;
 
 		for (int i = 0; i < count; i++)
 		{

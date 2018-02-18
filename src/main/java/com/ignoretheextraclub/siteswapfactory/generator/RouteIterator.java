@@ -5,24 +5,29 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 public class RouteIterator implements Iterator<GeneralPath>
 {
-	private static final Logger LOG = LoggerFactory.getLogger(RouteIterator.class);
-
+	/**
+	 * A predicate that will prevent the returning of paths and all sub paths.
+	 */
 	private final Predicate<GeneralPath> predicate;
+
+	/**
+	 * A maximum depth to ensure termination
+	 */
 	private final int maxDepth;
+
+	/**
+	 * The starting state for all paths returned.
+	 */
 	private final State startingState;
 
 	private PathNode firstNode;
 	private int currentTargetDepth;
-	private boolean anyFoundForCurrentDepth;
 	private GeneralPath next;
 	private boolean mustMove;
 
@@ -75,70 +80,61 @@ public class RouteIterator implements Iterator<GeneralPath>
 		this.mustMove = true;
 		this.next = getNext().orElse(null);
 
-		anyFoundForCurrentDepth = true;
-
 		return next;
 	}
 
 	private Optional<GeneralPath> getNext()
 	{
-		try
+		boolean isNotAcceptablePath = isNotAcceptablePath();
+		boolean isNotTargetDepth = isNotTargetDepth();
+
+		while (mustMove || isNotAcceptablePath || isNotTargetDepth)
 		{
-			while (mustMove || !isAcceptablePath() || !isTargetDepth())
+			if (mustMove || isNotAcceptablePath())
 			{
-				if (mustMove)
+				mustMove = false;
+				if (!safeMoveIterator())
 				{
-					mustMove = false;
-					safeMoveIterator();
-				}
-				else if (!isAcceptablePath())
-				{
-					safeMoveIterator();
-				}
-				else
-				{
-					firstNode.increaseDepth();
+					return Optional.empty();
 				}
 			}
+			else
+			{
+				firstNode.increaseDepth();
+			}
 
-			return Optional.of(toGeneralPath());
+			isNotAcceptablePath = isNotAcceptablePath();
+			isNotTargetDepth = isNotTargetDepth();
 		}
-		catch (final NoElementsFoundForCurrentDepthException | MaxDepthReachedException finished)
-		{
-			return Optional.empty();
-		}
+
+		return Optional.of(toGeneralPath());
 	}
 
-	private void safeMoveIterator() throws NoElementsFoundForCurrentDepthException, MaxDepthReachedException
+	/**
+	 * Moves the last iterator and returns if the search can continue.
+	 */
+	private boolean safeMoveIterator()
 	{
-		if (firstNode.hasNextThro())
+		if (!firstNode.moveLastIterator())
 		{
-			firstNode.moveLastIterator();
-		}
-		else
-		{
-			if (!anyFoundForCurrentDepth)
-			{
-				throw new NoElementsFoundForCurrentDepthException();
-			}
 			if (currentTargetDepth == maxDepth)
 			{
-				throw new MaxDepthReachedException();
+				return false;
 			}
-			anyFoundForCurrentDepth = false;
 			++currentTargetDepth;
 			firstNode = new PathNode(startingState);
 		}
+		return true;
 	}
 
-	private boolean isTargetDepth()
+	private boolean isNotTargetDepth()
 	{
-		return getDepth() == currentTargetDepth;
+		return firstNode.size() != currentTargetDepth;
 	}
 
-	private boolean isAcceptablePath()
+	private boolean isNotAcceptablePath()
 	{
-		return predicate.test(toGeneralPath());
+		return !predicate.test(toGeneralPath());
 	}
 
 	private GeneralPath toGeneralPath()
@@ -157,11 +153,6 @@ public class RouteIterator implements Iterator<GeneralPath>
 		return generalPath;
 	}
 
-	private int getDepth()
-	{
-		return firstNode.getDepth();
-	}
-
 	private static class PathNode
 	{
 		private final State state;
@@ -174,17 +165,12 @@ public class RouteIterator implements Iterator<GeneralPath>
 		{
 			this.state = state;
 			this.throIterator = state.getAvailableThrows().iterator();
-			throwNextThrow();
-		}
-
-		public boolean hasNextThro()
-		{
-			return this.throIterator.hasNext();
+			moveIterator();
 		}
 
 		public void increaseDepth()
 		{
-			if (nextNode != null)
+			if (this.nextNode != null)
 			{
 				this.nextNode.increaseDepth();
 			}
@@ -194,56 +180,51 @@ public class RouteIterator implements Iterator<GeneralPath>
 			}
 		}
 
-		private void throwNextThrow()
+		private void moveIterator()
 		{
-			this.currentThro = throIterator.next();
+			this.currentThro = this.throIterator.next();
 			this.nextNode = null;
 		}
 
-		private boolean canMoveLastIterator()
+		/**
+		 * Attempts to move the last iterator. Returning true if it was moved,
+		 * and false otherwise.
+		 * <p>
+		 * If this node has a {@link #nextNode} then that node will be asked to
+		 * move the last iterator, and if successful will return true. Otherwise
+		 * it will check to see if it can move its iterator, and will return true
+		 * if it can, otherwise it will return false.
+		 *
+		 * @return true if a deeper node moved the last iterator or it moved the
+		 * last iterator, otherwise false.
+		 */
+		public boolean moveLastIterator()
 		{
-			if (nextNode != null)
+			if (this.nextNode != null && this.nextNode.moveLastIterator())
 			{
-				return this.nextNode.canMoveLastIterator() || this.hasNextThro();
+				return true;
 			}
-			return this.hasNextThro();
+
+			if (this.throIterator.hasNext())
+			{
+				this.moveIterator();
+				return true;
+			}
+
+			return false;
 		}
 
-		public void moveLastIterator()
+		public int size()
 		{
-			if (nextNode != null && this.nextNode.canMoveLastIterator())
-			{
-				this.nextNode.moveLastIterator();
-			}
-			else
-			{
-				this.throwNextThrow();
-			}
-		}
-
-		public int getDepth()
-		{
-			if (currentThro == null)
-			{
-				return 0;
-			}
-			if (nextNode == null)
+			if (this.nextNode == null)
 			{
 				return 1;
 			}
 			else
 			{
-				return 1 + nextNode.getDepth();
+				return 1 + this.nextNode.size();
 			}
 		}
-	}
-
-	private class NoElementsFoundForCurrentDepthException extends Exception
-	{
-	}
-
-	private class MaxDepthReachedException extends Exception
-	{
 	}
 
 	@Override
