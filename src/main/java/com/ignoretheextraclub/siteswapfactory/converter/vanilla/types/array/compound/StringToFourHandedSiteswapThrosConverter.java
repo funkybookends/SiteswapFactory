@@ -16,7 +16,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedS
  */
 public class StringToFourHandedSiteswapThrosConverter implements Function<String, FourHandedSiteswapThro[]>
 {
-    public static StringToFourHandedSiteswapThrosConverter INSTANCE;
+    private static StringToFourHandedSiteswapThrosConverter INSTANCE;
 
     private StringToFourHandedSiteswapThrosConverter()
     {

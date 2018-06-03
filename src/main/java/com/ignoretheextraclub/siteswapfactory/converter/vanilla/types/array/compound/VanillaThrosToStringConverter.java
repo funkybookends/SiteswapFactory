@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public class VanillaThrosToStringConverter implements Function<VanillaThro[], String>
 {
-    public static VanillaThrosToStringConverter INSTANCE;
+    private static VanillaThrosToStringConverter INSTANCE;
 
     private VanillaThrosToStringConverter()
     {

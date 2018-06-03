@@ -11,7 +11,7 @@ import java.util.function.Function;
  */
 public class CharToIntConverter implements Function<Character, Integer>
 {
-    public static CharToIntConverter INSTANCE;
+    private static CharToIntConverter INSTANCE;
 
     private CharToIntConverter()
     {

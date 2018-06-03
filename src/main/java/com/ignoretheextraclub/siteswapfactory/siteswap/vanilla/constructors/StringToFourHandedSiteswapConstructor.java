@@ -17,7 +17,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedS
  */
 public class StringToFourHandedSiteswapConstructor implements SiteswapConstructor<FourHandedSiteswap>
 {
-    public static StringToFourHandedSiteswapConstructor INSTANCE;
+    private static StringToFourHandedSiteswapConstructor INSTANCE;
 
     private StringToFourHandedSiteswapConstructor()
     {

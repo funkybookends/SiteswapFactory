@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class PeriodComparator implements Comparator<Siteswap>
 {
-    public static PeriodComparator INSTANCE;
+    private static PeriodComparator INSTANCE;
 
     private PeriodComparator()
     {

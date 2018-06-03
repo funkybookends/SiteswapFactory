@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public class StatesToVanillaStatesConverter implements Function<State[], VanillaState[]>
 {
-    public static StatesToVanillaStatesConverter INSTANCE;
+    private static StatesToVanillaStatesConverter INSTANCE;
 
     private StatesToVanillaStatesConverter()
     {

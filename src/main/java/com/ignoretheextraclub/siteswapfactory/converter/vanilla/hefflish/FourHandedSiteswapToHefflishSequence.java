@@ -12,7 +12,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class FourHandedSiteswapToHefflishSequence implements BiFunction<FourHandedSiteswap, Integer, String>
 {
-	public static FourHandedSiteswapToHefflishSequence INSTANCE;
+	private static FourHandedSiteswapToHefflishSequence INSTANCE;
 
 	private FourHandedSiteswapToHefflishSequence()
 	{

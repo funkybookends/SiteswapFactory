@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.Reducer;
 import com.ignoretheextraclub.siteswapfactory.sorters.StartingStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
-import com.sun.istack.internal.Nullable;
 
 /**
  * An object that encapsulates a request for a siteswap to be constructed.
@@ -39,8 +38,8 @@ public class SiteswapRequest
 	 * @param startingStrategy The starting strategy to use, may not be respected.
 	 */
 	public SiteswapRequest(final Object constructor,
-	                       @Nullable final Reducer reducer,
-	                       @Nullable final StartingStrategy startingStrategy)
+	                       final Reducer reducer,
+	                       final StartingStrategy startingStrategy)
 	{
 		this.constructor = Objects.requireNonNull(constructor, "constructor cannot be null");
 		this.reducer = reducer == null ? DEFAULT_REDUCER : reducer;

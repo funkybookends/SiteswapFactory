@@ -62,7 +62,7 @@ public final class StateTestUtils
     public static final VanillaState XXX_X_X__ = parse("XXX_X_X__");
     public static final VanillaState XXXX_X___ = parse("XXXX_X___");
     public static final VanillaState XXXXX____ = parse("XXXXX____");
-
+    public static final VanillaState XX_X_XX__ = parse("XX_X_XX__");
 
     // 7 ball - Max Throw: 9
     public static final VanillaState XXXXXXX__ = parse("XXXXXXX__");

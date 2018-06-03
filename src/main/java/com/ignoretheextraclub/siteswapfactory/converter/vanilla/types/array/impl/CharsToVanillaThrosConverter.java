@@ -14,7 +14,7 @@ import java.util.function.Function;
  */
 public class CharsToVanillaThrosConverter implements Function<char[], VanillaThro[]>
 {
-    public static CharsToVanillaThrosConverter INSTANCE;
+    private static CharsToVanillaThrosConverter INSTANCE;
 
     private CharsToVanillaThrosConverter()
     {

@@ -1,9 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.commons.collections4.iterators.SingletonIterator;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
@@ -57,50 +60,49 @@ public class VanillaState implements State
     }
 
     @Override
-    public Set<State> getNextStates()
-    {
-        final long dropped = this.state >> 1;
-
-        if (!canThrow())
-        {
-            return Collections.singleton(new VanillaState(dropped));
-        }
-
-        final Set<State> nextStates = new TreeSet<>();
-
-        for (int position = 0; position < getMaxThrow().getNumBeats(); position++)
-        {
-            if (!isSet(position))
-            {
-                nextStates.add(new VanillaState(dropped | (1 << (position - 1))));
-            }
-        }
-
-        return nextStates;
-    }
-
-    @Override
-    public Set<Thro> getAvailableThrows()
+    public Iterator<Thro> getAvailableThrows()
     {
         if (!canThrow())
         {
-            return Collections.singleton(VanillaThro.get(0));
+            return new SingletonIterator<>(VanillaThro.get(0));
         }
 
-        final Set<Thro> thros = new TreeSet<>();
-
-        for (int position = 0; position < getMaxThrow().getNumBeats(); position++)
+        return new Iterator<Thro>()
         {
-            if (!isSet(position))
-            {
-                thros.add(VanillaThro.get(position));
-            }
-        }
+            private int position;
+	        private final int max= getMaxThrow().getNumBeats();
+	        private Thro next = getNext();
 
-        return thros;
+            @Override
+            public boolean hasNext()
+            {
+                return this.next != null;
+            }
+
+            @Override
+            public Thro next()
+            {
+                final Thro next = this.next;
+                this.next = getNext();
+                return next;
+            }
+
+            private Thro getNext()
+            {
+                while (position < max)
+                {
+                    if (!isSet(position))
+                    {
+                        return VanillaThro.get(position++);
+                    }
+
+                    position++;
+                }
+                return null;
+            }
+        };
     }
 
-    @Override
     public Thro getThrow(final State toNextState) throws TransitionException
     {
         final VanillaState next = (VanillaState) toNextState;

@@ -10,7 +10,7 @@ import java.util.function.Function;
  */
 public class IntToCharConverter implements Function<Integer, Character>
 {
-    public static IntToCharConverter INSTANCE;
+    private static IntToCharConverter INSTANCE;
 
     private IntToCharConverter()
     {

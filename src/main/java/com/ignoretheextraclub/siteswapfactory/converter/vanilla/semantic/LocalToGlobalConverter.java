@@ -101,7 +101,7 @@ public class LocalToGlobalConverter<T> implements Function<T[], T[]>
      */
     public static class IntConverter implements Function<int[], int[]>
     {
-        public static IntConverter INSTANCE;
+        private static IntConverter INSTANCE;
 
         private IntConverter()
         {

@@ -10,10 +10,10 @@ public class MultiHandThroTest
 	@Test
 	public void GIVEN_classicSyncThrow_WHEN_toString_EXPECT_classicRepresentation() throws Exception
 	{
-		final MultiHandThro fourXfourX = thros(thro(1, 4), thro(0, 4));
+		final MultiHandThro fourXfourX = thros(thro(1, 2), thro(0, 2));
 		assertThat(fourXfourX.toString()).isEqualTo("(4x,4x)");
 
-		final MultiHandThro fourFour = thros(thro(0, 4), thro(1, 4));
+		final MultiHandThro fourFour = thros(thro(0, 2), thro(1, 2));
 		assertThat(fourFour.toString()).isEqualTo("(4,4)");
 	}
 

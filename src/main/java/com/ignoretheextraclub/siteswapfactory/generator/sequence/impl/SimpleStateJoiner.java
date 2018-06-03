@@ -62,27 +62,48 @@ public class SimpleStateJoiner implements StateJoiner
 		Objects.requireNonNull(second, "second cannot be null");
 
 		GeneralCircuit best = null;
-
+		TransitionException transitionException = null;
 
 		for (final GeneralCircuit firstRotation : first.getRotationsArray())
 		{
 			for (final GeneralCircuit secondRotation : second.getRotationsArray())
 			{
-				final GeneralCircuit current = joinExactly(firstRotation, secondRotation);
-				if (best == null || current.size() < best.size())
+				try
 				{
-					best = current;
+
+					final GeneralCircuit current = joinExactly(firstRotation, secondRotation);
+					if (best == null || current.size() < best.size())
+					{
+						best = current;
+					}
+				}
+				catch (final TransitionException nextException)
+				{
+					if (transitionException == null)
+					{
+						transitionException = nextException;
+					}
+					else
+					{
+						transitionException.addSuppressed(nextException);
+					}
 				}
 			}
 		}
 
-		return best;
+		if (best == null)
+		{
+			if (transitionException != null)
+			{
+				throw transitionException;
+			}
+			else
+			{
+				throw new TransitionException("Could not find any routes");
+			}
+		}
 
-		// return first.getRotationStream()
-		// 	.flatMap(firstRotation -> second.getRotationStream()
-		// 		.map(secondRotation -> joinExactly(firstRotation, secondRotation)))
-		// 	.reduce((alpha, beta) -> alpha.size() < beta.size() ? alpha : beta)
-		// 	.orElseThrow(() -> new TransitionException("Could not find transition"));
+		return best;
 	}
 
 	private void addJoin(final GeneralPath from, final GeneralPath to, final GeneralPath result)
@@ -91,8 +112,7 @@ public class SimpleStateJoiner implements StateJoiner
 		{
 			try
 			{
-				routeSearcher.findRoute(from.getLastState(), to.getStartingState())
-					.forEach(result::push);
+				routeSearcher.findRoute(from.getLastState(), to.getStartingState()).forEach(result::push);
 			}
 			catch (final TransitionException cause)
 			{

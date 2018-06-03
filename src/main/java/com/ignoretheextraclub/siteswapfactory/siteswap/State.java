@@ -1,12 +1,17 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
+import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.collections4.iterators.TransformIterator;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.sun.org.apache.bcel.internal.generic.IUSHR;
 
 /**
  * Encapulates the state of a siteswap at any point.
@@ -39,11 +44,9 @@ public interface State extends Comparable
      *
      * @return the set of states
      */
-    default Set<State> getNextStates()
+    default Iterator<State> getNextStates()
     {
-        return getAvailableThrows().stream()
-            .map(this::thro)
-            .collect(Collectors.toSet());
+        return new TransformIterator<>(getAvailableThrows(), this::thro);
     }
 
     /**
@@ -51,7 +54,7 @@ public interface State extends Comparable
      *
      * @return the set of throws
      */
-    Set<Thro> getAvailableThrows();
+    Iterator<Thro> getAvailableThrows();
 
     /**
      * Returns the throw that would cause a transition to the next state. Users are encouraged to use
@@ -63,23 +66,30 @@ public interface State extends Comparable
      */
     default Thro getThrow(State toNextState) throws TransitionException
     {
-        return getAvailableThrows().stream()
-            .filter(thro -> this.thro(thro).equals(toNextState))
-            .findFirst()
-            .orElseThrow(() -> new TransitionException("Thro to next state could not be found"));
+        final Iterator<Thro> availableThrows = getAvailableThrows();
+
+        while (availableThrows.hasNext())
+        {
+            final Thro thro = availableThrows.next();
+
+            if (this.thro(thro).equals(toNextState))
+            {
+                return thro;
+            }
+        }
+
+        throw new TransitionException("Thro to next state could not be found");
     }
 
     /**
      * Similar to {@link #getThrow(State)} however may be optimized.
      *
-     * Use {@link #getThrow(State)} to get the throw.
-     *
-     * @param toNextState
-     * @return
+     * @param toNextState The next state
+     * @return If the next state is reachable in a single transition.
      */
     default boolean canTransition(State toNextState)
     {
-        return getNextStates().contains(toNextState);
+	    return IteratorUtils.contains(getNextStates(), this);
     }
 
     /**

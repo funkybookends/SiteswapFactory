@@ -27,7 +27,7 @@ import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
  */
 public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunction<VanillaThro[], Integer, VanillaState>
 {
-    public static VanillaThrosAndNumObjectsToFirstStateBiConverter INSTANCE;
+    private static VanillaThrosAndNumObjectsToFirstStateBiConverter INSTANCE;
 
     private VanillaThrosAndNumObjectsToFirstStateBiConverter()
     {
@@ -66,8 +66,6 @@ public class VanillaThrosAndNumObjectsToFirstStateBiConverter implements BiFunct
 
         try
         {
-            final int highestThro = Thro.getHighest(thros).getNumBeats();
-
             final VanillaStateBuilder stateBuilder = new VanillaStateBuilder();
 
             final ArrayLoopingIterator<VanillaThro> throsLooper = new ArrayLoopingIterator<>(thros);

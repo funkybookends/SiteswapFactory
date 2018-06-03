@@ -8,7 +8,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswa
 
 public class GeneralCircuitToFourHandedSiteswapConstructor implements SiteswapConstructor<FourHandedSiteswap>
 {
-	public static GeneralCircuitToFourHandedSiteswapConstructor INSTANCE;
+	private static GeneralCircuitToFourHandedSiteswapConstructor INSTANCE;
 
 	private GeneralCircuitToFourHandedSiteswapConstructor()
 	{

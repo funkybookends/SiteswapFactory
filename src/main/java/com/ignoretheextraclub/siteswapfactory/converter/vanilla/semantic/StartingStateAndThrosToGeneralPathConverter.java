@@ -16,7 +16,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
  */
 public class StartingStateAndThrosToGeneralPathConverter implements BiFunction<State, Thro[], GeneralPath>
 {
-    public static StartingStateAndThrosToGeneralPathConverter INSTANCE;
+    private static StartingStateAndThrosToGeneralPathConverter INSTANCE;
 
     private StartingStateAndThrosToGeneralPathConverter()
     {

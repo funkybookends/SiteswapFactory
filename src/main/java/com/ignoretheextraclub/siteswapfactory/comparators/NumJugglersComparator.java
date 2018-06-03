@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class NumJugglersComparator implements Comparator<Siteswap>
 {
-    public static NumJugglersComparator INSTANCE;
+    private static NumJugglersComparator INSTANCE;
 
     private NumJugglersComparator()
     {

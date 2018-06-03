@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class NumObjectsComparator implements Comparator<Siteswap>
 {
-    public static NumObjectsComparator INSTANCE;
+    private static NumObjectsComparator INSTANCE;
 
     private NumObjectsComparator()
     {

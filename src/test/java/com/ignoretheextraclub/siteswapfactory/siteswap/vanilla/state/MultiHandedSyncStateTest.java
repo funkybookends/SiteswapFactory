@@ -1,9 +1,13 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
-import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.commons.collections4.IteratorUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
 
@@ -19,60 +23,60 @@ public class MultiHandedSyncStateTest
 	public static final MultiHandedSyncState GROUND_2HANDS_4OBJECTS = MultiHandedSyncState.groundState(2, 4);
 
 	@Test
-	public void testGetGroundState() throws Exception
+	public void testGetGroundState()
 	{
 		assertThat(GROUND_2HANDS_4OBJECTS)
-			.isEqualToComparingFieldByField(new MultiHandedSyncState(new long[]{3, 3}));
+			.isEqualToComparingFieldByField(new MultiHandedSyncState(3, 3));
 		assertThat(GROUND_2HANDS_4OBJECTS)
-			.isEqualTo(new MultiHandedSyncState(new long[]{3, 3}));
+			.isEqualTo(new MultiHandedSyncState(3, 3));
 
 		assertThat(MultiHandedSyncState.groundState(2, 5))
-			.isEqualToComparingFieldByField(new MultiHandedSyncState(new long[]{7, 3}));
+			.isEqualToComparingFieldByField(new MultiHandedSyncState(7, 3));
 		assertThat(MultiHandedSyncState.groundState(2, 5))
-			.isEqualTo(new MultiHandedSyncState(new long[]{7, 3}));
+			.isEqualTo(new MultiHandedSyncState(7, 3));
 	}
 
 	@Test
-	public void testNumObjects() throws Exception
+	public void testNumObjects()
 	{
 		final MultiHandedSyncState state = GROUND_2HANDS_4OBJECTS;
 		assertThat(state.getNumObjects()).isEqualTo(4);
 	}
 
 	@Test
-	public void testNumHands() throws Exception
+	public void testNumHands()
 	{
 		assertThat(GROUND_2HANDS_4OBJECTS.getNumHands()).isEqualTo(2);
 	}
 
 	@Test
-	public void testThro() throws Exception
+	public void testThro()
 	{
-		assertThat(new MultiHandedSyncState(new long[]{13, 2})
+		assertThat(new MultiHandedSyncState(13, 2)
 			.thro(new MultiHandThro(new MultiHandThro.HandSpecificThro[]{
 				MultiHandThro.HandSpecificThro.get(1, 4),
-				MultiHandThro.HandSpecificThro.get(1,0)})))
-			.isEqualTo(new MultiHandedSyncState(new long[]{6,9}));
+				MultiHandThro.HandSpecificThro.get(1, 0)})))
+			.isEqualTo(new MultiHandedSyncState(6, 9));
 
-		assertThat(new MultiHandedSyncState(new long[]{7, 7})
+		assertThat(new MultiHandedSyncState(7, 7)
 			.thro(new MultiHandThro(new MultiHandThro.HandSpecificThro[]{
 				MultiHandThro.HandSpecificThro.get(1, 3),
-				MultiHandThro.HandSpecificThro.get(0,3)})))
-			.isEqualTo(new MultiHandedSyncState(new long[]{7,7}));
+				MultiHandThro.HandSpecificThro.get(0, 3)})))
+			.isEqualTo(new MultiHandedSyncState(7, 7));
 
-		assertThat(new MultiHandedSyncState(new long[]{7, 7})
+		assertThat(new MultiHandedSyncState(7, 7)
 			.thro(new MultiHandThro(new MultiHandThro.HandSpecificThro[]{
 				MultiHandThro.HandSpecificThro.get(0, 3),
-				MultiHandThro.HandSpecificThro.get(1,3)})))
-			.isEqualTo(new MultiHandedSyncState(new long[]{7,7}));
+				MultiHandThro.HandSpecificThro.get(1, 3)})))
+			.isEqualTo(new MultiHandedSyncState(7, 7));
 	}
 
 	@Test
-	public void GIVEN_twoHands_WHEN_getThrows_LIMITIING_toThrowsLessThanThree_EXPECT_twoThros() throws Exception
+	public void GIVEN_twoHands_WHEN_getThrows_LIMITIING_toThrowsLessThanThree_EXPECT_twoThros()
 	{
-		final MultiHandedSyncState state = new MultiHandedSyncState(new long[]{7, 7});
+		final MultiHandedSyncState state = new MultiHandedSyncState(7, 7);
 
-		final Set<Thro> availableThrows = state.getAvailableThrows();
+		final List<Thro> availableThrows = IteratorUtils.toList(state.getAvailableThrows());
 
 		availableThrows.removeIf(thro -> thro.getNumBeats() > 3);
 
@@ -80,11 +84,11 @@ public class MultiHandedSyncStateTest
 	}
 
 	@Test
-	public void GIVEN_3hands_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_6throws() throws Exception
+	public void GIVEN_3hands_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_6throws()
 	{
-		final MultiHandedSyncState state = new MultiHandedSyncState(new long[]{7, 7, 7});
+		final MultiHandedSyncState state = new MultiHandedSyncState(7, 7, 7);
 
-		final Set<Thro> availableThrows = state.getAvailableThrows();
+		final List<Thro> availableThrows = IteratorUtils.toList(state.getAvailableThrows());
 
 		availableThrows.removeIf(thro -> thro.getNumBeats() > 3);
 
@@ -92,11 +96,11 @@ public class MultiHandedSyncStateTest
 	}
 
 	@Test
-	public void GIVEN_onlyOneHandCanThrow_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_6thros() throws Exception
+	public void GIVEN_onlyOneHandCanThrow_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_6thros()
 	{
-		final MultiHandedSyncState state = new MultiHandedSyncState(new long[]{1, 0});
+		final MultiHandedSyncState state = new MultiHandedSyncState(1, 0);
 
-		final Set<Thro> availableThrows = state.getAvailableThrows();
+		final List<Thro> availableThrows = IteratorUtils.toList(state.getAvailableThrows());
 
 		availableThrows.removeIf(thro -> thro.getNumBeats() > 3);
 
@@ -104,11 +108,11 @@ public class MultiHandedSyncStateTest
 	}
 
 	@Test
-	public void GIVEN_onlyOneHandCanThrow_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_9thros() throws Exception
+	public void GIVEN_onlyOneHandCanThrow_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_9thros()
 	{
-		final MultiHandedSyncState state = new MultiHandedSyncState(new long[]{1, 0, 0});
+		final MultiHandedSyncState state = new MultiHandedSyncState(1, 0, 0);
 
-		final Set<Thro> availableThrows = state.getAvailableThrows();
+		final List<Thro> availableThrows = IteratorUtils.toList(state.getAvailableThrows());
 
 		availableThrows.removeIf(thro -> thro.getNumBeats() > 3);
 
@@ -116,14 +120,75 @@ public class MultiHandedSyncStateTest
 	}
 
 	@Test
-	public void GIVEN_twoHandsCanThrow_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_9thros() throws Exception
+	public void GIVEN_twoHandsCanThrow_WHEN_getThrows_LIMITING_toThrowsLessThanThree_EXPECT_9thros()
 	{
-		final MultiHandedSyncState state = new MultiHandedSyncState(new long[]{7, 7, 6});
+		final MultiHandedSyncState state = new MultiHandedSyncState(7, 7, 6);
 
-		final Set<Thro> availableThrows = state.getAvailableThrows();
+		final List<Thro> availableThrows = IteratorUtils.toList(state.getAvailableThrows());
 
 		availableThrows.removeIf(thro -> thro.getNumBeats() > 3);
 
 		assertThat(availableThrows).hasSize(6);
+	}
+
+	@Test
+	public void GIVEN_4ballGround_testAvailableThrows()
+	{
+		final MultiHandedSyncState state = new MultiHandedSyncState(3, 3);
+
+		final List<Thro> availableThrows = IteratorUtils.toList(state.getAvailableThrows());
+
+		assertThat(availableThrows)
+			.contains(multiHandThro(0, 2, 1, 2))
+			.contains(multiHandThro(1, 2, 0, 2));
+	}
+
+
+	public static MultiHandThro multiHandThro(final int... hand_beat_pairs)
+	{
+		final Iterator<Integer> iterator = IteratorUtils.arrayIterator(hand_beat_pairs);
+
+		final MultiHandThro.HandSpecificThro[] handSpecificThros = new MultiHandThro.HandSpecificThro[hand_beat_pairs.length / 2];
+
+		int i = 0;
+
+		while (i < handSpecificThros.length)
+		{
+			handSpecificThros[i] = MultiHandThro.HandSpecificThro.get(iterator.next(), iterator.next());
+			i++;
+		}
+
+		return new MultiHandThro(handSpecificThros);
+	}
+
+	@Test
+	public void testUndo()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				for (int k = 0; k < 5; k++)
+				{
+					final MultiHandedSyncState initialState = new MultiHandedSyncState(i, j, k);
+
+					final Iterator<Thro> availableThrows = initialState.getAvailableThrows();
+
+					while (availableThrows.hasNext())
+					{
+						final MultiHandThro availableThro = (MultiHandThro) availableThrows.next();
+
+						final MultiHandedSyncState nextState = (MultiHandedSyncState) initialState.thro(availableThro);
+
+						final MultiHandedSyncState actual = nextState.undo(availableThro);
+
+						assertThat(actual)
+							.as("%s %s %s : Initial State %s throw %s, next state %s, actual %s",
+								i, j, k, initialState, availableThro, nextState, actual)
+							.isEqualTo(initialState);
+					}
+				}
+			}
+		}
 	}
 }

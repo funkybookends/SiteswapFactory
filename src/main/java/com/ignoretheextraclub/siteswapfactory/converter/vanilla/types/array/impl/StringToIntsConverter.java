@@ -10,7 +10,7 @@ import java.util.function.Function;
  */
 public class StringToIntsConverter implements Function<String, int[]>
 {
-    public static StringToIntsConverter INSTANCE;
+    private static StringToIntsConverter INSTANCE;
 
     private StringToIntsConverter()
     {

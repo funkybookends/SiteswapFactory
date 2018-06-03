@@ -11,7 +11,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class VanillaThrosToHefflishConverter implements Function<VanillaThro[], String>
 {
-	public static VanillaThrosToHefflishConverter INSTANCE;
+	private static VanillaThrosToHefflishConverter INSTANCE;
 
 	private static final String DELIMETER = ", ";
 

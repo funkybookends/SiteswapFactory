@@ -16,7 +16,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class StringToVanillaThrosConverter implements Function<String, VanillaThro[]>
 {
-    public static StringToVanillaThrosConverter INSTANCE;
+    private static StringToVanillaThrosConverter INSTANCE;
 
     private StringToVanillaThrosConverter()
     {

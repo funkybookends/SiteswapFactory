@@ -37,7 +37,7 @@ public class SimpleStateJoinerTest
     {
         mockRouteSearcher = mock(RouteSearcher.class);
         mockInjectedStateJoiner = new SimpleStateJoiner(mockRouteSearcher);
-        realStateJoiner = new SimpleStateJoiner(new IddfsRouteSearcher(5));
+        realStateJoiner = new SimpleStateJoiner(new ShortestPathRouteSearcherImpl(5, (generalPath -> true)));
     }
 
     @Test

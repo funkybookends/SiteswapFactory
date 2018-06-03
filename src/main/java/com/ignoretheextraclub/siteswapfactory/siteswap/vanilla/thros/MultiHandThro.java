@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
 /**
@@ -11,7 +12,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
  */
 public class MultiHandThro implements Thro
 {
-	private final HandSpecificThro[] thros;
+	protected final HandSpecificThro[] thros;
 
 	public MultiHandThro(final HandSpecificThro[] thros)
 	{
@@ -67,12 +68,12 @@ public class MultiHandThro implements Thro
 		}
 		else if (thros.length == 2)
 		{
-			return String.format("(%s%s,%s%s)", thros[0].numBeats, thros[0].getToHand() == 0 ? "" : "x", thros[1].numBeats, thros[1].getToHand() == 1 ? "" : "x");
+			return String.format("(%s%s,%s%s)", 2 * thros[0].numBeats, thros[0].getToHand() == 0 ? "" : "x", 2 * thros[1].numBeats, thros[1].getToHand() == 1 ? "" : "x");
 		}
 		else
 		{
 			return Arrays.stream(thros)
-				.map(thro -> "" + thro.getNumBeats() + ":" + thro.toHand)
+				.map(thro -> "" + thro.getNumBeats() + ":" + thro.getToHand())
 				.collect(Collectors.joining(",", "(", ")"));
 		}
 	}
@@ -87,8 +88,42 @@ public class MultiHandThro implements Thro
 		return thros[hand];
 	}
 
+	public MultiHandThro onTheOtherSide()
+	{
+		if (getNumHands() != 2)
+		{
+			throw new BadThrowException("Can only get on other side when there are two hands");
+		}
+
+		final HandSpecificThro[] reversed = new HandSpecificThro[2];
+
+		reversed[0] = thros[1].onTheOtherSide();
+		reversed[1] = thros[0].onTheOtherSide();
+
+		return new MultiHandThro(reversed);
+	}
+
+	@Override
+	public boolean equals(final Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		final MultiHandThro that = (MultiHandThro) o;
+
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
+		return Arrays.equals(thros, that.thros);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Arrays.hashCode(thros);
+	}
+
 	public static class HandSpecificThro
 	{
+		private static final int[] ON_THE_OTHER_SIDE = {1, 0};
 		private static final HandSpecificThro[][] CACHE = new HandSpecificThro[8][15];
 
 		private final int toHand;
@@ -115,7 +150,7 @@ public class MultiHandThro implements Thro
 				}
 				return CACHE[toHand][numBeats];
 			}
-			catch (IndexOutOfBoundsException beyondCache)
+			catch (final IndexOutOfBoundsException beyondCache)
 			{
 				return new HandSpecificThro(toHand, numBeats);
 			}
@@ -143,6 +178,34 @@ public class MultiHandThro implements Thro
 				"toHand=" + toHand +
 				", numBeats=" + numBeats +
 				'}';
+		}
+
+		@Override
+		public boolean equals(final Object o)
+		{
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			final HandSpecificThro that = (HandSpecificThro) o;
+
+			return toHand == that.toHand && numBeats == that.numBeats;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			int result = toHand;
+			result = 31 * result + numBeats;
+			return result;
+		}
+
+		public HandSpecificThro onTheOtherSide()
+		{
+			if (toHand > 1)
+			{
+				throw new BadThrowException("Cannot get on the other side");
+			}
+			return get(ON_THE_OTHER_SIDE[toHand], numBeats);
 		}
 	}
 }

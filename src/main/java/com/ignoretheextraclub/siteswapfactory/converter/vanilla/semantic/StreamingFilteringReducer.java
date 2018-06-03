@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
  */
 public class StreamingFilteringReducer implements Reducer
 {
-    public static StreamingFilteringReducer INSTANCE;
+    private static StreamingFilteringReducer INSTANCE;
 
     private StreamingFilteringReducer()
     {
@@ -84,7 +84,7 @@ public class StreamingFilteringReducer implements Reducer
      */
     public static class IntReducer implements Reducer.IntReducer
     {
-        public static IntReducer INSTANCE;
+        private static IntReducer INSTANCE;
 
         private IntReducer()
         {

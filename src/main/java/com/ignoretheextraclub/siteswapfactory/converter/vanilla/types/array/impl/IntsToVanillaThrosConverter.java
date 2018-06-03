@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public class IntsToVanillaThrosConverter implements Function<int[], VanillaThro[]>
 {
-    public static IntsToVanillaThrosConverter INSTANCE;
+    private static IntsToVanillaThrosConverter INSTANCE;
 
     private IntsToVanillaThrosConverter()
     {

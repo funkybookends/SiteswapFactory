@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public class ThrosToFourHandedSiteswapThrosConverter implements Function<Thro[], FourHandedSiteswapThro[]>
 {
-    public static ThrosToFourHandedSiteswapThrosConverter INSTANCE;
+    private static ThrosToFourHandedSiteswapThrosConverter INSTANCE;
 
     private ThrosToFourHandedSiteswapThrosConverter()
     {

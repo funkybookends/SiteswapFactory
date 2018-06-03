@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public class IntsToCharsConverter implements Function<int[], char[]>
 {
-    public static IntsToCharsConverter INSTANCE;
+    private static IntsToCharsConverter INSTANCE;
 
     private IntsToCharsConverter()
     {

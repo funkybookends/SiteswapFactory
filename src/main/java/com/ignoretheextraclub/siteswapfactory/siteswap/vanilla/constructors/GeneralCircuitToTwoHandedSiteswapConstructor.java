@@ -1,6 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StatesToVanillaStatesConverter;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
@@ -8,7 +7,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap
 
 public class GeneralCircuitToTwoHandedSiteswapConstructor implements SiteswapConstructor<TwoHandedSiteswap>
 {
-	public static GeneralCircuitToTwoHandedSiteswapConstructor INSTANCE;
+	private static GeneralCircuitToTwoHandedSiteswapConstructor INSTANCE;
 
 	private GeneralCircuitToTwoHandedSiteswapConstructor()
 	{

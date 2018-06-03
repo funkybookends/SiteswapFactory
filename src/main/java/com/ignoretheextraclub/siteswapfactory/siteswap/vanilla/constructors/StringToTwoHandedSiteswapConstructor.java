@@ -6,7 +6,6 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -18,7 +17,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor<TwoHandedSiteswap>
 {
-    public static StringToTwoHandedSiteswapConstructor INSTANCE;
+    private static StringToTwoHandedSiteswapConstructor INSTANCE;
 
     private StringToTwoHandedSiteswapConstructor()
     {

@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public class ThrosToVanillaThrosConverter implements Function<Thro[], VanillaThro[]>
 {
-    public static ThrosToVanillaThrosConverter INSTANCE;
+    private static ThrosToVanillaThrosConverter INSTANCE;
 
     private ThrosToVanillaThrosConverter()
     {

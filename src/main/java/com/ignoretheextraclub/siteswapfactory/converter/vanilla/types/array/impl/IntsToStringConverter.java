@@ -9,7 +9,7 @@ import java.util.function.Function;
  */
 public class IntsToStringConverter implements Function<int[], String>
 {
-    public static IntsToStringConverter INSTANCE;
+    private static IntsToStringConverter INSTANCE;
 
     private IntsToStringConverter()
     {

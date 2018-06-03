@@ -17,12 +17,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @RunWith(JUnitParamsRunner.class)
 public class LocalToGlobalConverterTest
 {
-    private static final VanillaThro _5 = get(5);
-    private static final VanillaThro _6 = get(6);
-    private static final VanillaThro _7 = get(7);
-    private static final VanillaThro _8 = get(8);
-    private static final VanillaThro _9 = get(9);
-    private static final VanillaThro _10 = get(10);
+    public static final VanillaThro _5 = get(5);
+    public static final VanillaThro _6 = get(6);
+    public static final VanillaThro _7 = get(7);
+    public static final VanillaThro _8 = get(8);
+    public static final VanillaThro _9 = get(9);
+    public static final VanillaThro _10 = get(10);
 
     @Test
     @Parameters

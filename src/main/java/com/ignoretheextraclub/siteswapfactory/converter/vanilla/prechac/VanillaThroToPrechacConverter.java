@@ -10,7 +10,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class VanillaThroToPrechacConverter implements Function<VanillaThro, String>
 {
-	public static VanillaThroToPrechacConverter INSTANCE;
+	private static VanillaThroToPrechacConverter INSTANCE;
 
 	private VanillaThroToPrechacConverter()
 	{

@@ -1,20 +1,44 @@
 package com.ignoretheextraclub.siteswapfactory.generator.siteswap;
 
-import org.junit.Test;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSiteswapConstructor;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_X_X;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.__XXX;
 
 /**
  * Created by caspar on 09/10/17.
  */
 public class StateSearcherTest
 {
-    // TODO add more
+	private static final Logger LOG = LoggerFactory.getLogger(StateSearcherTest.class);
+
+	@Test
+	public void name() throws Exception
+	{
+		final Set<State> startingStates = new LinkedHashSet<>();
+
+		// startingStates.add(XXX__);
+		startingStates.add(X_X_X);
+		startingStates.add(__XXX);
+
+		final StateSearcher<TwoHandedSiteswap> twoHandedSiteswapStateSearcher = new StateSearcher<>(startingStates, 5, (path) -> true, (circuit) -> true, GeneralCircuitToTwoHandedSiteswapConstructor.get(), null);
+
+		final int count = 100;
+
+		for (int i = 0; i < count && twoHandedSiteswapStateSearcher.hasNext(); i++)
+		{
+			final TwoHandedSiteswap next = twoHandedSiteswapStateSearcher.next();
+			LOG.info("{} : {}", i, next);
+
+		}
+	}
 }

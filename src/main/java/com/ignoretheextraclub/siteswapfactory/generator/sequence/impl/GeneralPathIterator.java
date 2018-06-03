@@ -1,16 +1,21 @@
-package com.ignoretheextraclub.siteswapfactory.generator;
+package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
-public class RouteIterator implements Iterator<GeneralPath>
+public class GeneralPathIterator implements Iterator<GeneralPath>
 {
+	private static final Logger LOG = LoggerFactory.getLogger(GeneralPathIterator.class);
+
 	/**
 	 * A predicate that will prevent the returning of paths and all sub paths.
 	 */
@@ -19,7 +24,7 @@ public class RouteIterator implements Iterator<GeneralPath>
 	/**
 	 * A maximum depth to ensure termination
 	 */
-	private final int maxDepth;
+	private int maxDepth;
 
 	/**
 	 * The starting state for all paths returned.
@@ -31,10 +36,8 @@ public class RouteIterator implements Iterator<GeneralPath>
 	private GeneralPath next;
 	private boolean mustMove;
 
-	public RouteIterator(final State startingState,
-	                     final Predicate<GeneralPath> predicate,
-	                     final int maxDepth,
-	                     final int startingDepth)
+	GeneralPathIterator(final int startingDepth, final int maxDepth, final State startingState,
+	                    final Predicate<GeneralPath> predicate)
 	{
 		this.startingState = startingState;
 		this.predicate = predicate;
@@ -83,6 +86,21 @@ public class RouteIterator implements Iterator<GeneralPath>
 		return next;
 	}
 
+	int getMaxDepth()
+	{
+		return maxDepth;
+	}
+
+	int getCurrentTargetDepth()
+	{
+		return currentTargetDepth;
+	}
+
+	void setMaxDepth(final int maxDepth)
+	{
+		this.maxDepth = maxDepth;
+	}
+
 	private Optional<GeneralPath> getNext()
 	{
 		boolean isNotAcceptablePath = isNotAcceptablePath();
@@ -117,7 +135,7 @@ public class RouteIterator implements Iterator<GeneralPath>
 	{
 		if (!firstNode.moveLastIterator())
 		{
-			if (currentTargetDepth == maxDepth)
+			if (currentTargetDepth >= maxDepth)
 			{
 				return false;
 			}
@@ -164,7 +182,7 @@ public class RouteIterator implements Iterator<GeneralPath>
 		public PathNode(final State state)
 		{
 			this.state = state;
-			this.throIterator = state.getAvailableThrows().iterator();
+			this.throIterator = state.getAvailableThrows();
 			moveIterator();
 		}
 
@@ -230,6 +248,6 @@ public class RouteIterator implements Iterator<GeneralPath>
 	@Override
 	public String toString()
 	{
-		return "RouteIterator{" + toGeneralPath() + "}";
+		return "GeneralPathIterator{" + toGeneralPath() + "}";
 	}
 }

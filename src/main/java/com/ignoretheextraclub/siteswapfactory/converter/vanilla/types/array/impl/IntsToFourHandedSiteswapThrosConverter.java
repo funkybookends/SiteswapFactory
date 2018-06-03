@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public class IntsToFourHandedSiteswapThrosConverter implements Function<int[], FourHandedSiteswapThro[]>
 {
-    public static IntsToFourHandedSiteswapThrosConverter INSTANCE;
+    private static IntsToFourHandedSiteswapThrosConverter INSTANCE;
 
     private IntsToFourHandedSiteswapThrosConverter()
     {

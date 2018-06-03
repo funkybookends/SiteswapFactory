@@ -1,13 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.generator.siteswap;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.Vector;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -17,13 +16,11 @@ import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
+import com.ignoretheextraclub.siteswapfactory.generator.sequence.impl.GeneralPathIterator;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-
-import javafx.scene.shape.PathBuilder;
 
 import static java.util.Collections.emptyIterator;
 
@@ -46,11 +43,8 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     private final SiteswapRequestBuilder siteswapRequestBuilder;
     private final SiteswapConstructor<T> siteswapConstructor;
 
-    /**
-     * Internal state
-     */
     private T next;
-    private PathBuilder builder;
+    private GeneralPathIterator routeIterator;
 
     /**
      * Creates a {@link StateSearcher} which will find successive {@link Siteswap}s based on the provided configuration.
@@ -74,99 +68,77 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         this.intermediatePredicate = intermediatePredicate == null ? acceptAll() : intermediatePredicate;
         this.resultPredicate = resultPredicate == null ? acceptAll() : resultPredicate;
         this.siteswapRequestBuilder = siteswapRequestBuilder == null ? new SiteswapRequestBuilder() : siteswapRequestBuilder;
+
+        prepareNewRouteIterator();
+        this.next = getNext().orElse(null);
     }
 
     @Override
     public boolean hasNext()
     {
-        try
-        {
-            this.next = get();
-            return true;
-        }
-        catch (final NoMoreSiteswapsException noMoreSiteswapsException)
-        {
-            LOG.trace("No more elements");
-            this.next = null;
-            return false;
-        }
+        return next !=  null;
     }
 
     @Override
     public T next()
     {
-        if (next == null)
+        if (this.next == null)
         {
-            throw new NoSuchElementException("No call to next(), or call to next() after hasNext() returned false.");
+            throw new NoSuchElementException();
         }
+
+        final T next = this.next;
+
+        this.next = getNext().orElse(null);
+
         return next;
     }
 
-    public T get() throws NoMoreSiteswapsException
+    private Optional<T> getNext()
     {
-        while (true)
-        {
-            LOG.trace("get(): Getting next element");
-            do
-            {
-                getNextState();
-            }
-            while (!canBeReturned());
+        Optional<T> candidate = Optional.empty();
 
-            try
-            {
-                return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(builder.toGeneralPath().toGeneralCircuit()));
-            }
-            catch (final Throwable ignored)
-            {
-                // Probably an illegal siteswap. Just return the next one we find.
-                LOG.debug("SiteswapConstructor {} rejected. {}. See stack trace at trace level.", siteswapConstructor, ignored);
-                LOG.trace("Stack Trace: ", ignored);
-            }
-        }
-    }
-
-    private void getNextState() throws NoMoreSiteswapsException
-    {
-        do
+        while (!(routeIterator == null || candidate.isPresent()))
         {
-            if (builder == null && startingStates.hasNext())
+            if (routeIterator != null && routeIterator.hasNext())
             {
-                builder = new PathBuilder(startingStates.next(), maxPeriod);
-                builder.buildStack();
-            }
-            else if (builder == null && !startingStates.hasNext())
-            {
-                throw new NoMoreSiteswapsException();
-            }
-            else if (builder.size() < maxPeriod)
-            {
-                builder.buildStack();
+                candidate = Optional.of(routeIterator.next())
+                    .filter(GeneralPath::isGeneralCircuit)
+                    .map(GeneralPath::toGeneralCircuit)
+                    .filter(resultPredicate)
+                    .map(this::safeConstruct);
             }
             else
             {
-                try
-                {
-                    builder.moveLastIterator();
-                }
-                catch (PathBuilder.StartingStateFinishedException e)
-                {
-                    builder = null;
-                }
+                prepareNewRouteIterator();
             }
         }
-        while (!isLegalSequence());
+
+        return candidate;
     }
 
-    private boolean canBeReturned()
+    private T safeConstruct(final GeneralCircuit generalCircuit)
     {
-        final GeneralPath generalPath = builder.toGeneralPath();
-        return generalPath.isGeneralCircuit() && resultPredicate.test(generalPath.toGeneralCircuit());
+        try
+        {
+            return siteswapConstructor.apply(siteswapRequestBuilder.createSiteswapRequest(generalCircuit));
+        }
+        catch (final Exception exception)
+        {
+            return null;
+        }
     }
 
-    private boolean isLegalSequence()
+    private void prepareNewRouteIterator()
     {
-        return builder != null && intermediatePredicate.test(builder.toGeneralPath());
+        if (this.startingStates.hasNext())
+        {
+            this.routeIterator = null; // TODO fix
+        }
+        else
+        {
+            this.routeIterator = null;
+        }
     }
 
     public Stream<T> generate()
@@ -180,105 +152,5 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     static <T> Predicate<T> acceptAll()
     {
         return (any) -> true;
-    }
-
-    private static class NoMoreSiteswapsException extends Exception
-    {
-    }
-
-    private static class PathBuilder
-    {
-        private Vector<PathNode> path;
-
-        private PathBuilder(final State startingState, final int maxLength)
-        {
-            path = new Vector<>(maxLength, 1);
-            path.add(new PathNode(startingState));
-        }
-
-        private void buildStack()
-        {
-            final PathNode lastNode = path.lastElement();
-
-            if (lastNode.hasNextThro())
-            {
-                path.add(new PathNode(lastNode.state.thro(lastNode.nextThro())));
-            }
-        }
-
-        private void moveLastIterator() throws StartingStateFinishedException
-        {
-            if (path.isEmpty())
-            {
-                throw new StartingStateFinishedException();
-            }
-            if (path.lastElement().hasNextThro())
-            {
-                path.lastElement().nextThro();
-            }
-            else
-            {
-                path.remove(path.size() - 1);
-                moveLastIterator();
-            }
-        }
-
-        private int size()
-        {
-            return path.size();
-        }
-
-        private GeneralPath toGeneralPath()
-        {
-            final GeneralPath generalPath = new GeneralPath(path.firstElement().state);
-
-            for (final PathNode pathNode : path)
-            {
-                if (pathNode.currentThro != null)
-                {
-                    generalPath.push(pathNode.currentThro);
-                }
-            }
-
-            return generalPath;
-        }
-
-        private static class PathNode
-        {
-            private final State state;
-            private final Iterator<Thro> throIterator;
-            private Thro currentThro;
-
-            public PathNode(final State state)
-            {
-                this.state = state;
-                this.throIterator = state.getAvailableThrows().iterator();
-            }
-
-            public State getState()
-            {
-                return state;
-            }
-
-            public Thro getCurrentThro()
-            {
-                return currentThro;
-            }
-
-            public boolean hasNextThro()
-            {
-                return this.throIterator.hasNext();
-            }
-
-            public Thro nextThro()
-            {
-                this.currentThro = this.throIterator.next();
-                return currentThro;
-            }
-        }
-
-        private class StartingStateFinishedException extends Exception
-        {
-        }
     }
 }

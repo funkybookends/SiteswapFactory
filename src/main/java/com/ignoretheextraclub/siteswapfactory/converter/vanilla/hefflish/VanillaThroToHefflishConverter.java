@@ -9,7 +9,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class VanillaThroToHefflishConverter implements Function<VanillaThro, String>
 {
-	public static VanillaThroToHefflishConverter INSTANCE;
+	private static VanillaThroToHefflishConverter INSTANCE;
 
 	private VanillaThroToHefflishConverter()
 	{

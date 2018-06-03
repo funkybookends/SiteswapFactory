@@ -15,7 +15,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class VanillaThrosToStartingStateConverter implements Function<VanillaThro[], VanillaState>
 {
-    public static VanillaThrosToStartingStateConverter INSTANCE;
+    private static VanillaThrosToStartingStateConverter INSTANCE;
 
     private VanillaThrosToStartingStateConverter()
     {

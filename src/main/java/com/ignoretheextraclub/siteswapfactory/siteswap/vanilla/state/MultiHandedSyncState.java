@@ -2,8 +2,8 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,10 +29,10 @@ public class MultiHandedSyncState implements State
 	private final long[] state;
 	private final int numObjects;
 
-	public MultiHandedSyncState(final long[] state)
+	public MultiHandedSyncState(final long... state)
 	{
 		this.state = state;
-		numObjects = calculateNumObjects();
+		numObjects = calculateNumObjects(state);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class MultiHandedSyncState implements State
 	}
 
 	@Override
-	public Set<Thro> getAvailableThrows()
+	public Iterator<Thro> getAvailableThrows()
 	{
 		final List<MultiHandThro.HandSpecificThro> availableThros = new ArrayList<>();
 
@@ -87,7 +87,8 @@ public class MultiHandedSyncState implements State
 			.flatMap(this::permute)
 			.map(injectZeroThros)
 			.map(thros -> new MultiHandThro(thros.toArray(new MultiHandThro.HandSpecificThro[thros.size()])))
-			.collect(Collectors.toSet());
+			.map(multiHandThro -> (Thro) multiHandThro)
+			.iterator();
 	}
 
 	private Stream<List<MultiHandThro.HandSpecificThro>> permute(final List<MultiHandThro.HandSpecificThro> handSpecificThros)
@@ -95,6 +96,38 @@ public class MultiHandedSyncState implements State
 		final PermutationIterator<MultiHandThro.HandSpecificThro> iterator = new PermutationIterator<>(handSpecificThros);
 
 		return StreamSupport.stream(Spliterators.spliterator(iterator, handSpecificThros.size(), 0), false);
+	}
+
+	public MultiHandedSyncState undo(final MultiHandThro thro)
+	{
+		if (thro.getNumHands() != state.length)
+		{
+			throw new BadThrowException("Number of hands not equal");
+		}
+
+		final long[] previousState = Arrays.copyOf(state, state.length);
+
+		// raise up
+		for (int hand = 0; hand < state.length; hand++)
+		{
+			previousState[hand] <<= 1;
+		}
+
+		for (int fromHand = 0; fromHand < state.length; fromHand++)
+		{
+			final MultiHandThro.HandSpecificThro throwForHand = thro.getThrowForHand(fromHand);
+
+			final int toHand = throwForHand.getToHand();
+			final int numBeats = throwForHand.getNumBeats();
+
+			if (numBeats != 0)
+			{
+				previousState[toHand] ^= 1 << numBeats;
+				previousState[fromHand] |= 1;
+			}
+		}
+
+		return new MultiHandedSyncState(previousState);
 	}
 
 	private static class ZeroThrowInjector implements Function<List<MultiHandThro.HandSpecificThro>, List<MultiHandThro.HandSpecificThro>>
@@ -123,7 +156,7 @@ public class MultiHandedSyncState implements State
 	{
 		final MultiHandThro throwz = verifyCanThrow(thro);
 
-		final long[] nextState = state;
+		final long[] nextState = Arrays.copyOf(state, state.length);
 
 		for (int hand = 0; hand < state.length; hand++)
 		{
@@ -175,7 +208,7 @@ public class MultiHandedSyncState implements State
 		return this.numObjects;
 	}
 
-	private int calculateNumObjects()
+	static int calculateNumObjects(final long[] state)
 	{
 		return Arrays.stream(state).mapToInt(VanillaState::numBitsSet).sum();
 	}
@@ -244,6 +277,6 @@ public class MultiHandedSyncState implements State
 		return Arrays.stream(state)
 			.mapToObj(VanillaState::new)
 			.map(VanillaState::toString)
-			.collect(Collectors.joining("\n", "MultiHandedSyncState{\n", "\n}"));
+			.collect(Collectors.joining(" : ", "MultiHandedSyncState{", "}"));
 	}
 }

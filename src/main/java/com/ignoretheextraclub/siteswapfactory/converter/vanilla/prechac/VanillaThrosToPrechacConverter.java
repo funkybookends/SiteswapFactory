@@ -14,7 +14,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro
  */
 public class VanillaThrosToPrechacConverter implements Function<VanillaThro[], String>
 {
-    public static VanillaThrosToPrechacConverter INSTANCE;
+    private static VanillaThrosToPrechacConverter INSTANCE;
 
     private static final String DELIMETER = " ";
 

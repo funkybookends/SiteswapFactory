@@ -14,7 +14,7 @@ import java.util.function.Function;
  */
 public class CharsToFourHandedSiteswapThrosConverter implements Function<char[], FourHandedSiteswapThro[]>
 {
-    public static CharsToFourHandedSiteswapThrosConverter INSTANCE;
+    private static CharsToFourHandedSiteswapThrosConverter INSTANCE;
 
     private CharsToFourHandedSiteswapThrosConverter()
     {

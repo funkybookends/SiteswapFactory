@@ -96,7 +96,7 @@ public class GlobalToLocalBiConverter<T> implements BiFunction<T[], Integer, T[]
      */
     public static class IntConverter implements BiFunction<int[], Integer, int[]>
     {
-        public static IntConverter INSTANCE;
+        private static IntConverter INSTANCE;
 
         private IntConverter()
         {
