@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.RouteSearcher;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.StateJoiner;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
@@ -74,14 +74,14 @@ public class SimpleStateJoinerTest
 	@Test
 	public void GIVEN_generalPaths_EXPECT_betterName() throws Exception
 	{
-		final TwoHandedSiteswap first = SiteswapFactory.getTwoHandedSiteswap("45574");
-		final TwoHandedSiteswap second = SiteswapFactory.getTwoHandedSiteswap("77416");
+		final TwoHandedSiteswap first = TwoHandedSiteswapFactory.getTwoHandedSiteswap("45574");
+		final TwoHandedSiteswap second = TwoHandedSiteswapFactory.getTwoHandedSiteswap("77416");
 
 		final GeneralCircuit resultCircuit = realStateJoiner.joinShortest(first.getGeneralCircuit(), second.getGeneralCircuit());
 
 		final TwoHandedSiteswap result = new TwoHandedSiteswap(resultCircuit);
 
-		final TwoHandedSiteswap expectedSiteswap = SiteswapFactory.getTwoHandedSiteswap("4557477416");
+		final TwoHandedSiteswap expectedSiteswap = TwoHandedSiteswapFactory.getTwoHandedSiteswap("4557477416");
 
 		final GeneralCircuit expectedGeneralCircuit = expectedSiteswap.getGeneralCircuit();
 

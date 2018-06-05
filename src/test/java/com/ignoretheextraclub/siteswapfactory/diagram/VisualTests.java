@@ -23,7 +23,7 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.Defaul
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.DefaultRotationMarkerFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.DefaultSwapFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
 public class VisualTests
@@ -54,9 +54,9 @@ public class VisualTests
 	@Test
 	public void visualTest() throws Exception
 	{
-		// final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("88522");
-		final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("9968926");
-		// final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("975");
+		// final FourHandedSiteswap siteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("88522");
+		final FourHandedSiteswap siteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("9968926");
+		// final FourHandedSiteswap siteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("975");
 		final CausalDiagram causalDiagram = fhsToCausalDiagram.apply(siteswap);
 		final SVGGraphics2D graphics2D = causalDiagramToSvg.apply(causalDiagram, point -> new SVGGraphics2D((int) point.getX(), (int) point.getY()));
 		final String svgDocument = graphics2D.getSVGDocument();

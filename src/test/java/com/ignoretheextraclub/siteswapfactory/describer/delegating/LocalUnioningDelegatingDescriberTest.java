@@ -3,14 +3,12 @@ package com.ignoretheextraclub.siteswapfactory.describer.delegating;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.VanillaSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

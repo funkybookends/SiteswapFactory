@@ -10,7 +10,7 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 
 public class FhsToCausalDiagramTest
 {
@@ -33,7 +33,7 @@ public class FhsToCausalDiagramTest
     @Test
     public void fhs5() throws Exception
     {
-        final CausalDiagram result = fhsToCausalDiagram.apply(SiteswapFactory.getFourHandedSiteswap("5"));
+        final CausalDiagram result = fhsToCausalDiagram.apply(FourHandedSiteswapFactory.getFourHandedSiteswap("5"));
 
         final CausalDiagram expected = new DefaultCausalDiagram.Builder()
             .addCause(0, 1, 0, 0.5, Hand.RIGHT, Hand.RIGHT) // J1
@@ -60,7 +60,7 @@ public class FhsToCausalDiagramTest
     @Test
     public void fhs567() throws Exception
     {
-        final CausalDiagram result = fhsToCausalDiagram.apply(SiteswapFactory.getFourHandedSiteswap("756"));
+        final CausalDiagram result = fhsToCausalDiagram.apply(FourHandedSiteswapFactory.getFourHandedSiteswap("756"));
 
         final CausalDiagram expected = new DefaultCausalDiagram.Builder()
             .addCause(0, 1, 0, 1.5, Hand.RIGHT, Hand.LEFT) //   7
@@ -89,7 +89,7 @@ public class FhsToCausalDiagramTest
     @Test
     public void fhs75() throws Exception
     {
-        final CausalDiagram result = fhsToCausalDiagram.apply(SiteswapFactory.getFourHandedSiteswap("75"));
+        final CausalDiagram result = fhsToCausalDiagram.apply(FourHandedSiteswapFactory.getFourHandedSiteswap("75"));
 
         final CausalDiagram expected = new DefaultCausalDiagram.Builder()
             .addCause(0, 1, 0, 1.5, Hand.RIGHT, Hand.LEFT) //   7

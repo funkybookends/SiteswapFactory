@@ -1,8 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.validation;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-
 import java.util.function.Predicate;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  * Tests if all states have the same number of objects

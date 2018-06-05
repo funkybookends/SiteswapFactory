@@ -5,13 +5,9 @@ import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThroTest;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest.multiHandThro;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThroTest.thro;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Fail.fail;
 
 public class SyncSiteswapTest
 {

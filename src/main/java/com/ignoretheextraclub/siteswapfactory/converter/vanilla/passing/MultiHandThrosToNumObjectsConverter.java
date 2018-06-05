@@ -1,6 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.passing;
 
-import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;

@@ -1,10 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.diagram.causal.factory;
 
-	import java.awt.*;
+import java.awt.*;
 
-	import com.ignoretheextraclub.siteswapfactory.diagram.causal.Site;
-	import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.ArrowGraphic;
-	import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.Site;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.ArrowGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
 
 /**
  * A factory for creating arrow graphics

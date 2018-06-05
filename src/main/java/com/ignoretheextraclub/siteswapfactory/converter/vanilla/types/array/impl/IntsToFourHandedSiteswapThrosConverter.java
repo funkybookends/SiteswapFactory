@@ -1,9 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-
 import java.util.Objects;
 import java.util.function.Function;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
 
 /**
  * Converts an int[] to a FourHandedSiteswapThro[]

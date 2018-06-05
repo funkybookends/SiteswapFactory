@@ -1,10 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;

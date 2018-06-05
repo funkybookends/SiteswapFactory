@@ -1,10 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-
 import java.util.Objects;
 import java.util.function.Function;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
 /**
  * Downcasts a State[] to a VanillaState[]

@@ -4,10 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X_;
@@ -26,9 +23,9 @@ public class TwoHandedVanillaSiteswapTest
    @Test
    public void test534() throws Exception
    {
-       final TwoHandedSiteswap vanillaSiteswap = SiteswapFactory.getTwoHandedSiteswap("534");
-       final TwoHandedSiteswap same = SiteswapFactory.getTwoHandedSiteswap("453");
-       final TwoHandedSiteswap different = SiteswapFactory.getTwoHandedSiteswap("441");
+       final TwoHandedSiteswap vanillaSiteswap = TwoHandedSiteswapFactory.getTwoHandedSiteswap("534");
+       final TwoHandedSiteswap same = TwoHandedSiteswapFactory.getTwoHandedSiteswap("453");
+       final TwoHandedSiteswap different = TwoHandedSiteswapFactory.getTwoHandedSiteswap("441");
 
        softly.assertThat(vanillaSiteswap.getNumJugglers()).isEqualTo(1);
        softly.assertThat(vanillaSiteswap.getNumHands()).isEqualTo(2);

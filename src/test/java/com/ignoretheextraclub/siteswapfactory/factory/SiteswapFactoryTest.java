@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.factory.impl.DefaultSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.SiteswapFactoryImpl;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 
@@ -66,7 +66,7 @@ public class SiteswapFactoryTest
         when(constructor2.apply(expectedSiteswapRequest)).thenReturn(result);
 
         // Prepare test class
-        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final SiteswapFactoryImpl factory = new SiteswapFactoryImpl(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
         final Siteswap actual = factory.get(siteswap);
@@ -105,7 +105,7 @@ public class SiteswapFactoryTest
         when(constructor2.apply(providedSiteswapRequest)).thenReturn(result);
 
         // Prepare test class
-        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final SiteswapFactoryImpl factory = new SiteswapFactoryImpl(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
         final Siteswap actual = factory.apply(providedSiteswapRequest);
@@ -144,7 +144,7 @@ public class SiteswapFactoryTest
         when(constructor2.apply(providedSiteswapRequest)).thenReturn(result);
 
         // Prepare test class
-        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final SiteswapFactoryImpl factory = new SiteswapFactoryImpl(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
         final Siteswap actual = factory.apply(providedSiteswapRequest);
@@ -185,7 +185,7 @@ public class SiteswapFactoryTest
         when(constructor2.apply(providedSiteswapRequest)).thenThrow(exception2);
 
         // Prepare test class
-        final DefaultSiteswapFactory factory = new DefaultSiteswapFactory(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
+        final SiteswapFactoryImpl factory = new SiteswapFactoryImpl(Arrays.asList(constructor1, constructor2), siteswapRequestBuilder);
 
         // Test
         assertThatThrownBy(() -> factory.apply(providedSiteswapRequest))

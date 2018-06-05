@@ -3,7 +3,6 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic;
 import java.util.function.UnaryOperator;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
-import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 
 /**
  * Returns the shortest repeating unit that when repeated n times would return the input array.

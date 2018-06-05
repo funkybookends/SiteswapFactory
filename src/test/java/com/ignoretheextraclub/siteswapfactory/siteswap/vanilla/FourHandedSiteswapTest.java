@@ -5,12 +5,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToFourHandedSiteswapThrosConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.StringToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.FourHandedSiteswapThro;
-import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -30,9 +29,9 @@ public class FourHandedSiteswapTest
    @Test
    public void test534() throws Exception
    {
-       final FourHandedSiteswap vanillaSiteswap = SiteswapFactory.getFourHandedSiteswap("786");
-       final FourHandedSiteswap same = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest("867"));
-       final FourHandedSiteswap different = SiteswapFactory.getFourHandedSiteswap("975");
+       final FourHandedSiteswap vanillaSiteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("786");
+       final FourHandedSiteswap same = FourHandedSiteswapFactory.getFourHandedSiteswap(new SiteswapRequest("867"));
+       final FourHandedSiteswap different = FourHandedSiteswapFactory.getFourHandedSiteswap("975");
        softly.assertThat(vanillaSiteswap.getNumJugglers()).isEqualTo(2);
        softly.assertThat(vanillaSiteswap.getNumHands()).isEqualTo(4);
        softly.assertThat(vanillaSiteswap.getNumObjects()).isEqualTo(7);
@@ -62,7 +61,7 @@ public class FourHandedSiteswapTest
     @Test
     public void testMixedAbilityPattern() throws Exception
     {
-        final FourHandedSiteswap fourHandedSiteswap = SiteswapFactory.getFourHandedSiteswap("88578686");
+        final FourHandedSiteswap fourHandedSiteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("88578686");
         final FourHandedSiteswapThro[] leader = StringToIntsConverter.get().andThen(IntsToFourHandedSiteswapThrosConverter.get()).apply("8588");
         final FourHandedSiteswapThro[] follower = StringToIntsConverter.get().andThen(IntsToFourHandedSiteswapThrosConverter.get()).apply("8766");
 
@@ -74,7 +73,7 @@ public class FourHandedSiteswapTest
     @Parameters
     public void testStartingHands(final String siteswap, final int first, final int second, final int third, final int fourth) throws Exception
     {
-        final FourHandedSiteswap fourHandedSiteswap = SiteswapFactory.getFourHandedSiteswap(siteswap);
+        final FourHandedSiteswap fourHandedSiteswap = FourHandedSiteswapFactory.getFourHandedSiteswap(siteswap);
         softly.assertThat(fourHandedSiteswap.getNumObjects()).as("Num objects is wrong").isEqualTo(first + second + third + fourth);
         softly.assertThat(fourHandedSiteswap.getStartingNumberOfObjects(0)).as("Leader First Hand:" + siteswap).isEqualTo(first);
         softly.assertThat(fourHandedSiteswap.getStartingNumberOfObjects(1)).as("Follower First Hand:" + siteswap).isEqualTo(second);

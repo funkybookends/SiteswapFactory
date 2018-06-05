@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +27,7 @@ public class SimpleFourHandedSiteswapDescriberTest
     @Test
     public void test975() throws Exception
     {
-        final FourHandedSiteswap siteswap = SiteswapFactory.getFourHandedSiteswap("975");
+        final FourHandedSiteswap siteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("975");
         builder = new SimpleDescription.Builder<>(siteswap);
         builder.addSiteswapName("Holy Grail");
         builder.withLocale(LOCALE);

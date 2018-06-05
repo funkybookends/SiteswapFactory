@@ -1,7 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.passing;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import org.junit.Test;
 

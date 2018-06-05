@@ -1,10 +1,10 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.compound;
 
+import java.util.function.Function;
+
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.IntsToStringConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.VanillaThrosToIntsConverter;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-
-import java.util.function.Function;
 
 /**
  * Converts a VanillaThro[] to a String

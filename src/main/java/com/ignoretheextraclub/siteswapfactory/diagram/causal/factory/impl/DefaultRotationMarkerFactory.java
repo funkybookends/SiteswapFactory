@@ -6,8 +6,8 @@ import java.util.Set;
 
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.CausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.RotationMarkerFactory;
-import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.DefaultRotationMarkerGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.RotationMarkerGraphic;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.DefaultRotationMarkerGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
 public class DefaultRotationMarkerFactory implements RotationMarkerFactory

@@ -3,9 +3,6 @@ package com.ignoretheextraclub.siteswapfactory.generator.sequence;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 
 /**
  * Joins {@link GeneralPath}s and {@link GeneralCircuit}s together ensuring transitions are dealt with.

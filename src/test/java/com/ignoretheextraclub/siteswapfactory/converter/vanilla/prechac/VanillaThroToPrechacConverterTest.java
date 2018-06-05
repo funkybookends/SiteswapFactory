@@ -1,7 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.prechac;
 
 import org.assertj.core.api.JUnitSoftAssertions;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 

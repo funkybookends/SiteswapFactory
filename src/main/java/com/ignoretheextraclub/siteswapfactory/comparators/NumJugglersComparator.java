@@ -1,9 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.comparators;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-
 import java.util.Comparator;
 import java.util.Objects;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**
  * Compares two siteswaps by the number of jugglers. Siteswaps with less jugglers will come first.

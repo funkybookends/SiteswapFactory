@@ -1,11 +1,11 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
+
+import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
  * Converts a char[] to a VanillaThro[]

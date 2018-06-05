@@ -11,7 +11,7 @@ Use https://jitpack.io to import the project.
 Create siteswaps using `SiteswapFactory`'s static methods.
 
 ```java
-final TwoHandedSiteswap fiveThreeFour = SiteswapFactory.getTwoHandedSiteswap("534");
+final TwoHandedSiteswap fiveThreeFour = TwoHandedSiteswapFactory.getTwoHandedSiteswap("534");
 final FourHandedSiteswap funkyBookends = SiteswapFactory.getFourHandedSiteswap("77786");
 ```
 

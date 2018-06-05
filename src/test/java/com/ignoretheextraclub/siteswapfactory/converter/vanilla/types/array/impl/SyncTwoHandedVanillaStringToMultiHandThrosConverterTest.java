@@ -1,7 +1,5 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import org.assertj.core.api.Assertions;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;

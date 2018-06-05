@@ -12,12 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
 import static com.ignoretheextraclub.siteswapfactory.sorters.impl.SortingTestUtils.getRotations;
 
@@ -180,11 +179,11 @@ public class FourHandedPassingStrategyTest
    @Test
    public void isSameAsExpected() throws Exception
    {
-       final FourHandedSiteswap expectedFhs = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(expected));
+       final FourHandedSiteswap expectedFhs = FourHandedSiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(expected));
 
        for (final String constructor : getRotations(expected))
        {
-           final FourHandedSiteswap result = SiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(constructor));
+           final FourHandedSiteswap result = FourHandedSiteswapFactory.getFourHandedSiteswap(new SiteswapRequest(constructor));
            softly.assertThat(result.toString()).as(//
              "Constructed with: " + constructor + ". " +
              "\nPreferred ex : " + Arrays.stream(expectedFhs.getStates()).map(State::excitedness).map(Object::toString).collect(Collectors.joining(", ")) +

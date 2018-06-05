@@ -14,6 +14,22 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandTh
 
 public class StringToTwoHandedSyncSiteswapConstructor implements SiteswapConstructor<SyncSiteswap>
 {
+	private static StringToTwoHandedSyncSiteswapConstructor INSTANCE;
+
+	private StringToTwoHandedSyncSiteswapConstructor()
+	{
+	    // Singleton
+	}
+
+	public static StringToTwoHandedSyncSiteswapConstructor get()
+	{
+	    if (INSTANCE == null)
+	    {
+	        INSTANCE = new StringToTwoHandedSyncSiteswapConstructor();
+	    }
+	    return INSTANCE;
+	}
+
 	@Override
 	public SyncSiteswap apply(final SiteswapRequest siteswapRequest)
 	{

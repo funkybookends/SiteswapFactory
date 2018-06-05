@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
@@ -25,14 +25,14 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
  *
  * @author Caspar Nonclercq
  */
-public final class DefaultSiteswapFactory<T extends Siteswap> implements SiteswapFactory<T>
+public class SiteswapFactoryImpl implements SiteswapFactory
 {
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultSiteswapFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SiteswapFactoryImpl.class);
 
     /**
      * An ordered list of siteswap constructors that will be used, in order, to create a siteswap.
      */
-    private final List<SiteswapConstructor<T>> constructors;
+    private final List<SiteswapConstructor<? extends Siteswap>> constructors;
 
     /**
      * The base {@link SiteswapRequestBuilder} to use.
@@ -45,9 +45,9 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
      * Takes a list of constructors to use with the default configuration for building those {@link Siteswap}s.
      *
      * @param constructors The list of constructors to use
-     * @see #DefaultSiteswapFactory(List, SiteswapRequestBuilder)
+     * @see #SiteswapFactoryImpl(List, SiteswapRequestBuilder)
      */
-    public DefaultSiteswapFactory(final List<SiteswapConstructor<T>> constructors)
+    public SiteswapFactoryImpl(final List<SiteswapConstructor<? extends Siteswap>> constructors)
     {
         this(constructors, new SiteswapRequestBuilder());
     }
@@ -59,8 +59,8 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
      * @param constructors           The list of constructors to use.
      * @param siteswapRequestBuilder A prefilled builder with the configuration to use.
      */
-    public DefaultSiteswapFactory(final List<SiteswapConstructor<T>> constructors,
-                                  final SiteswapRequestBuilder siteswapRequestBuilder)
+    public SiteswapFactoryImpl(final List<SiteswapConstructor<? extends Siteswap>> constructors,
+                               final SiteswapRequestBuilder siteswapRequestBuilder)
     {
         this.constructors = Collections.unmodifiableList(new ArrayList<>(constructors));
         this.siteswapRequestBuilder = siteswapRequestBuilder;
@@ -71,7 +71,7 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
     // region Public Methods
 
     @Override
-    public T apply(final SiteswapRequest siteswapRequest)
+    public Siteswap apply(final SiteswapRequest siteswapRequest)
     {
         final InvalidSiteswapException invalidSiteswapException = new InvalidSiteswapException("Could not find a suitable constructor for siteswap request constructing: "
             + siteswapRequest.getConstructor().toString());
@@ -88,19 +88,19 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
     }
 
     @Override
-    public T get(final Object object)
+    public Siteswap get(final Object object)
     {
         return apply(siteswapRequestBuilder.createSiteswapRequest(object));
     }
 
     @Override
-    public List<T> getAll(final SiteswapRequest siteswapRequest)
+    public List<Siteswap> getAll(final SiteswapRequest siteswapRequest)
     {
         return getSiteswapStream(siteswapRequest, null).collect(Collectors.toList());
     }
 
     @Override
-    public List<T> getAll(final Object siteswap)
+    public List<Siteswap> getAll(final Object siteswap)
     {
         return getAll(siteswapRequestBuilder.createSiteswapRequest(siteswap));
     }
@@ -116,7 +116,7 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
      * @param invalidSiteswapException A nullable exception to populate.
      * @return A stream of siteswaps.
      */
-    private Stream<T> getSiteswapStream(final SiteswapRequest siteswapRequest, final InvalidSiteswapException invalidSiteswapException)
+    private Stream<Siteswap> getSiteswapStream(final SiteswapRequest siteswapRequest, final InvalidSiteswapException invalidSiteswapException)
     {
         return this.constructors.stream()
             .filter(siteswapConstructor -> siteswapConstructor.accepts(siteswapRequest.getConstructor()))
@@ -132,7 +132,7 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
      * @param invalidSiteswapException Optional exception whose suppressed exceptions will be populated if an exception is thrown during construction
      * @return A function that constructs a siteswap or returns null
      */
-    private Function<SiteswapConstructor<T>, T> toSiteswapOrNull(final SiteswapRequest siteswapRequest, final InvalidSiteswapException invalidSiteswapException)
+    private Function<SiteswapConstructor<? extends Siteswap>, Siteswap> toSiteswapOrNull(final SiteswapRequest siteswapRequest, final InvalidSiteswapException invalidSiteswapException)
     {
         return constructor ->
         {
@@ -153,7 +153,7 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
                         invalidSiteswapException.addSuppressed(cause);
                     }
                 }
-                return (T) null;
+                return null;
             }
         };
     }

@@ -1,8 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.generator.siteswap;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-
 import java.util.stream.Stream;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**
  * Class used to generate {@link Siteswap}s. May be typed to generate specific subclasses of {@link Siteswap}.

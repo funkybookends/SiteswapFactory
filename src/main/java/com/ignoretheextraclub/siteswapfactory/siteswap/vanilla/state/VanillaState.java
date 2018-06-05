@@ -1,10 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.collections4.iterators.SingletonIterator;
 

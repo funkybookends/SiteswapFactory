@@ -1,17 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
 import java.util.Iterator;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.collections4.iterators.TransformIterator;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-import com.sun.org.apache.bcel.internal.generic.IUSHR;
 
 /**
  * Encapulates the state of a siteswap at any point.

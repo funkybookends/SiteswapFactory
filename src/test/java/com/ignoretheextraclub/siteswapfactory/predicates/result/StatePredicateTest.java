@@ -5,7 +5,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.*;
+
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_X_X;
 
 /**
  * Created by caspar on 24/09/17.

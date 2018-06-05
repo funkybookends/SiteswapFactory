@@ -12,10 +12,10 @@ import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.describer.Description;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.VanillaSiteswap;
 
@@ -127,7 +127,7 @@ public class DelegatingDescriberTest
 
         final DelegatingDescriber<TwoHandedSiteswap> delegatingDescriber = new DelegatingDescriber<>(Arrays.asList(first, second, third), Collections.singletonList(Locale.CANADA));
 
-        final TwoHandedSiteswap siteswap = SiteswapFactory.getTwoHandedSiteswap("3");
+        final TwoHandedSiteswap siteswap = TwoHandedSiteswapFactory.getTwoHandedSiteswap("3");
         final Description<TwoHandedSiteswap> describe = delegatingDescriber.describe(siteswap, Locale.CANADA);
 
         Assertions.assertThat(describe.getLocale()).isEqualTo(Locale.CANADA);
@@ -146,7 +146,7 @@ public class DelegatingDescriberTest
         final DescriptionContributor<TwoHandedSiteswap> third = mock(DescriptionContributor.class);
         final DelegatingDescriber<TwoHandedSiteswap> delegatingDescriber = new DelegatingDescriber<>(Arrays.asList(first, second, third), Collections.singletonList(Locale.CANADA));
 
-        final TwoHandedSiteswap siteswap = SiteswapFactory.getTwoHandedSiteswap("3");
+        final TwoHandedSiteswap siteswap = TwoHandedSiteswapFactory.getTwoHandedSiteswap("3");
         final Description<TwoHandedSiteswap> describe = delegatingDescriber.describe(siteswap, Locale.ITALIAN);
 
         Assertions.assertThat(describe).isNull();

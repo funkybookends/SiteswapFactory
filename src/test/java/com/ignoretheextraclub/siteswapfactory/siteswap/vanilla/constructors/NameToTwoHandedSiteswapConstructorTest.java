@@ -7,11 +7,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
 
@@ -41,7 +41,7 @@ public class NameToTwoHandedSiteswapConstructorTest
     @Test
     public void WHEN_hasMapping_EXPECT_mapsAndUsesInternal_AND_usesSiteswapRequestCorrectly() throws Exception
     {
-        final TwoHandedSiteswap result = SiteswapFactory.getTwoHandedSiteswap("55500");
+        final TwoHandedSiteswap result = TwoHandedSiteswapFactory.getTwoHandedSiteswap("55500");
 
         final SiteswapRequest inputRequest = mock(SiteswapRequest.class, "inputRequest");
         final SiteswapRequest newRequest = mock(SiteswapRequest.class, "newRequest");
@@ -66,7 +66,7 @@ public class NameToTwoHandedSiteswapConstructorTest
     @Test
     public void WHEN_mappingIsBad_EXPECT_deletesMapping() throws Exception
     {
-        final TwoHandedSiteswap result = SiteswapFactory.getTwoHandedSiteswap("55500");
+        final TwoHandedSiteswap result = TwoHandedSiteswapFactory.getTwoHandedSiteswap("55500");
 
         final SiteswapRequest inputRequest = mock(SiteswapRequest.class, "inputRequest");
         final SiteswapRequest newRequest = mock(SiteswapRequest.class, "newRequest");

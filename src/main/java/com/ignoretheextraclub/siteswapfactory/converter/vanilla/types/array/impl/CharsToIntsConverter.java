@@ -1,9 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.CharToIntConverter;
-
 import java.util.Objects;
 import java.util.function.Function;
+
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.CharToIntConverter;
 
 /**
  * Converts a char[] to an int[]

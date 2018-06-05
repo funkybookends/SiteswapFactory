@@ -1,7 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 
 /**
  * Created by caspar on 26/07/17.

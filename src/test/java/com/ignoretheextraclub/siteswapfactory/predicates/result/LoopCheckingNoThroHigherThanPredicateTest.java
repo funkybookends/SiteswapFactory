@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ignoretheextraclub.siteswapfactory.factory.SiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -23,7 +23,7 @@ public class LoopCheckingNoThroHigherThanPredicateTest
     public void testApply(final Thro maxThro, final String siteswapConstructor, final boolean expected) throws Exception
     {
         final LoopCheckingNoThroHigherThanPredicate noThroHigherThanPredicate = new LoopCheckingNoThroHigherThanPredicate(maxThro);
-        final GeneralCircuit states = SiteswapFactory.getTwoHandedSiteswap(siteswapConstructor).getGeneralCircuit();
+        final GeneralCircuit states = TwoHandedSiteswapFactory.getTwoHandedSiteswap(siteswapConstructor).getGeneralCircuit();
         Assertions.assertThat(noThroHigherThanPredicate.test(states)).isEqualTo(expected);
     }
 

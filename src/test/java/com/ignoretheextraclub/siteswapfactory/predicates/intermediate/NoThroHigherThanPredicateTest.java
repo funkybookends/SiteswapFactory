@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StartingStateAndThrosToGeneralPathConverter;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
@@ -15,7 +14,6 @@ import junitparams.Parameters;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
 
 @RunWith(JUnitParamsRunner.class)
 public class NoThroHigherThanPredicateTest

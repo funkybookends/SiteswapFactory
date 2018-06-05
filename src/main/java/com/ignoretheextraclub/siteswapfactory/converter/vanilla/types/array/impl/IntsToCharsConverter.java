@@ -1,9 +1,9 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl;
 
-import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
-
 import java.util.Objects;
 import java.util.function.Function;
+
+import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.IntToCharConverter;
 
 /**
  * Converts an array of ints to an array of chars. Guaranteed to not throw an exception

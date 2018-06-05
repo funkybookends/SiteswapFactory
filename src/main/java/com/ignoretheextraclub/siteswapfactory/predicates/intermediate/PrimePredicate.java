@@ -1,12 +1,12 @@
 package com.ignoretheextraclub.siteswapfactory.predicates.intermediate;
 
-import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.Predicate;
+
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 /**
  * Checks if a {@link State[]} is prime.

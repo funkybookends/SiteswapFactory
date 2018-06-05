@@ -4,11 +4,6 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.State;
-
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.X_X_X;
-
 /**
  Created by caspar on 29/07/17.
  */

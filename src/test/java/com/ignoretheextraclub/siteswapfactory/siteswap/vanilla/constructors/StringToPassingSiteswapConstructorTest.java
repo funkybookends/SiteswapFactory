@@ -6,7 +6,6 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.PassingSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Fail.fail;
 
 public class StringToPassingSiteswapConstructorTest
 {

@@ -1,8 +1,8 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
-
 import java.util.function.Function;
+
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
  * Converts a char to an int. Guaranteed to not throwan exception, returns -1 if not a valid char.

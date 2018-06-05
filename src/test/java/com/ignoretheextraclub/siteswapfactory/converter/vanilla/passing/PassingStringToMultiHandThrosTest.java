@@ -1,7 +1,6 @@
 package com.ignoretheextraclub.siteswapfactory.converter.vanilla.passing;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
