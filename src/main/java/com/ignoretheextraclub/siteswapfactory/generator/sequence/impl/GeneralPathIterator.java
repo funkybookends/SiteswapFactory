@@ -179,14 +179,14 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 		private Thro currentThro;
 		private PathNode nextNode;
 
-		public PathNode(final State state)
+		private PathNode(final State state)
 		{
 			this.state = state;
 			this.throIterator = state.getAvailableThrows();
 			moveIterator();
 		}
 
-		public void increaseDepth()
+		private void increaseDepth()
 		{
 			if (this.nextNode != null)
 			{
@@ -216,7 +216,7 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 		 * @return true if a deeper node moved the last iterator or it moved the
 		 * last iterator, otherwise false.
 		 */
-		public boolean moveLastIterator()
+		private boolean moveLastIterator()
 		{
 			if (this.nextNode != null && this.nextNode.moveLastIterator())
 			{
