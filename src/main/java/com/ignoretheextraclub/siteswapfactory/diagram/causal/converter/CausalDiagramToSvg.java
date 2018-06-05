@@ -63,7 +63,7 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 		final Set<RotationMarkerGraphic> rotationMarkers = getRotationMarkers(causalDiagram);
 
 		final Point2D minDocumentSize = getMinDocumentSize(swaps.values(), arrows, rotationMarkers, causalDiagram);
-		final T graphics2d = graphicsSupplier.apply(minDocumentSize);
+		final T graphics2d = graphicsSupplier.createGraphics(minDocumentSize);
 
 		return drawSvgDiagram(graphics2d, swaps, arrows, rotationMarkers);
 	}
