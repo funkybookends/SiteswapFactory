@@ -93,27 +93,13 @@ public final class DefaultSiteswapFactory<T extends Siteswap> implements Siteswa
         return apply(siteswapRequestBuilder.createSiteswapRequest(object));
     }
 
-    /**
-     * Gets all the {@link Siteswap}s, in the same order as the {@link DefaultSiteswapFactory#constructors} could construct.
-     * If a constructor could not construct a siteswap, it will have no entry in the list, hence the list could
-     * be shorter than the {@link DefaultSiteswapFactory#constructors} list, or empty.
-     *
-     * @param siteswapRequest The siteswapRequest to construct the siteswap with.
-     * @return A modifiable list of {@link Siteswap}s.
-     */
+    @Override
     public List<T> getAll(final SiteswapRequest siteswapRequest)
     {
         return getSiteswapStream(siteswapRequest, null).collect(Collectors.toList());
     }
 
-    /**
-     * Gets all the {@link Siteswap}s, in the same order as the {@link DefaultSiteswapFactory#constructors} could construct.
-     * If a constructor could not construct a siteswap, it will have no entry in the list, hence the list could
-     * be shorter than the {@link DefaultSiteswapFactory#constructors} list, or empty.
-     *
-     * @param siteswap The object to use to construct the siteswap with.
-     * @return A modifiable list of {@link Siteswap}s.
-     */
+    @Override
     public List<T> getAll(final Object siteswap)
     {
         return getAll(siteswapRequestBuilder.createSiteswapRequest(siteswap));

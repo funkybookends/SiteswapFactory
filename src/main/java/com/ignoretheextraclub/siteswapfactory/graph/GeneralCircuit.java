@@ -10,12 +10,31 @@ import org.apache.commons.collections4.iterators.ArrayIterator;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
+/**
+ * Represents a loop through a graph. Can handle graphs where there are multiple
+ * edges connecting any two given nodes.
+ */
 public class GeneralCircuit
 {
+	/**
+	 * The starting state i.e. node
+	 */
 	private final State startingState;
+
+	/**
+	 * The throws i.e. edges through the graph.
+	 */
 	private final Thro[] thros;
 
-	public GeneralCircuit(final State startingState, final Thro[] thros)
+	/**
+	 * Create a {@link GeneralCircuit} using the starting state and the provided throws.
+	 *
+	 * @param startingState The first state i.e. node
+	 * @param thros         The throws i.e. edges through the graph.
+	 *
+	 * @throws IllegalArgumentException if the path is not a loop.
+	 */
+	public GeneralCircuit(final State startingState, final Thro... thros)
 	{
 		Objects.requireNonNull(startingState, "startingState cannot be null");
 
@@ -35,11 +54,19 @@ public class GeneralCircuit
 		this.thros = thros;
 	}
 
+	/**
+	 * Returns the starting state of this General Circuit
+	 * @return The starting state.
+	 */
 	public State getStartingState()
 	{
 		return startingState;
 	}
 
+	/**
+	 * Returns all the states in this general circuit.
+	 * @return All the nodes visited by this circuit.
+	 */
 	public State[] getAllStates()
 	{
 		final State[] states = new State[size()];
@@ -54,6 +81,10 @@ public class GeneralCircuit
 		return states;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Thro[] getThros()
 	{
 		return thros;
@@ -127,6 +158,6 @@ public class GeneralCircuit
 	@Override
 	public String toString()
 	{
-		return "GeneralCircuit{" + startingState +", " + Arrays.toString(thros) + '}';
+		return "GeneralCircuit{" + startingState + ", " + Arrays.toString(thros) + '}';
 	}
 }
