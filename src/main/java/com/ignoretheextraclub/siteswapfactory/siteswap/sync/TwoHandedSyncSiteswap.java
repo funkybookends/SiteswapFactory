@@ -1,10 +1,10 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
 
 public class TwoHandedSyncSiteswap extends SyncSiteswap
 {

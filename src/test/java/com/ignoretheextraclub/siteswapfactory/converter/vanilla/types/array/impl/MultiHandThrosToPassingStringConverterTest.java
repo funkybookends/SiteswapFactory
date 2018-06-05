@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest.multiHandThro;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncStateTest.multiHandThro;
 
 public class MultiHandThrosToPassingStringConverterTest
 {

@@ -3,8 +3,8 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.imp
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncStateTest;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

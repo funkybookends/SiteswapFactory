@@ -1,9 +1,9 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.constructors;
 
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.SyncSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.SyncSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

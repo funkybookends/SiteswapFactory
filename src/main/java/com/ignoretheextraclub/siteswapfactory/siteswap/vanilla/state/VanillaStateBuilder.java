@@ -5,8 +5,8 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.NumObjectsException;
 import com.ignoretheextraclub.siteswapfactory.exceptions.PeriodException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.isSet;
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState.numBitsSet;
+import static com.ignoretheextraclub.siteswapfactory.utils.BitMaths.isSet;
+import static com.ignoretheextraclub.siteswapfactory.utils.BitMaths.numBitsSet;
 
 /**
  * A {@link VanillaState} builder that accepts throws and builds the state as the throws are made.

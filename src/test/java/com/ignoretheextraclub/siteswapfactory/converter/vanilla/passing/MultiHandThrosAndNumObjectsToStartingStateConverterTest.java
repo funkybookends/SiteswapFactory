@@ -4,10 +4,10 @@ import java.util.function.BiFunction;
 
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest.multiHandThro;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncStateTest.multiHandThro;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultiHandThrosAndNumObjectsToStartingStateConverterTest

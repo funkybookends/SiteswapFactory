@@ -7,9 +7,9 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.PassingSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
 
 public class StringToPassingSiteswapConstructor implements SiteswapConstructor<PassingSiteswap>
 {

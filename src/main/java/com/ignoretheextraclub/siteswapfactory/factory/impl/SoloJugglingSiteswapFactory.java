@@ -7,10 +7,10 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.constructors.GeneralCircuitToTwoHandedSyncSiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.constructors.StringToTwoHandedSyncSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSiteswapConstructor;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSyncSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToTwoHandedSiteswapConstructor;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToTwoHandedSyncSiteswapConstructor;
 
 public final class SoloJugglingSiteswapFactory extends SiteswapFactoryImpl
 {

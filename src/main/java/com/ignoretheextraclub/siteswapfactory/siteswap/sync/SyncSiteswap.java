@@ -1,12 +1,12 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.MultiHandThrosToStringConverter;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 public class SyncSiteswap implements Siteswap

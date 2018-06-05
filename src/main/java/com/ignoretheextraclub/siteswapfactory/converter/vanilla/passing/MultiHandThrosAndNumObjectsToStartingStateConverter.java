@@ -5,9 +5,9 @@ import java.util.Stack;
 import java.util.function.BiFunction;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandSyncStateBuilder;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandSyncStateBuilder;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 public class MultiHandThrosAndNumObjectsToStartingStateConverter implements BiFunction<MultiHandThro[], Integer, MultiHandedSyncState>

@@ -2,7 +2,8 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.MultiHandThrosToPassingStringConverter;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.SyncSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
 
 public class PassingSiteswap extends SyncSiteswap
 {

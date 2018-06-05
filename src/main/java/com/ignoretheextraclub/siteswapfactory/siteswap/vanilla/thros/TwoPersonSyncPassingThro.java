@@ -1,5 +1,7 @@
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
 
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
+
 public class TwoPersonSyncPassingThro extends MultiHandThro
 {
 	public TwoPersonSyncPassingThro(final HandSpecificThro[] thros)

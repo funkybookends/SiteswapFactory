@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros;
 
 import java.util.Arrays;
 import java.util.Comparator;

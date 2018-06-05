@@ -2,7 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.passing;
 
 import java.util.function.Function;
 
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 public class PassingStringToMultiHandThros implements Function<String, MultiHandThro[]>
 {

@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.constructors;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.passing.MultiHandThrosAndNumObjectsToStartingStateConverter;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.passing.MultiHandThrosToNumObjectsConverter;
@@ -7,10 +7,10 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.SyncSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSyncSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.SyncSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.TwoHandedSyncSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 public class StringToTwoHandedSyncSiteswapConstructor implements SiteswapConstructor<SyncSiteswap>
 {

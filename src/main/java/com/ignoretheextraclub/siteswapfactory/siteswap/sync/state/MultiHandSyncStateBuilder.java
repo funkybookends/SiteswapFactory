@@ -1,7 +1,7 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.state;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 public class MultiHandSyncStateBuilder
 {

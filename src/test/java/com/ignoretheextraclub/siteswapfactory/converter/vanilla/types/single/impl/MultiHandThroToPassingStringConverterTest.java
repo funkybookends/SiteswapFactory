@@ -2,7 +2,7 @@ package com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.im
 
 import org.junit.Test;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest.multiHandThro;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncStateTest.multiHandThro;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultiHandThroToPassingStringConverterTest

@@ -1,12 +1,12 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
 
-import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncStateTest.multiHandThro;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncStateTest.multiHandThro;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SyncSiteswapTest

@@ -10,6 +10,7 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
+import com.ignoretheextraclub.siteswapfactory.utils.BitMaths;
 
 /**
  * Represents a VanillaState.
@@ -147,7 +148,7 @@ public class VanillaState implements State
     @Override
     public int getNumObjects()
     {
-        return numBitsSet(state);
+        return BitMaths.numBitsSet(state);
     }
 
     @Override
@@ -174,7 +175,7 @@ public class VanillaState implements State
 
     private boolean isSet(final int position)
     {
-        return isSet(this.state, position);
+        return BitMaths.isSet(this.state, position);
     }
 
     @Override
@@ -210,26 +211,9 @@ public class VanillaState implements State
         return (int) state;
     }
 
-    static boolean isSet(final long on, final int position)
-    {
-        return (on & (1 << position)) > 0;
-    }
-
     static boolean isPowerOfTwo(final long num)
     {
         return (num & (num - 1)) == 0;
     }
 
-    static int numBitsSet(long state)
-    {
-        int count = 0;
-
-        while (state > 0)
-        {
-            count += state & 1;
-            state >>= 1;
-        }
-
-        return count;
-    }
 }

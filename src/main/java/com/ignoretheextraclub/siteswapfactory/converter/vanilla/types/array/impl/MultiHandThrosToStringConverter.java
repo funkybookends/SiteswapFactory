@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.single.impl.MultiHandThroToStringConverter;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 public class MultiHandThrosToStringConverter implements Function<Thro[], String>
 {

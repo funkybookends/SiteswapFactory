@@ -1,9 +1,9 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.constructors;
 
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.SyncSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.SyncSiteswap;
 
 public class GeneralCircuitToTwoHandedSyncSiteswapConstructor implements SiteswapConstructor<SyncSiteswap>
 {

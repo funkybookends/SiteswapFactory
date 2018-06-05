@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros;
 
 import java.util.Iterator;
 
@@ -7,8 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.PassingSiteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.TwoPersonSyncPassingThro;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

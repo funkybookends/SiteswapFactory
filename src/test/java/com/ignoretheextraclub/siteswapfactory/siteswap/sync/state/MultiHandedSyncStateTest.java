@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.state;
 
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

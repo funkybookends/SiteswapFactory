@@ -1,4 +1,4 @@
-package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
+package com.ignoretheextraclub.siteswapfactory.siteswap.sync.state;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,9 @@ import org.apache.commons.math3.util.Combinations;
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
+import com.ignoretheextraclub.siteswapfactory.utils.BitMaths;
 
 /**
  * Created by caspar on 06/01/18.
@@ -65,7 +67,7 @@ public class MultiHandedSyncState implements State
 		{
 			for (int position = 1; position <= MAX_THROW; position++)
 			{
-				if (!VanillaState.isSet(state[hand], position))
+				if (!BitMaths.isSet(state[hand], position))
 				{
 					availableThros.add(MultiHandThro.HandSpecificThro.get(hand, position));
 				}
@@ -73,11 +75,11 @@ public class MultiHandedSyncState implements State
 		}
 
 		final int objectsThrowing = (int) Arrays.stream(state)
-			.filter(hand -> VanillaState.isSet(hand, 0))
+			.filter(hand -> BitMaths.isSet(hand, 0))
 			.count();
 
 		final ZeroThrowInjector injectZeroThros = new ZeroThrowInjector(IntStream.range(0, state.length)
-			.filter(handIndex -> !VanillaState.isSet(state[handIndex], 0))
+			.filter(handIndex -> !BitMaths.isSet(state[handIndex], 0))
 			.toArray());
 
 		final Combinations combinations = new Combinations(availableThros.size(), objectsThrowing);
@@ -161,7 +163,7 @@ public class MultiHandedSyncState implements State
 		for (int hand = 0; hand < state.length; hand++)
 		{
 			if (throwz.getThrowForHand(hand).getNumBeats() != 0 &&
-				VanillaState.isSet(nextState[throwz.getThrowForHand(hand).getToHand()], throwz.getThrowForHand(hand).getNumBeats()))
+				BitMaths.isSet(nextState[throwz.getThrowForHand(hand).getToHand()], throwz.getThrowForHand(hand).getNumBeats()))
 			{
 				throw new BadThrowException("Throw from hand " + hand + " will collide");
 			}
@@ -193,7 +195,7 @@ public class MultiHandedSyncState implements State
 
 		for (int hand = 0; hand < state.length; hand++)
 		{
-			if (VanillaState.isSet(state[hand], 0) == (multiHandThro.getThrowForHand(hand).getNumBeats() == 0))
+			if (BitMaths.isSet(state[hand], 0) == (multiHandThro.getThrowForHand(hand).getNumBeats() == 0))
 			{
 				throw new BadThrowException("Throw for hand [" + hand +"] is not possible.");
 			}
@@ -210,7 +212,9 @@ public class MultiHandedSyncState implements State
 
 	static int calculateNumObjects(final long[] state)
 	{
-		return Arrays.stream(state).mapToInt(VanillaState::numBitsSet).sum();
+		return Arrays.stream(state)
+			.mapToInt(BitMaths::numBitsSet)
+			.sum();
 	}
 
 	@Override

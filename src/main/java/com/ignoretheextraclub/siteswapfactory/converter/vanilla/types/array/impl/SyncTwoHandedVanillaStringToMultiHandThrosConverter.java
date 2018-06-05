@@ -4,7 +4,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.BadThrowException;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
 
 public class SyncTwoHandedVanillaStringToMultiHandThrosConverter implements Function<String, MultiHandThro[]>
 {
