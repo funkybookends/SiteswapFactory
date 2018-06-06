@@ -149,6 +149,20 @@ public class CausalDiagramProperties
 
 	private static boolean DEFAULT_DRAW_HALF_ROTATION_MARKER = true;
 
+	/**
+	 * The color of the full rotation marker
+	 */
+	public static final String FULL_ROTATION_MARKER_COLOR = "FULL_ROTATION_MARKER_COLOR";
+
+	private static final Paint DEFAULT_FULL_ROTATION_MARKER_COLOR = new Color(162, 162, 162);
+
+	/**
+	 * The color of the half rotation marker
+	 */
+	public static final String HALF_ROTATION_MARKER_COLOR = "HALF_ROTATION_MARKER_COLOR";
+
+	private static final Paint DEFAULT_HALF_ROTATION_MARKER_COLOR = new Color(190, 190, 190);
+
 	private final Map<String, Object> properties = new HashMap<>();
 
 	public CausalDiagramProperties()

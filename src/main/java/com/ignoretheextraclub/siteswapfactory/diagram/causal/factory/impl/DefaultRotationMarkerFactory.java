@@ -15,15 +15,14 @@ import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.C
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_FOR_ARROW_BEND;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DRAW_FULL_ROTATION_MARKER;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DRAW_HALF_ROTATION_MARKER;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.FULL_ROTATION_MARKER_COLOR;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.HALF_ROTATION_MARKER_COLOR;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LEFT_BORDER_DISTANCE;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LINE_WIDTH;
 import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.TOP_BORDER_DISTANCE;
 
 public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 {
-	private static final Paint FULL_ROTATION_MARKER_COLOR = new Color(162, 162, 162);
-	private static final Paint HALF_ROTATION_MARKER_COLOR = new Color(190, 190, 190);
-
 	private final CausalDiagramProperties cdp;
 
 	public DefaultRotationMarkerFactory(final CausalDiagramProperties cdp)
@@ -87,7 +86,7 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected Paint getFullRotationMarkerPaint()
 	{
-		return FULL_ROTATION_MARKER_COLOR;
+		return (Paint) cdp.get(FULL_ROTATION_MARKER_COLOR);
 	}
 
 	protected Stroke getHalfRotationMarkerStroke()
@@ -97,6 +96,6 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected Paint getHalfRotationMarkerPaint()
 	{
-		return HALF_ROTATION_MARKER_COLOR;
+		return (Paint) cdp.get(HALF_ROTATION_MARKER_COLOR);
 	}
 }
