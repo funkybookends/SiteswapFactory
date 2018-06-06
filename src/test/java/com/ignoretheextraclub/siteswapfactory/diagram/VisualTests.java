@@ -16,6 +16,7 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.CausalDiagramDrawer;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.CausalDiagramToSvg;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.FhsToCausalDiagram;
+import com.ignoretheextraclub.siteswapfactory.diagram.causal.converter.PassingSiteswapToCausalDiagram;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.ArrowFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.RotationMarkerFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.SwapFactory;
@@ -24,7 +25,9 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.Defaul
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.factory.impl.DefaultSwapFactory;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.PassingSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.PassingSiteswap;
 
 public class VisualTests
 {
@@ -38,6 +41,7 @@ public class VisualTests
 	private SwapFactory swapFactory;
 	private CausalDiagramDrawer causalDiagramToSvg;
 	private RotationMarkerFactory rotationMarkerFactor;
+	private PassingSiteswapToCausalDiagram passingSiteswapToCausalDiagram;
 
 	@Before
 	public void setUp() throws Exception
@@ -45,6 +49,7 @@ public class VisualTests
 		causalDiagramProperties = new CausalDiagramProperties();
 
 		fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties, new Hand[]{Hand.RIGHT, Hand.RIGHT, Hand.LEFT, Hand.LEFT});
+		passingSiteswapToCausalDiagram = new PassingSiteswapToCausalDiagram(causalDiagramProperties);
 		arrowFactory = new DefaultArrowFactory(causalDiagramProperties);
 		swapFactory = new DefaultSwapFactory(causalDiagramProperties);
 		rotationMarkerFactor = new DefaultRotationMarkerFactory(causalDiagramProperties);
@@ -66,6 +71,20 @@ public class VisualTests
 
 		LOG.info("{}", FourHandedSiteswapToHefflishSequence.get().apply(siteswap, 0));
 		LOG.info("{}", FourHandedSiteswapToHefflishSequence.get().apply(siteswap, 1));
+
+		LOG.info("{}",file.toURI().toURL());
+	}
+
+	@Test
+	public void visualTest1() throws Exception
+	{
+		final PassingSiteswap siteswap = (PassingSiteswap) PassingSiteswapFactory.getPassingSiteswap("<3|4p><4|3><4p|3>");
+		final CausalDiagram causalDiagram = passingSiteswapToCausalDiagram.apply(siteswap);
+		final SVGGraphics2D graphics2D = causalDiagramToSvg.apply(causalDiagram, point -> new SVGGraphics2D((int) point.getX(), (int) point.getY()));
+		final String svgDocument = graphics2D.getSVGDocument();
+
+		final File file = getFile("visualTest1");
+		FileUtils.writeStringToFile(file, svgDocument, StandardCharsets.UTF_8);
 
 		LOG.info("{}",file.toURI().toURL());
 	}
