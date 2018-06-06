@@ -24,6 +24,11 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.RotationMa
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_BEATS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_JUGGLERS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_OVERLAPPING_SWAPS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LEFT_BORDER_DISTANCE;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.TOP_BORDER_DISTANCE;
 import static org.apache.commons.lang3.math.NumberUtils.max;
 
 /**
@@ -87,8 +92,8 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 			{
 				final SwapGraphic overlapping = swaps.get(overlappingSite.get());
 
-				overlapping.translate(0, cdp.getDistanceBetweenOverlappingSwaps());
-				newSwap.translate(0, -cdp.getDistanceBetweenOverlappingSwaps());
+				overlapping.translate(0, cdp.getDouble(DISTANCE_BETWEEN_OVERLAPPING_SWAPS));
+				newSwap.translate(0, -cdp.getDouble(DISTANCE_BETWEEN_OVERLAPPING_SWAPS));
 			}
 
 			swaps.put(unmappedSite, newSwap);
@@ -142,8 +147,8 @@ public class CausalDiagramToSvg implements CausalDiagramDrawer
 	                                   final CausalDiagram causalDiagram)
 	{
 
-		final double maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getDistanceBetweenJugglers() + cdp.getTopBorderDistance() * 2;
-		final double maxBeatPlusBorder = causalDiagram.getMaxCausalBeat() * cdp.getDistanceBetweenBeats() + cdp.getLeftBorderDistance() * 2;
+		final double maxJugglerPlusBorder = causalDiagram.getNumJugglers() * cdp.getDouble(DISTANCE_BETWEEN_JUGGLERS) + cdp.getDouble(TOP_BORDER_DISTANCE) * 2;
+		final double maxBeatPlusBorder = causalDiagram.getMaxCausalBeat() * cdp.getDouble(DISTANCE_BETWEEN_BEATS) + cdp.getDouble(LEFT_BORDER_DISTANCE) * 2;
 
 		final Point2D causalMax = new Point2D.Double(maxBeatPlusBorder, maxJugglerPlusBorder);
 

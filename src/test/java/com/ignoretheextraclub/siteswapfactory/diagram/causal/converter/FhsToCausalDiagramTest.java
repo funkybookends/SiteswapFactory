@@ -12,6 +12,10 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.impl.DefaultCausalD
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.MAX_NUM_THROWS_DISPLAYED;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.MIN_NUM_HALF_ROTATIONS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.PREFERRED_NUM_THROWS;
+
 public class FhsToCausalDiagramTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(FhsToCausalDiagramTest.class);
@@ -23,9 +27,9 @@ public class FhsToCausalDiagramTest
     public void setUp() throws Exception
     {
         causalDiagramProperties = new CausalDiagramProperties();
-        causalDiagramProperties.setPreferredNumThrows(6);
-        causalDiagramProperties.setMinNumHalfRotations(2);
-        causalDiagramProperties.setMaxNumThrowsDisplayed(10);
+        causalDiagramProperties.set(PREFERRED_NUM_THROWS, 6);
+        causalDiagramProperties.set(MIN_NUM_HALF_ROTATIONS, 2);
+        causalDiagramProperties.set(MAX_NUM_THROWS_DISPLAYED, 10);
 
         fhsToCausalDiagram = new FhsToCausalDiagram(causalDiagramProperties);
     }

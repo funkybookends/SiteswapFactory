@@ -10,6 +10,15 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.RotationMa
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.DefaultRotationMarkerGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_BEATS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_JUGGLERS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_FOR_ARROW_BEND;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DRAW_FULL_ROTATION_MARKER;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DRAW_HALF_ROTATION_MARKER;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LEFT_BORDER_DISTANCE;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LINE_WIDTH;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.TOP_BORDER_DISTANCE;
+
 public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 {
 	private static final Paint FULL_ROTATION_MARKER_COLOR = new Color(162, 162, 162);
@@ -30,9 +39,9 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 		final double maxY = getMaxY(causalDiagram);
 		final double minY = getMinY(causalDiagram);
 
-		if (cdp.isDrawFullRotationMarker() && causalDiagram.getFullRotationBeat() <= causalDiagram.getMaxCausalBeat())
+		if (cdp.is(DRAW_FULL_ROTATION_MARKER) && causalDiagram.getFullRotationBeat() <= causalDiagram.getMaxCausalBeat())
 		{
-			final double xPosition = cdp.getDistanceBetweenBeats() * causalDiagram.getFullRotationBeat() + cdp.getLeftBorderDistance();
+			final double xPosition = cdp.getDouble(DISTANCE_BETWEEN_BEATS) * causalDiagram.getFullRotationBeat() + cdp.getDouble(LEFT_BORDER_DISTANCE);
 
 			rotationMarkers.add(new DefaultRotationMarkerGraphic.Builder()
 				.withMinY(minY)
@@ -44,9 +53,9 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 			);
 		}
 
-		if (cdp.isDrawHalfRotationMarker())
+		if (cdp.is(DRAW_HALF_ROTATION_MARKER))
 		{
-			final double xPosition = cdp.getDistanceBetweenBeats() * causalDiagram.getFullRotationBeat() / 2 + cdp.getLeftBorderDistance();
+			final double xPosition = cdp.getDouble(DISTANCE_BETWEEN_BEATS) * causalDiagram.getFullRotationBeat() / 2 + cdp.getDouble(LEFT_BORDER_DISTANCE);
 
 			rotationMarkers.add(new DefaultRotationMarkerGraphic.Builder()
 				.withMinY(minY)
@@ -63,17 +72,17 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected double getMaxY(final CausalDiagram causalDiagram)
 	{
-		return (causalDiagram.getNumJugglers() * cdp.getDistanceBetweenJugglers() + cdp.getTopBorderDistance()) + cdp.getDistanceForArrowBend() / 2;
+		return (causalDiagram.getNumJugglers() * cdp.getDouble(DISTANCE_BETWEEN_JUGGLERS) + cdp.getDouble(TOP_BORDER_DISTANCE)) + cdp.getDouble(DISTANCE_FOR_ARROW_BEND) / 2;
 	}
 
 	protected double getMinY(final CausalDiagram causalDiagram)
 	{
-		return cdp.getTopBorderDistance() - cdp.getDistanceForArrowBend() / 2;
+		return cdp.getDouble(TOP_BORDER_DISTANCE) - cdp.getDouble(DISTANCE_FOR_ARROW_BEND) / 2;
 	}
 
 	protected Stroke getFullRotationMarkerStroke()
 	{
-		return new BasicStroke((float) cdp.getLineWidth());
+		return new BasicStroke((float) cdp.getDouble(LINE_WIDTH));
 	}
 
 	protected Paint getFullRotationMarkerPaint()
@@ -83,7 +92,7 @@ public class DefaultRotationMarkerFactory implements RotationMarkerFactory
 
 	protected Stroke getHalfRotationMarkerStroke()
 	{
-		return new BasicStroke((float) cdp.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f, new float[]{6f, 6f}, 0f);
+		return new BasicStroke((float) cdp.getDouble(LINE_WIDTH), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f, new float[]{6f, 6f}, 0f);
 	}
 
 	protected Paint getHalfRotationMarkerPaint()

@@ -9,6 +9,17 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphi
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.DefaultSwapGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_ARROW_AND_SWAP_CENTER;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_BEATS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_BETWEEN_JUGGLERS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LABEL_FONT;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LABEL_XOFFSET_DISTANCE;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LABEL_YOFFSET_DISTANCE;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LEFT_BORDER_DISTANCE;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LINE_WIDTH;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.SWAP_DRAW_CIRCLE;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.TOP_BORDER_DISTANCE;
+
 public class DefaultSwapFactory implements SwapFactory
 {
 	private static final Color DEFAULT_FONT_COLOR = new Color(60, 60, 60);
@@ -25,8 +36,8 @@ public class DefaultSwapFactory implements SwapFactory
 	public SwapGraphic getSwap(final Site site)
 	{
 		return new DefaultSwapGraphic.SwapBuilder()
-			.withxCenter(site.getCausalBeat() * cdp.getDistanceBetweenBeats() + cdp.getLeftBorderDistance())
-			.withyCenter(site.getJuggler() * cdp.getDistanceBetweenJugglers() + cdp.getTopBorderDistance())
+			.withxCenter(site.getCausalBeat() * cdp.getDouble(DISTANCE_BETWEEN_BEATS) + cdp.getDouble(LEFT_BORDER_DISTANCE))
+			.withyCenter(site.getJuggler() * cdp.getDouble(DISTANCE_BETWEEN_JUGGLERS) + cdp.getDouble(TOP_BORDER_DISTANCE))
 			.withLabel(getLabel(site))
 			.withLabelFont(getCircleFont())
 			.withCircleStroke(getCircleStroke(site))
@@ -43,12 +54,12 @@ public class DefaultSwapFactory implements SwapFactory
 
 	protected double getLabelYOffsetDistance()
 	{
-		return cdp.getLabelYOffsetDistance();
+		return cdp.getDouble(LABEL_YOFFSET_DISTANCE);
 	}
 
 	protected double getLabelXOffsetDistance()
 	{
-		return cdp.getLabelXOffsetDistance();
+		return cdp.getDouble(LABEL_XOFFSET_DISTANCE);
 	}
 
 	protected Paint getCirclePaint(final Site site)
@@ -58,7 +69,7 @@ public class DefaultSwapFactory implements SwapFactory
 
 	protected Stroke getLabelStroke(final Site site)
 	{
-		return new BasicStroke((float) cdp.getLineWidth());
+		return new BasicStroke((float) cdp.getDouble(LINE_WIDTH));
 	}
 
 	protected Paint getLabelPaint(final Site site)
@@ -73,22 +84,22 @@ public class DefaultSwapFactory implements SwapFactory
 
 	protected Font getCircleFont()
 	{
-		return cdp.getLabelFont();
+		return cdp.getFont(LABEL_FONT);
 	}
 
 	protected Stroke getCircleStroke(final Site site)
 	{
-		return new BasicStroke((float) cdp.getLineWidth());
+		return new BasicStroke((float) cdp.getDouble(LINE_WIDTH));
 	}
 
 	protected double getBuffer()
 	{
-		return cdp.getDistanceBetweenArrowAndSwapCenter();
+		return cdp.getDouble(DISTANCE_BETWEEN_ARROW_AND_SWAP_CENTER);
 	}
 
 	protected boolean getDrawCircle()
 	{
-		return cdp.isSwapDrawCircle();
+		return cdp.is(SWAP_DRAW_CIRCLE);
 	}
 
 	protected boolean getDrawLabel(final Site site)

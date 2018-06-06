@@ -9,6 +9,11 @@ import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.SwapGraphi
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.graphics.impl.SwapToSwapArrowGraphic;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties;
 
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.ARROW_HEAD_LENGTH;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.ARROW_HEAD_POINTYNESS;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.DISTANCE_FOR_ARROW_BEND;
+import static com.ignoretheextraclub.siteswapfactory.diagram.causal.properties.CausalDiagramProperties.LINE_WIDTH;
+
 public class DefaultArrowFactory implements ArrowFactory
 {
 	private static final Color CROSSING_PASS_COLOR = new Color(0, 0, 200);
@@ -54,7 +59,7 @@ public class DefaultArrowFactory implements ArrowFactory
 
 	protected Stroke getArrowStroke(final Site originSite, final Site causesSite)
 	{
-		return new BasicStroke((float) cdp.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
+		return new BasicStroke((float) cdp.getDouble(LINE_WIDTH), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
 	}
 
 	protected Paint getArrowPaint(final Site origin, final SwapGraphic originGraphic, final Site causes, final SwapGraphic causesGraphic)
@@ -68,12 +73,12 @@ public class DefaultArrowFactory implements ArrowFactory
 
 	protected double getArrowHeadLength()
 	{
-		return cdp.getArrowHeadLength();
+		return cdp.getDouble(ARROW_HEAD_LENGTH);
 	}
 
 	protected double getArrowHeadPointyness()
 	{
-		return cdp.getArrowHeadPointyness();
+		return cdp.getDouble(ARROW_HEAD_POINTYNESS);
 	}
 
 	protected boolean moreThanABeatApart(final double causalBeat, final double causalBeat1)
@@ -83,7 +88,7 @@ public class DefaultArrowFactory implements ArrowFactory
 
 	protected double getArrowBend(final Site origin, final Site causes)
 	{
-		return cdp.getDistanceForArrowBend() * (origin.getJuggler() % 2 == 1 ? -1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
+		return cdp.getDouble(DISTANCE_FOR_ARROW_BEND) * (origin.getJuggler() % 2 == 1 ? -1 : 1) * (origin.getCausalBeat() < causes.getCausalBeat() ? -1 : 1);
 	}
 
 	protected boolean getDisplayArrowHead(final Site origin, final Site causes)
