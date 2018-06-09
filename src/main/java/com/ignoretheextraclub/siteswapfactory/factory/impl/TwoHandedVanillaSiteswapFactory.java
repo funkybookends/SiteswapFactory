@@ -11,6 +11,9 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaS
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToTwoHandedSiteswapConstructor;
 
+/**
+ * A siteswap factory for creating {@link TwoHandedVanillaSiteswap}s.
+ */
 public final class TwoHandedVanillaSiteswapFactory extends SiteswapFactoryImpl
 {
 	/**
@@ -38,11 +41,21 @@ public final class TwoHandedVanillaSiteswapFactory extends SiteswapFactoryImpl
 		return DEFAULT;
 	}
 
+	/**
+	 * Creates a {@link TwoHandedVanillaSiteswap} from the object provided.
+	 * @param siteswap The object from which to create the siteswap.
+	 * @return A new Siteswap created from the object.
+	 */
 	public static TwoHandedVanillaSiteswap getTwoHandedSiteswap(final Object siteswap)
 	{
 		return (TwoHandedVanillaSiteswap) DEFAULT.get(siteswap);
 	}
 
+	/**
+	 * Creates a new {@link TwoHandedVanillaSiteswap} from the siteswap request provided.
+	 * @param siteswap The siteswap request to use.
+	 * @return A new siteswap created from the siteswa request.
+	 */
 	public static TwoHandedVanillaSiteswap getTwoHandedSiteswap(final SiteswapRequest siteswap)
 	{
 		return (TwoHandedVanillaSiteswap) DEFAULT.apply(siteswap);
