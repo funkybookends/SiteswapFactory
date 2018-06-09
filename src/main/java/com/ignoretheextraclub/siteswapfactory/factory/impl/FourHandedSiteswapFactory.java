@@ -8,6 +8,7 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToFourHandedSiteswapConstructor;
 
@@ -17,7 +18,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.Stri
 public class FourHandedSiteswapFactory extends SiteswapFactoryImpl
 {
 	/**
-	 * A list of {@link com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap} {@link SiteswapConstructor}s.
+	 * A list of {@link TwoHandedVanillaSiteswap} {@link SiteswapConstructor}s.
 	 */
 	private static final List<SiteswapConstructor<? extends Siteswap>> FOUR_HANDED_SITESWAP_CONSTRUCTORS = Arrays.asList(
 		StringToFourHandedSiteswapConstructor.get(),

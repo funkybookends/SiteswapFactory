@@ -5,14 +5,14 @@ import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 /**
  * Created by caspar on 26/07/17.
  */
-public class TwoHandedSiteswap extends VanillaSiteswap
+public class TwoHandedVanillaSiteswap extends VanillaSiteswap
 {
     private static final String TYPE = "Two Handed Siteswap";
 
     private static final int NUM_JUGGLERS = 1;
     private static final int NUM_HANDS = 2;
 
-    public TwoHandedSiteswap(final GeneralCircuit states)
+    public TwoHandedVanillaSiteswap(final GeneralCircuit states)
     {
         super(states);
     }

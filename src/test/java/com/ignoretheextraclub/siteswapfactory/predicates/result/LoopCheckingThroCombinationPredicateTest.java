@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
@@ -50,7 +50,7 @@ public class LoopCheckingThroCombinationPredicateTest
     @Parameters
     public void testSequenceSimple(final String sequence, final Thro[] predicate, final boolean contains)
     {
-        final GeneralCircuit states = TwoHandedSiteswapFactory.getTwoHandedSiteswap(sequence).getGeneralCircuit();
+        final GeneralCircuit states = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap(sequence).getGeneralCircuit();
 
         final LoopCheckingThroCombinationPredicate throCombinationPredicate = new LoopCheckingThroCombinationPredicate(predicate);
 

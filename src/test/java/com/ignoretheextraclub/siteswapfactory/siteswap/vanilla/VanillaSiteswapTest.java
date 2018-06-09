@@ -5,7 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.exceptions.NumJugglersException;
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX_X;
@@ -24,9 +24,9 @@ public class VanillaSiteswapTest
    public void test534() throws Exception
    {
        //todo construct vanilla siteswap
-       final VanillaSiteswap vanillaSiteswap = new VanillaSiteswap(TwoHandedSiteswapFactory.getTwoHandedSiteswap("534").getGeneralCircuit());
-       final VanillaSiteswap same = new VanillaSiteswap(TwoHandedSiteswapFactory.getTwoHandedSiteswap("453").getGeneralCircuit());
-       final VanillaSiteswap different = new VanillaSiteswap(TwoHandedSiteswapFactory.getTwoHandedSiteswap("441").getGeneralCircuit());
+       final VanillaSiteswap vanillaSiteswap = new VanillaSiteswap(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("534").getGeneralCircuit());
+       final VanillaSiteswap same = new VanillaSiteswap(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("453").getGeneralCircuit());
+       final VanillaSiteswap different = new VanillaSiteswap(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("441").getGeneralCircuit());
 
        softly.assertThatThrownBy(vanillaSiteswap::getNumJugglers).isInstanceOf(NumJugglersException.class);
        softly.assertThatThrownBy(vanillaSiteswap::getNumHands).isInstanceOf(NumJugglersException.class);

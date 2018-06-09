@@ -3,9 +3,9 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
-public class GeneralCircuitToTwoHandedSiteswapConstructor implements SiteswapConstructor<TwoHandedSiteswap>
+public class GeneralCircuitToTwoHandedSiteswapConstructor implements SiteswapConstructor<TwoHandedVanillaSiteswap>
 {
 	private static GeneralCircuitToTwoHandedSiteswapConstructor INSTANCE;
 
@@ -24,11 +24,11 @@ public class GeneralCircuitToTwoHandedSiteswapConstructor implements SiteswapCon
 	}
 
 	@Override
-	public TwoHandedSiteswap apply(final SiteswapRequest siteswapRequest)
+	public TwoHandedVanillaSiteswap apply(final SiteswapRequest siteswapRequest)
 	{
 		return siteswapRequest.getReducer()
 			.andThen(siteswapRequest.getStartingStrategy())
-			.andThen(TwoHandedSiteswap::new)
+			.andThen(TwoHandedVanillaSiteswap::new)
 			.apply((GeneralCircuit) siteswapRequest.getConstructor());
 	}
 

@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +36,7 @@ public class HighestThrowFirstStrategyTest
        {
            for (String constructor : correctToRotations.get(expected))
            {
-               final TwoHandedSiteswap twoHandedSiteswap = TwoHandedSiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(constructor, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
+               final TwoHandedVanillaSiteswap twoHandedSiteswap = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(constructor, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
                assertThat(twoHandedSiteswap.toString()).isEqualTo(expected);
            }
        }

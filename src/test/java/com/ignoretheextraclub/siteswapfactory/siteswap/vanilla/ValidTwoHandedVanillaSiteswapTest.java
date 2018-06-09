@@ -11,7 +11,7 @@ import org.junit.runners.Parameterized;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.semantic.StreamingFilteringReducer;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStrategy;
 import com.ignoretheextraclub.siteswapfactory.sorters.impl.NoStartingStrategy;
 import com.ignoretheextraclub.siteswapfactory.testutils.Utils;
@@ -20,12 +20,12 @@ import com.ignoretheextraclub.siteswapfactory.testutils.Utils;
 Created by caspar on 25/06/17.
 */
 @RunWith(Parameterized.class)
-public class ValidTwoHandedSiteswapTest
+public class ValidTwoHandedVanillaSiteswapTest
 {
    private static final String VALID_TWO_HANDED_SITESWAPS_LIST = "siteswapLists/THS-unsorted-valid.list";
    private final String stringSiteswap;
 
-   public ValidTwoHandedSiteswapTest(final String stringSiteswap)
+   public ValidTwoHandedVanillaSiteswapTest(final String stringSiteswap)
    {
        this.stringSiteswap = stringSiteswap;
    }
@@ -42,9 +42,9 @@ public class ValidTwoHandedSiteswapTest
    @Test
    public void testCreateWithNoSortingStrategy() throws Exception
    {
-       final TwoHandedSiteswap unsorted = TwoHandedSiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), NoStartingStrategy.get()));
+       final TwoHandedVanillaSiteswap unsorted = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), NoStartingStrategy.get()));
        softly.assertThat(unsorted.toString()).as("unsorted toString").isEqualTo(stringSiteswap.toUpperCase());
-       final TwoHandedSiteswap hfsSorted = TwoHandedSiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
+       final TwoHandedVanillaSiteswap hfsSorted = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap(new SiteswapRequest(stringSiteswap, StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()));
 //        softly.assertThat(hfsSorted.toString()).as("hfsSorted toString").isEqualTo(stringSiteswap.toUpperCase()); // TODO sort all siteswaps in list so we can assert.
 
        softly.assertThat(unsorted.same(hfsSorted)).as("unsorted.same(hfsSorted)").isTrue();

@@ -15,14 +15,14 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
 import static org.mockito.Mockito.mock;
 
 public class FromCanonicalNameDescriberTest
 {
-    private DescriptionContributor<TwoHandedSiteswap> contributor;
+    private DescriptionContributor<TwoHandedVanillaSiteswap> contributor;
     private Collection<Locale> availableLocales = Arrays.asList(Locale.UK, Locale.GERMAN);
     private Map<String, List<String>> nameMap = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class FromCanonicalNameDescriberTest
     {
         final SimpleDescription.Builder builder = mock(SimpleDescription.Builder.class);
 
-        contributor.contribute(TwoHandedSiteswapFactory.getTwoHandedSiteswap("55500"), Locale.UK, builder);
+        contributor.contribute(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("55500"), Locale.UK, builder);
 
         final InOrder inOrder = Mockito.inOrder(builder);
 

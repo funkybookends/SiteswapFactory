@@ -4,7 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_;
@@ -22,7 +22,7 @@ public class SameNumberOfObjectsPredicateTest
     @Test
     public void name() throws Exception
     {
-        softly.assertThat(SameNumberOfObjectsPredicate.get().test(TwoHandedSiteswapFactory.getTwoHandedSiteswap("534444555504").getStates())).isTrue();
+        softly.assertThat(SameNumberOfObjectsPredicate.get().test(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("534444555504").getStates())).isTrue();
         softly.assertThat(SameNumberOfObjectsPredicate.hasSameNumberOfObjects(new State[]{XXX__, XXX_})).isTrue();
         softly.assertThat(SameNumberOfObjectsPredicate.hasSameNumberOfObjects(new State[]{XXX__, XXXX_})).isFalse();
     }

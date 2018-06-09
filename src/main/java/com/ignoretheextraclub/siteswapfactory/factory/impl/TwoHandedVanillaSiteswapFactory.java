@@ -7,44 +7,44 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToTwoHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToTwoHandedSiteswapConstructor;
 
-public final class TwoHandedSiteswapFactory extends SiteswapFactoryImpl
+public final class TwoHandedVanillaSiteswapFactory extends SiteswapFactoryImpl
 {
 	/**
-	 * A list of {@link com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap} {@link SiteswapConstructor}s.
+	 * A list of {@link TwoHandedVanillaSiteswap} {@link SiteswapConstructor}s.
 	 */
 	private final static List<SiteswapConstructor<? extends Siteswap>> TWO_HANDED_SITESWAP_CONSTRUCTORS = Arrays.asList(
 		StringToTwoHandedSiteswapConstructor.get(),
 		GeneralCircuitToTwoHandedSiteswapConstructor.get()
 	);
 
-	private static final TwoHandedSiteswapFactory DEFAULT = new TwoHandedSiteswapFactory();
+	private static final TwoHandedVanillaSiteswapFactory DEFAULT = new TwoHandedVanillaSiteswapFactory();
 
-	private TwoHandedSiteswapFactory()
+	private TwoHandedVanillaSiteswapFactory()
 	{
 		super(TWO_HANDED_SITESWAP_CONSTRUCTORS);
 	}
 
-	public TwoHandedSiteswapFactory(final SiteswapRequestBuilder siteswapRequestBuilder)
+	public TwoHandedVanillaSiteswapFactory(final SiteswapRequestBuilder siteswapRequestBuilder)
 	{
 		super(TWO_HANDED_SITESWAP_CONSTRUCTORS, siteswapRequestBuilder);
 	}
 
-	public static TwoHandedSiteswapFactory getDefault()
+	public static TwoHandedVanillaSiteswapFactory getDefault()
 	{
 		return DEFAULT;
 	}
 
-	public static TwoHandedSiteswap getTwoHandedSiteswap(final Object siteswap)
+	public static TwoHandedVanillaSiteswap getTwoHandedSiteswap(final Object siteswap)
 	{
-		return (TwoHandedSiteswap) DEFAULT.get(siteswap);
+		return (TwoHandedVanillaSiteswap) DEFAULT.get(siteswap);
 	}
 
-	public static TwoHandedSiteswap getTwoHandedSiteswap(final SiteswapRequest siteswap)
+	public static TwoHandedVanillaSiteswap getTwoHandedSiteswap(final SiteswapRequest siteswap)
 	{
-		return (TwoHandedSiteswap) DEFAULT.apply(siteswap);
+		return (TwoHandedVanillaSiteswap) DEFAULT.apply(siteswap);
 	}
 }

@@ -4,7 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
@@ -21,9 +21,9 @@ public class GroundedPredicateTest
     public void test() throws Exception
     {
         softly.assertThat(GroundedPredicate.get().test(new State[]{XXX__})).isTrue();
-        softly.assertThat(GroundedPredicate.isGround(TwoHandedSiteswapFactory.getTwoHandedSiteswap("3"))).isTrue();
-        softly.assertThat(GroundedPredicate.isGround(TwoHandedSiteswapFactory.getTwoHandedSiteswap("55500"))).as("55500").isTrue();
-        softly.assertThat(GroundedPredicate.isGround(TwoHandedSiteswapFactory.getTwoHandedSiteswap("55050"))).as("55050").isFalse();
+        softly.assertThat(GroundedPredicate.isGround(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("3"))).isTrue();
+        softly.assertThat(GroundedPredicate.isGround(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("55500"))).as("55500").isTrue();
+        softly.assertThat(GroundedPredicate.isGround(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("55050"))).as("55050").isFalse();
         // todo add more
     }
 }

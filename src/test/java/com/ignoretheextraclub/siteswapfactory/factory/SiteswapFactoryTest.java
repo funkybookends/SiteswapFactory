@@ -10,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapException;
 import com.ignoretheextraclub.siteswapfactory.factory.impl.SiteswapFactoryImpl;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -45,7 +45,7 @@ public class SiteswapFactoryTest
         constructor1 = mock(SiteswapConstructor.class);
         constructor2 = mock(SiteswapConstructor.class);
         siteswap = mock(Object.class);
-        result = mock(TwoHandedSiteswap.class);
+        result = mock(TwoHandedVanillaSiteswap.class);
 
         // Prepare Expected
         expectedSiteswapRequest = new SiteswapRequest(siteswap);

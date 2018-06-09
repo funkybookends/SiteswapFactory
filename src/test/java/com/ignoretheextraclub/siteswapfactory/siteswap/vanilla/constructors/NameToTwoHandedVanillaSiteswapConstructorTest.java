@@ -11,9 +11,9 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.InvalidSiteswapExceptio
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -22,9 +22,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class NameToTwoHandedSiteswapConstructorTest
+public class NameToTwoHandedVanillaSiteswapConstructorTest
 {
-    private SiteswapConstructor<TwoHandedSiteswap> internalConstructor;
+    private SiteswapConstructor<TwoHandedVanillaSiteswap> internalConstructor;
     private NameToTwoHandedSiteswapConstructor constructor;
 
     @Before
@@ -41,7 +41,7 @@ public class NameToTwoHandedSiteswapConstructorTest
     @Test
     public void WHEN_hasMapping_EXPECT_mapsAndUsesInternal_AND_usesSiteswapRequestCorrectly() throws Exception
     {
-        final TwoHandedSiteswap result = TwoHandedSiteswapFactory.getTwoHandedSiteswap("55500");
+        final TwoHandedVanillaSiteswap result = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("55500");
 
         final SiteswapRequest inputRequest = mock(SiteswapRequest.class, "inputRequest");
         final SiteswapRequest newRequest = mock(SiteswapRequest.class, "newRequest");
@@ -66,7 +66,7 @@ public class NameToTwoHandedSiteswapConstructorTest
     @Test
     public void WHEN_mappingIsBad_EXPECT_deletesMapping() throws Exception
     {
-        final TwoHandedSiteswap result = TwoHandedSiteswapFactory.getTwoHandedSiteswap("55500");
+        final TwoHandedVanillaSiteswap result = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("55500");
 
         final SiteswapRequest inputRequest = mock(SiteswapRequest.class, "inputRequest");
         final SiteswapRequest newRequest = mock(SiteswapRequest.class, "newRequest");

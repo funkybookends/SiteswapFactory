@@ -9,16 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ignoretheextraclub.siteswapfactory.generator.siteswap.SiteswapGenerator;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by caspar on 09/10/17.
  */
-public class TwoHandedSiteswapGeneratorTest
+public class TwoHandedVanillaSiteswapGeneratorTest
 { 
-    private static final Logger LOG = LoggerFactory.getLogger(TwoHandedSiteswapGeneratorTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TwoHandedVanillaSiteswapGeneratorTest.class);
 
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
@@ -29,9 +29,9 @@ public class TwoHandedSiteswapGeneratorTest
         final int numObjects = 5;
         final int maxPeriod = 3;
         final int maxThro = 9;
-        final SiteswapGenerator<TwoHandedSiteswap> ground = TwoHandedSiteswapGenerator.ground(numObjects, maxThro, maxPeriod);
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> ground = TwoHandedSiteswapGenerator.ground(numObjects, maxThro, maxPeriod);
 
-        Predicate<TwoHandedSiteswap> test = numObjectsEquals(numObjects)
+        Predicate<TwoHandedVanillaSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly())
             .and(isGrounded())
@@ -46,9 +46,9 @@ public class TwoHandedSiteswapGeneratorTest
         final int numObjects = 5;
         final int maxPeriod = 3;
         final int maxThro = 9;
-        final SiteswapGenerator<TwoHandedSiteswap> excited = TwoHandedSiteswapGenerator.excited(numObjects, maxThro, maxPeriod);
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> excited = TwoHandedSiteswapGenerator.excited(numObjects, maxThro, maxPeriod);
 
-        Predicate<TwoHandedSiteswap> test = numObjectsEquals(numObjects)
+        Predicate<TwoHandedVanillaSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly())
             .and(isNotGrounded());
@@ -62,9 +62,9 @@ public class TwoHandedSiteswapGeneratorTest
         final int numObjects = 5;
         final int maxPeriod = 3;
         final int maxThro = 9;
-        final SiteswapGenerator<TwoHandedSiteswap> all = TwoHandedSiteswapGenerator.all(numObjects, maxThro, maxPeriod);
+        final SiteswapGenerator<TwoHandedVanillaSiteswap> all = TwoHandedSiteswapGenerator.all(numObjects, maxThro, maxPeriod);
 
-        Predicate<TwoHandedSiteswap> test = numObjectsEquals(numObjects)
+        Predicate<TwoHandedVanillaSiteswap> test = numObjectsEquals(numObjects)
             .and(periodLessThan(maxPeriod))
             .and(classIsExactly());
 
@@ -86,7 +86,7 @@ public class TwoHandedSiteswapGeneratorTest
 
     // TODO add more
 
-    private Predicate<TwoHandedSiteswap> isNotGrounded()
+    private Predicate<TwoHandedVanillaSiteswap> isNotGrounded()
     {
         return twoHandedSiteswap ->
         {
@@ -102,7 +102,7 @@ public class TwoHandedSiteswapGeneratorTest
         };
     }
 
-    private Predicate<TwoHandedSiteswap> periodLessThan(final int maxPeriod)
+    private Predicate<TwoHandedVanillaSiteswap> periodLessThan(final int maxPeriod)
     {
         return twoHandedSiteswap ->
         {
@@ -118,7 +118,7 @@ public class TwoHandedSiteswapGeneratorTest
         };
     }
 
-    private Predicate<TwoHandedSiteswap> isGrounded()
+    private Predicate<TwoHandedVanillaSiteswap> isGrounded()
     {
         return (twoHandedSiteswap) ->
         {
@@ -134,11 +134,11 @@ public class TwoHandedSiteswapGeneratorTest
         };
     }
 
-    private Predicate<TwoHandedSiteswap> classIsExactly()
+    private Predicate<TwoHandedVanillaSiteswap> classIsExactly()
     {
         return twoHandedSiteswap ->
         {
-            if (twoHandedSiteswap.getClass() == TwoHandedSiteswap.class)
+            if (twoHandedSiteswap.getClass() == TwoHandedVanillaSiteswap.class)
             {
                 return true;
             }
@@ -150,7 +150,7 @@ public class TwoHandedSiteswapGeneratorTest
         };
     }
 
-    private Predicate<TwoHandedSiteswap> numObjectsEquals(final int numObjects)
+    private Predicate<TwoHandedVanillaSiteswap> numObjectsEquals(final int numObjects)
     {
         return twoHandedSiteswap ->
         {

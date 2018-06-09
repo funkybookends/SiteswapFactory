@@ -4,7 +4,7 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 
 /**
  * Created by caspar on 24/09/17.
@@ -17,8 +17,8 @@ public class PrimePredicateTest
     @Test
     public void name() throws Exception
     {
-        softly.assertThat(PrimePredicate.isPrime(TwoHandedSiteswapFactory.getTwoHandedSiteswap("5"))).isTrue();
-        softly.assertThat(PrimePredicate.isPrime(TwoHandedSiteswapFactory.getTwoHandedSiteswap("564"))).isFalse();
+        softly.assertThat(PrimePredicate.isPrime(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("5"))).isTrue();
+        softly.assertThat(PrimePredicate.isPrime(TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("564"))).isFalse();
         //todo add More
     }
 }

@@ -6,12 +6,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.RouteSearcher;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.StateJoiner;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_;
@@ -74,14 +74,14 @@ public class SimpleStateJoinerTest
 	@Test
 	public void GIVEN_generalPaths_EXPECT_betterName() throws Exception
 	{
-		final TwoHandedSiteswap first = TwoHandedSiteswapFactory.getTwoHandedSiteswap("45574");
-		final TwoHandedSiteswap second = TwoHandedSiteswapFactory.getTwoHandedSiteswap("77416");
+		final TwoHandedVanillaSiteswap first = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("45574");
+		final TwoHandedVanillaSiteswap second = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("77416");
 
 		final GeneralCircuit resultCircuit = realStateJoiner.joinShortest(first.getGeneralCircuit(), second.getGeneralCircuit());
 
-		final TwoHandedSiteswap result = new TwoHandedSiteswap(resultCircuit);
+		final TwoHandedVanillaSiteswap result = new TwoHandedVanillaSiteswap(resultCircuit);
 
-		final TwoHandedSiteswap expectedSiteswap = TwoHandedSiteswapFactory.getTwoHandedSiteswap("4557477416");
+		final TwoHandedVanillaSiteswap expectedSiteswap = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("4557477416");
 
 		final GeneralCircuit expectedGeneralCircuit = expectedSiteswap.getGeneralCircuit();
 

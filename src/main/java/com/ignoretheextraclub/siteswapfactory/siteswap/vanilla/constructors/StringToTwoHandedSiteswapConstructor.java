@@ -6,16 +6,16 @@ import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
-import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedSiteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaState;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.thros.VanillaThro;
 
 /**
- * Creates a {@link TwoHandedSiteswap} give a {@link SiteswapRequest}. Respects the reducing and sorting preferences.
+ * Creates a {@link TwoHandedVanillaSiteswap} give a {@link SiteswapRequest}. Respects the reducing and sorting preferences.
  *
  * @author Caspar Nonclercq
  */
-public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor<TwoHandedSiteswap>
+public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor<TwoHandedVanillaSiteswap>
 {
     private static StringToTwoHandedSiteswapConstructor INSTANCE;
 
@@ -34,7 +34,7 @@ public class StringToTwoHandedSiteswapConstructor implements SiteswapConstructor
     }
 
     @Override
-    public TwoHandedSiteswap apply(final SiteswapRequest siteswapRequest)
+    public TwoHandedVanillaSiteswap apply(final SiteswapRequest siteswapRequest)
     {
         final String siteswap = siteswapRequest.getConstructor().toString();
         final VanillaThro[] vanillaThros = siteswapRequest.getReducer().reduce(StringToVanillaThrosConverter.convert(siteswap));
