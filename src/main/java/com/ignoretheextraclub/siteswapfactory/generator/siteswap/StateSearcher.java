@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
 import com.ignoretheextraclub.siteswapfactory.generator.sequence.impl.GeneralPathIterator;
+import com.ignoretheextraclub.siteswapfactory.generator.sequence.impl.GeneralPathSpliterator;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
@@ -60,7 +62,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     private final SiteswapConstructor<T> siteswapConstructor;
 
     private T next;
-    private GeneralPathIterator routeIterator;
+    private GeneralPathSpliterator routeIterator;
 
     /**
      * Creates a {@link StateSearcher} which will find successive {@link Siteswap}s based on the provided configuration.
@@ -114,11 +116,13 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     {
         Optional<T> candidate = Optional.empty();
 
+        final Acceptor<GeneralPath> value = new Acceptor<>();
+
         while (!(routeIterator == null || candidate.isPresent()))
         {
-            if (routeIterator != null && routeIterator.hasNext())
+            if (routeIterator != null && routeIterator.tryAdvance(value))
             {
-                candidate = Optional.of(routeIterator.next())
+                candidate = Optional.of(value.getValue())
                     .filter(GeneralPath::isGeneralCircuit)
                     .map(GeneralPath::toGeneralCircuit)
                     .filter(resultPredicate)
@@ -131,6 +135,21 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
         }
 
         return candidate;
+    }
+
+    private static class Acceptor<T> implements Consumer<T>
+    {
+        private T value;
+
+        public T getValue()
+        {
+            return value;
+        }
+
+        public void accept(final T value)
+        {
+            this.value = value;
+        }
     }
 
     private T safeConstruct(final GeneralCircuit generalCircuit)
@@ -149,7 +168,7 @@ public class StateSearcher<T extends Siteswap> implements Iterator<T>, SiteswapG
     {
         if (this.startingStates.hasNext())
         {
-            this.routeIterator = null; // TODO fix
+            this.routeIterator = new GeneralPathSpliterator(1, maxPeriod, startingStates.next(), intermediatePredicate);
         }
         else
         {

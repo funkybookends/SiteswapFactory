@@ -38,6 +38,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswa
 public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor<FourHandedSiteswap>
 {
     private static final String DEFAULT_BASE_NAME = "i18n/simpleFourHandedSiteswapDescriber/simpleFourHandedSiteswapDescriber";
+    private static final BiFunction<FourHandedSiteswap,Integer,String> DEFAULT_SEQUENCE_MAPPER = FourHandedSiteswapToHefflishSequence.get();
 
     private static final String NAME = "name";
     private static final String PERIOD = "period";
@@ -68,8 +69,6 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
         LEADER_LEFT_HAND_CLUBS,
         FOLLOWER_LEFT_HAND_CLUBS};
 
-    // TODO move to class
-    private static final BiFunction<FourHandedSiteswap,Integer,String> DEFAULT_SEQUENCE_MAPPER = FourHandedSiteswapToHefflishSequence.get();
 
     private final Map<Locale, ResourceBundle> resourceBundles;
     private final String leaderName;
@@ -91,7 +90,7 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
 
     public SimpleFourHandedSiteswapDescriber()
     {
-        this(DEFAULT_BASE_NAME, DEFAULT_LEADER_NAME, DEFAULT_FOLLOWER_NAME, DEFAULT_SEQUENCE_MAPPER, Locale.forLanguageTag("en"));
+        this(DEFAULT_BASE_NAME, DEFAULT_LEADER_NAME, DEFAULT_FOLLOWER_NAME, DEFAULT_SEQUENCE_MAPPER, Locale.ENGLISH);
     }
 
     @Override
