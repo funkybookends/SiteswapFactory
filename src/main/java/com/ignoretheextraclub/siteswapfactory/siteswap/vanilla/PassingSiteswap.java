@@ -18,8 +18,11 @@ package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.types.array.impl.MultiHandThrosToPassingStringConverter;
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 import com.ignoretheextraclub.siteswapfactory.siteswap.sync.SyncSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.sync.state.MultiHandedSyncState;
+import com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros.MultiHandThro;
+import com.ignoretheextraclub.siteswapfactory.utils.ArrayLoopingIterator;
 
 public class PassingSiteswap extends SyncSiteswap
 {
@@ -43,8 +46,75 @@ public class PassingSiteswap extends SyncSiteswap
 	}
 
 	@Override
+	public int getNumHands()
+	{
+		return getNumJugglers() * 2;
+	}
+
+	@Override
 	public String toString()
 	{
 		return MultiHandThrosToPassingStringConverter.get().apply(this.getThrows());
+	}
+
+	@Override
+	protected int[] getHands()
+	{
+		final int numHands = getNumHands() / 2;
+
+		final boolean[][] landings = new boolean[getPeriod() + getHighestThro().getNumBeats()][numHands];
+
+		final ArrayLoopingIterator<Thro> looper = new ArrayLoopingIterator<>(getThrows());
+
+		for (int beat = 0; beat < landings.length; beat++)
+		{
+			final MultiHandThro thro = (MultiHandThro) looper.next();
+
+			for (int handIndex = 0; handIndex < numHands; handIndex++)
+			{
+				final MultiHandThro.HandSpecificThro throwForHand = thro.getThrowForHand(handIndex);
+				final int landingBeat = beat + throwForHand.getNumBeats();
+
+				if (landingBeat < landings.length)
+				{
+					landings[landingBeat][throwForHand.getToHand()] = true;
+				}
+			}
+		}
+
+		final int[] hands = new int[getNumHands()];
+
+		int numObjectsSeen = 0;
+		final int numObjects = getNumObjects();
+
+		for (int beat = 0; beat < landings.length; beat++)
+		{
+			for (int juggler = 0; juggler < landings[0].length; juggler++)
+			{
+				if (!landings[beat][juggler])
+				{
+					final int hand;
+					if (beat % 2 == 0)
+					{
+						hand = juggler;
+					}
+					else
+					{
+						hand = juggler + getNumJugglers();
+					}
+					hands[hand]++;
+					numObjectsSeen++;
+				}
+				if (numObjectsSeen >= numObjects)
+				{
+					break;
+				}
+			}
+		}
+		return hands;
+	}
+
+	private static class JugglerBeat
+	{
 	}
 }

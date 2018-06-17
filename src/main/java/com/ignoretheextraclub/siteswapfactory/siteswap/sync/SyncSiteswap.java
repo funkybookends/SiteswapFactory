@@ -72,14 +72,14 @@ public class SyncSiteswap implements Siteswap
 
 		final ArrayLoopingIterator<Thro> looper = new ArrayLoopingIterator<>(getThrows());
 
-		for (int i = 0; i < landings.length; i++)
+		for (int beat = 0; beat < landings.length; beat++)
 		{
 			final MultiHandThro thro = (MultiHandThro) looper.next();
 
 			for (int handIndex = 0; handIndex < numHands; handIndex++)
 			{
 				final MultiHandThro.HandSpecificThro throwForHand = thro.getThrowForHand(handIndex);
-				final int landingBeat = i + thro.getNumBeats();
+				final int landingBeat = beat + throwForHand.getNumBeats();
 
 				if (landingBeat < landings.length)
 				{

@@ -22,15 +22,20 @@ import java.util.List;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequest;
 import com.ignoretheextraclub.siteswapfactory.factory.SiteswapRequestBuilder;
+import com.ignoretheextraclub.siteswapfactory.graph.GeneralCircuit;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.GeneralCircuitToPassingSiteswapConstructor;
+import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToFourHandedSiteswapConstructor;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.constructors.StringToPassingSiteswapConstructor;
 
 public class PassingSiteswapFactory extends SiteswapFactoryImpl
 {
 	private static final List<SiteswapConstructor<? extends Siteswap>> PASSING_SITESWAP_CONSTRUCTORS = Arrays.asList(
 		GeneralCircuitToPassingSiteswapConstructor.get(),
-		StringToPassingSiteswapConstructor.get()
+		StringToPassingSiteswapConstructor.get(),
+		GeneralCircuitToFourHandedSiteswapConstructor.get(),
+		StringToFourHandedSiteswapConstructor.get()
 	);
 
 	private static final PassingSiteswapFactory DEFAULT = new PassingSiteswapFactory();

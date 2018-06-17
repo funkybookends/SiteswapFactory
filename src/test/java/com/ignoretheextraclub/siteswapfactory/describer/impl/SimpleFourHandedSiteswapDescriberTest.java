@@ -12,9 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *
  */
 
-package com.ignoretheextraclub.siteswapfactory.describer.fhs;
+package com.ignoretheextraclub.siteswapfactory.describer.impl;
 
 import java.util.Locale;
 
@@ -22,6 +24,7 @@ import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
+import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleFourHandedSiteswapDescriber;
 import com.ignoretheextraclub.siteswapfactory.factory.impl.FourHandedSiteswapFactory;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 

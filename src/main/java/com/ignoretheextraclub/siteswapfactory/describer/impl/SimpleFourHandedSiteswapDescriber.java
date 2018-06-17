@@ -12,9 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *
  */
 
-package com.ignoretheextraclub.siteswapfactory.describer.fhs;
+package com.ignoretheextraclub.siteswapfactory.describer.impl;
 
 import java.text.ChoiceFormat;
 import java.util.Arrays;
@@ -31,7 +33,6 @@ import org.apache.commons.lang.text.StrSubstitutor;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.FourHandedSiteswapToHefflishSequence;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
-import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
 public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor<FourHandedSiteswap>
@@ -53,6 +54,13 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
     private static final String DEFAULT_FOLLOWER_NAME = "Becky";
     private static final String DEFAULT_LEADER_NAME = "Aidan";
     private static final String NUMBER = "number";
+    private static final String NO_CLUBS = "noClubs";
+    private static final String ONE_CLUB = "oneClub";
+    private static final String MULTIPLE_CLUBS = "multipleClubs";
+    private static final String PREFIX = "{";
+    private static final String SUFFIX = "}";
+    private static final String LONG_DESCRIPTION = "longDescription";
+    private static final String SHORT_DESCRIPTION = "shortDescription";
 
     private static final double[] LIMITS = {0,1,2};
     private static final String[] HANDS = {LEADER_RIGHT_HAND_CLUBS,
@@ -97,11 +105,11 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
     {
         final Map<String, String> features = getFeatures(siteswap, builder, locale);
 
-        final String longDescription = new StrSubstitutor(features, "{", "}")
-            .replace(resourceBundles.get(locale).getString("longDescription"));
+        final StrSubstitutor substitutor = new StrSubstitutor(features, PREFIX, SUFFIX);
+        final ResourceBundle bundle = resourceBundles.get(locale);
 
-        final String shortDescrption = new StrSubstitutor(features, "{", "}")
-            .replace(resourceBundles.get(locale).getString("shortDescription"));
+        final String longDescription = substitutor.replace(bundle.getString(LONG_DESCRIPTION));
+        final String shortDescrption = substitutor.replace(bundle.getString(SHORT_DESCRIPTION));
 
         builder.withLongDescription(longDescription);
         builder.withDescription(shortDescrption);
@@ -132,9 +140,9 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
     {
         final String[] formats = new String[]
             {
-                resourceBundles.get(locale).getString("noClubs"),
-                resourceBundles.get(locale).getString("oneClub"),
-                resourceBundles.get(locale).getString("multipleClubs"),
+                resourceBundles.get(locale).getString(NO_CLUBS),
+                resourceBundles.get(locale).getString(ONE_CLUB),
+                resourceBundles.get(locale).getString(MULTIPLE_CLUBS),
             };
 
         final ChoiceFormat choiceFormat = new ChoiceFormat(LIMITS, formats);
@@ -146,7 +154,7 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
             final HashMap<String, Integer> map = new HashMap<>();
             map.put(NUMBER, startingNumberOfObjects);
 
-            final String phrase = new StrSubstitutor(map, "{", "}")
+            final String phrase = new StrSubstitutor(map, PREFIX, SUFFIX)
                 .replace(choiceFormat.format(startingNumberOfObjects));
 
             features.put(HANDS[hand], phrase);
