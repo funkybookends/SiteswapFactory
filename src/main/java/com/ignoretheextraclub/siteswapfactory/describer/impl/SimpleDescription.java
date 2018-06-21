@@ -31,19 +31,18 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 /**
  * A pojo for storing {@link Siteswap} description information
  *
- * @param <T> The type of siteswap
  * @author Caspar Nonclercq
  * @see SiteswapDescriber
  */
-public class SimpleDescription<T extends Siteswap> implements Description<T>
+public class SimpleDescription implements Description
 {
-    private final T siteswap;
+    private final Siteswap siteswap;
     private final Locale locale;
     private final List<String> siteswapNames;
     private final String description;
     private final String longDescription;
 
-    public SimpleDescription(final T siteswap,
+    public SimpleDescription(final Siteswap siteswap,
                              final Locale locale,
                              final List<String> siteswapNames,
                              final String description,
@@ -62,7 +61,7 @@ public class SimpleDescription<T extends Siteswap> implements Description<T>
     }
 
     @Override
-    public T getSiteswap()
+    public Siteswap getSiteswap()
     {
         return siteswap;
     }
@@ -97,62 +96,62 @@ public class SimpleDescription<T extends Siteswap> implements Description<T>
         return longDescription;
     }
 
-    public static class Builder<T extends Siteswap>
+    public static class Builder
     {
-        private final T siteswap;
+        private final Siteswap siteswap;
         private Locale locale;
         private List<String> siteswapNames = new ArrayList<>();
         private String description;
         private String longDescription;
 
-        public Builder(final T siteswap)
+        public Builder(final Siteswap siteswap)
         {
             this.siteswap = siteswap;
         }
 
-        public Builder<T> withLocale(final Locale locale)
+        public Builder withLocale(final Locale locale)
         {
             this.locale = locale;
             return this;
         }
 
-        public Builder<T> withSiteswapNames(final List<String> siteswapNames)
+        public Builder withSiteswapNames(final List<String> siteswapNames)
         {
             this.siteswapNames = siteswapNames;
             return this;
         }
 
-        public Builder<T> addSiteswapName(final String siteswapName)
+        public Builder addSiteswapName(final String siteswapName)
         {
             this.siteswapNames.add(siteswapName);
             return this;
         }
 
-        public Builder<T> addAllSiteswapNames(final Collection<String> siteswapNames)
+        public Builder addAllSiteswapNames(final Collection<String> siteswapNames)
         {
             this.siteswapNames.addAll(siteswapNames);
             return this;
         }
 
-        public Builder<T> clearSiteswapNames()
+        public Builder clearSiteswapNames()
         {
             this.siteswapNames.clear();
             return this;
         }
 
-        public Builder<T> withDescription(final String description)
+        public Builder withDescription(final String description)
         {
             this.description = description;
             return this;
         }
 
-        public Builder<T> withLongDescription(final String longDescription)
+        public Builder withLongDescription(final String longDescription)
         {
             this.longDescription = longDescription;
             return this;
         }
 
-        public T getSiteswap()
+        public Siteswap getSiteswap()
         {
             return siteswap;
         }
@@ -177,9 +176,9 @@ public class SimpleDescription<T extends Siteswap> implements Description<T>
             return longDescription;
         }
 
-        public SimpleDescription<T> createSimpleDescription()
+        public SimpleDescription createSimpleDescription()
         {
-            return new SimpleDescription<>(siteswap, locale, siteswapNames, description, longDescription);
+            return new SimpleDescription(siteswap, locale, siteswapNames, description, longDescription);
         }
     }
 }

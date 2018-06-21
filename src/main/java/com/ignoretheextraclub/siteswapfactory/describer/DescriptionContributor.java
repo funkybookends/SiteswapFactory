@@ -24,10 +24,8 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 
 /**
  * A class that contributes to a {@link SimpleDescription.Builder}.
- *
- * @param <T>
  */
-public interface DescriptionContributor<T extends Siteswap>
+public interface DescriptionContributor
 {
     /**
      * The locales this contributor supports.
@@ -41,5 +39,5 @@ public interface DescriptionContributor<T extends Siteswap>
      * @param locale
      * @param builder
      */
-    void contribute(final T siteswap, final Locale locale, final SimpleDescription.Builder<T> builder);
+    void contribute(final Siteswap siteswap, final Locale locale, final SimpleDescription.Builder builder);
 }

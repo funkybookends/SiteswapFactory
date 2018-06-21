@@ -35,9 +35,10 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.PassingSiteswapToHefflishSequence;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.diagram.causal.Hand;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.PassingSiteswap;
 
-public class SimplePassingSiteswapDescriber implements DescriptionContributor<PassingSiteswap>
+public class SimplePassingSiteswapDescriber implements DescriptionContributor
 {
 	private static final String DEFAULT_BASE_NAME = "i18n/simplePassingSiteswapDescriber/simplePassingSiteswapDescriber";
 	private static final List<String> DEFAULT_JUGGLER_NAMES = Arrays.asList("Aidan", "Bob", "Caspar", "David", "Ewan", "Fredrick", "George", "Hugo", "Ian", "John", "Ken", "Leon");
@@ -93,11 +94,12 @@ public class SimplePassingSiteswapDescriber implements DescriptionContributor<Pa
 	}
 
 	@Override
-	public void contribute(final PassingSiteswap siteswap,
+	public void contribute(final Siteswap siteswap,
 	                       final Locale locale,
-	                       final SimpleDescription.Builder<PassingSiteswap> builder)
+	                       final SimpleDescription.Builder builder)
 	{
-		final Map<String, String> features = getFeatures(siteswap, builder);
+		final PassingSiteswap passingSiteswap = (PassingSiteswap) siteswap;
+		final Map<String, String> features = getFeatures(passingSiteswap, builder);
 
 		final StrSubstitutor strSubstitutor = new StrSubstitutor(features, PREFIX, SUFFIX);
 		final ResourceBundle resourceBundle = bundles.get(locale);
@@ -105,9 +107,9 @@ public class SimplePassingSiteswapDescriber implements DescriptionContributor<Pa
 		final StringBuilder longDescription = new StringBuilder(strSubstitutor.replace(resourceBundle.getString(LONG_DESCRIPTION)));
 		final String shortDescrption = strSubstitutor.replace(resourceBundle.getString(SHORT_DESCRIPTION));
 
-		for (int juggler = 0; juggler < siteswap.getNumJugglers(); juggler++)
+		for (int juggler = 0; juggler < passingSiteswap.getNumJugglers(); juggler++)
 		{
-			longDescription.append(" ").append(getPersonDescription(siteswap, juggler, resourceBundle));
+			longDescription.append(" ").append(getPersonDescription(passingSiteswap, juggler, resourceBundle));
 		}
 
 		builder.withLongDescription(longDescription.toString())
@@ -139,7 +141,7 @@ public class SimplePassingSiteswapDescriber implements DescriptionContributor<Pa
 	}
 
 	private Map<String, String> getFeatures(final PassingSiteswap siteswap,
-	                                        final SimpleDescription.Builder<PassingSiteswap> builder)
+	                                        final SimpleDescription.Builder builder)
 	{
 		final Map<String, String> features = new HashMap<>();
 

@@ -25,10 +25,9 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 /**
  * Defines a class that returns a description object for a siteswap.
  *
- * @param <T> The type of siteswap
  * @author Caspar Nonclercq
  */
-public interface SiteswapDescriber<T extends Siteswap>
+public interface SiteswapDescriber
 {
     /**
      * Return a description object for the locale, or null if the locale is not supported.
@@ -37,7 +36,7 @@ public interface SiteswapDescriber<T extends Siteswap>
      * @param locale   @Nullable The locale to describe in or the default if null
      * @return A siteswap description with the best locale
      */
-    Description<T> describe(T siteswap, Locale locale);
+    Description describe(Siteswap siteswap, Locale locale);
 
     /**
      * Returns a description object for the best locale available for the preferences provided.
@@ -49,7 +48,7 @@ public interface SiteswapDescriber<T extends Siteswap>
      * @see Locale#filter(List, Collection)
      * @see #getAvailableLocales()
      */
-    default Description<T> describe(T siteswap, List<Locale.LanguageRange> priorityList)
+    default Description describe(Siteswap siteswap, List<Locale.LanguageRange> priorityList)
     {
         final List<Locale> localeList = Locale.filter(priorityList, getAvailableLocales());
         return describe(siteswap, localeList.isEmpty() ? null : localeList.get(0));
@@ -63,7 +62,7 @@ public interface SiteswapDescriber<T extends Siteswap>
      * @see #describe(Siteswap, Locale)
      * @see Locale.LanguageRange#parse(String)
      */
-    default Description<T> describe(T siteswap, String localeLanguageRanges)
+    default Description describe(Siteswap siteswap, String localeLanguageRanges)
     {
         return describe(siteswap, Locale.LanguageRange.parse(localeLanguageRanges));
     }

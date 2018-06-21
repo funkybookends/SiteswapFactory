@@ -37,15 +37,14 @@ import com.ignoretheextraclub.siteswapfactory.sorters.impl.HighestThrowFirstStra
 /**
  * Adds the configured names to for the siteswap.
  *
- * @param <T>
  */
-public class FromCanonicalNameDescriber<T extends Siteswap> implements DescriptionContributor<T>
+public class FromCanonicalNameDescriber implements DescriptionContributor
 {
     private static final Logger LOG = LoggerFactory.getLogger(FromCanonicalNameDescriber.class);
 
     private final Collection<Locale> availableLocales;
     private final Map<String, List<String>> canonicalNameToNamesMap;
-    private final Function<T, String> siteswapToCanonicalName;
+    private final Function<Siteswap, String> siteswapToCanonicalName;
 
     /**
      * Creates a describer for the given inputs.
@@ -56,7 +55,7 @@ public class FromCanonicalNameDescriber<T extends Siteswap> implements Descripti
      */
     public FromCanonicalNameDescriber(final Collection<Locale> supportedLocales,
                                       final Map<String, List<String>> canonicalNameToNamesMap,
-                                      final Function<T, String> siteswapToCanonicalName)
+                                      final Function<Siteswap, String> siteswapToCanonicalName)
     {
         this.availableLocales = supportedLocales;
         this.canonicalNameToNamesMap = canonicalNameToNamesMap;
@@ -70,9 +69,9 @@ public class FromCanonicalNameDescriber<T extends Siteswap> implements Descripti
     }
 
     @Override
-    public void contribute(final T siteswap,
+    public void contribute(final Siteswap siteswap,
                            final Locale locale,
-                           final SimpleDescription.Builder<T> builder)
+                           final SimpleDescription.Builder builder)
     {
         if (!availableLocales.contains(locale))
         {
@@ -89,10 +88,9 @@ public class FromCanonicalNameDescriber<T extends Siteswap> implements Descripti
     /**
      * A canonical name mapper suitable for {@link VanillaSiteswap}s.
      *
-     * @param <T>
      * @return A canonical name of a siteswap.
      */
-    public static <T extends VanillaSiteswap> Function<T, String> vanillaSiteswapToCanonicalNameMapper()
+    public static Function<Siteswap, String> vanillaSiteswapToCanonicalNameMapper()
     {
         return (siteswap) -> GeneralCircuitToTwoHandedSiteswapConstructor.get()
                 .apply(new SiteswapRequest(siteswap.getGeneralCircuit(), StreamingFilteringReducer.get(), HighestThrowFirstStrategy.get()))

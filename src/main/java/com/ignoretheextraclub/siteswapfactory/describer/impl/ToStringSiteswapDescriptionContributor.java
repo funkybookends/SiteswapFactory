@@ -27,7 +27,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
  * Adds the {@link Siteswap#toString()} as a name to the description. Always happens.
  * @author Caspar Nonclercq
  */
-public class ToStringSiteswapDescriptionContributor<T extends Siteswap> implements DescriptionContributor<T>
+public class ToStringSiteswapDescriptionContributor implements DescriptionContributor
 {
     @Override
     public Collection<Locale> getAvailableLocales()
@@ -36,7 +36,7 @@ public class ToStringSiteswapDescriptionContributor<T extends Siteswap> implemen
     }
 
     @Override
-    public void contribute(final T siteswap, final Locale locale, final SimpleDescription.Builder<T> builder)
+    public void contribute(final Siteswap siteswap, final Locale locale, final SimpleDescription.Builder builder)
     {
         builder.addSiteswapName(siteswap.toString());
     }

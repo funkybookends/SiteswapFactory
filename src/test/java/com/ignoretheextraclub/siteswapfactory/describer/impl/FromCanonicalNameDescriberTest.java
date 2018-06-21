@@ -38,7 +38,7 @@ import static org.mockito.Mockito.mock;
 
 public class FromCanonicalNameDescriberTest
 {
-    private DescriptionContributor<TwoHandedVanillaSiteswap> contributor;
+    private DescriptionContributor contributor;
     private Collection<Locale> availableLocales = Arrays.asList(Locale.UK, Locale.GERMAN);
     private Map<String, List<String>> nameMap = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class FromCanonicalNameDescriberTest
         nameMap.put("55500", Arrays.asList("Flash", "Bang"));
         nameMap.put("3", Collections.singletonList("3 Ball Cascade"));
 
-        contributor = new FromCanonicalNameDescriber<>(availableLocales, nameMap, FromCanonicalNameDescriber.vanillaSiteswapToCanonicalNameMapper());
+        contributor = new FromCanonicalNameDescriber(availableLocales, nameMap, FromCanonicalNameDescriber.vanillaSiteswapToCanonicalNameMapper());
     }
 
     @Test

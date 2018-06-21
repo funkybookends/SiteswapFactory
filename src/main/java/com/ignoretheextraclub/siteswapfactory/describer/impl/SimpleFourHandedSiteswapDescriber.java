@@ -33,9 +33,10 @@ import org.apache.commons.lang.text.StrSubstitutor;
 
 import com.ignoretheextraclub.siteswapfactory.converter.vanilla.hefflish.FourHandedSiteswapToHefflishSequence;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.FourHandedSiteswap;
 
-public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor<FourHandedSiteswap>
+public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
 {
     private static final String DEFAULT_BASE_NAME = "i18n/simpleFourHandedSiteswapDescriber/simpleFourHandedSiteswapDescriber";
     private static final BiFunction<FourHandedSiteswap,Integer,String> DEFAULT_SEQUENCE_MAPPER = FourHandedSiteswapToHefflishSequence.get();
@@ -100,9 +101,10 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
     }
 
     @Override
-    public void contribute(final FourHandedSiteswap siteswap, final Locale locale, final SimpleDescription.Builder<FourHandedSiteswap> builder)
+    public void contribute(final Siteswap siteswap, final Locale locale, final SimpleDescription.Builder builder)
     {
-        final Map<String, String> features = getFeatures(siteswap, builder, locale);
+        final FourHandedSiteswap fourHandedSiteswap = (FourHandedSiteswap) siteswap;
+        final Map<String, String> features = getFeatures(fourHandedSiteswap, builder, locale);
 
         final StrSubstitutor substitutor = new StrSubstitutor(features, PREFIX, SUFFIX);
         final ResourceBundle bundle = resourceBundles.get(locale);
@@ -115,7 +117,7 @@ public class SimpleFourHandedSiteswapDescriber implements DescriptionContributor
     }
 
     private Map<String, String> getFeatures(final FourHandedSiteswap siteswap,
-                                            final SimpleDescription.Builder<FourHandedSiteswap> builder, final Locale locale)
+                                            final SimpleDescription.Builder builder, final Locale locale)
     {
         final Map<String, String> features = new HashMap<>();
 

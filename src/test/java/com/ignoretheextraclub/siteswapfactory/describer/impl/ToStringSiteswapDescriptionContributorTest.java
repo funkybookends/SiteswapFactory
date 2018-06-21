@@ -35,7 +35,7 @@ public class ToStringSiteswapDescriptionContributorTest
         final Siteswap siteswap = mock(Siteswap.class);
         final SimpleDescription.Builder builder = mock(SimpleDescription.Builder.class);
 
-        final ToStringSiteswapDescriptionContributor<Siteswap> contributor = new ToStringSiteswapDescriptionContributor<>();
+        final ToStringSiteswapDescriptionContributor contributor = new ToStringSiteswapDescriptionContributor();
 
         when(siteswap.toString()).thenReturn("toString");
         contributor.contribute(siteswap, Locale.CANADA, builder);

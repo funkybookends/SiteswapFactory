@@ -33,8 +33,8 @@ public class SimplePassingSiteswapDescriberTest
 {
 	private static final Locale LOCALE = Locale.forLanguageTag("en");
 
-	private DescriptionContributor<PassingSiteswap> describer;
-	private SimpleDescription.Builder<PassingSiteswap> builder;
+	private DescriptionContributor describer;
+	private SimpleDescription.Builder builder;
 
 	@Before
 	public void setUp() throws Exception
@@ -46,11 +46,11 @@ public class SimplePassingSiteswapDescriberTest
 	public void test6ClubTwoCount() throws Exception
 	{
 		final PassingSiteswap siteswap = (PassingSiteswap) PassingSiteswapFactory.getPassingSiteswap("<3p|3p><3|3>");
-		builder = new SimpleDescription.Builder<>(siteswap);
+		builder = new SimpleDescription.Builder(siteswap);
 		builder.addSiteswapName("6 Club Two Count");
 		builder.withLocale(LOCALE);
 		describer.contribute(siteswap, LOCALE, builder);
-		final SimpleDescription<PassingSiteswap> simpleDescription = builder.createSimpleDescription();
+		final SimpleDescription simpleDescription = builder.createSimpleDescription();
 
 		assertThat(simpleDescription.getDescription()).isEqualTo(
 			"6 Club Two Count is a period 2 pattern with 6 clubs for 2 jugglers.");
@@ -65,11 +65,11 @@ public class SimplePassingSiteswapDescriberTest
 	public void test7ClubPassPassSelfTwice() throws Exception
 	{
 		final PassingSiteswap siteswap = (PassingSiteswap) PassingSiteswapFactory.getPassingSiteswap("<3|4p1|3|4p3><4|3|4|3><4p2|3|4p4|3>");
-		builder = new SimpleDescription.Builder<>(siteswap);
+		builder = new SimpleDescription.Builder(siteswap);
 		builder.addSiteswapName("7 Club Pass Pass Self Twice");
 		builder.withLocale(LOCALE);
 		describer.contribute(siteswap, LOCALE, builder);
-		final SimpleDescription<PassingSiteswap> simpleDescription = builder.createSimpleDescription();
+		final SimpleDescription simpleDescription = builder.createSimpleDescription();
 
 		assertThat(simpleDescription.getDescription()).isEqualTo(
 			"7 Club Pass Pass Self Twice is a period 3 pattern with 14 clubs for 4 jugglers.");

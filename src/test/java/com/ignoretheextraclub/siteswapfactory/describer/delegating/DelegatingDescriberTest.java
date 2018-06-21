@@ -32,6 +32,7 @@ import com.ignoretheextraclub.siteswapfactory.describer.Description;
 import com.ignoretheextraclub.siteswapfactory.describer.DescriptionContributor;
 import com.ignoretheextraclub.siteswapfactory.describer.impl.SimpleDescription;
 import com.ignoretheextraclub.siteswapfactory.factory.impl.TwoHandedVanillaSiteswapFactory;
+import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.TwoHandedVanillaSiteswap;
 import com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.VanillaSiteswap;
 
@@ -47,7 +48,7 @@ public class DelegatingDescriberTest
 {
     private DescriptionContributor describer1;
     private DescriptionContributor describer2;
-    private DelegatingDescriber<VanillaSiteswap> delegatingDescriber;
+    private DelegatingDescriber delegatingDescriber;
     private VanillaSiteswap siteswap = mock(VanillaSiteswap.class);
 
     @Before
@@ -56,7 +57,7 @@ public class DelegatingDescriberTest
         describer1 = mock(DescriptionContributor.class);
         describer2 = mock(DescriptionContributor.class);
 
-        delegatingDescriber = new DelegatingDescriber<>(Arrays.asList(describer1, describer2),
+        delegatingDescriber = new DelegatingDescriber(Arrays.asList(describer1, describer2),
             Arrays.asList(Locale.ENGLISH, Locale.GERMAN));
 
     }
@@ -81,7 +82,7 @@ public class DelegatingDescriberTest
         })
             .when(describer1).contribute(same(siteswap), same(Locale.ENGLISH), any(SimpleDescription.Builder.class));
 
-        final Description<VanillaSiteswap> describe = delegatingDescriber.describe(siteswap, Locale.ENGLISH);
+        final Description describe = delegatingDescriber.describe(siteswap, Locale.ENGLISH);
 
         verify(describer1).contribute(same(siteswap), same(Locale.ENGLISH), any(SimpleDescription.Builder.class));
         verify(describer2).contribute(same(siteswap), same(Locale.ENGLISH), any(SimpleDescription.Builder.class));
@@ -90,7 +91,7 @@ public class DelegatingDescriberTest
     @Test
     public void GIVEN_localeIsAvailable_WHEN_contribute_EXPECT_bothGetCalled() throws Exception
     {
-        final SimpleDescription.Builder<VanillaSiteswap> builder = mock(SimpleDescription.Builder.class);
+        final SimpleDescription.Builder builder = mock(SimpleDescription.Builder.class);
 
         delegatingDescriber.contribute(siteswap, Locale.ENGLISH, builder);
 
@@ -107,11 +108,11 @@ public class DelegatingDescriberTest
     @Test
     public void WHEN_constructed_EXPECT_availableLocalsCalculated() throws Exception
     {
-        final DescriptionContributor<TwoHandedVanillaSiteswap> first = mock(DescriptionContributor.class);
-        final DescriptionContributor<TwoHandedVanillaSiteswap> second = mock(DescriptionContributor.class);
-        final DescriptionContributor<TwoHandedVanillaSiteswap> third = mock(DescriptionContributor.class);
+        final DescriptionContributor first = mock(DescriptionContributor.class);
+        final DescriptionContributor second = mock(DescriptionContributor.class);
+        final DescriptionContributor third = mock(DescriptionContributor.class);
 
-        final DelegatingDescriber<TwoHandedVanillaSiteswap> delegatingDescriber = new DelegatingDescriber<>(Arrays.asList(first, second, third), Arrays.asList(Locale.CANADA));
+        final DelegatingDescriber delegatingDescriber = new DelegatingDescriber(Arrays.asList(first, second, third), Arrays.asList(Locale.CANADA));
 
         final Collection<Locale> result = delegatingDescriber.getAvailableLocales();
         final Collection<Locale> expected = Collections.singletonList(Locale.CANADA);
@@ -122,7 +123,7 @@ public class DelegatingDescriberTest
     @Test
     public void GIVEN_threeDelegates_WHEN_describe_EXEPCT_calledInOrder() throws Exception
     {
-        final DescriptionContributor<TwoHandedVanillaSiteswap> first = Mockito.spy(new DescriptionContributor<TwoHandedVanillaSiteswap>()
+        final DescriptionContributor first = Mockito.spy(new DescriptionContributor()
         {
             @Override
             public Collection<Locale> getAvailableLocales()
@@ -131,20 +132,20 @@ public class DelegatingDescriberTest
             }
 
             @Override
-            public void contribute(final TwoHandedVanillaSiteswap siteswap, final Locale locale, final SimpleDescription.Builder<TwoHandedVanillaSiteswap> builder)
+            public void contribute(final Siteswap siteswap, final Locale locale, final SimpleDescription.Builder builder)
             {
                 builder.addSiteswapName("title"); // needed to avoid NPE
             }
         });
 
-        final DescriptionContributor<TwoHandedVanillaSiteswap> second = mock(DescriptionContributor.class);
-        final DescriptionContributor<TwoHandedVanillaSiteswap> third = mock(DescriptionContributor.class);
+        final DescriptionContributor second = mock(DescriptionContributor.class);
+        final DescriptionContributor third = mock(DescriptionContributor.class);
         final InOrder inOrder = Mockito.inOrder(first, second, third);
 
-        final DelegatingDescriber<TwoHandedVanillaSiteswap> delegatingDescriber = new DelegatingDescriber<>(Arrays.asList(first, second, third), Collections.singletonList(Locale.CANADA));
+        final DelegatingDescriber delegatingDescriber = new DelegatingDescriber(Arrays.asList(first, second, third), Collections.singletonList(Locale.CANADA));
 
         final TwoHandedVanillaSiteswap siteswap = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("3");
-        final Description<TwoHandedVanillaSiteswap> describe = delegatingDescriber.describe(siteswap, Locale.CANADA);
+        final Description describe = delegatingDescriber.describe(siteswap, Locale.CANADA);
 
         Assertions.assertThat(describe.getLocale()).isEqualTo(Locale.CANADA);
         Assertions.assertThat(describe.getSiteswap()).isSameAs(siteswap);
@@ -157,13 +158,13 @@ public class DelegatingDescriberTest
     @Test
     public void WHEN_localeNotAvailbale_EXPECT_returnsNull() throws Exception
     {
-        final DescriptionContributor<TwoHandedVanillaSiteswap> first = mock(DescriptionContributor.class);
-        final DescriptionContributor<TwoHandedVanillaSiteswap> second = mock(DescriptionContributor.class);
-        final DescriptionContributor<TwoHandedVanillaSiteswap> third = mock(DescriptionContributor.class);
-        final DelegatingDescriber<TwoHandedVanillaSiteswap> delegatingDescriber = new DelegatingDescriber<>(Arrays.asList(first, second, third), Collections.singletonList(Locale.CANADA));
+        final DescriptionContributor first = mock(DescriptionContributor.class);
+        final DescriptionContributor second = mock(DescriptionContributor.class);
+        final DescriptionContributor third = mock(DescriptionContributor.class);
+        final DelegatingDescriber delegatingDescriber = new DelegatingDescriber(Arrays.asList(first, second, third), Collections.singletonList(Locale.CANADA));
 
         final TwoHandedVanillaSiteswap siteswap = TwoHandedVanillaSiteswapFactory.getTwoHandedSiteswap("3");
-        final Description<TwoHandedVanillaSiteswap> describe = delegatingDescriber.describe(siteswap, Locale.ITALIAN);
+        final Description describe = delegatingDescriber.describe(siteswap, Locale.ITALIAN);
 
         Assertions.assertThat(describe).isNull();
 

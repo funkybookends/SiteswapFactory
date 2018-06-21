@@ -28,17 +28,16 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
 /**
  * A delegating describer who's available locales will the intersection of all the injected describers
  *
- * @param <T>
  * @author Caspar Nonclercq
  */
-public class LocaleIntersectioningDelegatingDescriber<T extends Siteswap> extends DelegatingDescriber<T>
+public class LocaleIntersectioningDelegatingDescriber extends DelegatingDescriber
 {
-    public LocaleIntersectioningDelegatingDescriber(final List<DescriptionContributor<T>> descriptionContributors)
+    public LocaleIntersectioningDelegatingDescriber(final List<DescriptionContributor> descriptionContributors)
     {
         super(descriptionContributors, getAvailableLocales(descriptionContributors));
     }
 
-    private static <T extends Siteswap> Collection<Locale> getAvailableLocales(final List<DescriptionContributor<T>> contributors)
+    private static Collection<Locale> getAvailableLocales(final List<DescriptionContributor> contributors)
     {
         final Set<Locale> locales = new HashSet<>(contributors.get(0).getAvailableLocales());
 

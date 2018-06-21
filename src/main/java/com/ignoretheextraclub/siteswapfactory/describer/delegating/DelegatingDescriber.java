@@ -34,12 +34,12 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
  *
  * @author Caspar Nonclercq
  */
-public class DelegatingDescriber<T extends Siteswap> implements SiteswapDescriber<T>, DescriptionContributor<T>
+public class DelegatingDescriber implements SiteswapDescriber, DescriptionContributor
 {
     private final Collection<Locale> availableLocales;
-    private final List<DescriptionContributor<T>> contributors;
+    private final List<DescriptionContributor> contributors;
 
-    public DelegatingDescriber(final List<DescriptionContributor<T>> contributors, final Collection<Locale> availableLocales)
+    public DelegatingDescriber(final List<DescriptionContributor> contributors, final Collection<Locale> availableLocales)
     {
         if (CollectionUtils.isEmpty(contributors))
         {
@@ -51,14 +51,14 @@ public class DelegatingDescriber<T extends Siteswap> implements SiteswapDescribe
     }
 
     @Override
-    public Description<T> describe(final T siteswap, final Locale locale)
+    public Description describe(final Siteswap siteswap, final Locale locale)
     {
         if (!availableLocales.contains(locale)) // as per interface
         {
             return null;
         }
 
-        final SimpleDescription.Builder<T> builder = new SimpleDescription.Builder<>(siteswap).withLocale(locale);
+        final SimpleDescription.Builder builder = new SimpleDescription.Builder(siteswap).withLocale(locale);
 
         contribute(siteswap, locale, builder);
 
@@ -72,7 +72,7 @@ public class DelegatingDescriber<T extends Siteswap> implements SiteswapDescribe
     }
 
     @Override
-    public void contribute(final T siteswap, final Locale locale, final SimpleDescription.Builder<T> builder)
+    public void contribute(final Siteswap siteswap, final Locale locale, final SimpleDescription.Builder builder)
     {
         if (availableLocales.contains(locale))
         {

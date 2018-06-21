@@ -26,14 +26,14 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Siteswap;
  *
  * @author Caspar Nonclercq
  */
-public interface Description<T extends Siteswap>
+public interface Description
 {
     /**
      * Get the siteswap that these descriptions belong to.
      *
      * @return the siteswap
      */
-    T getSiteswap();
+    Siteswap getSiteswap();
 
     /**
      * Return the locale of this {@link Description};

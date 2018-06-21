@@ -34,8 +34,8 @@ public class SimpleFourHandedSiteswapDescriberTest
 {
     private static final Locale LOCALE = Locale.forLanguageTag("en");
 
-    private DescriptionContributor<FourHandedSiteswap> describer = new SimpleFourHandedSiteswapDescriber();
-    private SimpleDescription.Builder<FourHandedSiteswap> builder;
+    private DescriptionContributor describer = new SimpleFourHandedSiteswapDescriber();
+    private SimpleDescription.Builder builder;
 
     @Test
     public void testLoadsLocale() throws Exception
@@ -47,11 +47,11 @@ public class SimpleFourHandedSiteswapDescriberTest
     public void test975() throws Exception
     {
         final FourHandedSiteswap siteswap = FourHandedSiteswapFactory.getFourHandedSiteswap("975");
-        builder = new SimpleDescription.Builder<>(siteswap);
+        builder = new SimpleDescription.Builder(siteswap);
         builder.addSiteswapName("Holy Grail");
         builder.withLocale(LOCALE);
         describer.contribute(siteswap, LOCALE, builder);
-        final SimpleDescription<FourHandedSiteswap> simpleDescription = builder.createSimpleDescription();
+        final SimpleDescription simpleDescription = builder.createSimpleDescription();
 
         assertThat(simpleDescription.getDescription()).isEqualTo(
             "Holy Grail is a period 3 pattern with 7 clubs for 2 jugglers. " +
