@@ -16,6 +16,7 @@
 
 package com.ignoretheextraclub.siteswapfactory.graph;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
@@ -29,7 +30,7 @@ import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
  * The implementation can handle paths where there may be multiple edges
  * connecting nodes.
  */
-public class GeneralPath extends Stack<Thro>
+public class GeneralPath extends Stack<Thro> implements Serializable
 {
 	private Stack<State> states = new Stack<>();
 

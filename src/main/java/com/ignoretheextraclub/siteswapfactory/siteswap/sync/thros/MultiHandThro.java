@@ -16,6 +16,7 @@
 
 package com.ignoretheextraclub.siteswapfactory.siteswap.sync.thros;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -137,7 +138,7 @@ public class MultiHandThro implements Thro
 		return Arrays.hashCode(thros);
 	}
 
-	public static class HandSpecificThro
+	public static class HandSpecificThro implements Serializable
 	{
 		private static final int[] ON_THE_OTHER_SIDE = {1, 0};
 		private static final HandSpecificThro[][] CACHE = new HandSpecificThro[8][15];

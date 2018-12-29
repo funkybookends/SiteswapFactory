@@ -16,13 +16,14 @@
 
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * Created by caspar on 26/07/17.
  */
-public interface Thro extends Comparable
+public interface Thro extends Comparable, Serializable
 {
     /**
      * Returns the number of beats before all objects in the throw land

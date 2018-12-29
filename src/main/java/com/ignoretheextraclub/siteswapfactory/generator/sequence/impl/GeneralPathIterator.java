@@ -16,9 +16,14 @@
 
 package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
@@ -28,14 +33,20 @@ import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
 import com.ignoretheextraclub.siteswapfactory.siteswap.State;
 import com.ignoretheextraclub.siteswapfactory.siteswap.Thro;
 
-public class GeneralPathIterator implements Iterator<GeneralPath>
+/**
+ * Searches for general paths from the starting state with in the conditions provided
+ *
+ * @implNote This class implements serliazable, but it is not able to serlaise the predicate, therefore the predicate
+ * must be set again to ensure the same returned siteswaps.
+ */
+public class GeneralPathIterator implements Iterator<GeneralPath>, Serializable
 {
 	private static final Logger LOG = LoggerFactory.getLogger(GeneralPathIterator.class);
 
 	/**
 	 * A predicate that will prevent the returning of paths and all sub paths.
 	 */
-	private final Predicate<GeneralPath> predicate;
+	private transient Predicate<GeneralPath> predicate;
 
 	/**
 	 * A maximum depth to ensure termination
@@ -45,14 +56,16 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 	/**
 	 * The starting state for all paths returned.
 	 */
-	private final State startingState;
+	private State startingState;
 
-	private PathNode firstNode;
+	private transient PathNode firstNode;
 	private int currentTargetDepth;
 	private GeneralPath next;
 	private boolean mustMove;
 
-	GeneralPathIterator(final int startingDepth, final int maxDepth, final State startingState,
+	GeneralPathIterator(final int startingDepth,
+	                    final int maxDepth,
+	                    final State startingState,
 	                    final Predicate<GeneralPath> predicate)
 	{
 		this.startingState = startingState;
@@ -80,6 +93,11 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 		next = getNext().orElse(null);
 	}
 
+	public void setPredicate(final Predicate<GeneralPath> predicate)
+	{
+		this.predicate = predicate;
+	}
+
 	@Override
 	public boolean hasNext()
 	{
@@ -94,12 +112,12 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 			throw new NoSuchElementException();
 		}
 
-		final GeneralPath next = this.next;
+		final GeneralPath thiss = this.next;
 
 		this.mustMove = true;
 		this.next = getNext().orElse(null);
 
-		return next;
+		return thiss;
 	}
 
 	int getMaxDepth()
@@ -119,12 +137,12 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 
 	private Optional<GeneralPath> getNext()
 	{
-		boolean isNotAcceptablePath = isNotAcceptablePath();
+		boolean isNotAcceptablePath = !isAcceptablePath();
 		boolean isNotTargetDepth = isNotTargetDepth();
 
 		while (mustMove || isNotAcceptablePath || isNotTargetDepth)
 		{
-			if (mustMove || isNotAcceptablePath())
+			if (mustMove || !isAcceptablePath())
 			{
 				mustMove = false;
 				if (!safeMoveIterator())
@@ -137,7 +155,7 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 				firstNode.increaseDepth();
 			}
 
-			isNotAcceptablePath = isNotAcceptablePath();
+			isNotAcceptablePath = !isAcceptablePath();
 			isNotTargetDepth = isNotTargetDepth();
 		}
 
@@ -166,9 +184,9 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 		return firstNode.size() != currentTargetDepth;
 	}
 
-	private boolean isNotAcceptablePath()
+	private boolean isAcceptablePath()
 	{
-		return !predicate.test(toGeneralPath());
+		return predicate == null || predicate.test(toGeneralPath());
 	}
 
 	private GeneralPath toGeneralPath()
@@ -189,6 +207,7 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 
 	private static class PathNode
 	{
+
 		private final State state;
 		private final Iterator<Thro> throIterator;
 
@@ -200,6 +219,24 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 			this.state = state;
 			this.throIterator = state.getAvailableThrows();
 			moveIterator();
+		}
+
+		private PathNode(final State state,
+		                 final Thro currentThro,
+		                 final PathNode nextNode)
+		{
+			this.state = state;
+			this.currentThro = currentThro;
+			this.nextNode = nextNode;
+			this.throIterator = state.getAvailableThrows();
+
+			while (!this.currentThro.equals(this.throIterator.next()))
+			{
+				if (!throIterator.hasNext())
+				{
+					throw new IllegalArgumentException("throw iterator from state: " + state.toString() + " did not get to provided current throw: " + currentThro.toString());
+				}
+			}
 		}
 
 		private void increaseDepth()
@@ -265,5 +302,53 @@ public class GeneralPathIterator implements Iterator<GeneralPath>
 	public String toString()
 	{
 		return "GeneralPathIterator{" + toGeneralPath() + "}";
+	}
+
+	private void writeObject(ObjectOutputStream oos) throws IOException
+	{
+		oos.defaultWriteObject();
+
+		final Stack<PathNode> nodes = new Stack<>();
+		PathNode current = firstNode;
+
+		if (this.firstNode != null)
+		{
+			nodes.push(this.firstNode);
+
+			while (current.nextNode != null)
+			{
+				current = current.nextNode;
+				nodes.push(current);
+			}
+		}
+		oos.writeInt(nodes.size());
+
+		while (!nodes.isEmpty())
+		{
+			current = nodes.pop();
+			oos.writeObject(current.state);
+			oos.writeObject(current.currentThro);
+		}
+	}
+
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException
+	{
+		ois.defaultReadObject();
+
+		final int depth = ois.readInt();
+
+		if (depth == 0)
+		{
+			return;
+		}
+
+		this.firstNode = null;
+
+		for (int i = 0; i < depth; i++)
+		{
+			State lastState = (State) ois.readObject();
+			Thro lastThro = (Thro) ois.readObject();
+			this.firstNode = new PathNode(lastState, lastThro, this.firstNode);
+		}
 	}
 }

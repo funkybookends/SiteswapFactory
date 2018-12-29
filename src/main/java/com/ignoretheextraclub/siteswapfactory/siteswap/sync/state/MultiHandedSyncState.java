@@ -16,6 +16,7 @@
 
 package com.ignoretheextraclub.siteswapfactory.siteswap.sync.state;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -40,7 +41,7 @@ import com.ignoretheextraclub.siteswapfactory.utils.BitMaths;
 /**
  * Created by caspar on 06/01/18.
  */
-public class MultiHandedSyncState implements State
+public class MultiHandedSyncState implements State, Serializable
 {
 	private static final int MAX_THROW = 15;
 

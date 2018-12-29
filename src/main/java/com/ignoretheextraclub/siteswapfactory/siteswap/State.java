@@ -16,6 +16,7 @@
 
 package com.ignoretheextraclub.siteswapfactory.siteswap;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.commons.collections4.IteratorUtils;
@@ -29,7 +30,7 @@ import com.ignoretheextraclub.siteswapfactory.exceptions.TransitionException;
  *
  * @author Caspar Nonclercq
  */
-public interface State extends Comparable
+public interface State extends Comparable, Serializable
 {
     /**
      * Get the highest throw available to this state, this throw may not be legal.

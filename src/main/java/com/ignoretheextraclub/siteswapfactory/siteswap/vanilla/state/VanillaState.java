@@ -16,6 +16,7 @@
 
 package com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -31,14 +32,14 @@ import com.ignoretheextraclub.siteswapfactory.utils.BitMaths;
 /**
  * Represents a VanillaState.
  *
- * Internally tracks the positions using an {@code int}.
+ * Internally tracks the positions using an {@code long}.
  *
  * @author Caspar Nonclercq
  */
-public class VanillaState implements State
+public class VanillaState implements State, Serializable
 {
-    protected static final String EMPTY = "_";
-    protected static final String FILLED = "X";
+    protected static final char EMPTY = '_';
+    protected static final char FILLED = 'X';
 
     private final long state;
 
@@ -53,6 +54,19 @@ public class VanillaState implements State
         for (int i = 0; i < booleans.length; i++)
         {
             if (booleans[i])
+            {
+                stateBuilder = stateBuilder | (1 << i);
+            }
+        }
+        this.state = stateBuilder;
+    }
+
+    public VanillaState(final char[] chars)
+    {
+        int stateBuilder = 0;
+        for (int i = 0; i < chars.length; i++)
+        {
+            if (chars[i] == FILLED)
             {
                 stateBuilder = stateBuilder | (1 << i);
             }

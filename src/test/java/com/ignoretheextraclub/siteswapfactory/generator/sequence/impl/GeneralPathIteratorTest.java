@@ -16,6 +16,9 @@
 
 package com.ignoretheextraclub.siteswapfactory.generator.sequence.impl;
 
+import java.util.function.Predicate;
+
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.Test;
 
 import com.ignoretheextraclub.siteswapfactory.graph.GeneralPath;
@@ -23,6 +26,7 @@ import com.ignoretheextraclub.siteswapfactory.predicates.intermediate.NoThroHigh
 
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXXX_X___;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XXX__;
+import static com.ignoretheextraclub.siteswapfactory.siteswap.StateTestUtils.XX_X_X_X_;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateTest._0;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateTest._2;
 import static com.ignoretheextraclub.siteswapfactory.siteswap.vanilla.state.VanillaStateTest._3;
@@ -50,7 +54,7 @@ public class GeneralPathIteratorTest
 			.contains(GeneralPath.from(XXX__, _5, _5, _5, _0, _0, _4))
 			.contains(GeneralPath.from(XXX__, _5, _5, _5, _0, _0, _5))
 			.hasSize(706)
-			;
+		;
 	}
 
 	@Test
@@ -63,5 +67,31 @@ public class GeneralPathIteratorTest
 		;
 	}
 
-	// TODO add more
+	@Test
+	public void canSerializeAndDeserialize() throws Exception
+	{
+		final Predicate<GeneralPath> predicate = (generalPath) -> true;
+
+		for (int i = 0; i < 6; i++)
+		{
+			final GeneralPathIterator original = new GeneralPathIterator(1, 6, XX_X_X_X_, predicate);
+
+			for (int j = 0; j < i; j++)
+			{
+				original.next();
+			}
+
+			final GeneralPathIterator clone = SerializationUtils.clone(original);
+			clone.setPredicate(predicate);
+
+			int k = 0;
+
+			while (original.hasNext() && k++ < 20)
+			{
+				assertThat(clone.hasNext()).isTrue();
+				assertThat(original.next()).isEqualTo(clone.next());
+			}
+		}
+
+	}
 }
